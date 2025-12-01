@@ -36,7 +36,7 @@ As explained above, content types or bundle of a content type is composed of **f
 When exploring the field list of a Basic page that ships with Drupal CMS, you will see a list similar to this one:
 
 ![[Field list of Basic Page.png]]
-We will cover fields in more detail later in this book.
+We will cover fields in more detail later in this book (The Fields Chapter).
 ### Manage form display
 Drupal is highly configurable, and one thing you might want to do is configure how the content editors add and/or edit their data. 
 

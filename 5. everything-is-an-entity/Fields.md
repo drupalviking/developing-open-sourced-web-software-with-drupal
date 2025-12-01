@@ -22,3 +22,41 @@ There are multiple field types that ship with core Drupal CMS
 These are just the field types that *ship* with Drupal CMS. There are multiple custom fields available for download, both via separate modules like YouTube Field and Video Embed fields modules, but also do many functional modules like Commerce create their own fields based on the functionality purpose the have.
 
 Third option, if you cannot find a field that serves the need you have, you can always create one yourself! That will be covered, in detail, later in this book, under the Module development section.
+## Adding a field to an entity
+As we mentioned in the Content types chapter (and as the title of the section hints), everything in Drupal is an Entity. That's very much a "programmers" explanation but in a nutshell, we can think of "Entity" as a global parent of everything that's being created in Drupal. Entity is the parent of everything. That means that Content type is an entity, Taxonomy vocabularies are entities and also Blocks and Users. And by that definition we can claim that "all entities are field-able". We can add custom fields to all entities! And that's one of the biggest strengths of Drupal.
+
+The method is always the same. In this example we are using a content type, since that's the most frequent use-cases of adding fields to entities, but generally it's the same everywhere.
+
+If you navigate the Content type page (/admin/structure/types) you will see a list of content types. The list below is from a Drupal CMS instance with all shipped content types installed:
+
+![[Content type listing of a newly installed Drupal site 1.png]]
+*When you explore /admin/structure/types this would be the list of content types on a newly installed Drupal CMS\* site.*
+
+Press Manage fields for the ***Basic Page*** to bring up the list of fields already in the content type.
+![[Manage Fields for Basic Page.png]]
+*Manage fields view for Basic Page in Drupal CMS*
+
+Here we have two options: Create a new field or Re-use an existing field. If we have already created an email field for a content type, you should not create another field with the same purpose, you can re-use the previously built field. But I digress.
+
+Press Create a new field to display an option of fields to add:
+![[Field types in Drupal CMS.png]]
+*Field types available with standard Drupal CMS install*
+
+Let's create an Formatted text field. A contextual window with the configuration for Formatted text appears, where we give the field a name, "Excerpt" and let's choose Text (formatted, long) as the field type.
+
+![[Add Formatted Text Field.png]]
+
+Take notice that the "Machine name" is generated from the label, but you can change the machine name by pressing the Edit link. Normally you can leave this as is, but there are use cases where you want to change the machine name. One of it is when the label is in a non-english language, but company policy is that all machine names should be in English.
+
+After you press continue, another configuration form appears. This form is to configure both the Field Storage part (cardinality for an example) but also all the field specific configuration. Normally you can require the field to be mandatory in all content and you can give it a default value. 
+
+Since this is a text field, if you have languages and translations configured, you can allow the field to be "translate-able". Also you can control what text formats are allowed in the editor, if the editor is shown at all! (That's yet another configuration we'll cover later).
+
+![[Field Settings for Excerpt.png]]
+*Field settings for Text (formatted, long) field called excerpt*
+
+When you press Save, the field is created and it's added to the entity. 
+
+![[Excerpt Field added to the Field list.png]]
+
+Now that we have added the field, we can arrange where it's displayed in the form (Manage Form Display) and also how it's displayed as users view the content (Manage Display). That was covered in the Content Types chapter.

@@ -28,31 +28,31 @@ A question with "Is it OK to DROP all tables in your 'db' database" might pop up
 Since `drush si` will finish the installation for you, we will now go over the steps for installing via the GUI. 
 
 First of all, if you see this on your screen, it's highly possible that you forgot to run `composer create-project`
-![1-forbidden-before-composer-install.png](1-forbidden-before-composer-install.png)
+![1-forbidden-before-composer-install.png](screenshots/1-forbidden-before-composer-install.png)
 
 What you should see is this screen:
-![2-drupal-initial-installation-screen.png](2-drupal-initial-installation-screen.png)
+![2-drupal-initial-installation-screen.png](screenshots/2-drupal-initial-installation-screen.png)
 
 Choose whatever language you'd like. For accessibility’s sake, we're continuing with English. Press **Save and continue** to continue.
 
 The next step is to select an installation profile. There are three that come with default Drupal: Standard, Minimal and the Umami Food Magazine Demo. Although we will not explore the Umami Food Magazine profile, we encourage you to take a look.
 
 Continue with selecting **Standard**. Press **Save and continue**
-![3-select-installation-profile.png](3-select-installation-profile.png)
+![3-select-installation-profile.png](screenshots/3-select-installation-profile.png)
 
 Note that even if we just pressed save in Step 2, we are now in Step 6! Step 3 covers the verification of requirements, the database is setup in Step 4 and the site installation is in Step 5. And since we're using DDEV, these steps are all automatic.
 
 The final step includes configuring the Site Information:
-![4-configuring-site-part-one.png](4-configuring-site-part-one.png)
+![4-configuring-site-part-one.png](screenshots/4-configuring-site-part-one.png)
 Fill out the form with your own data. The username can be anything you'd like. Same with the password, although Drupal suggests that you use stronger password than **12345**. But that's fine for this site installation.
 
 Two email addresses are required. The site's address, which will be used when **EXPLAINATION NEEDED** and then **Email address** which is used to send email notifications to.
 
-![5-configuring-site-part-two.png](5-configuring-site-part-two.png)
+![5-configuring-site-part-two.png](screenshots/5-configuring-site-part-two.png)
 The last part of the form you can leave as is. It checks automatically for updates and notifies admins when updates are required. The **Receive email notifications** checkbox indicates that you would like to be notified via email when security updates and other updates are published.
 
 When you press **Save and continue** you should see the initial Drupal webpage as a logged-in user:
-![6-logged-in-to-drupal.png](6-logged-in-to-drupal.png)
+![6-logged-in-to-drupal.png](screenshots/6-logged-in-to-drupal.png)
 
 ## Install Drupal CMS with DDEV
 To install Drupal CMS on your computer, you only have to change one line in the previous list:
@@ -62,21 +62,21 @@ After **composer** has run, you can now navigate to your project in your browser
 
 That will give you the **"Getting started"** page, the first installation page of Drupal CMS.
 
-![7-cms-getting-started.png](7-cms-getting-started.png)
+![7-cms-getting-started.png](screenshots/7-cms-getting-started.png)
 *Image 7 - Drupal CMS - Getting Started screen*
 
 As the page prompts, you can select any pre-configured types of content, or add them later. It's our recommendation that you leave it as is for now. We will cover all these selections in other chapters. 
 
 Choose **Next ->** (or Skip this step, it's the same!).
 
-![8-cms-give-your-site-a-name.png](8-cms-give-your-site-a-name.png)
+![8-cms-give-your-site-a-name.png](screenshots/8-cms-give-your-site-a-name.png)
 *Image 8 - Drupal CMS - Give your site a name screen*
 
 Here you can give your site a new name, or leave it as is, since we're just experimenting.
 
 Choose **Next ->**
 
-![9-cms-create-your-account.png](9-cms-create-your-account.png)
+![9-cms-create-your-account.png](screenshots/9-cms-create-your-account.png)
 *Image 9 - Drupal CMS - Create your account screen*
 
 Here you will create your user account for your newly created Drupal CMS site. Note the difference between this account creation and when we installed Drupal Core. It requests an email instead of a username! We'll get back to the reason later.
@@ -87,10 +87,10 @@ Choose **Finish**
 
 Your installation will continue. You should see the process on your screen. If the image prints well, you can see the blue bar animate from 0 - 100%.
 
-![10-cms-finishing-setup.png](10-cms-finishing-setup.png)
+![10-cms-finishing-setup.png](screenshots/10-cms-finishing-setup.png)
 *Image 10 - Drupal CMS installation process*
 
-![11-drupal-cms-dashboard.png](11-drupal-cms-dashboard.png)
+![11-drupal-cms-dashboard.png](screenshots/11-drupal-cms-dashboard.png)
 *Image 11 - Drupal CMS Dashboard*
 
 ## Install Drupal CMS with MacOS, Linux or Windows Installer ##

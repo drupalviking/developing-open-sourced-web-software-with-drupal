@@ -22,10 +22,10 @@ So we have a fresh installation of Drupal (or Drupal CMS, they are interchangeab
 
 First of all, there is quite a big difference between a fresh installation of Drupal and The Drupal CMS, even if we didn't install anything else than the core of Drupal CMS.
 
-![1-drupal-after-installation.png](1-drupal-after-installation.png)
+![1-drupal-after-installation.png](screenshots/1-drupal-after-installation.png)
 *Drupal 11 after installation*
 
-![2-drupal-cms-after-installation.png](2-drupal-cms-after-installation.png)
+![2-drupal-cms-after-installation.png](screenshots/2-drupal-cms-after-installation.png)
 *Drupal CMS (with Drupal 11 core) after installation*
 
 Even though the look very different out-of-the-box, it's literally the same system. Just different setup. We will not cover the difference in great detail in this chapter, just be aware that it's the same system. Later we will adjust a vanilla Drupal install to look more like the Drupal CMS. But for now, we're going to explore Drupal CMS.

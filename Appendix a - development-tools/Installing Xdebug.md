@@ -36,7 +36,7 @@ The next step is to configure PHPStorm to work with Xdebug.
 
 Lastly, you need to search for the listening **"Bug"** and click it, to change it from off to on:
 
-![1-debugging-off.png](1-debugging-off.png) -> ![2-debugging-on.png](2-debugging-on.png)
+![1-debugging-off.png](screenshots/1-debugging-off.png) -> ![2-debugging-on.png](screenshots/2-debugging-on.png)
 
 ## Configure VSCode to listen to Xdebug
 @TODO

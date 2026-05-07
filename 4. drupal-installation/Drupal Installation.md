@@ -58,23 +58,30 @@ When you press **Save and continue** you should see the initial Drupal webpage a
 To install Drupal CMS on your computer, you only have to change one line in the previous list:
 5. Run `ddev composer create-project drupal/cms`
 
+%% Please note: This demo is based on Drupal CMS v2.1. Your version may vary and before we update the chapter, it can be slightly different from the screenshots we show here! %%
+
 After **composer** has run, you can now navigate to your project in your browser, or run `ddev launch` to start the installation process.
 
 That will give you the **"Getting started"** page, the first installation page of Drupal CMS.
 
-![7-cms-getting-started.png](screenshots/7-cms-getting-started.png)
-*Image 7 - Drupal CMS - Getting Started screen*
+![7-cms-give-your-site-a-name.png](screenshots/7-cms-give-your-site-a-name.png)
+*Image 7 - Drupal CMS - Initial screen - Give your site a name*
 
-As the page prompts, you can select any pre-configured types of content, or add them later. It's our recommendation that you leave it as is for now. We will cover all these selections in other chapters. 
+As the page prompts, the first (and only thing) the installer needs is for you to give your site a name
 
-Choose **Next ->** (or Skip this step, it's the same!).
+Choose **Next ->** to continue.
 
+![8-cms-choose-a-site-template.png](8-cms-choose-a-site-template.png)
 ![8-cms-give-your-site-a-name.png](screenshots/8-cms-give-your-site-a-name.png)
-*Image 8 - Drupal CMS - Give your site a name screen*
+*Image 8 - Drupal CMS - Choose a site template
 
-Here you can give your site a new name, or leave it as is, since we're just experimenting.
+Here you can choose a site template from various choices of templates, both free and premium ones. Site templates will be explained in detail later in the book, but in general, a site template is a is a pre-configured starter package that bundles modules, themes, configuration, and sometimes default content to spin up a new Drupal site tailored for specific use case.
 
-Choose **Next ->**
+%%Please note that this screen WILL be different from what you will see, as new site templates are being built every day!%%
+
+Because we cover different site templates later and we're also learning the basics, let's start with a very basic one: Starter.
+
+Choose the Starter template and then choose **Next ->**
 
 ![9-cms-create-your-account.png](screenshots/9-cms-create-your-account.png)
 *Image 9 - Drupal CMS - Create your account screen*

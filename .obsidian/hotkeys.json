@@ -1,0 +1,11 @@
+{
+  "vault-2-book:generate-vault-book": [
+    {
+      "modifiers": [
+        "Ctrl",
+        "Mod"
+      ],
+      "key": "G"
+    }
+  ]
+}

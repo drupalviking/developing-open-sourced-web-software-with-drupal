@@ -4,119 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "a1a7e77259206f0f",
+        "id": "227a0289b0d7014d",
         "type": "tabs",
         "children": [
           {
-            "id": "7401bcfe755a35e5",
+            "id": "2cabe8a21c00fa25",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "5. everything-is-an-entity/Content types.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Content types"
-            }
-          },
-          {
-            "id": "c7880b90cdc694f3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. drupal-installation/Drupal Installation.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Drupal Installation"
-            }
-          },
-          {
-            "id": "9992afe91203d102",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. drupal-installation/Drupal Installation.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Drupal Installation"
-            }
-          },
-          {
-            "id": "d9894eab46c71e2d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. drupal-installation/Drupal Installation.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Drupal Installation"
-            }
-          },
-          {
-            "id": "f00c3278994ab858",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Appendix b - Q and A/Refactoring the Media Element Spotify Module.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Refactoring the Media Element Spotify Module"
-            }
-          },
-          {
-            "id": "920e2b8b53fa490e",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.11.7"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.11.7"
-            }
-          },
-          {
-            "id": "646c6412d63cbf73",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.12.4"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.12.4"
-            }
-          },
-          {
-            "id": "1404e77feb12468e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. drupal-installation/Drupal Installation.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Drupal Installation"
+              "title": "README"
             }
           }
-        ],
-        "currentTab": 7
+        ]
       }
     ],
     "direction": "vertical"
@@ -189,17 +94,17 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "drupal-installation/Drupal Installation.md",
-                "collapseAll": false,
-                "extraContext": false,
+                "file": "README.md",
+                "collapseAll": true,
+                "extraContext": true,
                 "sortOrder": "alphabetical",
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Drupal Installation"
+              "title": "Backlinks for README"
             }
           },
           {
@@ -237,21 +142,21 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "drupal-installation/Drupal Installation.md",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Drupal Installation"
+              "title": "Outline of README"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -261,49 +166,51 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "vault-2-book:Obsidian 2 Book: Generate a book from a specified folder": false
     }
   },
-  "active": "1404e77feb12468e",
+  "active": "2cabe8a21c00fa25",
   "lastOpenFiles": [
+    "Book outline.md",
+    "developing-open-sourced-web-software-with-drupal_book.md",
+    "Appendix b - Q and A/Directory structure of a Module.md",
+    "Appendix b - Q and A/Are hook implementations as common in Drupal 11 as they were in Drupal 8?.md",
+    "Appendix b - Q and A/Annotations are being replaced by PHP Attributes in Drupal 10 and 11.md",
+    "Appendix a - development-tools/Installing Xdebug.md",
+    "PDF Exports/Appendix A.2-Installing Xdebug.pdf",
+    "Appendix a - development-tools/Development tools.md",
+    "PDF Exports/Appendix A.1-Development tools.pdf",
+    "6. so-what-do-i-do-know/Navigating the Admin User Interface.md",
+    "PDF Exports/6.1-Navigating the Admin User Interface.pdf",
+    "5. everything-is-an-entity/Users.md",
+    "PDF Exports/5.5-Users.pdf",
+    "5. everything-is-an-entity/Taxonomy.md",
+    "PDF Exports/5.4-Taxonomy.pdf",
+    "5. everything-is-an-entity/Media.md",
+    "PDF Exports/5.3-Media.pdf",
+    "5. everything-is-an-entity/Fields.md",
+    "PDF Exports/5.2-Fields.pdf",
+    "5. everything-is-an-entity/Content types.md",
+    "PDF Exports/5.1-Content types.pdf",
+    "4. drupal-installation/Drupal Installation.md",
+    "PDF Exports/4-Drupal Installation.pdf",
+    "3. history-of-drupal/The History of Drupal.md",
+    "PDF Exports/3-The History of Drupal.pdf",
+    "2. where-do-i-begin/Where do I begin?.md",
+    "1. preface/Preface.md",
+    "2. where-do-i-begin/Structure of a Drupal System.md",
+    "Appendix b - Q and A/Refactoring the Media Element Spotify Module.md",
+    "4. drupal-installation/screenshots/1-forbidden-before-composer-install.png",
+    "4. drupal-installation/screenshots/2-drupal-initial-installation-screen.png",
+    "6. so-what-do-i-do-know/screenshots/1-dashboard.png",
     "4. drupal-installation/screenshots/8-cms-choose-a-site-template.png",
     "4. drupal-installation/screenshots/Screenshot 2026-05-07 at 09.36.30.png",
     "4. drupal-installation/screenshots/8-cms-give-your-site-a-name.png",
-    "4. drupal-installation/Drupal Installation.md",
     "4. drupal-installation/screenshots/7-cms-give-your-site-a-name.png",
     "4. drupal-installation/screenshots/7-cms-getting-started.png",
     "4. drupal-installation/screenshots/7-give-your-site-a-name.png",
     "4. drupal-installation/screenshots/7-give-your-site-a-name.pnh.png",
-    "4. drupal-installation/screenshots/Screenshot 2026-05-07 at 09.27.27.png",
-    "Appendix b - Q and A/Refactoring the Media Element Spotify Module.md",
-    "2. where-do-i-begin/Where do I begin?.md",
-    "2. where-do-i-begin/Structure of a Drupal System.md",
-    "Appendix b - Q and A/Directory structure of a Module.md",
-    "Appendix b - Q and A/Are hook implementations as common in Drupal 11 as they were in Drupal 8?.md",
-    "Appendix b - Q and A/Annotations are being replaced by PHP Attributes in Drupal 10 and 11.md",
-    "Appendix b - Q and A",
-    "5. everything-is-an-entity/Media.md",
-    "5. everything-is-an-entity/screenshots/Manage display of Media part 1.png",
-    "5. everything-is-an-entity/screenshots/Manage display of Media part 2.png",
-    "5. everything-is-an-entity/screenshots/Media Types List.png",
-    "5. everything-is-an-entity/Content types.md",
-    "5. everything-is-an-entity/Fields.md",
-    "5. everything-is-an-entity/Users.md",
-    "3. history-of-drupal/The History of Drupal.md",
-    "1. preface/Preface.md",
-    "Book outline.md",
-    "README.md",
-    "web\n/sites/default/files/sync",
-    "web\n/sites/default/files",
-    "web\n/sites/default/settings.php",
-    "web\n/sites/default/settings.ddev.php",
-    "web\n/sites/default",
-    "web\n/sites",
-    "web\n",
-    "Appendix a - development-tools/Development tools.md",
-    "5. everything-is-an-entity/Taxonomy.md",
-    "5. everything-is-an-entity/screenshots",
-    "5. everything-is-an-entity",
-    "Appendix a - development-tools/Installing Xdebug.md"
+    "README.md"
   ]
 }

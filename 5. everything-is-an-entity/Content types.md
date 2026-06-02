@@ -15,7 +15,7 @@ Finally, content types intersect with access and routing. Drupal exposes per-typ
 Taken together, a Drupal content type is the canonical, configuration-driven definition of a content model slice: it specifies the schema of nodes, curates the editorial workflow, orchestrates how content is displayed in varied contexts, and integrates with permissions and routing. The node entity stores the actual data; the content type ensures that data is structured, editable, and presentable in a coherent, repeatable way.
 
 ![[Content type listing of a newly installed Drupal site 1.png]]
-*When you explore /admin/structure/types this would be the list of content types on a newly installed Drupal CMS\* site.*
+*When you explore /admin/structure/types this could be the list of content types on a newly installed Drupal CMS\* site, but it depends on other selections as well*
 
 ## Navigating a content type
 The menu to the right of the description gives you a contextual menu of what you can do to manipulate the effect of the content type. If you open up the menu you will see the following options:

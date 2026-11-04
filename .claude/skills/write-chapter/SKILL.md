@@ -38,6 +38,8 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 - Deeper than the slides: explain *why* every setting exists and what happens if you change it,
   not only where to click. Every new term is explained the first time it appears, in plain words,
   before any technical name ("bundle", "entity") is introduced.
+- Point to other chapters in full, friendly sentences ("We also cover fields in Chapter 7."), never a bare
+  "Chapter 7." tacked on the end of a paragraph (the author's review of Chapter 1).
 - Never talk down: avoid "simply", "obviously", "easy", "of course", "just" (as in "just do X").
   Tone check before finishing:
   `grep -niE "\b(simply|obviously|easy|easily|of course|clearly|trivial|basically)\b" manuscript/NN-*.md`

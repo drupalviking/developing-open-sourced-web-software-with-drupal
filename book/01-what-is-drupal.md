@@ -129,21 +129,21 @@ Each piece of content you create, such as the hike *Pentland Hills Ridge, 14 Jun
 
 > **Drupalism: content and nodes.** In the admin interface, Drupal calls nodes *content* (**Content**, **Add content**). In documentation, and when Drupal people talk, you'll hear *node* all the time. They're the same thing.
 
-Content types are covered in Chapter 7.
+We dig into content types in Chapter 7, where we build the club's *Hike* and *News* content types.
 
 ### Fields
 
 A **field** is one piece of information in a content type: the date of a hike, its distance, its photo. Drupal comes with many types of fields: text, numbers, dates, links, email addresses, images, references to other content, and more. Modules add more, such as an address or a map location.
 
-Fields are what makes Drupal's content structured. Because the distance of a hike is stored as a number, not as part of a text, Drupal can sort hikes by distance, or show only the hikes under 10 kilometers. Chapter 7.
+Fields are what makes Drupal's content structured. Because the distance of a hike is stored as a number, not as part of a text, Drupal can sort hikes by distance, or show only the hikes under 10 kilometers. We also cover fields in Chapter 7.
 
 ### Media
 
-**Media** are the images, videos, documents, and audio files on your site. Instead of uploading the same photo again for every page it appears on, you upload it once to the media library, and use it wherever you need it. A media item can have fields too: our photos get a photographer and a location. Chapter 8.
+**Media** are the images, videos, documents, and audio files on your site. Instead of uploading the same photo again for every page it appears on, you upload it once to the media library, and use it wherever you need it. A media item can have fields too: our photos get a photographer and a location. Media gets a chapter of its own, Chapter 8.
 
 ### Taxonomy
 
-A **taxonomy** is a system for classifying and organizing content. You create a *vocabulary*, such as *Places*, and fill it with *terms*, such as *Pentland Hills*, *Arthur's Seat*, and *Isle of Skye*. Then you tag content with the terms, which lets visitors find all hikes and photos from the same place, and helps with filtering, grouping, and navigation. Chapter 9.
+A **taxonomy** is a system for classifying and organizing content. You create a *vocabulary*, such as *Places*, and fill it with *terms*, such as *Pentland Hills*, *Arthur's Seat*, and *Isle of Skye*. Then you tag content with the terms, which lets visitors find all hikes and photos from the same place, and helps with filtering, grouping, and navigation. We set up the club's vocabularies in Chapter 9.
 
 ### Modules and recipes
 
@@ -153,7 +153,7 @@ A **taxonomy** is a system for classifying and organizing content. You create a 
 - **Contributed modules** (*contrib modules* for short) are written by the community and shared on drupal.org, for free. There are tens of thousands of them, for things such as SEO, nicer URLs, forms, maps, and integrations with services like Stripe or Google Analytics. Some, like Pathauto, Token, and Webform, are used on hundreds of thousands of sites; others have only a handful of users. Every module has its own page on drupal.org, where you can read its documentation, see its open bugs, and even help improve it yourself.
 - **Custom modules** are written for one specific site, when no existing module does what's needed. Writing modules is beyond this book, but its companion book teaches it.
 
-A **recipe** is a newer way of adding features. It installs a set of modules and sets them up for you, in one go, for a job such as "a blog" or "an events calendar". When it's done, the recipe is gone: there's nothing to uninstall, only the result. Drupal CMS is built almost entirely out of recipes. Modules and recipes are covered in Chapter 10.
+A **recipe** is a newer way of adding features. It installs a set of modules and sets them up for you, in one go, for a job such as "a blog" or "an events calendar". When it's done, the recipe is gone: there's nothing to uninstall, only the result. Drupal CMS is built almost entirely out of recipes. We install our first modules and recipes in Chapter 10.
 
 ### Views
 
@@ -165,17 +165,17 @@ Views was a contributed module for many years. So many sites installed it as the
 
 A **block** is a reusable chunk of content or functionality that you place in a part of the page: a sidebar, the header, the footer. Those parts are called **regions**, and each theme decides which regions it has.
 
-A block can be completely static, like a short text about the club in the footer, or created on the fly, like the list of the next three hikes, built by a view. One block that comes with Drupal core displays **Powered by Drupal**. You decide for each block where it appears, and when: only on the front page, only for logged-in members, only on hikes. Chapter 12.
+A block can be completely static, like a short text about the club in the footer, or created on the fly, like the list of the next three hikes, built by a view. One block that comes with Drupal core displays **Powered by Drupal**. You decide for each block where it appears, and when: only on the front page, only for logged-in members, only on hikes. We place the club's first blocks in Chapter 12.
 
 ### Menus
 
-**Menus** are collections of links that help visitors navigate your website. A site usually has several. The main menu is normally at the top of the page, a footer menu at the bottom, and the user account menu holds links such as **My account** and **Log out**. You can create as many menus of your own as you need. Chapter 12.
+**Menus** are collections of links that help visitors navigate your website. A site usually has several. The main menu is normally at the top of the page, a footer menu at the bottom, and the user account menu holds links such as **My account** and **Log out**. You can create as many menus of your own as you need. We build the club's menus in Chapter 12 too, together with blocks.
 
 ### Users, roles, and permissions
 
 **Users** in Drupal can very roughly be divided into two groups. An *anonymous* user is anyone who visits your site without logging in, which is most of the people on the internet. An *authenticated* user is anyone who has logged in. You then divide authenticated users into **roles**, such as *Member*, *Hike leader*, and *Secretary*, and give each role the **permissions** it needs: who can add hikes, who can upload photos, who can publish news.
 
-When you install Drupal, one user is always created: *user 1*, often named *admin*. User 1 is not only an administrator, it's **THE** administrator, a superuser that gets past every access check you set up. That's handy, but with great power comes great responsibility, and that's why some sites switch user 1's special powers off. Chapter 13.
+When you install Drupal, one user is always created: *user 1*, often named *admin*. User 1 is not only an administrator, it's **THE** administrator, a superuser that gets past every access check you set up. That's handy, but with great power comes great responsibility, and that's why some sites switch user 1's special powers off. We meet user 1 again in Chapter 13, where we set up the club's roles.
 
 ### Themes
 
@@ -183,13 +183,13 @@ When you install Drupal, one user is always created: *user 1*, often named *admi
 
 You can think of Drupal as a layered cake. Drupal core and the modules handle the data, the logic, and the features: the cake. The theme adds the frosting: the layout, the colors, the typography, and the visual style. Themes never change the content in the database.
 
-A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal's admin theme is *Default Admin*, built from Gin, a popular contributed admin theme. It arrived as an experimental theme in Drupal 11.4, and since Drupal 11.5 and 12 it's stable, and the admin theme a new site gets. You'll see it in every screenshot of the admin interface in this book. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. Chapter 14.
+A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal's admin theme is *Default Admin*, built from Gin, a popular contributed admin theme. It arrived as an experimental theme in Drupal 11.4, and since Drupal 11.5 and 12 it's stable, and the admin theme a new site gets. You'll see it in every screenshot of the admin interface in this book. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. We give the club a look of its own in Chapter 14.
 
 ### Configuration
 
 Finally, a word that's easy to miss, but important. Drupal separates **content** from **configuration**. Content is what the site is about: the hikes, the news, the photos, the members. Configuration is how the site works: its name, its content types and fields, its vocabularies, its views, which modules are installed, and who may do what.
 
-Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. Chapter 19.
+Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. We move our first configuration from one copy of the site to another in Chapter 19.
 
 ## Summary
 

@@ -69,7 +69,7 @@ Run the build and commit `book/` with your manuscript changes.
 |---|---|
 | Preface | **Reviewed by the author (2026-11-04).** |
 | 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
-| 2. Open Source and the Drupal Community | Not started. |
+| 2. Open Source and the Drupal Community | **Reviewed by the author (2026-11-04).** The author's own story is still to come (a `%%` placeholder in "Who makes Drupal?"). |
 | 3. A Short History of Drupal | Draft. |
 | 4. Installing Drupal | Draft. Lando section not written; one "EXPLAINATION NEEDED". |
 | 5. Finding Your Way Around | Started (the Navigation sidebar). Has raw SVG in its headings. |
@@ -116,3 +116,7 @@ Facts about releases and products that change quickly. Re-check each before a re
 - Chapter 1, WordPress table: checked against wordpress.org on 2026-11-04 (six predefined roles, new ones with
   `add_role()` or a plugin; custom post types with `register_post_type()`; the Query Loop block; widgets and widget
   areas). Re-check with the WordPress release current at publication.
+- Chapter 2: "Come for the code, stay for the community" is said to be on the front page of a new Drupal site
+  (Figure 1.1). Check on Drupal 12 when the screenshot is retaken.
+- Chapter 2: the four freedoms and "free as in free speech, not as in free beer" are paraphrased from the Free
+  Software Foundation; gnu.org couldn't be reached on 2026-11-04, so that link is unchecked.

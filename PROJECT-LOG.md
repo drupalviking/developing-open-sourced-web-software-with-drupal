@@ -64,6 +64,12 @@ Made on 2026-11-04, at the start of the rewrite.
   welcome); Default Admin is stable in 11.5 and 12; chapter pointers are full sentences ("We also cover fields in
   Chapter 7"), now a rule in the skill; a "Coming from WordPress?" translation table and Drupalism box, with
   later boxes in the backlog. The author also reviewed the Preface.
+- **2026-11-04**: Drafted Chapter 2 (the author's choices: GPL mostly, a table of other licenses; who makes
+  Drupal here, how to join in Chapter 20; the author's own story later). Facts from drupal.org's Licensing FAQ
+  (GPLv2 or later; viewing a site isn't distributing; selling under the GPL; drupal.org content is CC BY-SA 2.0)
+  and Drupal Association page (nonprofit, runs drupal.org, funding; Dries owns the trademark). Credit system
+  since 2015; the Drupal Certified Partners list is ranked by credit. Reviewed by the author the same day: the
+  "Can I...?" table is right, and the Drupal Association supports DrupalCon but doesn't run it everywhere.
 
 ## The photo club site
 
@@ -72,6 +78,7 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 | Chapter | Adds |
 |---|---|
 | 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 13; Exercise 5 (model a hike) is compared with Chapter 7. Also: the WordPress translation table. |
+| 2 | Nothing built. The committee's questions (why Drupal, who's behind it, what's the catch) frame the chapter; Exercise 4 (commercial builder vs. Drupal) and Exercise 5 (a CC BY-SA photo of the Pentland Hills on a poster) set up Chapter 8's photo licensing. |
 
 ## Sources
 
@@ -88,6 +95,10 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 - `archive/developer-qa/`: the author chose the module book's backlog (2026-11-04). The entry is in
   `websites/ru/book-rewrite/PROJECT-LOG.md` ("Topics to place"), uncommitted there. Delete the archive here once
   that book has taken the drafts.
+- Chapter 2: the author's own story, in "Who makes Drupal?" (a `%%` placeholder). Deferred by the author on
+  2026-11-04.
+- Chapter 3 has an author note "Write a little bit more about Starshot and the road map in 12" (line ~116). The
+  author, 2026-11-04: Starshot was renamed Drupal CMS for legal reasons; Chapter 2 keeps it to one sentence.
 - Two screenshots no chapter uses yet: `07-content-type-listing-of-a-newly-installed-drupal-site.png`
   and `08-media-content-list.png`.
 - The test sites and `tools/screenshots.sh`: set up with Chapter 4, so screenshots can be retaken

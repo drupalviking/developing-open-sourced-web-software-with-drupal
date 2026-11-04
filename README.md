@@ -84,13 +84,13 @@ Numbers without an automatic source (support dates that haven't been announced, 
 | 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | **Reviewed by the author (2026-11-04).** The author's own story is still to come (a `%%` placeholder in "Who makes Drupal?"). |
 | 3. A Short History of Drupal | **Rewritten (2026-11-04), waiting for the author's review.** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
-| 4. Installing Drupal | Draft. Lando section not written; one "EXPLAINATION NEEDED". |
+| 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 10. |
 | 5. Finding Your Way Around | Started (the Navigation sidebar). Has raw SVG in its headings. |
 | 6. Your First Page | Not started. Canvas and Layout Builder, the content form, moderation, revisions, trash. |
 | 7. Everything Is an Entity | Draft: content types and fields. |
 | 8. Media and Image Styles | Short draft. |
 | 9. Taxonomy | Short draft. |
-| 10. Extending Drupal: Modules, Recipes, and Composer | Not started. |
+| 10. Extending Drupal: Modules, Recipes, and Composer | Not started. Holds the Composer text moved from Chapter 4. |
 | 11. Views | Not started. |
 | 12. Blocks, Regions, and Menus | Not started. |
 | 13. Users, Roles, and Permissions | Short draft (the user entity). |
@@ -110,8 +110,9 @@ Chapter numbers will be checked once, at the end, together with every cross-refe
 
 Facts about releases and products that change quickly. Re-check each before a release.
 
-- Drupal CMS screens (installer, site templates, dashboard) are from Drupal CMS 2.1 (2026). Retake
-  the screenshots for the version the book is released with.
+- Drupal CMS screens (installer, site templates, dashboard) are from Drupal CMS 2.2.8 on Drupal 11.4 (2026-11-04). Retake
+  the screenshots for the version the book is released with, and check whether Drupal CMS is on Drupal 12 yet (Chapter 4 uses `--project-type=drupal11` for it).
+- Chapter 4: written against Drupal 12.0.0-beta2 (no profile step in the installer). After the release, walk through the installer again, drop the `@beta` note, and check that a stable Drush supports Drupal 12. Olivero is contrib (`drupal/olivero` 2.0.0); Drupal CMS's Starter gives Utility page, Mercury and Gin; more than twenty site templates; Drupal Forge is free for 30 days (all 2026-11-04).
 - Chapter 1: Drupal CMS "launched in 2025" with "an SEO toolkit, Drupal Canvas, optional AI tools" and site
   templates (new.drupal.org/drupal-cms describes Drupal CMS 2.0, 2026-11-04). The European Commission is named
   as a Drupal user.
@@ -129,8 +130,7 @@ Facts about releases and products that change quickly. Re-check each before a re
 - Chapter 1, WordPress table: checked against wordpress.org on 2026-11-04 (six predefined roles, new ones with
   `add_role()` or a plugin; custom post types with `register_post_type()`; the Query Loop block; widgets and widget
   areas). Re-check with the WordPress release current at publication.
-- Chapter 2: "Come for the code, stay for the community" is said to be on the front page of a new Drupal site
-  (Figure 1.1). Check on Drupal 12 when the screenshot is retaken.
+- Chapter 2: "Come for the code, stay for the community" is on the Welcome page (`/admin/welcome`) of a new Drupal 12 site, the page you land on after the installation (checked on 12.0.0-beta2, 2026-11-04; Chapter 4, Figure 4.3). Retake Figure 1.1 with it.
 - Chapter 2: the four freedoms and "free as in free speech, not as in free beer" are paraphrased from the Free
   Software Foundation; gnu.org couldn't be reached on 2026-11-04, so that link is unchecked.
 - Chapter 3: `python3 tools/update_numbers.py`, and check the entries it lists by hand (Drupal 11's and 12's support dates, Drupal 12's release date).

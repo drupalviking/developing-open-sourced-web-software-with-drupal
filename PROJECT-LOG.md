@@ -46,6 +46,9 @@ Made on 2026-11-04, at the start of the rewrite.
 | WordPress (2026-11-04) | A comparison, **never a contest**. One translation table in Chapter 1 ("Coming from WordPress?") with a Drupalism box on *plugin* and *block*; later, a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or help (see the backlog), never as a ritual at the start of every chapter. |
 | Theme file structure | Moved from Chapter 1 to Chapter 14 (`manuscript/14-appearance.md`), where it'll be reworked. |
 | Numbers (2026-11-04) | Versions and support dates that change are placeholders, `{{ number:name }}`, filled from `data/numbers.yml`, which `tools/update_numbers.py` updates from each number's source (the author's idea, as in the `what-is-open-source` course material). |
+| Article and Page (2026-11-04) | Drupal 11.4's Standard profile no longer creates them (#3587118, change record node/3590571; checked on 11.4.11: a fresh Standard install has no content types), and Drupal 12 also removes core's `page_content_type` and `article_content_type` recipes. The author's choice: **Chapter 6** has the reader build **Basic page** by hand (name, description, body field), on 11.4, 11.5 and 12 alike; no recipe box, and no Project Browser route (the author dropped it on 2026-11-04). Why, from the tests on 2026-11-04: on core, Project Browser lists the recipe but only shows **View Commands** (installing from the browser needs Automatic Updates' Package Manager), and the command it shows, `php core/scripts/drupal recipe`, is deprecated in 11.4 and fails in the `recommended-project` layout; on Drupal CMS the recipe fails, because Utility page already has the machine name `page`. **Chapter 10** writes a small Lens & Trail recipe in `examples/recipes/` that creates the same Basic page, and applies it with `ddev drush recipe`, to show what recipes are for. |
+| Front-end theme (2026-11-04) | Drupal 12 has no front-end theme in core (Olivero and Claro moved to contrib; core keeps Default Admin, Stark and Starterkit). **Chapter 4** installs Olivero with `ddev composer require drupal/olivero` and sets it as the default theme; Default Admin stays the admin theme. Switch to Mercury when it has a stable Drupal 12 release (see the backlog). |
+| Drush (2026-11-04) | Chapter 4 adds it with `ddev composer require drush/drush` (`drupal/recommended-project` doesn't include it). No released Drush supports Drupal 12 yet (13.x needs Guzzle 7); the test site runs 14.x-dev. |
 | Markdown (2026-11-04) | One line per paragraph in new text: Obsidian shows hard line breaks. |
 
 ## History
@@ -75,6 +78,7 @@ Made on 2026-11-04, at the start of the rewrite.
   since 2015; the Drupal Certified Partners list is ranked by credit. Reviewed by the author the same day: the
   "Can I...?" table is right, and the Drupal Association supports DrupalCon but doesn't run it everywhere.
 - **2026-11-04**: Rewrote Chapter 3 with the author's answers: a story for site builders, era by era, with a release table, deprecation explained with roads, Starshot and Drupal CMS, Drupal 12, and how to read version numbers. The programmers' material (hooks, the Form API, theming, Drupal 7's and 8's code, the deprecation example, the upgrade tools) moved to a new section of Appendix B. Fixed from the draft: Drupal 8 on 19 November 2015 (Dries's birthday); fields came with CCK, in core from Drupal 7; the menu rewrite was Drupal 6; FCKeditor was never in core; the last 8.x was 8.9.20; `.info.yml`; CMI; Starshot in 2024. Added `data/numbers.yml`, `tools/update_numbers.py` and `{{ number:... }}` placeholders to the build. The author's review: Drupal 11 needed more than the new admin menu, so the chapter now lists its minor releases 11.1 to 11.5 (from drupal.org's 11.1, 11.3 and 11.4 release posts); the exercise that looked for a live Drupal 7 site was dropped as snooping.
+- **2026-11-04**: Rewrote Chapter 4 with the author's answers: DDEV only (per-OS install with DDEV's docs, `ddev --version`), Composer in two sentences (the rest moved to a Chapter 10 stub), the `lens-and-trail` project on Drupal 12 with Drush, the browser installer as the main path with a `ddev drush site:install` box, every Configure site field explained (the site email is the From address), the `settings.php` warning, a first look (no content types, no front-end theme, Access denied for visitors), Olivero from contrib, `ddev drush uli`, starting and stopping, Drupal CMS 2.2.8 (three installer screens, Starter), the Launcher and Drupal Forge, troubleshooting, five exercises. Checked on test sites with Drupal 12.0.0-beta2, Drupal CMS 2.2.8 and core 11.4.11; the screenshots are from them (taken with Playwright, not yet with `tools/screenshots.sh`). The Lando section was dropped (Appendix A).
 
 ## The photo club site
 
@@ -84,6 +88,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 |---|---|
 | 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 13; Exercise 5 (model a hike) is compared with Chapter 7. Also: the WordPress translation table. |
 | 2 | Nothing built. The committee's questions (why Drupal, who's behind it, what's the catch) frame the chapter; Exercise 4 (commercial builder vs. Drupal) and Exercise 5 (a CC BY-SA photo of the Pentland Hills on a poster) set up Chapter 8's photo licensing. |
+| 3 | Nothing built. |
+| 4 | The DDEV project `lens-and-trail` (`https://lens-and-trail.ddev.site`) on Drupal 12, with Drush. Site name "Lens & Trail", site email `hello@lens-and-trail.ddev.site`, admin `admin` / `12345` (`admin@lens-and-trail.ddev.site`), time zone London. No content types; Olivero (contrib) is the default theme, Default Admin the admin theme; the front page is still `/admin/welcome` (Access denied for visitors) until Chapter 6. Optional second project `lens-and-trail-cms`: Drupal CMS with the Starter template, `admin@lens-and-trail-cms.ddev.site` / `12345`. |
 
 ## Sources
 
@@ -102,12 +108,12 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
   that book has taken the drafts.
 - Chapter 2: the author's own story, in "Who makes Drupal?" (a `%%` placeholder). Deferred by the author on
   2026-11-04.
-- **The Standard profile changed in Drupal 11.4** (drupal.org's 11.4.0 release post): no Article and Page content types, comments off by default, and the Navigation module on. Drupal 12 will be the same. Check every chapter that assumes Article or Page exists (Chapters 4, 5, 6 and 7 at least) when writing them: the Lens & Trail site may need to create its own content types earlier, or the book should say where Article and Page went.
+- **The Standard profile changed in Drupal 11.4**: no Article and Page, comments off, Navigation on (see "Article and Page" under Decisions for the plan). Chapter 7's draft uses Basic page from Drupal CMS, with Drupal CMS screenshots: on core, Basic page now comes from Chapter 6, so retake them. Decided: built by hand in Chapter 6 (see "Article and Page" under Decisions).
 - Chapter 3: the author's own memories (which version they started on, the move from 7 to 8), a `%%` placeholder at the end of the Drupal 8 section.
 - Two screenshots no chapter uses yet: `07-content-type-listing-of-a-newly-installed-drupal-site.png`
   and `08-media-content-list.png`.
-- The test sites and `tools/screenshots.sh`: set up with Chapter 4, so screenshots can be retaken
-  whenever Drupal CMS changes. Two DDEV sites are needed, one Drupal core and one Drupal CMS.
+- `tools/screenshots.sh`: not written yet. The test sites exist (`~/websites/open-university/lens-and-trail`, Drupal 12, and `lens-and-trail-cms`, Drupal CMS); Chapter 4's screenshots were taken with Playwright from scripts outside the repository. Write the script (Playwright with its own Chromium) and add Chapter 4's screenshots to it.
+- Chapter 4, not tested: `ddev drush site:install` on Drupal 12 (and its drop-tables question), and Exercise 4's `ddev delete`.
 - `slides/` and `tools/slides.py`: start with the first reviewed chapter.
 
 ## Backlog
@@ -116,7 +122,10 @@ Ideas that have no chapter yet, or are waiting for one.
 
 - **Build your own Canvas component** (advanced; partly theming). Maybe the end of Chapter 14, or
   an appendix.
-- **Lando** installation (Chapter 4 says "TBA").
+- **Revisit Chapter 4 when Drupal 12.0.0 is released** (planned for the week of 7 December 2026): the installer was written against 12.0.0-beta2 (no profile step; Standard is chosen for you), so walk through it again, retake the screenshots, and drop the `@beta` note.
+- **Mercury instead of Olivero** in Chapter 4, once Mercury has a stable Drupal 12 release (1.0.5 requires ^11.3, 2026-11-04). It's Drupal CMS's front-end theme, so core and Drupal CMS readers would see the same site.
+- **Drush for Drupal 12**: check before publication that a stable Drush release supports Drupal 12, and that `ddev composer require drush/drush` installs it without dev stability.
+- **Lando** installation (Chapter 4 points to Appendix A).
 - **Drupal Forge and the Drupal CMS Launcher** as no-install ways to try Drupal (in the Drupal in a
   Day manuscript).
 - **Stage File Proxy** and working with a copy of a live site (Drupal in a Day "Final words").

@@ -104,3 +104,7 @@ Facts about releases and products that change quickly. Re-check each before a re
   as a Drupal user.
 - Chapter 1: the admin theme *Default Admin* (built from Gin) is experimental in Drupal 11.4 and "set to become
   Drupal's standard admin theme". Re-check its status and name on the release the book uses.
+- Preface: "Drupal 12 was released together with Drupal 11.5, and for a site builder the two are the same" (from
+  drupal.org's release schedule, 2026-11-04: both in the week of 7 December 2026; the feature claim follows core's
+  release policy). Re-check after the release, and check that every contributed module the book uses has a
+  Drupal 12 release.

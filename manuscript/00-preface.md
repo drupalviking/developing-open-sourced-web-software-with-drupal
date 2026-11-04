@@ -57,7 +57,7 @@ This book builds the Lens & Trail site on Drupal core. Drupal CMS is amazing, an
 
 > **On Drupal CMS:** This is where you'll read how Drupal CMS does the same thing, or what it has already done for you.
 
-This book was written for **Drupal 11** and **Drupal CMS 2**. Drupal changes quickly, especially Drupal CMS, so some screens may look a little different on your computer. The ideas behind them change much more slowly.
+This book was written for **Drupal 12** and **Drupal CMS 2**. Drupal 12 was released together with Drupal 11.5, and for a site builder the two are the same: what Drupal 12 changes is mostly under the hood, where it drops old code that had been marked for removal. So if your site runs Drupal 11.5, you can follow along too. Drupal changes quickly, especially Drupal CMS, so some screens may look a little different on your computer. The ideas behind them change much more slowly.
 
 ## How to read this book
 

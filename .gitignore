@@ -1,2 +1,5 @@
 .DS_Store
 PDF Exports
+
+# Obsidian: which notes are open, per person. Changes every time the vault is opened.
+.obsidian/workspace.json

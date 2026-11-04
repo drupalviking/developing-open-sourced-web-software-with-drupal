@@ -34,10 +34,12 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
   time"), "we" for doing things together, "you" for the reader.
 - Reassure where it's hard: "don't worry", "it takes a while to wrap your head around this".
   Admit when there's no clean answer ("sometimes we have to follow our guts").
-- Light humor is welcome. Use emoticons sparingly.
+- Light humor is welcome, and so are the author's emoticons (`;-)`, `:-)`): they make the tone personal.
 - Deeper than the slides: explain *why* every setting exists and what happens if you change it,
   not only where to click. Every new term is explained the first time it appears, in plain words,
   before any technical name ("bundle", "entity") is introduced.
+- Point to other chapters in full, friendly sentences ("We also cover fields in Chapter 7."), never a bare
+  "Chapter 7." tacked on the end of a paragraph (the author's review of Chapter 1).
 - Never talk down: avoid "simply", "obviously", "easy", "of course", "just" (as in "just do X").
   Tone check before finishing:
   `grep -niE "\b(simply|obviously|easy|easily|of course|clearly|trivial|basically)\b" manuscript/NN-*.md`
@@ -53,18 +55,22 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 4. Where core and Drupal CMS differ, show both in boxes:
    `> **On Drupal core:** ...` and `> **On Drupal CMS:** ...`. Lean slightly towards core: explain
    the underlying mechanism, then show what Drupal CMS adds on top.
-5. Where page layout comes up, teach both Canvas and Layout Builder (with field-based displays) as
+5. WordPress: add a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or genuinely
+   help (the backlog lists where). It's a comparison, never a contest: "if you know this, here's the Drupal word
+   for it". Check WordPress claims against wordpress.org.
+6. Where page layout comes up, teach both Canvas and Layout Builder (with field-based displays) as
    equal approaches.
-6. **Summary**: a short list of what the reader can now do.
-7. **Exercises**: 3–6 per chapter, from repeating a step on new data to a small open task on the photo
+7. **Summary**: a short list of what the reader can now do.
+8. **Exercises**: 3–6 per chapter, from repeating a step on new data to a small open task on the photo
    club site. Mark harder ones "(challenge)". Exercises must be doable with what the book has
    covered so far.
-8. **Want to know more?**: links to drupal.org documentation and other free resources. Verify every
+9. **Want to know more?**: links to drupal.org documentation and other free resources. Verify every
    link.
 
 ## 5. The running example
 
-One site across the whole book: a small **photography club that also goes hiking**. Each chapter
+One site across the whole book: **Lens & Trail**, a small photography and hiking club in Edinburgh, in English
+and Spanish, built on Drupal core with the Default Admin theme (built from Gin). Each chapter
 starts from the state the previous chapter left it in, and says so in its opening. Keep a list of
 what each chapter adds to the site in `PROJECT-LOG.md` ("The photo club site"), so later chapters
 and exercises don't contradict it.

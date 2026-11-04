@@ -63,6 +63,19 @@ python3 tools/build.py --check   # fail if book/ is out of date
 
 Run the build and commit `book/` with your manuscript changes.
 
+### Numbers that go out of date
+
+Versions and support dates are kept in `data/numbers.yml`, each with its source, and the manuscript uses them as `{{ number:drupal_version }}` (the `number:` keeps them apart from Twig's `{{ }}`). `{{ number:checked }}` is the date they were last fetched. To update them, fetch the current values, then rebuild:
+
+```bash
+python3 -m pip install -r requirements.txt   # once: the scripts need PyYAML
+python3 tools/update_numbers.py --dry-run    # see what changed, write nothing
+python3 tools/update_numbers.py              # write the new values into data/numbers.yml
+python3 tools/build.py
+```
+
+Numbers without an automatic source (support dates that haven't been announced, say) are listed at the end, with a link to check them by hand. The comment at the top of `data/numbers.yml` explains how to add one.
+
 ## Contents and status
 
 | Chapter | Status |
@@ -70,7 +83,7 @@ Run the build and commit `book/` with your manuscript changes.
 | Preface | **Reviewed by the author (2026-11-04).** |
 | 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | **Reviewed by the author (2026-11-04).** The author's own story is still to come (a `%%` placeholder in "Who makes Drupal?"). |
-| 3. A Short History of Drupal | Draft. |
+| 3. A Short History of Drupal | **Rewritten (2026-11-04), waiting for the author's review.** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
 | 4. Installing Drupal | Draft. Lando section not written; one "EXPLAINATION NEEDED". |
 | 5. Finding Your Way Around | Started (the Navigation sidebar). Has raw SVG in its headings. |
 | 6. Your First Page | Not started. Canvas and Layout Builder, the content form, moderation, revisions, trash. |
@@ -89,7 +102,7 @@ Run the build and commit `book/` with your manuscript changes.
 | 19. Configuration and Going Live | Not started. Configuration export and import, moving a site. |
 | 20. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
 | Appendix A. Development Tools | Draft (Docker, DDEV, Lando, editors, Git, Xdebug). |
-| Appendix B. How Drupal Is Built | Draft (moved from "Where do I begin?": Symfony, Twig, Composer). |
+| Appendix B. How Drupal Is Built | Draft (moved from "Where do I begin?": Symfony, Twig, Composer). New section "How Drupal's code has changed" (2026-11-04), from Chapter 3's draft, waiting for the author's review. |
 
 Chapter numbers will be checked once, at the end, together with every cross-reference.
 
@@ -120,3 +133,8 @@ Facts about releases and products that change quickly. Re-check each before a re
   (Figure 1.1). Check on Drupal 12 when the screenshot is retaken.
 - Chapter 2: the four freedoms and "free as in free speech, not as in free beer" are paraphrased from the Free
   Software Foundation; gnu.org couldn't be reached on 2026-11-04, so that link is unchecked.
+- Chapter 3: `python3 tools/update_numbers.py`, and check the entries it lists by hand (Drupal 11's and 12's support dates, Drupal 12's release date).
+- Chapter 3, after Drupal 12's release: rewrite "Drupal 12 is planned for the week of 7 December 2026" and "Drupal 10 reaches its end of life in the same week" in the past tense, and set `drupal12_released` in `data/numbers.yml`.
+- Chapter 3: Drupal CMS 2.0 released 28 January 2026 with Canvas and the first site template (The DropTimes); Starshot announced at DrupalCon Portland, May 2024. From memory, not checked against a source: the first DrupalCon (Antwerp, 2005), the Drupal Association (2006), Forum removed from core in 11.0. The Dries quote "the big deal about Drupal 9 is that… it should not be a big deal" is as quoted by several secondary sources; find it on dri.es.
+- Appendix B: hooks as class methods with `#[Hook]` since Drupal 11.1; `core_version_requirement` since 8.7.7; JSON:API in core since 8.7; `drupal/recommended-project` since 8.8. From memory; check.
+- Chapter 3, Drupal 11's minor releases: 11.1, 11.3 and 11.4 from drupal.org's release posts (11.4: Default Admin experimental, leaner Standard profile, 11.5 LTS until the end of 2028). 11.2 (faster installs, AVIF) only from a third-party summary; check against drupal.org.

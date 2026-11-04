@@ -1,0 +1,68 @@
+# Numbers in the book that go out of date: versions, and support dates.
+#
+# The manuscript doesn't contain these numbers directly. It contains a
+# placeholder, {{ number:drupal_version }}, and tools/build.py fills it in from
+# this file. (The "number:" part keeps the placeholders apart from Twig, which
+# uses {{ }} too.) {{ number:checked }} is the date the numbers were last
+# fetched, as "4 November 2026".
+#
+# To update: python3 tools/update_numbers.py, then python3 tools/build.py.
+#
+# Each entry has:
+#   value:  what goes into the book. Always quoted, so YAML doesn't turn 11.10
+#           into the number 11.1.
+#   label:  what the number is, and where the book uses it.
+#   source: where a person can check it in a browser.
+#   fetch:  how tools/update_numbers.py finds the current value. Entries
+#           without it need a person: the script lists them to check by hand.
+#
+# Fetch methods (the details are in tools/update_numbers.py):
+#   json:   a URL returning JSON, and path: to the value. A path is keys and list
+#           indexes separated by dots; * takes every item of a list, and
+#           [key=value] picks the first item where key has that value.
+#   text:   a URL returning HTML or text, and regex: with one group.
+#   npm, pypi, github_release, github_tags, nuget: a package or repository name.
+#   w3techs: a W3Techs technology slug, and share: all or cms.
+# Options: pick: first|max, stable: true (skip beta, rc...), add: N,
+# format: thousands.
+
+checked: '2026-11-04'
+
+numbers:
+
+  drupal_version:
+    value: '11.4.11'
+    label: Drupal core, newest stable version (Chapter 3, reading version numbers)
+    source: https://www.drupal.org/project/drupal
+    fetch:
+      json: https://endoflife.date/api/drupal.json
+      path: 0.latest
+
+  drupal_cms_version:
+    value: '2.2.8'
+    label: Drupal CMS, newest version (Chapter 3)
+    source: https://new.drupal.org/drupal-cms
+    fetch:
+      json: https://repo.packagist.org/p2/drupal/cms.json
+      path: packages.drupal/cms.*.version
+      stable: true
+
+  drupal10_supported_until:
+    value: '9 December 2026'
+    label: Drupal 10, end of life (Chapter 3, release table)
+    source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
+
+  drupal11_supported_until:
+    value: 'End of 2028 (expected; 11.5 is LTS)'
+    label: Drupal 11, end of life; the 11.4 release post says 11.5 is LTS, supported until the end of 2028 (Chapter 3, release table)
+    source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
+
+  drupal12_released:
+    value: 'December 2026 (planned)'
+    label: Drupal 12, release date; write the date once it's out (Chapter 3, release table)
+    source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
+
+  drupal12_supported_until:
+    value: ''
+    label: Drupal 12, end of life, once it's announced (Chapter 3, release table)
+    source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule

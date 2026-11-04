@@ -9,6 +9,10 @@ What the build does:
 
   - Removes Obsidian comments, %% like this %%, on one line or several.
     Use them for notes to yourself and to other authors.
+  - Fills in numbers that go out of date, {{ number:drupal_version }}, from
+    data/numbers.yml (tools/update_numbers.py fetches the current ones).
+    {{ number:checked }} is the date they were last fetched. An unknown name
+    stops the build. Needs PyYAML: python3 -m pip install -r requirements.txt
   - Fails on Obsidian wiki links, ![[image.png]] or [[Page]]. Write
     ![Alt text](images/NN-name.png) instead (Obsidian does this for you when
     "Use [[Wikilinks]]" is off, which .obsidian/app.json sets).
@@ -61,6 +65,9 @@ LANGUAGES = {
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
 WIKI_LINK = re.compile(r"!?\[\[[^\]]+\]\]")
 COMMENT = re.compile(r"%%.*?%%", re.DOTALL)
+NUMBER = re.compile(r"\{\{\s*number:([a-z0-9_]+)\s*\}\}")
+NUMBERS_FILE = ROOT / "data" / "numbers.yml"
+_numbers: dict[str, str] | None = None
 DIRECTIVE = re.compile(r"^(?P<quote>(?:>\s?)*)<!--\s*(?P<kind>include|insert):\s*(?P<args>.+?)\s*-->$")
 
 
@@ -150,10 +157,36 @@ def insert(args: str) -> str:
     return "\n".join(lines).strip("\n")
 
 
+def numbers() -> dict[str, str]:
+    global _numbers
+    if _numbers is None:
+        try:
+            import yaml
+        except ImportError:
+            raise BuildError("the manuscript uses {{ number:... }}, which needs PyYAML: python3 -m pip install -r requirements.txt") from None
+        import datetime
+        data = yaml.safe_load(NUMBERS_FILE.read_text())
+        _numbers = {key: str(entry["value"]) for key, entry in data["numbers"].items()}
+        checked = datetime.date.fromisoformat(str(data["checked"]))
+        _numbers["checked"] = f"{checked.day} {checked:%B %Y}"
+    return _numbers
+
+
+def fill_numbers(text: str, source: Path) -> str:
+    def replace(match: re.Match) -> str:
+        values = numbers()
+        if match.group(1) not in values:
+            line = text.count("\n", 0, match.start()) + 1
+            raise BuildError(f"{source.name}:{line}: unknown number {match.group(0)}; add it to data/numbers.yml")
+        return values[match.group(1)]
+    return NUMBER.sub(replace, text)
+
+
 def build(source: Path) -> str:
     text = source.read_text()
     # Comments first, so a note may mention ![[a wiki link]] or a missing image.
     text = COMMENT.sub("", text)
+    text = fill_numbers(text, source)
     output = []
     in_code = False
     for number, line in enumerate(text.split("\n"), start=1):

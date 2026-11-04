@@ -13,6 +13,8 @@ Last updated: 2026-11-04.
   to include and leave out ("grilling"). The author reviews the draft before the next chapter starts.
 - **Branches**: one branch per unit of work, created only after the author says yes in the
   conversation. Claude never commits to `main`, pushes, opens pull requests, or merges.
+- **After a merge** the author deletes the local branch. A new chapter branch starts from an up-to-date `main`
+  (check `git fetch` and `main...origin/main` first).
 - **No Claude attribution** in commit messages (no `Co-Authored-By` or "Generated with" lines). The author's
   rule, 2026-11-04.
 - **Chapter numbers and cross-references** are checked once, at the end.

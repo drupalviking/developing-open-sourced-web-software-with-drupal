@@ -113,3 +113,6 @@ Facts about releases and products that change quickly. Re-check each before a re
   drupal.org's release schedule, 2026-11-04: both in the week of 7 December 2026; the feature claim follows core's
   release policy). Re-check after the release, and check that every contributed module the book uses has a
   Drupal 12 release.
+- Chapter 1, WordPress table: checked against wordpress.org on 2026-11-04 (six predefined roles, new ones with
+  `add_role()` or a plugin; custom post types with `register_post_type()`; the Query Loop block; widgets and widget
+  areas). Re-check with the WordPress release current at publication.

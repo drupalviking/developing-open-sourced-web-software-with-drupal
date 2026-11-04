@@ -41,6 +41,7 @@ Made on 2026-11-04, at the start of the rewrite.
 | Admin theme (2026-11-04) | Core's **Default Admin** (built from Gin): experimental in 11.4, stable and Standard's admin theme in 11.5/12. Every admin screenshot uses it. |
 | Photos (2026-11-04) | Openly licensed photos (compatible with CC BY-SA 4.0, credited) for what the reader sees, and Devel Generate for bulk test content. Taught in the book: see the backlog. |
 | Emoticons (2026-11-04) | Keep them: the author uses them a lot, and they make the tone personal. |
+| WordPress (2026-11-04) | A comparison, **never a contest**. One translation table in Chapter 1 ("Coming from WordPress?") with a Drupalism box on *plugin* and *block*; later, a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or help (see the backlog), never as a ritual at the start of every chapter. |
 | Theme file structure | Moved from Chapter 1 to Chapter 14 (`manuscript/14-appearance.md`), where it'll be reworked. |
 
 ## History
@@ -66,7 +67,7 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 
 | Chapter | Adds |
 |---|---|
-| 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 13; Exercise 5 (model a hike) is compared with Chapter 7. |
+| 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 13; Exercise 5 (model a hike) is compared with Chapter 7. Also: the WordPress translation table. |
 
 ## Sources
 
@@ -106,6 +107,11 @@ Ideas that have no chapter yet, or are waiting for one.
   module's submodule) to fill the site with test content and placeholder images. Probably Chapter 8 (finding
   photos, credits as a field) and Chapter 10 (Devel as a module you install with Composer, for development only).
   Ask the author whether they want to contribute their own photos.
+- **"Coming from WordPress?" boxes** (the author, 2026-11-04), one each where it matters, as a comparison and
+  never a contest: Chapter 6, the block editor vs. Canvas and Layout Builder; Chapter 7, custom post types and ACF
+  vs. content types and fields; Chapter 10, plugins vs. modules, and installing from the dashboard vs. Composer
+  (and Project Browser); Chapter 12, widgets vs. blocks, and the two meanings of "block"; Chapter 13, the six
+  predefined roles vs. Drupal's own roles. Check each WordPress claim against wordpress.org when writing it.
 - **Trash** (deleted content can be restored in Drupal CMS).
 - A Drupal Association plug, and connecting Drupal skills to jobs (empty sections at the end of
   the Drupal in a Day manuscript).

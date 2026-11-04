@@ -12,6 +12,7 @@ In this chapter we look at:
 - What Drupal is, and the difference between Drupal core and Drupal CMS.
 - The website we build throughout this book: the site of a photography and hiking club.
 - A map of Drupal's building blocks: the words you'll hear again and again, and where in the book we meet each of them properly.
+- If you know WordPress: what each Drupal building block is called there.
 
 There's nothing to install in this chapter. Get yourself a cup of coffee (or tea), and let's get the big picture first. We install Drupal in Chapter 4.
 
@@ -192,6 +193,33 @@ A site has two themes. The **front-end theme** is what your visitors see. The **
 Finally, a word that's easy to miss, but important. Drupal separates **content** from **configuration**. Content is what the site is about: the hikes, the news, the photos, the members. Configuration is how the site works: its name, its content types and fields, its vocabularies, its views, which modules are installed, and who may do what.
 
 Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. We move our first configuration from one copy of the site to another in Chapter 19.
+
+## Coming from WordPress?
+
+Many people come to Drupal after using WordPress, and if that's you, you already know a lot more than you think. WordPress and Drupal are both open source CMSs, both written in PHP, and both made by large, friendly communities. They solve many of the same problems, in different ways, and each has its strengths. This isn't a contest: if you know one, it helps you learn the other.
+
+So here's a translation table: for each Drupal building block, the closest thing in WordPress, and where the two differ. If you've never used WordPress, skip ahead to the summary. You won't miss anything you need.
+
+| Drupal | Closest in WordPress | Where they differ |
+|---|---|---|
+| Content type | Post type (posts, pages, custom post types) | In Drupal you create content types in the browser, with their fields. In WordPress, custom post types are usually registered in code, or with a plugin. |
+| Node (content) | A post, or a page | The same idea: one piece of content. |
+| Field | Custom field (often with a plugin, such as Advanced Custom Fields) | Fields are built into Drupal core, and every field has a type (a date, a number, a link...). |
+| Media | Media Library | Very close. In Drupal, media items can have fields too, such as our photographer. |
+| Taxonomy vocabulary | Categories and tags | WordPress comes with two taxonomies, and more need code or a plugin. In Drupal you create as many vocabularies as you need, in the browser. |
+| Module | Plugin | The same role: adding features. A Drupal *plugin* is something else (see the box below). |
+| Recipe | No direct equivalent | A recipe sets up modules and configuration in one go, and then it's gone. |
+| Views | The Query Loop block, or a plugin | Views can list any kind of data (content, users, media, terms), with relationships between them, and show it as pages, blocks, or feeds. |
+| Block, in a region | Widget, in a widget area | Not the same as a block in the WordPress block editor (see the box below). |
+| Drupal Canvas, Layout Builder | The block editor and the Site Editor | Two different tools in Drupal; Chapter 6 shows both. |
+| Menu | Menu, or the Navigation block | Very close. |
+| Role and permissions | Role and capabilities | WordPress has six predefined roles, and new ones need code or a plugin. In Drupal you create roles in the browser, and choose each one's permissions. |
+| Theme | Theme | Very close. Drupal sites also have a separate admin theme. |
+| Configuration export | No direct equivalent | Drupal can export a site's configuration to files, and import it on another copy of the site. |
+
+> **Drupalism: plugins and blocks.** Two words mean something different in Drupal than in WordPress. A WordPress *plugin* is what Drupal calls a *module*. Drupal has plugins too, but they're small pieces of code inside a module, and as a site builder you'll rarely need to think about them. And a block in the WordPress block editor is a piece of content inside a post, like a paragraph or an image. A Drupal *block* is placed in a region of the page, such as the sidebar, which makes it closer to a WordPress widget. The closest thing in Drupal to a block-editor block is a component in Drupal Canvas.
+
+We come back to WordPress a few times later in the book, but only where knowing it helps, or where it might lead you astray.
 
 ## Summary
 

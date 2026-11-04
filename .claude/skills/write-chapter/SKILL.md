@@ -55,13 +55,16 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 4. Where core and Drupal CMS differ, show both in boxes:
    `> **On Drupal core:** ...` and `> **On Drupal CMS:** ...`. Lean slightly towards core: explain
    the underlying mechanism, then show what Drupal CMS adds on top.
-5. Where page layout comes up, teach both Canvas and Layout Builder (with field-based displays) as
+5. WordPress: add a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or genuinely
+   help (the backlog lists where). It's a comparison, never a contest: "if you know this, here's the Drupal word
+   for it". Check WordPress claims against wordpress.org.
+6. Where page layout comes up, teach both Canvas and Layout Builder (with field-based displays) as
    equal approaches.
-6. **Summary**: a short list of what the reader can now do.
-7. **Exercises**: 3–6 per chapter, from repeating a step on new data to a small open task on the photo
+7. **Summary**: a short list of what the reader can now do.
+8. **Exercises**: 3–6 per chapter, from repeating a step on new data to a small open task on the photo
    club site. Mark harder ones "(challenge)". Exercises must be doable with what the book has
    covered so far.
-8. **Want to know more?**: links to drupal.org documentation and other free resources. Verify every
+9. **Want to know more?**: links to drupal.org documentation and other free resources. Verify every
    link.
 
 ## 5. The running example

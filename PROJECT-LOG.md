@@ -63,7 +63,7 @@ Made on 2026-11-04, at the start of the rewrite.
 - **2026-11-04**: The author reviewed Chapter 1. From the review: the Preface targets Drupal 12 (11.5 readers
   welcome); Default Admin is stable in 11.5 and 12; chapter pointers are full sentences ("We also cover fields in
   Chapter 7"), now a rule in the skill; a "Coming from WordPress?" translation table and Drupalism box, with
-  later boxes in the backlog. The Preface is still awaiting review.
+  later boxes in the backlog. The author also reviewed the Preface.
 
 ## The photo club site
 

@@ -1,135 +1,217 @@
 # What Is a CMS, and What Is Drupal?
 
-After you first install either Drupal or Drupal CMS, it's very understandable that you might get overwhelmed. After all, Drupal is an enterprise-level software and if you are not familiar with CMS systems in general, this is quite a bite to take. But don't worry, we're here to guide you through the grapevine.
+I've been teaching Drupal for a long time. And every time we start, I start by thinking: "Where do I really start?" Because in order to explain "this", you really have to know about "that", and to really understand "that" you REALLY need to have basic knowledge of .... Hopefully you understand where I'm going with this.
 
-I've been teaching Drupal for a long time. And everytime when we start, I start with thinking: "Where do I really start?" Because in order to explain "this", you really have to know about "that", and to really understand "that" you REALLY need to have basic knowledge of .... Hopefully you understand where I'm going with this.
+So I've decided that I will start at one logical place, and start explaining. I'll mention some terms on the fly. Sometimes I'll explain a side term in detail right away, and sometimes I'll come back to it later. I hope that when you're done reading this book, it will all come together.
 
-So I've decided that I will just start at one logical place. Start explaining. Mention some terms on the fly. Sometimes I will explain the side term in details, and sometimes I will come back to the topic later. I hope that when you're done reading this book, it will all come together.
+If Drupal feels a bit overwhelming at first, that's very understandable. Drupal is enterprise-level software, and if you aren't familiar with content management systems in general, it's quite a bite to take. But don't worry, we're here to guide you through the grapevine.
 
-## What's a CMS (and why should I choose to use one)?
-A CMS (Content Management System) is a software that lets people create, edit, organize and publish content like text, images, videos, or even entire web pages, without having to code everything from scratch.
+In this chapter we look at:
 
-Its purpose is to make it easier for non-technical users (and technical ones too) to manage website content. Normally, you will log in to an admin interface, add or update content through forms and editors, and the CMS stores and displays it on your site.
+- What a content management system (CMS) is, and why you'd want one.
+- What Drupal is, and the difference between Drupal core and Drupal CMS.
+- The website we build throughout this book: the site of a photography and hiking club.
+- A map of Drupal's building blocks: the words you'll hear again and again, and where in the book we meet each of them properly.
 
-Some of the biggest CMS systems are WordPress, Drupal, Joomla and Shopify. The first three are open-sourced software, but Shopify is proprietary. 
+There's nothing to install in this chapter. Get yourself a cup of coffee (or tea), and let's get the big picture first. We install Drupal in Chapter 4.
 
-Most CMSs have an Admin dashboard, where you manage content and settings, a database, which stores your content and metadata, templating system of some sort to determine how your site looks like and a plugin/module system to add extra features to your site without you have to rewrite the core.
+## What's a CMS (and why should I use one)?
 
-The opposite of using CMS would be using a plain (static) website. Maintaining such a website is a headache and a half, you would have to edit the HTML/CSS files directly and re-upload them, which also requires users to have knowledge of HTML and CSS, maybe even JavaScript.
+A **CMS** (*content management system*) is software that lets people create, edit, organize, and publish content, such as text, images, videos, or entire web pages, without having to code everything from scratch.
 
-The upside is that the website is superfast, since pages are prebuilt, but that's probably the only upside. If you're maintaining a site that has more than 4-5 pages, a CMS is always a wiser choice.
+Its purpose is to make it easier for non-technical users (and technical ones too) to manage a website's content. Normally, you log in to an admin interface, add or update content through forms and editors, and the CMS stores it and displays it on your site.
 
-## Overview of the layout of a Drupal Site
-So we have a fresh installation of Drupal (or Drupal CMS, they are interchangeable). What do we see here?
+Some of the best-known CMSs are WordPress, Drupal, Joomla, and Shopify. The first three are open source software (we look at what that means in Chapter 2), but Shopify is proprietary: it's owned by a company, and you rent it rather than own it.
 
-First of all, there is quite a big difference between a fresh installation of Drupal and The Drupal CMS, even if we didn't install anything else than the core of Drupal CMS.
+Most CMSs have the same four parts:
 
-![Drupal after installation](images/01-drupal-after-installation.png)
-*Drupal 11 after installation*
+- An **admin interface**, where you manage content and settings.
+- A **database**, which stores your content and the information about it (who wrote it, when, in which category).
+- A **template system** of some sort, which decides what your site looks like.
+- A **plugin or module system**, for adding features to your site without rewriting the CMS itself.
 
-![Drupal cms after installation](images/01-drupal-cms-after-installation.png)
-*Drupal CMS (with Drupal 11 core) after installation*
+### The alternative: a static website
 
-Even though the look very different out-of-the-box, it's literally the same system. Just different setup. We will not cover the difference in great detail in this chapter, just be aware that it's the same system. Later we will adjust a vanilla Drupal install to look more like the Drupal CMS. But for now, we're going to explore Drupal CMS.
+The opposite of using a CMS would be a plain (*static*) website: a folder of HTML files, written by hand, and uploaded to a web server. Maintaining such a website is a headache and a half. To change anything, you edit the HTML and CSS files directly and upload them again, which means that everyone who edits the site needs to know HTML and CSS, maybe even JavaScript.
 
-### The Building blocks of Drupal 
-We can roughly divide the basic building blocks of Drupal into: Content types, taxonomy terms, menus, blocks, views and users. We then extend our site with themes and modules. The building blocks have one thing in common: They all **"extend the Entity base class"**, which is a very technical term which I will explain later. Just be aware that they are all descendants of 
-**"Entity"**. 
+Think of what that means in practice. Our photography club meets for its hikes at a car park. If the meeting point changes, someone has to find every page that mentions it, edit each file, and upload them all again. And if the club's secretary, who doesn't know HTML, wants to post the news? They have to email someone who does, and wait.
 
-### Content types
-Content types store data in a structured way. An example of a content type would be "Page". Another would be "News" and third might be "Events". By creating different content types for each type of content we are storing on our website we can much easier customize how the content is viewed and displayed.
+A CMS separates the **content** (the meeting point, the news, the photos) from the **presentation** (the HTML around it). The content lives in a database, and the CMS puts the pages together when someone visits. Change the meeting point once, and every page that shows it is up to date. The secretary logs in, fills in a form, and presses **Save**.
 
-Events for example would have data regarding the start and end times and location of the event, even links to where to buy tickets, while a news article only has the publishing date as a relevant data. And normally we would not display the creation date of a page, unless it's an article, and isn't that another content type?
+Static sites do have their upsides. They're superfast, because the pages are prebuilt, and there's very little on the server for an attacker to break into. For a single page that never changes, a static site is fine. But if you're maintaining a site with more than four or five pages, or a site that more than one person edits, a CMS is always the wiser choice.
 
-All of them would probably share a text-area to enter some text information, a title or name is another shared field, the user id of the person created the record etc.
+## What is Drupal?
 
-### Taxonomy vocabularies and taxonomy terms
-A taxonomy term is an individual item (or "label") within a taxonomy, which is a structured system for classifying and organizing content. The taxonomy defines the categories or tags that are available while the term is one of those categories or tags. Multiple terms can belong to the same taxonomy, and content items can be assigned one or more terms to help with filtering, grouping and navigation.
+Drupal is a free and open source CMS. It's written in PHP, a programming language made for the web, and it stores its content in a database such as MySQL, MariaDB, PostgreSQL, or SQLite.
 
-For an example, you can have a Taxonomy vocabulary named "Colors" and then have the terms Red, Blue and Green within the vocabulary. 
+Drupal has great standard features, like easy content authoring, reliable performance, and excellent security. But what sets it apart is its **flexibility**. Drupal doesn't decide for you what your content looks like. You tell it: "On this site we have hikes, and a hike has a date, a meeting point, a distance, and a difficulty." Drupal then gives you a form to enter hikes, stores them in a structured way, and lets you list, filter, and display them in any way you like. This is what we call *structured content*, and it's Drupal's strongest card.
 
-### Menus
-Menus are a collection of links, displayed to the user to navigate your website. There are very often multiple menus per website. 
+That flexibility is why Drupal runs many large and complex websites: governments (the European Commission's sites, for example), universities, newspapers, and nonprofits, as well as many small ones. It's also why Drupal has a reputation for being harder to learn than some other CMSs. There's more to understand, because there's more you can do. That's what this book is for.
 
-The Main menu is very often displayed on top of a website. The Footer menu on the other half is, according to the name, displayed in the footer. We can also have User account menu, Administration menu and more. You can easily create your own menus within Drupal. 
+Drupal is made by a large community of people and companies all over the world, and it's free in both meanings of the word: it costs nothing, and you're free to use it, study it, change it, and share it. We tell the story of how that came to be in Chapter 3.
 
-### Blocks
-In Drupal, a block is a reusable chunk of content or functionality that can be placed into specific regions of your site's page layout. It's part of Drupal's theme system and is often used for sidebars, headers, footers, or any widget-like element.
+### Drupal core and Drupal CMS
 
-It can be either completely static content or a mixture of statically and dynamically created data. One core-provided block is *"Powered with Drupal"* block that displays **"Powered by Drupal"** on a web page. 
+When people say "Drupal" today, they may mean one of two things.
 
-You can also create a block with *"Views"* (explained next) to display the five newest news articles or what users are logged into the system. 
+- **Drupal core** is Drupal itself: the software you download from drupal.org, with everything that every Drupal site needs. It comes with a set of built-in features, but it's intentionally kept lean. Most sites add more features to it.
+- **Drupal CMS** is a ready-made product built on top of Drupal core, launched in 2025. It's Drupal core plus a carefully chosen selection of extra features, already installed and set up for you: an SEO toolkit, a visual page builder called *Drupal Canvas*, optional AI tools, and more. It also offers *site templates*: complete starting points for one kind of site, with their own content structure, pages, and design.
 
-The Block system is quite ingenious. You can assign each block to a specific region, control its visibility so it only displays to logged-in users or only on the front page etc. The content of a block can be anything!
+Even though they look very different out of the box, it's literally the same system, with a different setup. Drupal CMS *is* Drupal core, plus extra modules and configuration. Everything you learn about Drupal core is true on Drupal CMS too.
+
+![The front page of a freshly installed Drupal core site, with the admin toolbar across the top](images/01-drupal-after-installation.png)
+
+*Figure 1.1: Drupal core, right after installation*
+
+![The front page of a freshly installed Drupal CMS site, with the admin navigation in a sidebar on the left](images/01-drupal-cms-after-installation.png)
+
+*Figure 1.2: Drupal CMS, right after installation*
+
+So which one should you use? People in the Drupal community disagree on this, and that's fine. Drupal CMS gets you further, faster, and it's a great starting point. I use it myself when I need to get a project off the ground quickly. But I strongly believe that you need to understand how Drupal works underneath, before you let a product set things up for you. Otherwise, the day something doesn't work the way you expect, you won't know where to look.
+
+That's why we build our club site on **Drupal core** in this book, and set up every feature ourselves. Wherever Drupal CMS does something differently, or has already done it for you, I show you that too. You'll then be able to use either one, and know what's going on.
+
+> **Drupalism: CMS, Drupal CMS, and "the CMS".** "CMS" is the general term: Drupal is a CMS, and so is WordPress. "Drupal CMS" is the product described above. Before 2025, "Drupal CMS" only ever meant "Drupal, the CMS", so when you read it in an older text, it means Drupal in general. In a recent text, check which one is meant.
+
+## The site we build: Lens & Trail
+
+Learning a CMS from loose examples ("let's create a test page", "let's add a field called Foo") only gets you so far. You learn how the buttons work, but not how the pieces fit together. So in this book we build one real-world website, from an empty Drupal site to a site you could put online.
+
+**Lens & Trail** is a small photography and hiking club in Edinburgh, Scotland. Every few weeks its members go on a hike, in the Pentland Hills, along the coast, or further away in the Highlands, and they take photos along the way. Back home, they pick the best ones and show them on the club's website. Quite a few of the members are from Spain and Latin America, so the club runs its site in both English and Spanish.
+
+The club's website needs:
+
+- **Hikes**: an upcoming-hikes calendar, where each hike has a date, a meeting point, a distance, a difficulty, and a description.
+- **Photos**, with the photographer, where the photo was taken, and when.
+- **Galleries**: the photos from each hike, together.
+- **Members**: people who log in, with a profile page, and who can upload their own photos.
+- **News**: announcements, such as a photo competition or the annual general meeting.
+- **Pages** that rarely change, such as *About the club* and *How to join*.
+- **Categories**, so visitors can find all photos of mountains, or all hikes in the Pentlands.
+- Everything in **English and Spanish**.
+
+And behind the scenes, the club needs a few people to run it: a secretary who posts the news, hike leaders who add hikes, members who upload photos, and one or two administrators who keep the site safe and up to date.
+
+Each chapter adds a piece of this, and starts where the previous one left off:
+
+| Chapter | What we add to the Lens & Trail site |
+|---|---|
+| 4. Installing Drupal | The empty site, on your own computer. |
+| 5. Finding Your Way Around | The club's name, slogan, and email address. |
+| 6. Your First Page | *About the club* and *How to join*, laid out two ways. |
+| 7. Everything Is an Entity | The *Hike* and *News* content types, with their fields. |
+| 8. Media and Image Styles | Photos, with photographer and location, in the right sizes. |
+| 9. Taxonomy | Categories for places and photo themes. |
+| 10. Extending Drupal | New features from contributed modules and recipes. |
+| 11. Views | Lists: upcoming hikes, the newest photos, a gallery per hike. |
+| 12. Blocks, Regions, and Menus | The menus, and what goes in the sidebar and footer. |
+| 13. Users, Roles, and Permissions | Members, hike leaders, and the secretary, each with the right access. |
+| 14. Appearance | A look of the club's own. |
+| 15. Nice URLs and SEO | Addresses such as `/hikes/pentland-hills-ridge`. |
+| 16. Multilingual Sites | Spanish. |
+| 17. AI in Drupal CMS | Help with writing and describing photos. |
+| 18. Keeping Your Site Safe | Updates and backups. |
+| 19. Configuration and Going Live | The site on a real server. |
+
+## A map of Drupal's building blocks
+
+Now let's look at the words you'll hear all the time when people talk about Drupal. Don't try to memorize them now. This is a map, so that you know roughly where everything is when we get there. Each building block gets a chapter (or a good part of one) later in the book.
+
+One thing before we start. Most of these building blocks have something in common: Drupal treats them all as *entities*. That's a technical term I'll explain properly in Chapter 7. For now, think of an entity as "a thing Drupal stores, that you can add your own fields to". Because they're all entities, they all work in a similar way, and once you've learned one, the next one comes much faster.
+
+### Content types and nodes
+
+**Content types** store data in a structured way. On the club site, *Hike* is a content type, and so are *News* and *Page*. By creating a different content type for each kind of content, we can decide for each one what information it holds, what its form looks like, and how it's displayed.
+
+A hike has a date, a meeting point, and a difficulty. A news item only needs a publishing date. And a page, such as *About the club*, normally doesn't show its date at all. Still, all of them share a title, a text area for the description, and the user who created them.
+
+Each piece of content you create, such as the hike *Pentland Hills Ridge, 14 June*, is called a **node**. The content type is the template; the node is the content you fill into it.
+
+> **Drupalism: content and nodes.** In the admin interface, Drupal calls nodes *content* (**Content**, **Add content**). In documentation, and when Drupal people talk, you'll hear *node* all the time. They're the same thing.
+
+Content types are covered in Chapter 7.
+
+### Fields
+
+A **field** is one piece of information in a content type: the date of a hike, its distance, its photo. Drupal comes with many types of fields: text, numbers, dates, links, email addresses, images, references to other content, and more. Modules add more, such as an address or a map location.
+
+Fields are what makes Drupal's content structured. Because the distance of a hike is stored as a number, not as part of a text, Drupal can sort hikes by distance, or show only the hikes under 10 kilometers. Chapter 7.
+
+### Media
+
+**Media** are the images, videos, documents, and audio files on your site. Instead of uploading the same photo again for every page it appears on, you upload it once to the media library, and use it wherever you need it. A media item can have fields too: our photos get a photographer and a location. Chapter 8.
+
+### Taxonomy
+
+A **taxonomy** is a system for classifying and organizing content. You create a *vocabulary*, such as *Places*, and fill it with *terms*, such as *Pentland Hills*, *Arthur's Seat*, and *Isle of Skye*. Then you tag content with the terms, which lets visitors find all hikes and photos from the same place, and helps with filtering, grouping, and navigation. Chapter 9.
+
+### Modules and recipes
+
+**Modules** extend what a Drupal site can do. There's a saying in the Drupal world: "There's a module for that". If you need something that Drupal can't do out of the box, someone has very likely written a module that does it. Modules come in three kinds:
+
+- **Core modules** are part of Drupal core, and are developed and maintained by the Drupal core team. Some are essential: the User module handles logging in, and if you could uninstall it, you'd never be able to log in to your site again. Others are optional, like the Comment module, which lets visitors comment on your content. A core module has the same version number as the core you are running.
+- **Contributed modules** (*contrib modules* for short) are written by the community and shared on drupal.org, for free. There are tens of thousands of them, for things such as SEO, nicer URLs, forms, maps, and integrations with services like Stripe or Google Analytics. Some, like Pathauto, Token, and Webform, are used on hundreds of thousands of sites; others have only a handful of users. Every module has its own page on drupal.org, where you can read its documentation, see its open bugs, and even help improve it yourself.
+- **Custom modules** are written for one specific site, when no existing module does what's needed. Writing modules is beyond this book, but its companion book teaches it.
+
+A **recipe** is a newer way of adding features. It installs a set of modules and sets them up for you, in one go, for a job such as "a blog" or "an events calendar". When it's done, the recipe is gone: there's nothing to uninstall, only the result. Drupal CMS is built almost entirely out of recipes. Modules and recipes are covered in Chapter 10.
 
 ### Views
-Views is a module that only appeared in Drupal Core in Drupal 8. Before that, Views was a contribution module, but since overwhelmingly number of sites installed Views as their first contrib module, it was finally moved to core.
 
-Views is in general the *"Data gathering tool".*  If you need a list of news articles, events that are upcoming, displaying the archives of interesting articles or displaying a list of Hotels in the neighbourhood, you will use Views to gather the data together. And then you will either create a Views Page or Views Block to display your data.
+**Views** is Drupal's data-gathering tool. If you need a list of upcoming hikes, the ten newest photos, all news from last year, or a table of members, you build it with Views: you choose what to list, how to filter and sort it, and how to show it, all in the browser. Then you show the result as a page of its own, or as a block on other pages.
 
-### Users
-Users in Drupal can very roughly be divided into two groups: Anonymous and Authenticated users. An anonymous user is one who navigates your page without having to log in. Which is normally most of the internet users in the world. 
+Views was a contributed module for many years. So many sites installed it as their very first module that it was finally moved into Drupal core, in Drupal 8. Views is one of the most powerful parts of Drupal, and gets all of Chapter 11.
 
-Authenticated users are any user that requires a username and password to view and/or change content on the site. You can then divide authenticated users into user groups, each having different access and permissions to your site.
+### Blocks and regions
 
-When you install Drupal, there is always one user that is created, and that's *"User 1"*, often also named *"Administrator"* or *"Admin"*. User 1 is not only an Administrator, he's **THE** Administrator. A Superuser. User 1 can bypass all access barriers you set up, which is in a way a good thing, but with great powers comes great responsibility, and therefor User 1 is sometimes disabled for security reasons. 
+A **block** is a reusable chunk of content or functionality that you place in a part of the page: a sidebar, the header, the footer. Those parts are called **regions**, and each theme decides which regions it has.
 
-## Themes
-Themes are essentially the presentation layer of a Drupal website. It controls *how* content and interface elements are visually displayed to the end user, without changing *what* it is or *how* the content is stored.
+A block can be completely static, like a short text about the club in the footer, or created on the fly, like the list of the next three hikes, built by a view. One block that comes with Drupal core displays **Powered by Drupal**. You decide for each block where it appears, and when: only on the front page, only for logged-in members, only on hikes. Chapter 12.
 
-You can think of Drupal as a layered cake. The Core & the Modules handle the data, logic and features of the website (the *"cake"*) and the theme adds the *"frosting"*, layout, colors, typography and the visual style. 
+### Menus
 
-Themes never change the content in the database nor do they handle business logic or data processing.
+**Menus** are collections of links that help visitors navigate your website. A site usually has several. The main menu is normally at the top of the page, a footer menu at the bottom, and the user account menu holds links such as **My account** and **Log out**. You can create as many menus of your own as you need. Chapter 12.
 
-There are essentially two types of Themes, Admin themes and Front-end themes. Admin themes control the look and feel of the "backend", when the user is logged in and is performing some administrative tasks. 
+### Users, roles, and permissions
 
-Front-end themes on the other half are the ones that display the "main content" to users, both anonymous and  authenticated. 
+**Users** in Drupal can very roughly be divided into two groups. An *anonymous* user is anyone who visits your site without logging in, which is most of the people on the internet. An *authenticated* user is anyone who has logged in. You then divide authenticated users into **roles**, such as *Member*, *Hike leader*, and *Secretary*, and give each role the **permissions** it needs: who can add hikes, who can upload photos, who can publish news.
 
-And then the "hidden third", a theme that is a mixture of both, because today many content editors like to see what they are doing in a WYSIWYG environment, so that the front-end theme can also render some backend elements.
+When you install Drupal, one user is always created: *user 1*, often named *admin*. User 1 is not only an administrator, it's **THE** administrator, a superuser that gets past every access check you set up. That's handy, but with great power comes great responsibility, and that's why some sites switch user 1's special powers off. Chapter 13.
 
-### Core structure of a Drupal Theme
-A Drupal theme is a collection of files in a folder, often under the `/themes/custom` for a custom-built theme or `/themes/contrib` for contributed ones. There is not really any difference between the two, except that contributed themes are normally not stored in a versioning system (rather than being controlled by Composer) but custom themes are, for obvious reasons. 
+### Themes
 
-A minimal Drupal theme includes normally these components:
-* `theme-name.info.yml` which defines the metadata of the theme. Name, description, regions of the theme, libraries to be included etc.
-* `theme-name.libraries.yml` for CSS and JavaScript files to be loaded. 
-* **Templates** (`.html.twig`) **files** that define the HTML markup for pages, blocks, nodes, menus and more. 
-* `css/` and `js/` directories to hold style and script files
-* An optional `theme-name.theme`, which is a PHP file for preprocess functions and logic that affects template variables.
+**Themes** are the presentation layer of a Drupal website. A theme controls *how* content and the interface are displayed, without changing *what* the content is or *how* it's stored.
 
-Normally would the theming layer and theming be a separate book, but we will cover some general theming in this book.
+You can think of Drupal as a layered cake. Drupal core and the modules handle the data, the logic, and the features: the cake. The theme adds the frosting: the layout, the colors, the typography, and the visual style. Themes never change the content in the database.
 
-## Modules
-Modules extend the functionality of a Drupal website. There are three types of Modules: 
-**System**, **Contribution** and **Custom**.
+A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal 11.4 brought a new admin theme, *Default Admin*, built from Gin, a popular contributed admin theme. It's still marked *experimental*, but it's set to become Drupal's standard admin theme, so it's the one we use in this book. You'll see it in every screenshot of the admin interface. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. Chapter 14.
 
-### System modules (Core modules)
-System modules are part of Core. Some of them are very essential for Drupal to function. Like the User module. If you would 
-uninstall the user module you would essentially not be able to log in to your site again, rendering it useless.
+### Configuration
 
-The Comment module is another system module. If enabled, it can allow users, anonymous and/or authenticated to make comments
-on the content you offer. It is not enabled by default.
+Finally, a word that's easy to miss, but important. Drupal separates **content** from **configuration**. Content is what the site is about: the hikes, the news, the photos, the members. Configuration is how the site works: its name, its content types and fields, its vocabularies, its views, which modules are installed, and who may do what.
 
-Drupal Core modules are developed and maintained by the Drupal core team.
+Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. Chapter 19.
 
-> You can often distinguish a system module by it's version number, but they normally have the same version number as the core you are running.
+## Summary
 
-### Contribution modules
-Contribution modules are extensions to Drupal, created by the users themselves and shared by the community, rather than being part of the Drupal Core. All modules on drupal.org are completely free, anyone can download and use them to extend Drupal's functionality. 
+- A CMS stores content in a database and builds the pages from it, so that people can manage a site without knowing HTML.
+- Drupal is a free, open source CMS, known for its flexibility and for structured content.
+- Drupal core is Drupal itself. Drupal CMS is a product built on core, with extra features set up for you. We build on core, and show what Drupal CMS does differently.
+- Throughout the book we build the Lens & Trail site, for a photography and hiking club in Edinburgh, in English and Spanish.
+- Drupal's building blocks are content types (and nodes), fields, media, taxonomy, modules and recipes, views, blocks and regions, menus, users and roles, and themes. Most of them are entities, which is why they work in similar ways.
+- Content is what the site is about; configuration is how it works.
 
-Every single module has their own page on drupal.org and there you can read it's documentation, see the outstanding bugs and even contribute to the module yourself. And if you have a feature request, just submit it through the project page, and rather than waiting on someone to implement it, you can submit implementation yourself.
+## Exercises
 
-The purpose of contributional modules is to add features to a website that is not in core, such as SEO features, workflows, payment gateways etc. They can also integrate to third-party services such as Stripe, Google Analytics or Spotify, improve site building and administration with modules like Pathauto and Redirect and enhance user experience with Better Exposed Filters, Paragraphs and Webforms. Contrib module code is installed with composer  (`composer require drupal/modulename`).
+1. **A CMS or not?** Think of three websites you use often. For each, guess whether it's built with a CMS, and who edits it. What content on it changes often, and what rarely changes?
+2. **Find a module.** Go to the module listing on drupal.org (<https://www.drupal.org/project/project_module>) and find a module that could show the club's hikes on a map. On its project page, find out: how many sites use it, whether it works with Drupal 11, and whether it's covered by the Drupal security team (look for the shield icon and the text about security advisory coverage).
+3. **Content, or configuration?** Sort these into content and configuration: the hike *Arthur's Seat at Sunrise*; the *Hike* content type; the site's name; a photo of Edinburgh Castle; the *Places* vocabulary; the term *Pentland Hills*; the permission that lets hike leaders add hikes.
+4. **Who does what?** List the people who use the Lens & Trail site (visitors, members, and so on). For each, write down two things they need to do on the site, and two things they must *not* be able to do. Keep your list: we use it in Chapter 13.
+5. **Model a hike** *(challenge)*. Write down every piece of information the club might want to store about a hike. For each, think about its type: is it text, a number, a date, a link, a photo, or a reference to something else, such as a place or a member? Which pieces would you want to sort or filter hikes by? Compare your answer with the *Hike* content type we build in Chapter 7.
 
-Some contrib modules are very mature and used in huge number of sites, like Pathauto, Token and Webform while others only have handful of users with very few maintainers. Security coverage is provided to the contrib modules if the project is opted to the Drupal Security Team's advisory process.
+## Want to know more?
 
-Contrib modules are central to Drupal's ecosystem They hold up the open-source community spirit that developers should share their solutions publicly so that site builders can pick and combine them to tailor their sites. With contrib modules, the ecosystem grows much faster than Drupal core could ever do.
-
-### Custom modules
-If you can't find a module that does whatever that it is that you want it to do, you could then just 
-build it yourself! Custom modules range from simple addition of javascript/css or overrides to other modules, to custom entity modules that are tailored to your specific project and are not necessarily not suitable to be distributed openly. 
-
-Later in this book we will learn how to create or own modules. 
-
-## Conclusion
-Now that we've mentioned a lot of technical terms, let's start diving into each of them in more detail!
+- [About Drupal](https://www.drupal.org/about), on drupal.org: what Drupal is, and who makes it.
+- [Drupal CMS](https://new.drupal.org/drupal-cms): the product, its features, and how to try it.
+- [Site templates](https://www.drupal.org/browse/site-templates): the site templates you can start a Drupal CMS site from.
+- [Case studies](https://www.drupal.org/case-studies): real sites built with Drupal, by sector.
+- [Drupal User Guide](https://www.drupal.org/docs/user_guide/en/index.html): the official guide to building a site with Drupal core, kept up to date with the current version. A good second opinion on everything in this book.

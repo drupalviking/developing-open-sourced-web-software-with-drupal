@@ -11,7 +11,7 @@ That is the job of the companion book, *Drupal Module Development for Drupal 11 
 picks up where this one ends.
 
 Throughout the book the reader builds one site: a website for a **small photography club that also
-goes hiking**. Each chapter adds to the site from the chapter before.
+goes hiking**: *Lens & Trail*, in Edinburgh, in English and Spanish. Each chapter adds to the site from the chapter before.
 
 ## License
 
@@ -67,8 +67,8 @@ Run the build and commit `book/` with your manuscript changes.
 
 | Chapter | Status |
 |---|---|
-| Preface | Skeleton (from the first outline). |
-| 1. What Is a CMS, and What Is Drupal? | Early draft ("Where do I begin?"). |
+| Preface | First draft (2026-11-04), awaiting review. |
+| 1. What Is a CMS, and What Is Drupal? | First draft (2026-11-04), awaiting review. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | Not started. |
 | 3. A Short History of Drupal | Draft. |
 | 4. Installing Drupal | Draft. Lando section not written; one "EXPLAINATION NEEDED". |
@@ -81,7 +81,7 @@ Run the build and commit `book/` with your manuscript changes.
 | 11. Views | Not started. |
 | 12. Blocks, Regions, and Menus | Not started. |
 | 13. Users, Roles, and Permissions | Short draft (the user entity). |
-| 14. Appearance: Themes | Not started. |
+| 14. Appearance: Themes | Not started. Holds the theme file structure moved from Chapter 1. |
 | 15. Nice URLs and SEO | Not started. Pathauto, Metatag, Redirect. |
 | 16. Multilingual Sites | Not started. |
 | 17. AI in Drupal CMS | Not started. |
@@ -99,3 +99,8 @@ Facts about releases and products that change quickly. Re-check each before a re
 
 - Drupal CMS screens (installer, site templates, dashboard) are from Drupal CMS 2.1 (2026). Retake
   the screenshots for the version the book is released with.
+- Chapter 1: Drupal CMS "launched in 2025" with "an SEO toolkit, Drupal Canvas, optional AI tools" and site
+  templates (new.drupal.org/drupal-cms describes Drupal CMS 2.0, 2026-11-04). The European Commission is named
+  as a Drupal user.
+- Chapter 1: the admin theme *Default Admin* (built from Gin) is experimental in Drupal 11.4 and "set to become
+  Drupal's standard admin theme". Re-check its status and name on the release the book uses.

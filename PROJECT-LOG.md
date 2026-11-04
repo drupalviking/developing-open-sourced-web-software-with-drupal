@@ -13,6 +13,8 @@ Last updated: 2026-11-04.
   to include and leave out ("grilling"). The author reviews the draft before the next chapter starts.
 - **Branches**: one branch per unit of work, created only after the author says yes in the
   conversation. Claude never commits to `main`, pushes, opens pull requests, or merges.
+- **No Claude attribution** in commit messages (no `Co-Authored-By` or "Generated with" lines). The author's
+  rule, 2026-11-04.
 - **Chapter numbers and cross-references** are checked once, at the end.
 
 ## Decisions
@@ -32,6 +34,13 @@ Made on 2026-11-04, at the start of the rewrite.
 | Structure of a Drupal System | Moved to Appendix B. Too technical for chapter 1. |
 | New topics | Configuration management (export/import, going live) and AI in Drupal CMS both get chapters. |
 | Spelling | US. |
+| The club (2026-11-04) | **Lens & Trail**, a photography and hiking club in **Edinburgh**, Scotland. Aimed at a European readership. |
+| Languages (2026-11-04) | English and **Spanish** (not Icelandic: few readers would be). Story: many members are from Spain and Latin America. |
+| Build on (2026-11-04) | **Drupal core first**: the club site is built on core; Drupal CMS appears in "On Drupal CMS" boxes. |
+| Admin theme (2026-11-04) | Core's experimental **Default Admin** (built from Gin), the newest; every admin screenshot uses it. |
+| Photos (2026-11-04) | Openly licensed photos (compatible with CC BY-SA 4.0, credited) for what the reader sees, and Devel Generate for bulk test content. Taught in the book: see the backlog. |
+| Emoticons (2026-11-04) | Keep them: the author uses them a lot, and they make the tone personal. |
+| Theme file structure | Moved from Chapter 1 to Chapter 14 (`manuscript/14-appearance.md`), where it'll be reworked. |
 
 ## History
 
@@ -44,6 +53,19 @@ Made on 2026-11-04, at the start of the rewrite.
   became Markdown links. `Book outline.md` was replaced by the contents table in the README.
   Added `tools/build.py`, this log, the `write-chapter` skill, and the CC BY-SA 4.0 license.
   The empty `recipe.yml` and `composer.json` in the root (never in git) were deleted.
+- **2026-11-04**: Drafted the Preface (who it's for, the three readers, what each chapter covers, the club,
+  core vs. Drupal CMS, conventions, contributing) and rewrote Chapter 1 from "Where do I begin?": kept the
+  author's opening, CMS section, and building-block texts; added the static-site example on the club, what
+  Drupal is, core vs. Drupal CMS with a Drupalism box, the Lens & Trail site and a chapter-by-chapter table,
+  configuration vs. content, summary, five exercises, and verified links. Awaiting the author's review.
+
+## The photo club site
+
+What each chapter adds to the Lens & Trail site. Later chapters and exercises must not contradict it.
+
+| Chapter | Adds |
+|---|---|
+| 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 13; Exercise 5 (model a hike) is compared with Chapter 7. |
 
 ## Sources
 
@@ -57,7 +79,9 @@ Made on 2026-11-04, at the start of the rewrite.
 
 ## Open items
 
-- `archive/developer-qa/`: move to the module development book, or delete? (Asked 2026-11-04.)
+- `archive/developer-qa/`: the author chose the module book's backlog (2026-11-04). The entry is in
+  `websites/ru/book-rewrite/PROJECT-LOG.md` ("Topics to place"), uncommitted there. Delete the archive here once
+  that book has taken the drafts.
 - Two screenshots no chapter uses yet: `07-content-type-listing-of-a-newly-installed-drupal-site.png`
   and `08-media-content-list.png`.
 - The test sites and `tools/screenshots.sh`: set up with Chapter 4, so screenshots can be retaken
@@ -76,6 +100,11 @@ Ideas that have no chapter yet, or are waiting for one.
 - **Stage File Proxy** and working with a copy of a live site (Drupal in a Day "Final words").
 - **Password Policy** module, shown in Drupal in a Day next to User 1.
 - **Module Filter** as the first module installed through Project Browser (Drupal in a Day).
+- **Photos for the club site**: where to find openly licensed photos (Wikimedia Commons, Openverse; check
+  the license is compatible with CC BY-SA 4.0, and credit the photographer), and Devel Generate (the Devel
+  module's submodule) to fill the site with test content and placeholder images. Probably Chapter 8 (finding
+  photos, credits as a field) and Chapter 10 (Devel as a module you install with Composer, for development only).
+  Ask the author whether they want to contribute their own photos.
 - **Trash** (deleted content can be restored in Drupal CMS).
 - A Drupal Association plug, and connecting Drupal skills to jobs (empty sections at the end of
   the Drupal in a Day manuscript).

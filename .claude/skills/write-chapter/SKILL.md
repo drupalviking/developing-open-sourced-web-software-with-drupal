@@ -34,7 +34,7 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
   time"), "we" for doing things together, "you" for the reader.
 - Reassure where it's hard: "don't worry", "it takes a while to wrap your head around this".
   Admit when there's no clean answer ("sometimes we have to follow our guts").
-- Light humor is welcome. Use emoticons sparingly.
+- Light humor is welcome, and so are the author's emoticons (`;-)`, `:-)`): they make the tone personal.
 - Deeper than the slides: explain *why* every setting exists and what happens if you change it,
   not only where to click. Every new term is explained the first time it appears, in plain words,
   before any technical name ("bundle", "entity") is introduced.
@@ -64,7 +64,8 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 
 ## 5. The running example
 
-One site across the whole book: a small **photography club that also goes hiking**. Each chapter
+One site across the whole book: **Lens & Trail**, a small photography and hiking club in Edinburgh, in English
+and Spanish, built on Drupal core with the experimental Default Admin theme (built from Gin). Each chapter
 starts from the state the previous chapter left it in, and says so in its opening. Keep a list of
 what each chapter adds to the site in `PROJECT-LOG.md` ("The photo club site"), so later chapters
 and exercises don't contradict it.

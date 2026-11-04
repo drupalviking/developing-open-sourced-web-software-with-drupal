@@ -68,7 +68,7 @@ Run the build and commit `book/` with your manuscript changes.
 | Chapter | Status |
 |---|---|
 | Preface | First draft (2026-11-04), awaiting review. |
-| 1. What Is a CMS, and What Is Drupal? | First draft (2026-11-04), awaiting review. Figures 1.1 and 1.2 to be retaken. |
+| 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | Not started. |
 | 3. A Short History of Drupal | Draft. |
 | 4. Installing Drupal | Draft. Lando section not written; one "EXPLAINATION NEEDED". |

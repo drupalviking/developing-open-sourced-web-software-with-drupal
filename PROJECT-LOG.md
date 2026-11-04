@@ -59,7 +59,11 @@ Made on 2026-11-04, at the start of the rewrite.
   core vs. Drupal CMS, conventions, contributing) and rewrote Chapter 1 from "Where do I begin?": kept the
   author's opening, CMS section, and building-block texts; added the static-site example on the club, what
   Drupal is, core vs. Drupal CMS with a Drupalism box, the Lens & Trail site and a chapter-by-chapter table,
-  configuration vs. content, summary, five exercises, and verified links. Awaiting the author's review.
+  configuration vs. content, summary, five exercises, and verified links.
+- **2026-11-04**: The author reviewed Chapter 1. From the review: the Preface targets Drupal 12 (11.5 readers
+  welcome); Default Admin is stable in 11.5 and 12; chapter pointers are full sentences ("We also cover fields in
+  Chapter 7"), now a rule in the skill; a "Coming from WordPress?" translation table and Drupalism box, with
+  later boxes in the backlog. The Preface is still awaiting review.
 
 ## The photo club site
 

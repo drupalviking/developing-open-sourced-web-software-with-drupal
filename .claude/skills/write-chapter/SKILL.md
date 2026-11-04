@@ -85,6 +85,10 @@ and exercises don't contradict it.
 - Files the reader sees (recipes, configuration, `composer.json` excerpts) go in `examples/` and are
   pulled in with `<!-- include: ... -->`. Short commands may be inline.
 - Notes for the author: `%% ... %%` (stripped from `book/`).
+- Numbers that go out of date (current versions, support dates, counts) aren't typed in: add them to
+  `data/numbers.yml` with a source and a `fetch:` where possible, and write `{{ number:name }}`. Fixed
+  history (a release date in the past) is plain text.
+- One line per paragraph (and per list item): no hard-wrapped prose. Obsidian shows the line breaks.
 
 ## 7. Finish
 

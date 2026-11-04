@@ -55,3 +55,97 @@ From an operational perspective, Symfony fits into contemporary DevOps practices
 If there is a single theme running through Symfony’s design, it is explicitness. Dependencies are declared, state is contained, lifecycles are observable, and extension points are explicit via events and interfaces. That explicitness pays off in large, long-lived systems: teams can reason about behavior, replace parts with confidence, and upgrade on a known path. For newcomers, the learning curve exists, but the guardrails—profiler, error pages, strict configuration validation—make mistakes visible early. For veterans, the ergonomics of autowiring, attributes, and compiled containers keep day-to-day work fast.
 
 In short, Symfony provides a stable foundation for serious PHP software. Whether you adopt a single component to solve a focused problem or build a full application on the framework, you get predictable releases, battle-tested libraries, strong developer tooling, and an architecture that keeps codebases maintainable as they scale. That combination of modularity, standards compliance, and operational maturity is why Symfony sits underneath so many of today’s PHP platforms—and why it continues to shape how the ecosystem writes modern, testable, and high-performance applications.
+
+## How Drupal's code has changed
+
+Chapter 3 tells Drupal's history from a site builder's point of view. This is the programmer's side of the same story: how the code itself changed, and how developers keep their modules up to date today. You don't need any of it to build sites, but it explains a lot of what you'll see if you ever open a module's files.
+
+### Hooks: changing Drupal from the outside (2001 onward)
+
+From its early versions, Drupal had a *hook system*. A hook is a function with a special name that Drupal calls at a certain moment, if a module has one. If Drupal is about to show a piece of content, it calls every module's `hook_node_view()` (with the module's name in place of `hook`), and each module can add to it or change it. That way, modules can change how Drupal behaves without anyone changing Drupal core, which is the idea behind every module ever written for Drupal.
+
+Hooks are still there today. Since Drupal 11.1, they can also be written as methods on a class, marked with a `#[Hook]` attribute, instead of as functions with special names.
+
+### The Form API (Drupal 4.7, 2006)
+
+Drupal 4.7 brought the *Form API* (FAPI), and it changed how module developers worked. Instead of writing the HTML for a form by hand, a developer describes the form as a structured PHP array: a text field here, a select list there, these are required. Drupal builds the HTML, validates what the user submits, and calls the module's submit function. Because every form goes through the same system, other modules can change any form (add a field to the login form, say), every form can be themed the same way, and protection against cross-site request forgery (CSRF) comes built in, with a hidden token on every form.
+
+The Form API is still the way forms are built in Drupal, although today a form is a class instead of a set of functions.
+
+### Theming: from PHP files to Twig
+
+The first Drupal themes were PHP files that printed HTML directly, so theming meant editing PHP. Then came *theme engines*, which let themes use templates: by Drupal 4.7 and 5, PHPTemplate was the standard, with its `.tpl.php` files, HTML with small pieces of PHP in them. It was a big step towards separating logic from presentation, but a template could still run any PHP it liked, including database queries, and that made themes slow and insecure in the wrong hands.
+
+Drupal 8 replaced PHPTemplate with **Twig**. A Twig template can't run arbitrary PHP: it prints variables, loops over lists, and calls a limited set of filters and functions. And Twig escapes everything it prints by default, which closes off a whole class of security problems (cross-site scripting). Chapter 14 shows Twig templates.
+
+### Drupal 7: render arrays, entities and a new database layer (2011)
+
+Behind Drupal 7's fields in core were three changes for developers:
+
+- **The Field API and entities.** Fields could be attached to any kind of data, and the idea of the *entity*, a common name for nodes, users, taxonomy terms and comments, appeared. Drupal 7's entity support in core was basic; much of it came from the contributed Entity API module.
+- **Render arrays.** Instead of building HTML strings, modules return structured arrays describing what to show, and the theme layer turns them into HTML at the last moment. That lets other modules change the output before it's rendered.
+- **A new database layer**, built on PHP's PDO, with a query builder, so the same code works on MySQL, PostgreSQL and SQLite. It's the reason `'; DROP DATABASE` doesn't work in Drupal: what users type is never put directly into a database query.
+
+Drupal 7 also brought automated tests into core, a habit that's the reason Drupal can release so often without breaking things.
+
+### Drupal 8: object-oriented, and off the island (2015)
+
+Up to Drupal 7, Drupal was written in *procedural* PHP: thousands of functions, with naming conventions holding them together. That made it hard to test, hard to maintain, and hard for PHP developers from elsewhere to learn. Drupal 8 rebuilt it as *object-oriented* PHP, on Symfony components, and adopted the PHP community's standards. Among the changes:
+
+- **Classes, PSR-4 autoloading, and services.** Code lives in classes, loaded automatically by their names, and shared functionality is provided by *services*, which a *dependency injection container* (from Symfony) creates and hands to the code that needs them.
+- **Routing and events from Symfony.** A URL is matched to a *route*, which points to a *controller* that returns the page. Modules can react to events in the request's life, as described at the start of this appendix.
+- **Plugins.** Many things that used to be hooks became *plugins*: small classes, found automatically, for blocks, field types, field widgets and formatters, image effects, and much more.
+- **The Configuration Management Initiative (CMI).** All configuration is stored in one system, and can be exported to YAML files and imported on another copy of the site. Before Drupal 8, configuration was spread over many database tables, and moving it between sites took contributed modules such as Features.
+- **Composer.** Drupal 8 brought Composer, PHP's dependency manager, into the picture, and the Composer-based way of building a Drupal site matured over its minor releases, up to the `drupal/recommended-project` template in Drupal 8.8 (2019). Chapter 10 shows how site builders use it.
+- **Web services.** REST in core from the start, and JSON:API in core from Drupal 8.7, for *decoupled* (or *headless*) sites, where Drupal stores the content and a separate front end, such as a React application, shows it.
+
+The transition was hardest for developers who had spent years learning Drupal's procedural style. Many had to learn object-oriented PHP from scratch, and many contributed modules had to be rewritten rather than ported.
+
+### Deprecation, the developer's view
+
+Chapter 3 explains deprecation with roads. Here's what it looks like in code.
+
+Say a module adds a function in version 8.3.0: `renderUpsideDown(NodeInterface $node): array`, which renders a piece of content upside down. In 8.5.0, it gets an optional second parameter, for taxonomy terms: `renderUpsideDown(?NodeInterface $node = NULL, ?TermInterface $term = NULL): array`. Adding an optional parameter doesn't break anyone's code, so that's allowed in a minor release.
+
+In 8.9.0, it turns out nobody wants upside-down content, but everyone wants sideways content, which works quite differently. So a new function is added, and the old one is *deprecated*, not removed:
+
+```php
+/**
+ * Renders content upside down.
+ *
+ * @deprecated in mymodule:8.9.0 and is removed from mymodule:9.0.0. Use
+ *   renderSideways() instead.
+ * @see https://www.drupal.org/node/0000000
+ */
+function renderUpsideDown(?NodeInterface $node = NULL, ?TermInterface $term = NULL): array {
+  @trigger_error('renderUpsideDown() is deprecated in mymodule:8.9.0 and is removed from mymodule:9.0.0. Use renderSideways() instead. See https://www.drupal.org/node/0000000', E_USER_DEPRECATED);
+  // The old code keeps working until 9.0.0.
+}
+```
+
+The `@deprecated` comment makes code editors cross out the function, and warn anyone who uses it. The `trigger_error()` call makes automated tests report every use. The link points to a *change record* on drupal.org, which explains what to use instead. Code written against 8.5.3 keeps working all the way to the last 8.x release. Then, in 9.0.0, the deprecated function is removed, and code that still calls it breaks, which is why it has to be updated before a site can move to the new major version.
+
+Drupal core works exactly like this. Drupal 9.0 was Drupal 8.9 with its deprecated code removed, and every major version since has followed the same pattern.
+
+### Keeping modules up to date
+
+When Drupal 9 came out, module maintainers were slow to update their modules, as they had been from 7 to 8. Even when the only change needed was one line in the module's `.info.yml` file:
+
+```yaml
+core_version_requirement: ^8 || ^9
+```
+
+(The `core_version_requirement` key, added in Drupal 8.7.7, says which Drupal versions a module works with. A module that works with both 10 and 11 says `^10 || ^11`.)
+
+At first, people across the community went through the modules by hand and posted fixes. Today, most of the work is automated:
+
+- **Upgrade Status**, a contributed module, scans a site's modules and themes, and lists everything that won't work on the next major version.
+- **drupal-check** and **PHPStan** find deprecated code in a module.
+- **Drupal Rector** rewrites deprecated code automatically, for the changes simple enough to automate.
+- The **Project Update Bot** runs Drupal Rector on contributed projects on drupal.org, and posts the fixes to their issue queues, so maintainers only have to review and accept them.
+
+Not every change can be automated, and many modules still need a developer's attention. But the move from 8 to 9 was easier than any major upgrade before it, from 9 to 10 easier still, and from 10 to 11 easier again.
+
+### Contributed modules and semantic versioning (2020)
+
+Until 2020, contributed modules had version numbers like `8.x-1.5`: the Drupal core version, then the module's own major and patch version. With Drupal 9, a module could work with more than one major version of core, so the core prefix no longer made sense. Contributed projects moved to semantic versioning, like core: `1.5.0`, with the compatible core versions in `core_version_requirement`. Chapter 3 shows how to read both styles.

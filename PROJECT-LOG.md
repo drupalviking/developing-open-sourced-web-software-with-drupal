@@ -45,6 +45,8 @@ Made on 2026-11-04, at the start of the rewrite.
 | Emoticons (2026-11-04) | Keep them: the author uses them a lot, and they make the tone personal. |
 | WordPress (2026-11-04) | A comparison, **never a contest**. One translation table in Chapter 1 ("Coming from WordPress?") with a Drupalism box on *plugin* and *block*; later, a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or help (see the backlog), never as a ritual at the start of every chapter. |
 | Theme file structure | Moved from Chapter 1 to Chapter 14 (`manuscript/14-appearance.md`), where it'll be reworked. |
+| Numbers (2026-11-04) | Versions and support dates that change are placeholders, `{{ number:name }}`, filled from `data/numbers.yml`, which `tools/update_numbers.py` updates from each number's source (the author's idea, as in the `what-is-open-source` course material). |
+| Markdown (2026-11-04) | One line per paragraph in new text: Obsidian shows hard line breaks. |
 
 ## History
 
@@ -72,6 +74,7 @@ Made on 2026-11-04, at the start of the rewrite.
   and Drupal Association page (nonprofit, runs drupal.org, funding; Dries owns the trademark). Credit system
   since 2015; the Drupal Certified Partners list is ranked by credit. Reviewed by the author the same day: the
   "Can I...?" table is right, and the Drupal Association supports DrupalCon but doesn't run it everywhere.
+- **2026-11-04**: Rewrote Chapter 3 with the author's answers: a story for site builders, era by era, with a release table, deprecation explained with roads, Starshot and Drupal CMS, Drupal 12, and how to read version numbers. The programmers' material (hooks, the Form API, theming, Drupal 7's and 8's code, the deprecation example, the upgrade tools) moved to a new section of Appendix B. Fixed from the draft: Drupal 8 on 19 November 2015 (Dries's birthday); fields came with CCK, in core from Drupal 7; the menu rewrite was Drupal 6; FCKeditor was never in core; the last 8.x was 8.9.20; `.info.yml`; CMI; Starshot in 2024. Added `data/numbers.yml`, `tools/update_numbers.py` and `{{ number:... }}` placeholders to the build. The author's review: Drupal 11 needed more than the new admin menu, so the chapter now lists its minor releases 11.1 to 11.5 (from drupal.org's 11.1, 11.3 and 11.4 release posts); the exercise that looked for a live Drupal 7 site was dropped as snooping.
 
 ## The photo club site
 
@@ -99,8 +102,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
   that book has taken the drafts.
 - Chapter 2: the author's own story, in "Who makes Drupal?" (a `%%` placeholder). Deferred by the author on
   2026-11-04.
-- Chapter 3 has an author note "Write a little bit more about Starshot and the road map in 12" (line ~116). The
-  author, 2026-11-04: Starshot was renamed Drupal CMS for legal reasons; Chapter 2 keeps it to one sentence.
+- **The Standard profile changed in Drupal 11.4** (drupal.org's 11.4.0 release post): no Article and Page content types, comments off by default, and the Navigation module on. Drupal 12 will be the same. Check every chapter that assumes Article or Page exists (Chapters 4, 5, 6 and 7 at least) when writing them: the Lens & Trail site may need to create its own content types earlier, or the book should say where Article and Page went.
+- Chapter 3: the author's own memories (which version they started on, the move from 7 to 8), a `%%` placeholder at the end of the Drupal 8 section.
 - Two screenshots no chapter uses yet: `07-content-type-listing-of-a-newly-installed-drupal-site.png`
   and `08-media-content-list.png`.
 - The test sites and `tools/screenshots.sh`: set up with Chapter 4, so screenshots can be retaken

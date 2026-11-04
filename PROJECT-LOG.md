@@ -38,7 +38,7 @@ Made on 2026-11-04, at the start of the rewrite.
 | Languages (2026-11-04) | English and **Spanish** (not Icelandic: few readers would be). Story: many members are from Spain and Latin America. |
 | Build on (2026-11-04) | **Drupal core first**: the club site is built on core; Drupal CMS appears in "On Drupal CMS" boxes. |
 | Drupal version (2026-11-04) | **Drupal 12** (12.0.0 and 11.5.0 are released together in the week of 7 December 2026; rc1 the week of 9 November). The Preface says 11.5 readers can follow along. The test site is built on 12. For each contributed module a chapter uses, check that it has a Drupal 12 release; if not, say so in the chapter. |
-| Admin theme (2026-11-04) | Core's experimental **Default Admin** (built from Gin), the newest; every admin screenshot uses it. |
+| Admin theme (2026-11-04) | Core's **Default Admin** (built from Gin): experimental in 11.4, stable and Standard's admin theme in 11.5/12. Every admin screenshot uses it. |
 | Photos (2026-11-04) | Openly licensed photos (compatible with CC BY-SA 4.0, credited) for what the reader sees, and Devel Generate for bulk test content. Taught in the book: see the backlog. |
 | Emoticons (2026-11-04) | Keep them: the author uses them a lot, and they make the tone personal. |
 | Theme file structure | Moved from Chapter 1 to Chapter 14 (`manuscript/14-appearance.md`), where it'll be reworked. |

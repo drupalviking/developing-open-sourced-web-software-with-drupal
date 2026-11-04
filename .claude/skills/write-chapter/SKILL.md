@@ -65,7 +65,7 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 ## 5. The running example
 
 One site across the whole book: **Lens & Trail**, a small photography and hiking club in Edinburgh, in English
-and Spanish, built on Drupal core with the experimental Default Admin theme (built from Gin). Each chapter
+and Spanish, built on Drupal core with the Default Admin theme (built from Gin). Each chapter
 starts from the state the previous chapter left it in, and says so in its opening. Keep a list of
 what each chapter adds to the site in `PROJECT-LOG.md` ("The photo club site"), so later chapters
 and exercises don't contradict it.

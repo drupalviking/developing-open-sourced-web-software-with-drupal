@@ -183,7 +183,7 @@ When you install Drupal, one user is always created: *user 1*, often named *admi
 
 You can think of Drupal as a layered cake. Drupal core and the modules handle the data, the logic, and the features: the cake. The theme adds the frosting: the layout, the colors, the typography, and the visual style. Themes never change the content in the database.
 
-A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal 11.4 brought a new admin theme, *Default Admin*, built from Gin, a popular contributed admin theme. It's still marked *experimental*, but it's set to become Drupal's standard admin theme, so it's the one we use in this book. You'll see it in every screenshot of the admin interface. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. Chapter 14.
+A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal's admin theme is *Default Admin*, built from Gin, a popular contributed admin theme. It arrived as an experimental theme in Drupal 11.4, and since Drupal 11.5 and 12 it's stable, and the admin theme a new site gets. You'll see it in every screenshot of the admin interface in this book. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. Chapter 14.
 
 ### Configuration
 

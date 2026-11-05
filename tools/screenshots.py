@@ -477,6 +477,15 @@ def cms_utility_page_display(page: Page, url: str) -> None:
     scroll_to(page, "table")
 
 
+def cms_focal_point(page: Page, url: str) -> None:
+    """Drupal CMS's Add Image form with a photo uploaded (not saved), to show Focal Point."""
+    page.goto(url + "/media/add/image")
+    page.set_input_files("input[type='file']", str(ROOT / "examples" / "photos" / "turnhouse-hill-glencorse.jpg"))
+    page.wait_for_selector(".focal-point-indicator")
+    page.wait_for_timeout(2000)
+    scroll_to(page, ".focal-point-indicator", 250)
+
+
 TURNHOUSE_HILL = (
     "<p>Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy Hill, and come back down through the glen.</p>"
     "<p>Bring boots, a waterproof jacket, something warm, lunch, and your camera. The path is steep in places and can be muddy.</p>"
@@ -515,9 +524,13 @@ def reuse_field_steps(page: Page, site: dict, snap) -> None:
 FIXTURES = ROOT / "tools" / "fixtures"
 
 
-def restore_config(site: dict, name: str) -> None:
-    """Puts a configuration object back as it is in tools/fixtures/, keeping its UUID."""
-    yaml = (FIXTURES / f"{name}.yml").read_text()
+def restore_config(site: dict, name: str, folder: str = "") -> None:
+    """Puts a configuration object back as it is in tools/fixtures/ (or a folder in it), keeping its UUID.
+
+    tools/fixtures/ has the configuration as Chapter 7 leaves it; tools/fixtures/chapter-08/
+    as Chapter 8 leaves it.
+    """
+    yaml = (FIXTURES / folder / f"{name}.yml").read_text()
     drush_php(site, f"""$y = <<<'YAML'
 {yaml}
 YAML;
@@ -584,11 +597,11 @@ def field_settings_update(page: Page, field: str) -> None:
 
 def disable_fields(page: Page, fields: list[str]) -> None:
     """Moves fields to the Disabled region, through the Region selects behind Show row weights."""
-    page.click("button:has-text('Show row weights')")
+    row_weights(page, True)
     for field in fields:
         page.select_option(f"select[name='fields[{field}][region]']", "hidden")
         page.wait_for_timeout(800)
-    page.click("button:has-text('Hide row weights')")
+    row_weights(page, False)
     page.wait_for_timeout(500)
 
 
@@ -753,6 +766,564 @@ def hike_layout_exercise(page: Page, site: dict, snap) -> None:
     finally:
         drush_php(site, "\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.full')?->delete();")
 
+
+# Chapter 9: media. The parts run in order; each one undoes its own changes
+# first, so a part can be retaken on its own once the parts before it have run.
+
+PHOTOS = ROOT / "examples" / "photos"
+TURNHOUSE_ALT = "Turnhouse Hill seen across Glencorse Reservoir, with a rowing boat at the landing stage"
+
+
+def uninstall(site: dict, *modules: str) -> None:
+    enabled = drush_php(site, "echo implode(' ', array_keys(\\Drupal::moduleHandler()->getModuleList()));").split()
+    modules = [m for m in modules if m in enabled]
+    if modules:
+        subprocess.run(["ddev", "drush", "pm:uninstall", "-y", *modules], cwd=site["dir"], check=True, capture_output=True)
+
+
+def delete_fields(site: dict, entity_type: str, *names: str) -> None:
+    names_php = ", ".join(f"'{n}'" for n in names)
+    drush_php(site, f"foreach ([{names_php}] as $n) {{ \\Drupal\\field\\Entity\\FieldStorageConfig::loadByName('{entity_type}', $n)?->delete(); }} field_purge_batch(500);")
+
+
+def create_field(page: Page, fields_url: str, group: str, label: str, choice: str | None, settings=None, shot=None) -> None:
+    """Creates a field through the Add field window, and saves it."""
+    page.goto(fields_url)
+    page.click("text=Create a new field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(1500)
+    page.locator(".ui-dialog").get_by_text(group, exact=True).first.click()
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='label']", label)
+    page.wait_for_timeout(1500)
+    if choice:
+        page.click(f".ui-dialog label:has-text('{choice}')")
+    if shot:
+        shot("type")
+    page.click(".ui-dialog button:has-text('Continue')")
+    page.wait_for_selector(".ui-dialog-title:has-text('settings')")
+    page.wait_for_timeout(1500)
+    if settings:
+        settings(page)
+    if shot:
+        shot("settings")
+    page.click(".ui-dialog-buttonpane button:has-text('Save')")
+    page.wait_for_selector(".ui-dialog", state="detached")
+    page.wait_for_load_state("networkidle")
+
+
+def row_weights(page: Page, show: bool) -> None:
+    """Shows or hides the row weights. Drupal remembers the choice in the browser, so check first."""
+    button = page.locator("button:has-text('Show row weights')" if show else "button:has-text('Hide row weights')")
+    if button.count() and button.first.is_visible():
+        button.first.click()
+        page.wait_for_timeout(500)
+
+
+def set_weights(page: Page, weights: dict[str, int]) -> None:
+    """Sets rows' weights through Show row weights (the lower, the higher up)."""
+    row_weights(page, True)
+    for field, weight in weights.items():
+        box = page.locator(f"[name='fields[{field}][weight]']")
+        if box.evaluate("e => e.tagName") == "SELECT":
+            box.select_option(str(weight))
+        else:
+            box.fill(str(weight))
+            box.dispatch_event("change")
+        page.wait_for_timeout(500)
+    row_weights(page, False)
+    page.wait_for_timeout(500)
+
+
+def form_regions(page: Page, url: str, fields: list[str], region: str = "content") -> None:
+    """Moves fields in or out of a form or display, through the Region selects, and saves."""
+    page.goto(url)
+    page.wait_for_load_state("networkidle")
+    row_weights(page, True)
+    for field in fields:
+        page.select_option(f"select[name='fields[{field}][region]']", region)
+        page.wait_for_timeout(800)
+    row_weights(page, False)
+    page.wait_for_timeout(500)
+
+
+def media_install_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9, part 1: Media, the Image media type's credit fields, and the first photo."""
+    url = site["url"]
+    drush_php(site, """if (\\Drupal::moduleHandler()->moduleExists('media')) {
+  foreach (['gallery'] as $t) { $s = \\Drupal::entityTypeManager()->getStorage('node'); $s->delete($s->loadByProperties(['type' => $t])); \\Drupal\\node\\Entity\\NodeType::load($t)?->delete(); }
+  $s = \\Drupal::entityTypeManager()->getStorage('media'); $s->delete($s->loadMultiple());
+}""")
+    delete_fields(site, "node", "field_photo", "field_photos", "field_hike")
+    uninstall(site, "responsive_image", "media_library", "media")
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('file');
+foreach ($s->loadMultiple() as $f) { if (str_starts_with($f->getFileUri(), 'public://20')) { $f->delete(); } }
+foreach (['banner', 'banner_small', 'banner_large', 'black_and_white', 'square'] as $id) { \\Drupal\\image\\Entity\\ImageStyle::load($id)?->delete(); }""")
+    for name in ("editor.editor.basic_html", "filter.format.basic_html"):
+        restore_config(site, name)
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+
+    page.goto(url + "/admin/modules")
+    page.fill("input[name='text']", "media")
+    page.wait_for_timeout(1000)
+    page.check("input[name='modules[media][enable]']")
+    page.check("input[name='modules[media_library][enable]']")
+    scroll_to(page, "tr:has(input[name='modules[media][enable]'])", 300)
+    snap("09-extend-media")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/structure/media")
+    snap("09-media-types")
+
+    fields = url + "/admin/structure/media/manage/image/fields"
+    create_field(page, fields, "Plain text", "Photographer", "Short text",
+                 lambda p: dialog_fill(p, "description", "The photographer's name, as they want to be credited."))
+
+    def license_settings(p: Page) -> None:
+        for i, name in enumerate(["CC BY-SA 4.0", "CC BY-SA 2.0", "CC BY 4.0", "CC0", "All rights reserved, used with permission"]):
+            if i:
+                p.click(".ui-dialog input[name='add_more_allowed_values']")
+                p.wait_for_timeout(2500)
+            dialog_fill(p, f"field_storage[subform][settings][allowed_values][table][{i}][item][label]", name)
+        dialog_fill(p, "description", "The license the photo is published under. Use only photos you're allowed to publish.")
+        p.check(".ui-dialog input[name='required']")
+        dialog_scroll_to(p, "[name='field_storage[subform][settings][allowed_values][table][0][item][label]']")
+
+    create_field(page, fields, "Selection list", "License", "Text", license_settings,
+                 lambda step: snap("09-license-settings", ".ui-dialog") if step == "settings" else None)
+
+    def source_settings(p: Page) -> None:
+        p.check(".ui-dialog input[name='settings[link_type]'][value='16']")
+        p.check(".ui-dialog input[name='settings[title]'][value='1']")
+        dialog_fill(p, "description", "Where the photo comes from, such as its page on Wikimedia Commons.")
+
+    create_field(page, fields, "Link", "Source", None, source_settings)
+    page.goto(fields)
+    snap("09-image-fields")
+
+    for mode in ("default", "media_library"):
+        form_regions(page, f"{url}/admin/structure/media/manage/image/form-display/{mode}", ["name", "field_photographer", "field_license", "field_source"])
+        set_weights(page, {"field_media_image": 0, "name": 1, "field_photographer": 2, "field_license": 3, "field_source": 4})
+        page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+        if mode == "media_library":
+            row_weights(page, False)
+            scroll_to(page, "table")
+            snap("09-image-form-media-library")
+
+    page.goto(url + "/media/add/image")
+    page.set_input_files("input[type='file']", str(PHOTOS / "turnhouse-hill-glencorse.jpg"))
+    page.wait_for_selector("input[name='field_media_image[0][alt]']")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='name[0][value]']", "Turnhouse Hill across Glencorse Reservoir")
+    page.fill("input[name='field_media_image[0][alt]']", TURNHOUSE_ALT)
+    page.fill("input[name='field_photographer[0][value]']", "dave souza")
+    page.select_option("select[name='field_license']", label="CC BY-SA 4.0")
+    page.fill("input[name='field_source[0][uri]']", "https://commons.wikimedia.org/wiki/File:Glencorse_Reservoir,_Turnhouse_Hill.jpg")
+    page.fill("input[name='field_source[0][title]']", "Wikimedia Commons")
+    page.set_viewport_size({"width": WIDTH, "height": 1450})
+    page.wait_for_timeout(800)
+    snap("09-add-image")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/content/media")
+    snap("09-media-list")
+
+
+def photo_field_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9, part 2: a Photo field on Hike, and the photo on the first hike."""
+    url = site["url"]
+    delete_fields(site, "node", "field_photo")
+    restore_config(site, "core.entity_view_display.node.hike.default", "chapter-08")
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+
+    def photo_settings(p: Page) -> None:
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][image]']")
+        p.wait_for_timeout(2000)
+        dialog_fill(p, "description", "A photo of the hike's area, shown at the top of the hike.")
+        dialog_scroll_to(p, "[name='settings[handler_settings][target_bundles][image]']")
+
+    create_field(page, url + "/admin/structure/types/manage/hike/fields", "Media", "Photo", None, photo_settings,
+                 lambda step: snap("09-photo-field-type" if step == "type" else "09-photo-field-settings", ".ui-dialog"))
+
+    page.goto(url + "/node/7/edit")
+    page.wait_for_load_state("networkidle")
+    page.click("input[name='field_photo-media-library-open-button']")
+    page.wait_for_selector(".media-library-widget-modal .js-media-library-item")
+    page.wait_for_timeout(2000)
+    page.locator(".media-library-widget-modal .js-media-library-item").first.locator("input[type='checkbox']").check()
+    page.wait_for_timeout(800)
+    snap("09-media-library", ".ui-dialog")
+    page.click(".ui-dialog-buttonpane button:has-text('Insert selected')")
+    page.wait_for_selector(".ui-dialog", state="detached")
+    page.wait_for_timeout(2000)
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    scroll_to(page, "#field_photo-media-library-wrapper, [id^='field_photo-media-library-wrapper']", 200)
+    snap("09-hike-form-photo")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    display = url + "/admin/structure/types/manage/hike/display/default"
+    page.goto(display)
+    page.wait_for_load_state("networkidle")
+    set_label(page, "field_photo", "hidden")
+    set_weights(page, {"field_photo": -10})
+    save_display(page)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "09-hike-photo-large")
+
+
+def add_image_style(page: Page, url: str, label: str, effects: list, shot=None) -> None:
+    """Creates an image style with its effects: (effect id, {field: value}), in order."""
+    page.goto(url + "/admin/config/media/image-styles/add")
+    page.fill("input[name='label']", label)
+    page.wait_for_timeout(1500)
+    page.click("input[value='Create new style']")
+    page.wait_for_load_state("networkidle")
+    for effect, values in effects:
+        page.select_option("select[name='new']", effect)
+        page.click("input[value='Add']")
+        page.wait_for_load_state("networkidle")
+        if values:
+            for name, value in values.items():
+                box = page.locator(f"[name='{name}']")
+                if box.evaluate("e => e.tagName") == "SELECT":
+                    box.select_option(value)
+                else:
+                    box.fill(value)
+            page.click("#edit-submit")
+            page.wait_for_load_state("networkidle")
+    if shot:
+        shot()
+    page.click("form#image-style-edit-form input[value='Save']")
+    page.wait_for_load_state("networkidle")
+
+
+BANNER_SIZES = "(min-width: 1130px) 905px, 100vw"
+
+
+def image_styles_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9, part 3: image styles, the Banner view mode for media, and responsive images."""
+    url = site["url"]
+    drush_php(site, """foreach (['banner', 'banner_small', 'banner_large', 'black_and_white'] as $id) { \\Drupal\\image\\Entity\\ImageStyle::load($id)?->delete(); }
+if (\\Drupal::moduleHandler()->moduleExists('responsive_image')) { foreach (\\Drupal::entityTypeManager()->getStorage('responsive_image_style')->loadMultiple() as $r) { $r->delete(); } }
+\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('media.image.banner')?->delete();
+\\Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('media.banner')?->delete();
+$d = \\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.default');
+$c = $d->getComponent('field_photo'); $c['settings']['view_mode'] = 'default'; $d->setComponent('field_photo', $c)->save();""")
+    uninstall(site, "responsive_image")
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+
+    page.goto(url + "/admin/config/media/image-styles")
+    snap("09-image-styles")
+
+    def banner_shot() -> None:
+        page.set_viewport_size({"width": WIDTH, "height": 1300})
+        page.wait_for_timeout(800)
+        snap("09-image-style-banner")
+        page.set_viewport_size({"width": WIDTH, "height": 1000})
+
+    add_image_style(page, url, "Banner", [
+        ("image_scale_and_crop", {"data[width]": "1280", "data[height]": "720"}),
+        ("image_convert_avif", {"data[extension]": "webp"}),
+    ], banner_shot)
+
+    page.goto(url + "/admin/structure/display-modes/view/add/media")
+    page.fill("input[name='label']", "Banner")
+    page.wait_for_timeout(1500)
+    page.fill("textarea[name='description'], input[name='description']", "A wide photo with its credits, at the top of a page.")
+    page.check("input[name='bundles_by_entity[image]']")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/structure/media/manage/image/display/banner")
+    page.wait_for_load_state("networkidle")
+    set_label(page, "field_media_image", "hidden")
+    prefix = field_settings(page, "field_media_image")
+    page.select_option(f"select[name='{prefix}[image_style]']", "banner")
+    field_settings_update(page, "field_media_image")
+    for field in ("field_photographer", "field_license", "field_source"):
+        set_label(page, field, "inline")
+    row_weights(page, False)
+    scroll_to(page, "table")
+    snap("09-media-banner-display")
+    save_display(page)
+
+    page.goto(url + "/admin/structure/types/manage/hike/display/default")
+    page.wait_for_load_state("networkidle")
+    prefix = field_settings(page, "field_photo")
+    page.select_option(f"select[name='{prefix}[view_mode]']", "banner")
+    scroll_to(page, "tr:has-text('field_photo')", 200)
+    snap("09-hike-photo-view-mode")
+    field_settings_update(page, "field_photo")
+    save_display(page)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "09-hike-banner")
+
+    # Responsive images.
+    for label, width, height in (("Banner small", "640", "360"), ("Banner large", "1920", "1080")):
+        add_image_style(page, url, label, [
+            ("image_scale_and_crop", {"data[width]": width, "data[height]": height}),
+            ("image_convert_avif", {"data[extension]": "webp"}),
+        ])
+    page.goto(url + "/admin/modules")
+    page.fill("input[name='text']", "responsive")
+    page.wait_for_timeout(1000)
+    page.check("input[name='modules[responsive_image][enable]']")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/config/media/responsive-image-style/add")
+    page.fill("input[name='label']", "Banner")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='breakpoint_group']", "responsive_image")
+    page.wait_for_timeout(2500)
+    page.click("summary:has-text('1x Viewport Sizing')")
+    page.wait_for_timeout(800)
+    page.check("input[type='radio'][value='sizes']")
+    page.wait_for_timeout(1000)
+    page.fill("textarea[name$='[sizes]']", BANNER_SIZES)
+    for style in ("banner_small", "banner", "banner_large"):
+        page.check(f"input[name$='[sizes_image_styles][{style}]']")
+    page.select_option("select[name='fallback_image_style']", "banner")
+    page.set_viewport_size({"width": WIDTH, "height": 1500})
+    page.wait_for_timeout(800)
+    snap("09-responsive-style")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    page.click("main input[value='Save']")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/structure/media/manage/image/display/banner")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='fields[field_media_image][type]']", "responsive_image")
+    page.wait_for_selector("input[name='field_media_image_settings_edit']")
+    page.wait_for_timeout(1500)
+    prefix = field_settings(page, "field_media_image")
+    page.select_option(f"select[name='{prefix}[responsive_image_style]']", "banner")
+    scroll_to(page, "tr:has-text('field_media_image')", 200)
+    snap("09-media-banner-responsive")
+    field_settings_update(page, "field_media_image")
+    save_display(page)
+
+    context = page.context.browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=2, ignore_https_errors=True)
+    phone = context.new_page()
+    phone.goto(url + "/hikes/turnhouse-hill")
+    phone.wait_for_load_state("networkidle")
+    target = IMAGES / "09-hike-phone.png"
+    phone.screenshot(path=str(target))
+    subprocess.run(["sips", "--resampleWidth", "780", str(target)], check=True, capture_output=True)
+    print(target.relative_to(ROOT), phone.evaluate("document.querySelector('.field--name-field-photo img').currentSrc"))
+    context.close()
+
+
+# The gallery's photos, from examples/photos/CREDITS.md: file, name, alternative text, photographer, license, source.
+ALBUM = [
+    ("carnethy-from-turnhouse.jpg", "Carnethy Hill from Turnhouse Hill", "The path down from Turnhouse Hill, with Carnethy Hill rising behind it", "Jim Barton", "CC BY-SA 2.0", "https://commons.wikimedia.org/wiki/File:Carnethy_Hill_from_Turnhouse_Hill_-_geograph.org.uk_-_6273248.jpg"),
+    ("carnethy-hill-views.jpg", "The view from Carnethy Hill", "Rolling green hills under a cloudy sky, seen from the stony top of Carnethy Hill", "Alan O'Dowd", "CC BY-SA 2.0", "https://commons.wikimedia.org/wiki/File:Carnethy_Hill_views_-_geograph.org.uk_-_4185120.jpg"),
+    ("glencorse-reservoir-portrait.jpg", "Glencorse Reservoir from the hillside", "Glencorse Reservoir between the hills, seen from a grassy slope with two trees", "Jaroslaw Musialkowski", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Pentland_Hills_-_Glencorse_Reservoir.jpg"),
+    ("pentland-hills-winter.jpg", "A burn in the Pentland Hills in winter", "A stream running through a snowy valley in the Pentland Hills", "Bops92", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Pentland_hills_winter.jpg"),
+]
+EDINBURGH = ("edinburgh-skyline.jpg", "Edinburgh's Old Town from Calton Hill", "Edinburgh's Old Town and the castle seen from Calton Hill, with trees in front", "Jim Barton", "CC BY-SA 2.0", "https://commons.wikimedia.org/wiki/File:Edinburgh_skyline_from_Calton_Hill_-_geograph.org.uk_-_7467002.jpg")
+
+
+def library_fill(page: Page, photos: list) -> None:
+    """Fills in the Media Library's form for freshly uploaded photos, in upload order."""
+    for i, (_, name, alt, photographer, license, source) in enumerate(photos):
+        prefix = f"media[{i}][fields]"
+        page.fill(f".ui-dialog input[name='{prefix}[field_media_image][0][alt]']", alt)
+        page.fill(f".ui-dialog input[name='{prefix}[name][0][value]']", name)
+        page.fill(f".ui-dialog input[name='{prefix}[field_photographer][0][value]']", photographer)
+        page.select_option(f".ui-dialog select[name='{prefix}[field_license]']", label=license)
+        page.fill(f".ui-dialog input[name='{prefix}[field_source][0][uri]']", source)
+        page.fill(f".ui-dialog input[name='{prefix}[field_source][0][title]']", "Wikimedia Commons")
+
+
+def library_upload(page: Page, photos: list, shot=None) -> None:
+    """In an open Media Library window: uploads photos, fills in their credits, and inserts them."""
+    page.set_input_files(".ui-dialog input[type='file']", [str(PHOTOS / f[0]) for f in photos])
+    page.wait_for_selector(".ui-dialog input[name='media[0][fields][field_media_image][0][alt]']")
+    page.wait_for_timeout(2000)
+    library_fill(page, photos)
+    if shot:
+        shot()
+    page.click(".ui-dialog-buttonpane button:has-text('Save')")
+    page.wait_for_selector(".ui-dialog-buttonpane button:has-text('Insert selected')")
+    page.wait_for_timeout(1500)
+    page.click(".ui-dialog-buttonpane button:has-text('Insert selected')")
+    page.wait_for_selector(".ui-dialog", state="detached")
+    page.wait_for_timeout(2000)
+
+
+def media_editor_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9, part 4: Photo on News (the Try it), and media in the text editor."""
+    url = site["url"]
+    drush_php(site, "\\Drupal\\field\\Entity\\FieldConfig::loadByName('node', 'news', 'field_photo')?->delete();")
+    for name in ("editor.editor.basic_html", "filter.format.basic_html"):
+        restore_config(site, name)
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('media'); $s->delete($s->loadByProperties(['name' => 'Edinburgh\\'s Old Town from Calton Hill']));""")
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+    page.goto(url + "/admin/structure/types/manage/news/fields")
+    page.click("text=Re-use an existing field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(2000)
+    page.locator(".ui-dialog tr", has_text="field_photo").locator("input, button").first.click()
+    page.wait_for_url("**/node.news.field_photo")
+    page.wait_for_load_state("networkidle")
+    page.click("input[value='Save settings']")
+    page.wait_for_url("**/news/fields")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/node/8/edit")
+    page.wait_for_load_state("networkidle")
+    page.click("input[name='field_photo-media-library-open-button']")
+    page.wait_for_selector(".ui-dialog input[type='file']")
+    page.wait_for_timeout(1500)
+    library_upload(page, [EDINBURGH], lambda: snap("09-library-upload", ".ui-dialog"))
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/config/content/formats/manage/basic_html")
+    page.wait_for_load_state("networkidle")
+    # Out with Upload image (pictures that aren't media), in with Drupal Media, in its place.
+    page.locator(".ckeditor5-toolbar-active__buttons li[data-id='drupalInsertImage']").focus()
+    page.keyboard.press("ArrowUp")
+    page.wait_for_timeout(2000)
+    page.locator(".ckeditor5-toolbar-available__buttons li[data-id='drupalMedia']").focus()
+    page.keyboard.press("ArrowDown")
+    page.wait_for_timeout(2000)
+    media = page.locator(".ckeditor5-toolbar-active__buttons li[data-id='drupalMedia']")
+    for _ in range(5):
+        media.focus()
+        page.keyboard.press("ArrowLeft")
+        page.wait_for_timeout(500)
+    page.check("input[name='filters[media_embed][status]']")
+    page.wait_for_timeout(2000)
+    page.click("a:has-text('Embed media')")
+    page.wait_for_timeout(800)
+    page.check("input[name='filters[media_embed][settings][allowed_media_types][image]']")
+    page.select_option("select[name='filters[media_embed][settings][default_view_mode]']", "banner")
+    scroll_to(page, ".ckeditor5-toolbar-configuration, [data-drupal-selector='edit-editor-settings-toolbar']", 150)
+    snap("09-text-format-media")
+    page.click("input[value='Save configuration']")
+    page.wait_for_load_state("networkidle")
+
+    # Only shown, not saved: an image inside the news item's text.
+    page.goto(url + "/node/8/edit")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("""() => { const e = document.querySelector('.ck-editor__editable').ckeditorInstance;
+        e.model.change(w => w.setSelection(w.createPositionAt(e.model.document.getRoot(), 'end'))); e.editing.view.focus(); }""")
+    page.click(".ck-toolbar button[data-cke-tooltip-text*='Media']")
+    page.wait_for_selector(".media-library-widget-modal .js-media-library-item")
+    page.wait_for_timeout(2000)
+    page.locator(".media-library-widget-modal .js-media-library-item", has_text="Turnhouse Hill across").locator("input[type='checkbox']").check()
+    page.click(".ui-dialog-buttonpane button:has-text('Insert selected')")
+    page.wait_for_selector(".ui-dialog", state="detached")
+    page.wait_for_timeout(2500)
+    scroll_to(page, ".ck-editor", 150)
+    snap("09-editor-media")
+
+
+def gallery_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9, part 5: the Gallery content type, and the first album."""
+    url = site["url"]
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('node'); $s->delete($s->loadByProperties(['type' => 'gallery']));
+\\Drupal\\node\\Entity\\NodeType::load('gallery')?->delete();
+$m = \\Drupal::entityTypeManager()->getStorage('media');
+foreach (['Carnethy Hill from Turnhouse Hill', 'The view from Carnethy Hill', 'Glencorse Reservoir from the hillside', 'A burn in the Pentland Hills in winter'] as $n) { $m->delete($m->loadByProperties(['name' => $n])); }
+\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('media.image.album')?->delete();
+\\Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('media.album')?->delete();""")
+    delete_fields(site, "node", "field_photos", "field_hike")
+
+    page.goto(url + "/admin/structure/types/add")
+    page.fill("#edit-name", "Gallery")
+    page.wait_for_timeout(1500)
+    page.fill("#edit-description", "A photo album from one of the club's hikes or photo evenings.")
+    page.click("text=Display settings")
+    page.uncheck("#edit-display-submitted")
+    page.click("text=Menu settings")
+    page.uncheck("input[name='menu_options[main]']")
+    page.click("input[value='Save and manage fields'], button:has-text('Save and manage fields')")
+    page.wait_for_load_state("networkidle")
+
+    fields = url + "/admin/structure/types/manage/gallery/fields"
+    page.goto(fields)
+    page.click("text=Re-use an existing field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(2000)
+    page.locator(".ui-dialog tr", has_text="field_body").locator("input, button").first.click()
+    page.wait_for_url("**/node.gallery.field_body")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='label']", "Description")
+    page.fill("textarea[name='description']", "What the album is about: where and when, and anything worth knowing.")
+    page.click("input[value='Save settings']")
+    page.wait_for_url("**/gallery/fields")
+    page.wait_for_load_state("networkidle")
+
+    def photos_settings(p: Page) -> None:
+        p.select_option(".ui-dialog select[name='field_storage[subform][cardinality]']", "-1")
+        p.wait_for_timeout(2000)
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][image]']")
+        p.wait_for_timeout(2000)
+        dialog_fill(p, "description", "Upload several photos at once: select them all in the file window.")
+        p.check(".ui-dialog input[name='required']")
+
+    create_field(page, fields, "Media", "Photos", None, photos_settings)
+
+    def hike_settings(p: Page) -> None:
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][hike]']")
+        p.wait_for_timeout(2000)
+        dialog_fill(p, "description", "The hike the photos are from, if they're from one.")
+
+    create_field(page, fields, "Reference", "Hike", "Content", hike_settings)
+    page.goto(fields)
+    snap("09-gallery-fields")
+
+    # A media view mode for album photos: the whole photo, not cropped, with its credits.
+    page.goto(url + "/admin/structure/display-modes/view/add/media")
+    page.fill("input[name='label']", "Album")
+    page.wait_for_timeout(1500)
+    page.check("input[name='bundles_by_entity[image]']")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/structure/media/manage/image/display/album")
+    page.wait_for_load_state("networkidle")
+    set_label(page, "field_media_image", "hidden")
+    prefix = field_settings(page, "field_media_image")
+    page.select_option(f"select[name='{prefix}[image_style]']", "max_1300x1300")
+    field_settings_update(page, "field_media_image")
+    for field in ("field_photographer", "field_license", "field_source"):
+        set_label(page, field, "inline")
+    save_display(page)
+
+    page.goto(url + "/admin/structure/types/manage/gallery/display/default")
+    page.wait_for_load_state("networkidle")
+    for field in ("field_hike",):
+        set_label(page, field, "inline")
+    set_label(page, "field_photos", "hidden")
+    prefix = field_settings(page, "field_photos")
+    page.select_option(f"select[name='{prefix}[view_mode]']", "album")
+    field_settings_update(page, "field_photos")
+    set_weights(page, {"field_hike": 0, "field_body": 1, "field_photos": 2})
+    save_display(page)
+
+    page.goto(url + "/node/add/gallery")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='title[0][value]']", "Pentlands, 21 November")
+    page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", "<p>Our first hike with the new website: Turnhouse Hill and Carnethy Hill, in sun, wind and, near the top, a little snow.</p>")
+    page.fill("input[name='field_hike[0][target_id]']", "Turnhouse Hill and Carnethy Hill (7)")
+    page.click("input[name='field_photos-media-library-open-button']")
+    page.wait_for_selector(".ui-dialog input[type='file']")
+    page.wait_for_timeout(1500)
+    page.set_viewport_size({"width": WIDTH, "height": 1300})
+    library_upload(page, ALBUM, lambda: snap("09-gallery-upload", ".ui-dialog"))
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    page.select_option("select[name='moderation_state[0][state]']", "published") if page.locator("select[name='moderation_state[0][state]']").count() else None
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    path = page.url.replace(url, "")
+    as_visitor(page, site, path, "09-gallery-page")
+
 # name: (site, function, logged in, full page[, window width])
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
@@ -783,6 +1354,7 @@ SHOTS = {
     "07-hike-permissions": ("core", hike_permissions, True, False),
     "07-cms-utility-page-fields": ("cms", cms_utility_page_fields, True, False),
     "08-cms-utility-page-display": ("cms", cms_utility_page_display, True, False),
+    "09-cms-focal-point": ("cms", cms_focal_point, True, False),
 }
 
 
@@ -793,6 +1365,11 @@ SEQUENCES = [
     ("core", layout_builder_steps, 1600, ["08-lb-start", "08-lb-choose-layout", "08-lb-column-widths", "08-lb-choose-block", "08-lb-content-block", "08-lb-body-block", "08-lb-remove-section", "08-lb-save"]),
     ("core", manage_display_steps, 1280, ["08-hike-before", "08-display-overview", "08-display-default", "08-display-order", "08-display-labels", "08-display-distance", "08-display-hike-leader", "08-date-format", "08-display-date", "08-hike-after", "08-display-teaser", "08-view-mode-add", "08-display-card"]),
     ("core", hike_layout_exercise, 1280, ["08-exercise-hike-layout"]),
+    ("core", media_install_steps, 1280, ["09-extend-media", "09-media-types", "09-license-settings", "09-image-fields", "09-image-form-media-library", "09-add-image", "09-media-list"]),
+    ("core", photo_field_steps, 1280, ["09-photo-field-type", "09-photo-field-settings", "09-media-library", "09-hike-form-photo", "09-hike-photo-large"]),
+    ("core", image_styles_steps, 1280, ["09-image-styles", "09-image-style-banner", "09-media-banner-display", "09-hike-photo-view-mode", "09-hike-banner", "09-responsive-style", "09-media-banner-responsive", "09-hike-phone"]),
+    ("core", media_editor_steps, 1280, ["09-library-upload", "09-text-format-media", "09-editor-media"]),
+    ("core", gallery_steps, 1280, ["09-gallery-fields", "09-gallery-upload", "09-gallery-page"]),
     ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 

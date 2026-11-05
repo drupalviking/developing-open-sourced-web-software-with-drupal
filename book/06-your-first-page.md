@@ -41,9 +41,9 @@ Select **Save and manage fields**.
 
 ## Adding a body field
 
-Drupal saves the content type and takes you to its **Manage fields** tab, which says "No fields are present yet." That's only half true. Every piece of content already has a set of fields that Drupal itself provides, called *base fields*: the title, the author, when it was created and last changed, whether it's published, its URL alias, and a few more. You'll see them on the form in a moment, but not here, because **Manage fields** only lists the fields you add yourself. We look at base fields in Chapter 7.
+Drupal saves the content type and takes you to its **Manage fields** tab, which says "No fields are present yet." Every content type has a title, but the text of the page needs a field of its own. Traditionally, it's called the *body*.
 
-The text of the page is one of the fields you add. Traditionally, it's called the *body*.
+> **"No fields" is only half true.** Every piece of content already has a set of fields that Drupal itself provides, called *base fields*: the title, the author, when it was created and last changed, whether it's published, its URL alias, and a few more. You'll see them on the form in a moment, but not here, because **Manage fields** only lists the fields you add yourself. We look at base fields in Chapter 7.
 
 1. Select **Create a new field**. A window opens with the types of field Drupal knows about: **Plain text**, **Formatted text**, **Number**, **Reference**, **Date and time**, and more.
 2. Select **Formatted text**: text with formatting, such as bold, links and lists, written in a text editor.

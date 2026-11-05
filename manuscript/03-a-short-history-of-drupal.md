@@ -124,7 +124,7 @@ Each major version since has followed the same pattern: new features in the mino
   - **11.2** (June 2025): much faster installation of modules and recipes, and support for the AVIF image format.
   - **11.3** (December 2025): the biggest performance boost in a decade (the same server handles 26 to 33% more requests), the new **Navigation** menu down the side of the screen, links to your own content picked from a list in the text editor, and a separate permission for publishing and unpublishing content.
   - **11.4** (July 2026): **Default Admin**, the new administration theme based on Gin, with a dark mode, which you'll use throughout this book; a leaner Standard installation, without the Article and Page content types; an overview of all of a content type's display modes; a full-screen mode in the text editor; and recipes that apply twice as fast.
-  - **11.5** (December 2026), released together with Drupal 12, is a *long-term support* release: Drupal 11 will be supported until the end of 2028.
+  - **11.5** (December 2026), released together with Drupal 12, is a *long-term support* release: Drupal 11 will be supported until {{ number:drupal11_supported_until }}.
 
 The key shift of these years is the one Drupal 8 was built for: continuous improvement, instead of a disruptive rebuild every few years.
 

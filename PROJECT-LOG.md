@@ -156,6 +156,7 @@ Ideas that have no chapter yet, or are waiting for one.
   vs. content types and fields; Chapter 10, plugins vs. modules, and installing from the dashboard vs. Composer
   (and Project Browser); Chapter 12, widgets vs. blocks, and the two meanings of "block"; Chapter 13, the six
   predefined roles vs. Drupal's own roles. Check each WordPress claim against wordpress.org when writing it.
+- **How this book was written, and how it's kept up to date** (the author, 2026-11-05). Probably a section in the Preface. Say openly that AI (Claude) assists, mostly with maintenance, and that the layout, the structure and the text were decided by people first. Explain what the build makes possible: `tools/build.py`, includes and `{{ number:... }}` placeholders let us replace parts of the book (a retaken screenshot when an example's screen changes, a version number, a support date) without rewriting it. Also how the book covers two versions at once (Drupal 11.5 and 12 now, core and Drupal CMS), and how it moves to one when a major release is stable (around 12.1): what gets dropped, what gets rewritten, and who checks it. Useful for future maintainers as much as for readers.
 - **Trash** (deleted content can be restored in Drupal CMS).
 - A Drupal Association plug, and connecting Drupal skills to jobs (empty sections at the end of
   the Drupal in a Day manuscript).

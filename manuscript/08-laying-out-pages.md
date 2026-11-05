@@ -165,12 +165,14 @@ Neither is the "right" one. Canvas is newer and more visual, and it's where Drup
 
 Layout Builder is already installed on your site: the Navigation sidebar uses it, so Drupal installs it with the sidebar. We only have to turn it on for Basic page.
 
+> **Warning: turning Layout Builder on is a one-way street.** When you check **Use Layout Builder**, Drupal moves every field of that display to **Disabled**, because from then on the layout places them. If you turn Layout Builder off again, Drupal asks you to confirm ("All customizations will be removed. This action cannot be undone."), and the fields *stay* under **Disabled**: the order, labels and formatters you set up are gone, and the content type shows nothing but its title until you set up the display again. For Basic page that's only the body, so we can go ahead. For a content type with a display you've worked on, such as Hike, don't turn it on for **Default**. Enable another view mode, such as **Full content**, and use Layout Builder there: Exercise 5 shows how. (This changed in Drupal 11.3; older tutorials may tell you the fields come back.)
+
 1. Go to **Structure** > **Content types** > **Manage display** for Basic page, and **Manage** the **Default** view mode.
 2. At the bottom, under **Layout options**, check **Use Layout Builder**.
 3. Check **Allow each content item to have its layout customized**. Without it, every Basic page shares one layout, which you design once for the content type, its *template*. With it, each page can also have a layout of its own.
 4. Select **Save**.
 
-The field list disappears, and a **Manage layout** button takes its place: from now on, the layout decides how a Basic page is shown. Drupal also moves every field of the display to **Disabled**, because the layout now places them. Keep that in mind: if you ever turn Layout Builder off again, the fields stay there, and you have to set up the field display again, as in the first part of this chapter. Every page still uses the template, which shows the body, so nothing changes on the site yet.
+The field list disappears, and a **Manage layout** button takes its place: from now on, the layout decides how a Basic page is shown. Every page still uses the template, which shows the body, so nothing changes on the site yet.
 
 Now let's give *How to join* two columns: the text on the left, and the club's meeting times in a box on the right.
 

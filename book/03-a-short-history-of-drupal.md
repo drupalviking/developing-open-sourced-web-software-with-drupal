@@ -122,7 +122,7 @@ Each major version since has followed the same pattern: new features in the mino
   - **11.2** (June 2025): much faster installation of modules and recipes, and support for the AVIF image format.
   - **11.3** (December 2025): the biggest performance boost in a decade (the same server handles 26 to 33% more requests), the new **Navigation** menu down the side of the screen, links to your own content picked from a list in the text editor, and a separate permission for publishing and unpublishing content.
   - **11.4** (July 2026): **Default Admin**, the new administration theme based on Gin, with a dark mode, which you'll use throughout this book; a leaner Standard installation, without the Article and Page content types; an overview of all of a content type's display modes; a full-screen mode in the text editor; and recipes that apply twice as fast.
-  - **11.5** (December 2026), released together with Drupal 12, is a *long-term support* release: Drupal 11 will be supported until the end of 2028.
+  - **11.5** (December 2026), released together with Drupal 12, is a *long-term support* release: Drupal 11 will be supported until December 2028.
 
 The key shift of these years is the one Drupal 8 was built for: continuous improvement, instead of a disruptive rebuild every few years.
 
@@ -159,8 +159,8 @@ The support dates were checked on 4 November 2026; drupal.org has the current on
 | 8 | 19 November 2015 | 2 November 2021 | The big rewrite, on Symfony. Views, CKEditor, configuration management and multilingual in core. A new minor release every six months. |
 | 9 | 3 June 2020 | 1 November 2023 | The first easy upgrade: Drupal 8 without the deprecated code. Claro, Olivero, CKEditor 5. |
 | 10 | 15 December 2022 | 9 December 2026 | Claro, Olivero and CKEditor 5 by default. Recipes (10.3). |
-| 11 | 2 August 2024 | End of 2028 (expected; 11.5 is LTS) | Much faster (11.2, 11.3). Recipes that ask questions, the Navigation side menu, links to your own content in the editor. Default Admin and a leaner Standard installation (11.4). 11.5 is a long-term support release. |
-| 12 | December 2026 (planned) |  | Drupal 11.5 without the deprecated code. |
+| 11 | 2 August 2024 | December 2028 | Much faster (11.2, 11.3). Recipes that ask questions, the Navigation side menu, links to your own content in the editor. Default Admin and a leaner Standard installation (11.4). 11.5 is a long-term support release. |
+| 12 | December 2026 (planned) | December 2030 | Drupal 11.5 without the deprecated code. |
 
 And on top of core: **Drupal CMS 1.0** (15 January 2025) and **Drupal CMS 2.0** (28 January 2026).
 

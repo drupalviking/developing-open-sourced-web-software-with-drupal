@@ -53,8 +53,8 @@ numbers:
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
 
   drupal11_supported_until:
-    value: 'End of 2028 (expected; 11.5 is LTS)'
-    label: Drupal 11, end of life; the 11.4 release post says 11.5 is LTS, supported until the end of 2028 (Chapter 3, release table)
+    value: 'December 2028'
+    label: Drupal 11, end of life; from PSA-2026-11-02 (https://www.drupal.org/psa-2026-11-02), which also confirms 11.5 as the last minor (Chapter 3, release table)
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
 
   drupal12_released:
@@ -63,6 +63,6 @@ numbers:
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
 
   drupal12_supported_until:
-    value: ''
-    label: Drupal 12, end of life, once it's announced (Chapter 3, release table)
+    value: 'December 2030'
+    label: Drupal 12, end of life; from PSA-2026-11-02 (https://www.drupal.org/psa-2026-11-02) (Chapter 3, release table)
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule

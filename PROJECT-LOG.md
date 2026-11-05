@@ -3,7 +3,19 @@
 Decisions, history, and open items for the book. `README.md` has the layout, the commands, and
 the chapter status. Keep both up to date at the end of every chapter.
 
-Last updated: 2026-11-04.
+Last updated: 2026-11-05.
+
+## Where we are
+
+Read this first when picking the work up in a new session.
+
+- **Done and reviewed:** the Preface and Chapters 1 to 5 (Chapter 5 on 2026-11-05). Waiting for the author: Appendix B's new section "How Drupal's code has changed", and the author's own stories in Chapters 2 and 3 (`%%` placeholders).
+- **Next: Chapter 6, *Your First Page*.** Start with the `write-chapter` skill and a round of questions, and ask before creating `documentation/chapter-06-your-first-page`. Already decided: the reader builds **Basic page** by hand (name, description, body field), with no recipe box (see "Article and Page" under Decisions); Chapter 6 also sets the site's front page (Chapters 4 and 5 promise it; the front page is still `/admin/welcome`, Access denied for visitors). From the README: Canvas and Layout Builder as two equal approaches, the content form, moderation, revisions, trash. To check before asking: whether Drupal Canvas has a Drupal 12 release, and what the content form looks like on Drupal 12. The backlog has a "Coming from WordPress?" box for Chapter 6 (the block editor vs. Canvas and Layout Builder).
+- **The test sites** (DDEV, outside this repository; on the author's machine DDEV's router uses port 8443, because 443 is taken):
+  - `~/websites/open-university/lens-and-trail`: Drupal 12.0.0-beta2, the club's site in the state Chapter 5 leaves it (see "The photo club site"). `https://lens-and-trail.ddev.site:8443`, `admin` / `12345`. Drush is `14.x-dev`, with `minimum-stability: dev` and `prefer-stable: true` in `composer.json`, because no released Drush supports Drupal 12 yet.
+  - `~/websites/open-university/lens-and-trail-cms`: Drupal CMS 2.2.8 on Drupal 11.4.11, Starter template. `https://lens-and-trail-cms.ddev.site:8443`, `admin@lens-and-trail-cms.ddev.site` / `12345`. Project Browser's **Recipes** source was turned on for a test (it's off by default in Drupal CMS); the failed Basic page recipe left nothing behind.
+- **Screenshots** for Chapters 4 and 5 were taken with Python Playwright driving Brave (there's no Google Chrome on the machine, and Node is v16, too old for Node Playwright), from throwaway scripts that are gone. `tools/screenshots.sh` (see Open items) should replace them: Python Playwright in a venv, with Playwright's own Chromium, logging in as `admin` and saving to `manuscript/images/`. Screenshots are 1280 pixels wide (taken at 2x, resized with `sips --resampleWidth 1280`).
+- **Other work outside this repository:** the course material in `~/websites/open-university/what-is-open-source/` (not in Git; its `BACKLOG.md` has the open items).
 
 ## How we work
 
@@ -79,6 +91,8 @@ Made on 2026-11-04, at the start of the rewrite.
   "Can I...?" table is right, and the Drupal Association supports DrupalCon but doesn't run it everywhere.
 - **2026-11-04**: Rewrote Chapter 3 with the author's answers: a story for site builders, era by era, with a release table, deprecation explained with roads, Starshot and Drupal CMS, Drupal 12, and how to read version numbers. The programmers' material (hooks, the Form API, theming, Drupal 7's and 8's code, the deprecation example, the upgrade tools) moved to a new section of Appendix B. Fixed from the draft: Drupal 8 on 19 November 2015 (Dries's birthday); fields came with CCK, in core from Drupal 7; the menu rewrite was Drupal 6; FCKeditor was never in core; the last 8.x was 8.9.20; `.info.yml`; CMI; Starshot in 2024. Added `data/numbers.yml`, `tools/update_numbers.py` and `{{ number:... }}` placeholders to the build. The author's review: Drupal 11 needed more than the new admin menu, so the chapter now lists its minor releases 11.1 to 11.5 (from drupal.org's 11.1, 11.3 and 11.4 release posts); the exercise that looked for a live Drupal 7 site was dropped as snooping.
 - **2026-11-04**: Rewrote Chapter 4 with the author's answers: DDEV only (per-OS install with DDEV's docs, `ddev --version`), Composer in two sentences (the rest moved to a Chapter 10 stub), the `lens-and-trail` project on Drupal 12 with Drush, the browser installer as the main path with a `ddev drush site:install` box, every Configure site field explained (the site email is the From address), the `settings.php` warning, a first look (no content types, no front-end theme, Access denied for visitors), Olivero from contrib, `ddev drush uli`, starting and stopping, Drupal CMS 2.2.8 (three installer screens, Starter), the Launcher and Drupal Forge, troubleshooting, five exercises. Checked on test sites with Drupal 12.0.0-beta2, Drupal CMS 2.2.8 and core 11.4.11; the screenshots are from them (taken with Playwright, not yet with `tools/screenshots.sh`). The Lando section was dropped (Appendix A).
+- **2026-11-04**: Rewrote Chapter 5 with the author's answers: a tour of the Navigation sidebar on the Drupal 12 site, item by item, with the chapter that covers each (a table for Structure); Help as the built-in manual; user 1 in a paragraph (details in Chapter 13); an "On Drupal CMS" box (Dashboard, Pages, Media, Trash, Tools, Gin); Basic site settings (slogan) and Regional settings (United Kingdom, Monday); the site side: the top bar, contextual links on the Site branding block, and the logged-out view; five exercises. The raw SVG headings are gone. Checked on the Drupal 12.0.0-beta2 and Drupal CMS 2.2.8 test sites; screenshots from them.
+- **2026-11-05**: The author reviewed Chapter 5. Drupal 11's and 12's support dates updated from PSA-2026-11-02 (December 2028 and December 2030; minor versions get 8 months of security support from 2027), found in the test site's Announcements; Chapter 3's 11.5 bullet now uses the placeholder.
 
 ## The photo club site
 
@@ -90,6 +104,7 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 | 2 | Nothing built. The committee's questions (why Drupal, who's behind it, what's the catch) frame the chapter; Exercise 4 (commercial builder vs. Drupal) and Exercise 5 (a CC BY-SA photo of the Pentland Hills on a poster) set up Chapter 8's photo licensing. |
 | 3 | Nothing built. |
 | 4 | The DDEV project `lens-and-trail` (`https://lens-and-trail.ddev.site`) on Drupal 12, with Drush. Site name "Lens & Trail", site email `hello@lens-and-trail.ddev.site`, admin `admin` / `12345` (`admin@lens-and-trail.ddev.site`), time zone London. No content types; Olivero (contrib) is the default theme, Default Admin the admin theme; the front page is still `/admin/welcome` (Access denied for visitors) until Chapter 6. Optional second project `lens-and-trail-cms`: Drupal CMS with the Starter template, `admin@lens-and-trail-cms.ddev.site` / `12345`. |
+| 5 | Slogan "Photos and hikes around Edinburgh" (shown by Olivero's Site branding block); Regional settings: default country United Kingdom, first day of week Monday, time zone London. Front page and error pages unchanged (Chapter 6 sets the front page). |
 
 ## Sources
 
@@ -112,7 +127,7 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 - Chapter 3: the author's own memories (which version they started on, the move from 7 to 8), a `%%` placeholder at the end of the Drupal 8 section.
 - Two screenshots no chapter uses yet: `07-content-type-listing-of-a-newly-installed-drupal-site.png`
   and `08-media-content-list.png`.
-- `tools/screenshots.sh`: not written yet. The test sites exist (`~/websites/open-university/lens-and-trail`, Drupal 12, and `lens-and-trail-cms`, Drupal CMS); Chapter 4's screenshots were taken with Playwright from scripts outside the repository. Write the script (Playwright with its own Chromium) and add Chapter 4's screenshots to it.
+- `tools/screenshots.sh`: not written yet. The test sites exist (`~/websites/open-university/lens-and-trail`, Drupal 12, and `lens-and-trail-cms`, Drupal CMS); Chapter 4's and 5's screenshots were taken with Playwright from scripts outside the repository. Write the script (Playwright with its own Chromium) and add Chapter 4's and 5's screenshots to it. Chapter 5's need the slogan and regional settings in place, and a hover over the Site branding block for the pencil menu.
 - Chapter 4, not tested: `ddev drush site:install` on Drupal 12 (and its drop-tables question), and Exercise 4's `ddev delete`.
 - `slides/` and `tools/slides.py`: start with the first reviewed chapter.
 

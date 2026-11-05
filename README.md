@@ -83,9 +83,9 @@ Numbers without an automatic source (support dates that haven't been announced, 
 | Preface | **Reviewed by the author (2026-11-04).** |
 | 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | **Reviewed by the author (2026-11-04).** The author's own story is still to come (a `%%` placeholder in "Who makes Drupal?"). |
-| 3. A Short History of Drupal | **Rewritten (2026-11-04), waiting for the author's review.** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
+| 3. A Short History of Drupal | **Reviewed by the author (2026-11-04).** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
 | 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 10. |
-| 5. Finding Your Way Around | Started (the Navigation sidebar). Has raw SVG in its headings. |
+| 5. Finding Your Way Around | **Reviewed by the author (2026-11-05).** A tour of the Navigation sidebar on Drupal 12, Basic site settings and Regional settings for the club, contextual links, and the site as visitors see it. Checked on the test sites. |
 | 6. Your First Page | Not started. Canvas and Layout Builder, the content form, moderation, revisions, trash. |
 | 7. Everything Is an Entity | Draft: content types and fields. |
 | 8. Media and Image Styles | Short draft. |
@@ -110,6 +110,8 @@ Chapter numbers will be checked once, at the end, together with every cross-refe
 
 Facts about releases and products that change quickly. Re-check each before a release.
 
+- Chapter 5: the Navigation sidebar's items and the Structure, Configuration and Reports submenus are from Drupal 12.0.0-beta2; the top bar shows the page's **Edit** link and **More actions**; the Drupal CMS sidebar and Dashboard are from 2.2.8 (all 2026-11-04). Re-check after the release.
+
 - Drupal CMS screens (installer, site templates, dashboard) are from Drupal CMS 2.2.8 on Drupal 11.4 (2026-11-04). Retake
   the screenshots for the version the book is released with, and check whether Drupal CMS is on Drupal 12 yet (Chapter 4 uses `--project-type=drupal11` for it).
 - Chapter 4: written against Drupal 12.0.0-beta2 (no profile step in the installer). After the release, walk through the installer again, drop the `@beta` note, and check that a stable Drush supports Drupal 12. Olivero is contrib (`drupal/olivero` 2.0.0); Drupal CMS's Starter gives Utility page, Mercury and Gin; more than twenty site templates; Drupal Forge is free for 30 days (all 2026-11-04).
@@ -133,7 +135,7 @@ Facts about releases and products that change quickly. Re-check each before a re
 - Chapter 2: "Come for the code, stay for the community" is on the Welcome page (`/admin/welcome`) of a new Drupal 12 site, the page you land on after the installation (checked on 12.0.0-beta2, 2026-11-04; Chapter 4, Figure 4.3). Retake Figure 1.1 with it.
 - Chapter 2: the four freedoms and "free as in free speech, not as in free beer" are paraphrased from the Free
   Software Foundation; gnu.org couldn't be reached on 2026-11-04, so that link is unchecked.
-- Chapter 3: `python3 tools/update_numbers.py`, and check the entries it lists by hand (Drupal 11's and 12's support dates, Drupal 12's release date).
+- Chapter 3: `python3 tools/update_numbers.py`, and check the entries it lists by hand (Drupal 11's and 12's support dates, Drupal 12's release date). Drupal 11 until December 2028 and Drupal 12 until December 2030 are from PSA-2026-11-02 (2 November 2026), which also cuts each minor version's security support to 8 months from 2027.
 - Chapter 3, after Drupal 12's release: rewrite "Drupal 12 is planned for the week of 7 December 2026" and "Drupal 10 reaches its end of life in the same week" in the past tense, and set `drupal12_released` in `data/numbers.yml`.
 - Chapter 3: Drupal CMS 2.0 released 28 January 2026 with Canvas and the first site template (The DropTimes); Starshot announced at DrupalCon Portland, May 2024. From memory, not checked against a source: the first DrupalCon (Antwerp, 2005), the Drupal Association (2006), Forum removed from core in 11.0. The Dries quote "the big deal about Drupal 9 is that… it should not be a big deal" is as quoted by several secondary sources; find it on dri.es.
 - Appendix B: hooks as class methods with `#[Hook]` since Drupal 11.1; `core_version_requirement` since 8.7.7; JSON:API in core since 8.7; `drupal/recommended-project` since 8.8. From memory; check.

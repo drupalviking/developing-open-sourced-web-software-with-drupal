@@ -25,7 +25,7 @@ Go to **Structure** > **Content types** (`/admin/structure/types`), and select *
 
 Below the description are four tabs of settings. Go through them one by one.
 
-**Submission form settings** decides what the form for writing a page looks like. **Title field label** is the name of the title field ("Title" is fine). **Preview before submitting** decides whether editors may, or must, preview a page before saving it; leave it at **Optional**. **Explanation or submission guidelines** is a text shown at the top of the form, for house rules such as "Write in short paragraphs". Leave it empty for now.
+**Submission form settings** decides what the form for writing a page looks like. **Title field label** is what the title field is called on that form. Every content type has a title, because Drupal uses it as the page's heading, in lists of content, and in the browser tab. But "Title" isn't always the right word for it. On an *Employee* content type, the title is the person's name, so the label should be **Full name**; on a content type for the club's photo competitions, it might be **Competition name**. Changing the label only changes what editors see on the form, so they know what to type. Drupal still treats the field as the title. For Basic page, "Title" is the right word, so leave it. **Preview before submitting** decides whether editors may, or must, preview a page before saving it; leave it at **Optional**. **Explanation or submission guidelines** is a text shown at the top of the form, for house rules such as "Write in short paragraphs". Leave it empty for now.
 
 **Publishing options** are the defaults for every new page of this type:
 

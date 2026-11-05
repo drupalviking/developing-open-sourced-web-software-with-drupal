@@ -80,7 +80,8 @@ and exercises don't contradict it.
 - **More screenshots rather than fewer.** This is a book for beginners: when in doubt, add the screenshot. The
   first time the reader does something with several steps (adding a field, building a layout), show a
   screenshot after each step, placed right after the step it shows, so they can check they're on the right
-  screen. Later repeats of the same task can do with fewer. (The author, 2026-11-05.)
+  screen. Later repeats of the same task can do with fewer. The book will most likely be a PDF, not
+  printed, so space isn't a reason to leave a screenshot out. (The author, 2026-11-05.)
 - Images in `manuscript/images/NN-what.png`, placed as
   `![What the image shows](images/NN-what.png)` then `*Figure N.M: Caption*` on its own line,
   numbered in order. No square brackets in alt text, no Obsidian `![[...]]` links.

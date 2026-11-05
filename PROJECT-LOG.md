@@ -44,7 +44,7 @@ Made on 2026-11-04, at the start of the rewrite.
 | Example | One running site, built up chapter by chapter: a small photography club that also goes hiking. |
 | Teachers' kit | Yes, alongside the book: for Drupal in a Day, for university courses, and for self-study. Every chapter ends with exercises. |
 | License | CC BY-SA 4.0 (was GPLv3). The only commit by anyone other than the author (einardarri, 2025) fixed image markup, not prose. |
-| Output | Markdown in `book/` for now. PDF/EPUB later. |
+| Output | Markdown in `book/` for now. Most likely distributed as a **PDF**, not printed (the author, 2026-11-05), so space isn't a concern: more screenshots and fuller explanations rather than compactness. EPUB maybe later. |
 | Structure of a Drupal System | Moved to Appendix B. Too technical for chapter 1. |
 | New topics | Configuration management (export/import, going live) and AI in Drupal CMS both get chapters. |
 | Spelling | US. |

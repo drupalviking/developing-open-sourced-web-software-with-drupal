@@ -1592,6 +1592,186 @@ def cms_tags(page: Page, url: str) -> None:
     scroll_to(page, ".field--name-field-tags", 300)
 
 
+# Chapter 11: modules and recipes.
+def drush(site: dict, *args: str) -> str:
+    result = subprocess.run(["ddev", "drush", *args], cwd=site["dir"], check=True, capture_output=True, text=True)
+    return result.stdout
+
+
+def composer(site: dict, *args: str) -> None:
+    """Runs Composer, then rebuilds Drupal's cache: Composer rewrites the class list Drupal has cached."""
+    subprocess.run(["ddev", "composer", *args], cwd=site["dir"], check=True, capture_output=True)
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+
+
+def extend_install(page: Page, url: str, module: str, filter_text: str, shot=None) -> None:
+    """Installs a downloaded module on Extend, after filtering the list."""
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.fill("input[name='text']", filter_text)
+    page.wait_for_timeout(1000)
+    page.check(f"input[name='modules[{module}][enable]']")
+    page.wait_for_timeout(500)
+    if shot:
+        shot()
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    if "has been installed" not in page.content() and "have been installed" not in page.content():
+        raise RuntimeError(f"{module} wasn't installed")
+
+
+def modules_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 11, part 1: Diff from Composer, and Project Browser on core. Composer itself runs outside (see the chapter)."""
+    url = site["url"]
+    drush_php(site, """\\Drupal\\field\\Entity\\FieldConfig::loadByName('node', 'gallery', 'comment')?->delete();
+if (\\Drupal::moduleHandler()->moduleExists('comment')) { $s = \\Drupal::entityTypeManager()->getStorage('comment'); $s->delete($s->loadMultiple()); }""")
+    delete_fields(site, "node", "comment")
+    uninstall(site, "diff", "module_filter", "project_browser", "comment")
+    drush_php(site, "\\Drupal::state()->delete('project_browser.applied_recipes');")
+    composer(site, "remove", "drupal/module_filter")
+    # Back to the hike as Chapter 10 left it: the newest revision from before this chapter becomes the current
+    # one again, and the revisions this chapter made are deleted, so the Revisions tab shows one new revision.
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('node'); $ids = array_reverse(array_keys($s->getQuery()->allRevisions()->accessCheck(FALSE)->condition('nid', 7)->sort('vid')->execute()));
+$ours = ['Added a head torch to the list.', 'Back to the description before Chapter 11.'];
+$keep = NULL; foreach ($ids as $vid) { $r = $s->loadRevision($vid); if (!in_array($r->getRevisionLogMessage(), $ours) && !str_contains($r->get('field_body')->value, 'head torch')) { $keep = $r; break; } }
+if ($keep && !$keep->isDefaultRevision()) { $keep->setNewRevision(FALSE); $keep->isDefaultRevision(TRUE); $keep->save(); }
+foreach ($ids as $vid) { $r = $s->loadRevision($vid); if ($keep && $vid != $keep->getRevisionId() && ($vid > $keep->getRevisionId() || in_array($r->getRevisionLogMessage(), $ours))) { $s->deleteRevision($vid); } }""")
+
+    extend_install(page, url, "diff", "diff", lambda: snap("11-extend-diff"))
+
+    # A change worth comparing: one more sentence in the hike's description.
+    page.goto(url + "/node/7/edit")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("""() => { const e = document.querySelector('.ck-editor__editable').ckeditorInstance;
+      e.setData(e.getData().replace('and your camera.', 'your camera, and a head torch: it gets dark before five in November.')); }""")
+    page.fill("textarea[name='revision_log[0][value]']", "Added a head torch to the list.")
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/node/7/revisions")
+    page.wait_for_load_state("networkidle")
+    snap("11-revisions-compare")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.get_by_text("gets dark").first.scroll_into_view_if_needed()
+    page.evaluate("window.scrollBy(0, 200)")
+    page.wait_for_timeout(500)
+    snap("11-diff")
+
+    extend_install(page, url, "project_browser", "project browser")
+    browse = url + "/admin/modules/browse/drupalorg_jsonapi"
+    page.goto(browse)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    snap("11-project-browser")
+
+    def find_module_filter() -> None:
+        page.goto(browse)
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(3000)
+        page.fill("input[type='search']", "module filter")
+        page.keyboard.press("Enter")
+        page.wait_for_timeout(4000)
+
+    find_module_filter()
+    page.locator("button", has_text="for Module Filter").first.click()
+    page.wait_for_timeout(2000)
+    snap("11-pb-commands", "[role=dialog], .ui-dialog")
+
+    composer(site, "require", "drupal/module_filter")
+    extend_install(page, url, "module_filter", "module filter")
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    snap("11-module-filter")
+
+    page.goto(url + "/admin/modules/browse/recipes")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(3000)
+    page.fill("input[type='search']", "comments")
+    page.keyboard.press("Enter")
+    page.wait_for_timeout(3000)
+    snap("11-pb-recipes")
+    drush(site, "recipe", "core/recipes/comment_base")
+
+    # Comments on albums: re-use the comment field the recipe brought.
+    gallery_fields = url + "/admin/structure/types/manage/gallery/fields"
+    page.goto(gallery_fields)
+    page.click("text=Re-use an existing field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(2000)
+    snap("11-reuse-comment", ".ui-dialog")
+    page.locator(".ui-dialog tr", has_text="comment").locator("input, button").first.click()
+    page.wait_for_url("**/node.gallery.comment")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='label']", "Comments")
+    page.click("input[value='Save settings']")
+    page.wait_for_url("**/gallery/fields")
+    page.goto(url + "/node/11")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='subject[0][value]']", "Snow on Carnethy")
+    page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", "<p>The second photo is my favorite: you can see the snow line on Carnethy Hill.</p>")
+    page.click("form.comment-form #edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.locator("#comments, .comments, section:has(h2:has-text('Comments'))").first.scroll_into_view_if_needed()
+    page.evaluate("window.scrollBy(0, -100)")
+    page.wait_for_timeout(800)
+    snap("11-gallery-comments")
+
+
+def cms_modules_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 11, On Drupal CMS: installing from Project Browser, and Devel Generate (Devel is a dev requirement there)."""
+    url = site["url"]
+    uninstall(site, "module_filter")
+    composer(site, "remove", "drupal/module_filter")
+
+    def find() -> object:
+        page.goto(url + "/admin/modules/browse/drupalorg_jsonapi")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(4000)
+        page.fill("input[type='search']", "module filter")
+        page.keyboard.press("Enter")
+        page.wait_for_timeout(5000)
+        return page.locator("li", has_text="Simplifies module search").first
+
+    card = find()
+    page.evaluate("window.scrollBy(0, 350)")
+    page.wait_for_timeout(500)
+    snap("11-cms-pb-install")
+    card.locator("button:text-is('Install')").first.click()
+    page.wait_for_timeout(5000)
+    if page.locator("a:has-text('unlock link')").count():
+        # A lock left by an earlier, interrupted run.
+        page.click("a:has-text('unlock link')")
+        page.wait_for_load_state("networkidle")
+        card = find()
+        card.locator("button:text-is('Install')").first.click()
+    for _ in range(60):
+        page.wait_for_timeout(5000)
+        if "Installed" in card.inner_text() or page.locator(".ui-dialog:has-text('Error')").count():
+            break
+    if "Installed" not in card.inner_text():
+        raise RuntimeError("Project Browser didn't install Module Filter")
+    snap("11-cms-pb-installed")
+
+    newest = drush_php(site, "echo (int) \\Drupal::entityQuery('node')->accessCheck(FALSE)->sort('nid', 'DESC')->range(0, 1)->execute() ? max(\\Drupal::entityQuery('node')->accessCheck(FALSE)->execute()) : 0;")
+    page.goto(url + "/admin/config/development/generate/content")
+    page.wait_for_load_state("networkidle")
+    page.locator("input[name='node_types[page]']").check(force=True)
+    page.fill("input[name='num']", "10")
+    page.wait_for_timeout(500)
+    snap("11-cms-devel-generate")
+    # The same as selecting Generate on the form.
+    drush(site, "devel-generate:content", "10", "--bundles=page")
+    page.goto(url + "/admin/content")
+    page.wait_for_load_state("networkidle")
+    snap("11-cms-generated")
+    drush_php(site, f"$s = \\Drupal::entityTypeManager()->getStorage('node'); $s->delete($s->loadMultiple(\\Drupal::entityQuery('node')->accessCheck(FALSE)->condition('nid', {int(newest or 0)}, '>')->execute()));")
+
+
 # name: (site, function, logged in, full page[, window width])
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
@@ -1642,6 +1822,8 @@ SEQUENCES = [
     ("core", taxonomy_areas_steps, 1280, ["10-add-vocabulary", "10-add-term", "10-areas-drag", "10-areas-overview"]),
     ("core", taxonomy_fields_steps, 1280, ["10-area-fields", "10-term-pentland-hills", "10-area-field-settings", "10-hike-form-area", "10-hike-area", "10-term-turnhouse-hill"]),
     ("core", taxonomy_themes_steps, 1280, ["10-themes-field-settings", "10-media-themes", "10-photo-themes"]),
+    ("core", modules_steps, 1280, ["11-extend-diff", "11-revisions-compare", "11-diff", "11-project-browser", "11-pb-commands", "11-module-filter", "11-pb-recipes", "11-reuse-comment", "11-gallery-comments"]),
+    ("cms", cms_modules_steps, 1280, ["11-cms-pb-install", "11-cms-pb-installed", "11-cms-devel-generate", "11-cms-generated"]),
     ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 

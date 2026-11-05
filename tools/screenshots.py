@@ -318,10 +318,6 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         page.get_by_text("Select All").click()
         page.wait_for_timeout(800)
         snap("08-canvas-publish")
-    except Exception:
-        if os.environ.get("DEBUG_SHOT"):
-            page.screenshot(path=os.environ["DEBUG_SHOT"])
-        raise
     finally:
         drush_php(site, f'\\Drupal::service("trash.manager")->executeInTrashContext("inactive", fn() => \\Drupal::entityTypeManager()->getStorage("canvas_page")->load({page_id})->delete());')
 
@@ -475,6 +471,12 @@ def cms_utility_page_fields(page: Page, url: str) -> None:
     page.goto(url + "/admin/structure/types/manage/page/fields")
 
 
+def cms_utility_page_display(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/page/display/default")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "table")
+
+
 TURNHOUSE_HILL = (
     "<p>Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy Hill, and come back down through the glen.</p>"
     "<p>Bring boots, a waterproof jacket, something warm, lunch, and your camera. The path is steep in places and can be muddy.</p>"
@@ -509,6 +511,248 @@ def reuse_field_steps(page: Page, site: dict, snap) -> None:
         drush_php(site, '\\Drupal\\node\\Entity\\NodeType::load("hike_screenshot")?->delete();')
 
 
+
+FIXTURES = ROOT / "tools" / "fixtures"
+
+
+def restore_config(site: dict, name: str) -> None:
+    """Puts a configuration object back as it is in tools/fixtures/, keeping its UUID."""
+    yaml = (FIXTURES / f"{name}.yml").read_text()
+    drush_php(site, f"""$y = <<<'YAML'
+{yaml}
+YAML;
+$c = \\Drupal::configFactory()->getEditable('{name}');
+$data = \\Drupal\\Component\\Serialization\\Yaml::decode($y);
+$data['uuid'] = $c->get('uuid');
+$c->setData($data)->save();""")
+
+
+def reset_displays(site: dict) -> None:
+    """Hike's and News's displays as Chapter 7 leaves them: Default only, no Card, no new date format."""
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('entity_view_display');
+foreach (['node.hike.teaser', 'node.hike.card', 'node.news.teaser', 'node.news.card'] as $id) { $s->load($id)?->delete(); }
+\\Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('node.card')?->delete();
+\\Drupal::entityTypeManager()->getStorage('date_format')->load('day_date_and_time')?->delete();""")
+    for name in ("core.entity_view_display.node.hike.default", "core.entity_view_display.node.news.default"):
+        restore_config(site, name)
+    subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
+
+
+def as_visitor(page: Page, site: dict, path: str, name: str) -> None:
+    """A full-page screenshot of path, logged out, in a window of its own."""
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(site["url"] + path)
+    visit.wait_for_load_state("networkidle")
+    save(visit, name, full_page=True)
+    context.close()
+
+
+def drag_row(page: Page, row: str, below: str) -> None:
+    """Drags a table row by its handle until it is below another row."""
+    handle = page.locator(f"tr:has-text('{row}') .tabledrag-handle").first.bounding_box()
+    target = page.locator(f"tr:has-text('{below}')").first.bounding_box()
+    x, y = handle["x"] + handle["width"] / 2, handle["y"] + handle["height"] / 2
+    page.mouse.move(x, y)
+    page.mouse.down()
+    page.mouse.move(x, target["y"] + target["height"] - 5, steps=25)
+    page.mouse.up()
+    page.wait_for_timeout(1000)
+
+
+def set_label(page: Page, field: str, label: str) -> None:
+    select = f"select[name='fields[{field}][label]']"
+    page.select_option(select, label)
+    page.wait_for_timeout(800)
+    if page.input_value(select) != label:
+        raise RuntimeError(f"{field}'s label didn't change to {label}")
+
+
+def field_settings(page: Page, field: str) -> str:
+    """Opens a field's formatter settings (the cog) and returns the prefix of their form names."""
+    page.click(f"input[name='{field}_settings_edit']")
+    page.wait_for_selector(f"input[name='{field}_plugin_settings_update']")
+    page.wait_for_timeout(1000)
+    return f"fields[{field}][settings_edit_form][settings]"
+
+
+def field_settings_update(page: Page, field: str) -> None:
+    page.click(f"input[name='{field}_plugin_settings_update']")
+    page.wait_for_selector(f"input[name='{field}_settings_edit']")
+    page.wait_for_timeout(1000)
+
+
+def disable_fields(page: Page, fields: list[str]) -> None:
+    """Moves fields to the Disabled region, through the Region selects behind Show row weights."""
+    page.click("button:has-text('Show row weights')")
+    for field in fields:
+        page.select_option(f"select[name='fields[{field}][region]']", "hidden")
+        page.wait_for_timeout(800)
+    page.click("button:has-text('Hide row weights')")
+    page.wait_for_timeout(500)
+
+
+def save_display(page: Page) -> None:
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+
+def manage_display_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 8's Manage display steps, from the displays Chapter 7 leaves.
+
+    Resets Hike's and News's displays first, and leaves them as Chapter 8 does
+    (the News Try it is done with drush, without screenshots).
+    """
+    url = site["url"]
+    reset_displays(site)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "08-hike-before")
+    display = url + "/admin/structure/types/manage/hike/display"
+
+    page.goto(display)
+    snap("08-display-overview")
+    page.goto(display + "/default")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "table")
+    snap("08-display-default")
+
+    drag_row(page, "field_body", "field_hike_leader")
+    scroll_to(page, "table")
+    snap("08-display-order")
+
+    for field in ("field_date", "field_meeting_place", "field_distance", "field_difficulty", "field_hike_leader"):
+        set_label(page, field, "inline")
+    scroll_to(page, "table")
+    snap("08-display-labels")
+
+    prefix = field_settings(page, "field_distance")
+    page.fill(f"input[name='{prefix}[scale]']", "1")
+    scroll_to(page, "tr:has-text('field_distance')", 200)
+    snap("08-display-distance")
+    field_settings_update(page, "field_distance")
+
+    prefix = field_settings(page, "field_hike_leader")
+    page.uncheck(f"input[name='{prefix}[link]']")
+    scroll_to(page, "tr:has-text('field_hike_leader')", 300)
+    snap("08-display-hike-leader")
+    field_settings_update(page, "field_hike_leader")
+    save_display(page)
+
+    page.goto(url + "/admin/config/regional/date-time/formats/add")
+    page.fill("input[name='label']", "Day, date and time")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='date_format_pattern']", "l, j F Y \\a\\t H:i")
+    page.locator("input[name='date_format_pattern']").evaluate("e => e.blur()")
+    page.wait_for_timeout(2500)
+    snap("08-date-format")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(display + "/default")
+    prefix = field_settings(page, "field_date")
+    page.select_option(f"select[name='{prefix}[format_type]']", "day_date_and_time")
+    page.wait_for_timeout(500)
+    scroll_to(page, "tr:has-text('field_date')", 200)
+    snap("08-display-date")
+    field_settings_update(page, "field_date")
+    save_display(page)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "08-hike-after")
+
+    # Teaser: for lists of hikes (Chapter 12).
+    page.goto(display)
+    page.click("tr:has-text('Teaser') a:has-text('Enable')")
+    page.wait_for_load_state("networkidle")
+    page.goto(display + "/teaser")
+    page.wait_for_load_state("networkidle")
+    disable_fields(page, ["field_meeting_place", "field_hike_leader"])
+    drag_row(page, "field_body", "field_difficulty")
+    for field in ("field_date", "field_distance", "field_difficulty"):
+        set_label(page, field, "inline")
+    page.select_option("select[name='fields[field_body][type]']", "text_trimmed")
+    page.wait_for_selector("input[name='field_body_settings_edit']")
+    page.wait_for_timeout(1500)
+    prefix = field_settings(page, "field_body")
+    page.fill(f"input[name='{prefix}[trim_length]']", "200")
+    field_settings_update(page, "field_body")
+    prefix = field_settings(page, "field_date")
+    page.select_option(f"select[name='{prefix}[format_type]']", "day_date_and_time")
+    field_settings_update(page, "field_date")
+    scroll_to(page, "table")
+    snap("08-display-teaser")
+    save_display(page)
+
+    # Card: a view mode of our own.
+    page.goto(url + "/admin/structure/display-modes/view/add/node")
+    page.fill("input[name='label']", "Card")
+    page.wait_for_timeout(1500)
+    page.fill("textarea[name='description'], input[name='description']", "A small box with the date and the difficulty, for the front page.")
+    page.check("input[name='bundles_by_entity[hike]']")
+    snap("08-view-mode-add")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.goto(display + "/card")
+    page.wait_for_load_state("networkidle")
+    disable_fields(page, ["field_body", "field_meeting_place", "field_distance", "field_hike_leader", "links"])
+    for field in ("field_date", "field_difficulty"):
+        set_label(page, field, "hidden")
+    prefix = field_settings(page, "field_date")
+    page.select_option(f"select[name='{prefix}[format_type]']", "day_date_and_time")
+    field_settings_update(page, "field_date")
+    scroll_to(page, "table")
+    snap("08-display-card")
+    save_display(page)
+
+    # The News Try it.
+    drush_php(site, """$d = \\Drupal::service('entity_display.repository')->getViewDisplay('node', 'news', 'teaser');
+$d->setComponent('field_body', ['type' => 'text_trimmed', 'label' => 'hidden', 'settings' => ['trim_length' => 300], 'weight' => 101])->save();""")
+
+
+HIKE_LAYOUT = r"""
+use Drupal\layout_builder\Section;
+use Drupal\layout_builder\SectionComponent;
+$storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+$storage->load('node.hike.full')?->delete();
+$display = $storage->load('node.hike.default')->createCopy('full');
+$display->setStatus(TRUE)->save();
+$display = $storage->load('node.hike.full');
+$display->enableLayoutBuilder()->save();
+$section = new Section('layout_twocol_section', ['label' => '', 'column_widths' => '67-33']);
+$uuid = \Drupal::service('uuid');
+$block = fn ($field, $label, $formatter) => [
+  'id' => "field_block:node:hike:$field",
+  'label' => $field,
+  'label_display' => '0',
+  'provider' => 'layout_builder',
+  'context_mapping' => ['entity' => 'layout_builder.entity', 'view_mode' => 'view_mode'],
+  'formatter' => $formatter + ['label' => $label, 'third_party_settings' => []],
+];
+$section->appendComponent(new SectionComponent($uuid->generate(), 'first', $block('field_body', 'hidden', ['type' => 'text_default', 'settings' => []])));
+$facts = [
+  'field_date' => ['type' => 'datetime_default', 'settings' => ['format_type' => 'day_date_and_time', 'timezone_override' => '']],
+  'field_meeting_place' => ['type' => 'string', 'settings' => ['link_to_entity' => FALSE]],
+  'field_distance' => ['type' => 'number_decimal', 'settings' => ['thousand_separator' => '', 'decimal_separator' => '.', 'scale' => 1, 'prefix_suffix' => TRUE]],
+  'field_difficulty' => ['type' => 'list_default', 'settings' => []],
+  'field_hike_leader' => ['type' => 'entity_reference_label', 'settings' => ['link' => FALSE]],
+];
+$weight = 0;
+foreach ($facts as $field => $formatter) {
+  $section->appendComponent((new SectionComponent($uuid->generate(), 'second', $block($field, 'above', $formatter)))->setWeight($weight++));
+}
+$display->removeAllSections()->appendSection($section)->save();
+"""
+
+
+def hike_layout_exercise(page: Page, site: dict, snap) -> None:
+    """Chapter 8's Layout Builder exercise: the hike on Full content, with the facts on the side.
+
+    Uses the Full content view mode, so Hike's Default display is untouched, and
+    deletes it afterwards (the page falls back to Default).
+    """
+    drush_php(site, HIKE_LAYOUT)
+    try:
+        as_visitor(page, site, "/hikes/turnhouse-hill", "08-exercise-hike-layout")
+    finally:
+        drush_php(site, "\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.full')?->delete();")
+
 # name: (site, function, logged in, full page[, window width])
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
@@ -538,6 +782,7 @@ SHOTS = {
     "07-hike-page": ("core", visitor("/hikes/turnhouse-hill"), False, True),
     "07-hike-permissions": ("core", hike_permissions, True, False),
     "07-cms-utility-page-fields": ("cms", cms_utility_page_fields, True, False),
+    "08-cms-utility-page-display": ("cms", cms_utility_page_display, True, False),
 }
 
 
@@ -546,6 +791,8 @@ SHOTS = {
 SEQUENCES = [
     ("core", reuse_field_steps, 1280, ["07-reuse-field", "07-reuse-settings"]),
     ("core", layout_builder_steps, 1600, ["08-lb-start", "08-lb-choose-layout", "08-lb-column-widths", "08-lb-choose-block", "08-lb-content-block", "08-lb-body-block", "08-lb-remove-section", "08-lb-save"]),
+    ("core", manage_display_steps, 1280, ["08-hike-before", "08-display-overview", "08-display-default", "08-display-order", "08-display-labels", "08-display-distance", "08-display-hike-leader", "08-date-format", "08-display-date", "08-hike-after", "08-display-teaser", "08-view-mode-add", "08-display-card"]),
+    ("core", hike_layout_exercise, 1280, ["08-exercise-hike-layout"]),
     ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 
@@ -609,7 +856,12 @@ def main(wanted: list[str]) -> int:
             context = browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
             page = context.new_page()
             log_in(page, site)
-            steps(page, site, lambda name, element=None: save(page, name, element=element))
+            try:
+                steps(page, site, lambda name, element=None: save(page, name, element=element))
+            except Exception:
+                if os.environ.get("DEBUG_SHOT"):
+                    page.screenshot(path=os.environ["DEBUG_SHOT"])
+                raise
             context.close()
         browser.close()
     return 0

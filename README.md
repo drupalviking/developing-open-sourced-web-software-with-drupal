@@ -87,7 +87,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python tools/screenshots.py          # all of them
 ```
 
-So far it has Chapter 6's and Chapter 8's screenshots; Chapters 4 and 5 are still to be added.
+So far it has the screenshots of Chapters 6 to 8; Chapters 4 and 5 are still to be added.
 
 ## Contents and status
 
@@ -100,7 +100,7 @@ So far it has Chapter 6's and Chapter 8's screenshots; Chapters 4 and 5 are stil
 | 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 11. |
 | 5. Finding Your Way Around | **Reviewed by the author (2026-11-05).** A tour of the Navigation sidebar on Drupal 12, Basic site settings and Regional settings for the club, contextual links, and the site as visitors see it. Checked on the test sites. |
 | 6. Your First Page | **Reviewed by the author (2026-11-05).** Basic page built by hand (machine name `page`, a `field_body` field), *About the club*, *How to join* and *Welcome* with menu links and aliases, the front page (`/node/3`), revisions, content moderation (Editorial), Trash. Layout Builder and Canvas moved to Chapter 8. Checked on the test sites; screenshots from `tools/screenshots.py`. |
-| 7. Everything Is an Entity | Draft: content types and fields. |
+| 7. Everything Is an Entity | **Draft, waiting for the author's review (2026-11-05).** Rewritten: why structured content, entities and bundles in plain words (a table of entity types), a table of Drupal 12's field types, the **Hike** content type step by step (Description re-uses Body; Date, Meeting place, Distance, Difficulty, Hike leader), field storage and machine-name boxes, Manage form display (widgets), the Editorial workflow on Hike, the first hike, Manage permissions, **News** as a Try it, On Drupal CMS and Coming from WordPress? boxes, five exercises. Checked on the test sites; screenshots from `tools/screenshots.py`. |
 | 8. Laying Out Pages | **Split from Chapter 6 (2026-11-05).** Layout Builder on core (8 steps, a screenshot each) and Canvas on Drupal CMS (7 steps), the comparison table, the WordPress box, two exercises. The Manage display section (view modes, labels, formatters, on the Hike type) is a `%%` placeholder, to draft after Chapter 7. |
 | 9. Media and Image Styles | Short draft. |
 | 10. Taxonomy | Short draft. |
@@ -124,6 +124,7 @@ Chapter numbers will be checked once, at the end, together with every cross-refe
 
 Facts about releases and products that change quickly. Re-check each before a release.
 
+- Chapter 7: written on Drupal 12.0.0-beta2 and Drupal CMS 2.2.8 (2026-11-05). The **Create a new field** types and their sub-choices (no Float, no "Long text with summary"; Telephone, Date range and Comments not installed on Standard), **Re-use an existing field** going to the field's settings page with **Save settings**, the allowed values as Name plus machine name, **Include the anonymous user** on by default for user references, and Standard's **Content editor** role. In the field window, storage settings only apply once the field loses focus (the script presses Tab). Re-check after the release.
 - Chapter 6: written on Drupal 12.0.0-beta2 and Drupal CMS 2.2.8 (2026-11-05). New content types get no fields, and the machine name `basic_page` (the chapter changes it to `page`); the body field is Formatted text > Long text, `field_body`; Promoted and Sticky are in the form display's Disabled part. The **Promoted** label (was "Promoted to front page") is from #3593281 (committed to main and 11.x in June 2026; Drupal CMS on 11.4.11 still shows the old label); #3538655 (removing the fields) was closed won't fix. Layout Builder is installed on Standard because Navigation depends on it. Content Moderation creates the **Editorial** workflow. The revision overview hides revisions that only changed the menu link. The front page setting stores the path as typed. Re-check all of it after the release.
 - Chapter 8: Drupal Canvas has no Drupal 12 release (1.12.0 and 1.x-dev require ^11.3; `canvas_version` in `data/numbers.yml`). When it does, move the Canvas section from the "On Drupal CMS" box to the core site, and retake its screenshots. The Canvas steps (Grid, Text, Icon card, **Move into**, **Review 1 change**) are from Canvas on Drupal CMS 2.2.8. Trash 3.1.2 supports `^11.3.3 | ^12`.
 

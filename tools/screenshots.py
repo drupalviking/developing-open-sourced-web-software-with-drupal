@@ -5,8 +5,8 @@ The test sites are DDEV projects outside this repository (see PROJECT-LOG.md,
 "Where we are"): `lens-and-trail` (Drupal core) and `lens-and-trail-cms`
 (Drupal CMS). Each must be running, and in the state the chapter leaves it in.
 The script only looks: it fills in forms to show them, but never saves them.
-The exception is a step-by-step sequence (Layout Builder, Canvas), which
-changes a page as it goes: it works on a temporary copy, made with
+The exception is a step-by-step sequence (re-using a field, Layout Builder,
+Canvas), which changes the site as it goes: it works on a temporary copy, made with
 `ddev drush` in the site's directory, and deletes the copy when it's done.
 
 Screenshots are taken at twice the size (for sharp text) and resized to 1280
@@ -360,6 +360,149 @@ def trash(page: Page, url: str) -> None:
     page.goto(url + "/admin/content/trash")
 
 
+# Chapter 7
+
+def add_hike(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/add")
+    page.fill("#edit-name", "Hike")
+    page.wait_for_timeout(1500)
+    page.fill("#edit-description", "A hike or photo walk the club organizes, with its date, meeting place, distance and difficulty.")
+    page.click("text=Display settings")
+    page.uncheck("#edit-display-submitted")
+    page.click("text=Menu settings")
+    page.uncheck("input[name='menu_options[main]']")
+
+
+def hike_field_dialog(page: Page, url: str, field_type: str, label: str, choice: str, settings: bool = True) -> None:
+    """The Add field window on Hike. The site already has these fields, so the
+    settings step gets a throwaway machine name: nothing is created until Save."""
+    page.goto(url + "/admin/structure/types/manage/hike/fields")
+    page.click("text=Create a new field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(1500)
+    page.click(f".ui-dialog >> text={field_type}")
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='label']", label)
+    page.wait_for_timeout(1500)
+    page.click(f".ui-dialog label:has-text('{choice}')")
+    if not settings:
+        return
+    page.click(".ui-dialog button:has-text('Edit')")
+    page.fill(".ui-dialog input[name='field_name']", "screenshot_only")
+    page.click(".ui-dialog button:has-text('Continue')")
+    page.wait_for_selector(".ui-dialog-title:has-text('settings')")
+    page.wait_for_timeout(1500)
+
+
+def dialog_fill(page: Page, name: str, value: str) -> None:
+    field = page.locator(f".ui-dialog [name='{name}']")
+    field.fill(value)
+    field.press("Tab")
+    page.wait_for_timeout(1500)
+
+
+def dialog_scroll_to(page: Page, selector: str) -> None:
+    page.locator(f".ui-dialog {selector}").first.scroll_into_view_if_needed()
+    page.wait_for_timeout(500)
+
+
+def add_date(page: Page, url: str) -> None:
+    hike_field_dialog(page, url, "Date and time", "Date", "Datetime", settings=False)
+
+
+def date_settings(page: Page, url: str) -> None:
+    hike_field_dialog(page, url, "Date and time", "Date", "Datetime")
+    dialog_fill(page, "description", "The day and time we meet.")
+    page.check(".ui-dialog input[name='required']")
+
+
+def distance_settings(page: Page, url: str) -> None:
+    hike_field_dialog(page, url, "Number", "Distance", "Decimal")
+    dialog_fill(page, "field_storage[subform][settings][scale]", "1")
+    dialog_fill(page, "description", "The length of the walk, in kilometers.")
+    dialog_fill(page, "settings[min]", "0")
+    dialog_fill(page, "settings[suffix]", " km")
+    dialog_scroll_to(page, "[name='settings[suffix]']")
+
+
+def difficulty_settings(page: Page, url: str) -> None:
+    hike_field_dialog(page, url, "Selection list", "Difficulty", "Text")
+    for i, name in enumerate(["Easy", "Moderate", "Hard"]):
+        if i:
+            page.click(".ui-dialog input[name='add_more_allowed_values']")
+            page.wait_for_timeout(2500)
+        dialog_fill(page, f"field_storage[subform][settings][allowed_values][table][{i}][item][label]", name)
+    dialog_scroll_to(page, "[name='field_storage[subform][settings][allowed_values][table][0][item][label]']")
+
+
+def hike_leader_settings(page: Page, url: str) -> None:
+    hike_field_dialog(page, url, "Reference", "Hike leader", "User")
+    dialog_fill(page, "description", "The member who leads the hike.")
+    page.select_option(".ui-dialog select[name='settings[handler_settings][sort][field]']", "name")
+    page.wait_for_timeout(2000)
+    page.uncheck(".ui-dialog input[name='settings[handler_settings][include_anonymous]']")
+    dialog_scroll_to(page, "[name='settings[handler_settings][sort][field]']")
+
+
+def hike_fields(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/hike/fields")
+
+
+def hike_form_display(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/hike/form-display")
+
+
+def hike_form(page: Page, url: str) -> None:
+    page.goto(url + "/node/add/hike")
+    page.fill("input[name='title[0][value]']", "Turnhouse Hill and Carnethy Hill")
+    page.fill("input[name='field_date[0][value][date]']", "2026-11-21")
+    page.fill("input[name='field_date[0][value][time]']", "09:30")
+    page.fill("input[name='field_meeting_place[0][value]']", "Flotterstone car park")
+    page.fill("input[name='field_distance[0][value]']", "11.5")
+    page.check("input[name='field_difficulty'][value='moderate']")
+    page.select_option("select[name='field_hike_leader']", label="admin")
+    page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", TURNHOUSE_HILL)
+    page.click("summary:has-text('URL alias')")
+    page.fill("input[name='path[0][alias]']", "/hikes/turnhouse-hill")
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+
+
+def hike_permissions(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/hike/permissions")
+
+
+def cms_utility_page_fields(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/page/fields")
+
+
+TURNHOUSE_HILL = (
+    "<p>Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy Hill, and come back down through the glen.</p>"
+    "<p>Bring boots, a waterproof jacket, something warm, lunch, and your camera. The path is steep in places and can be muddy.</p>"
+)
+
+
+def reuse_field_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 7's re-use steps, on a temporary content type called Hike."""
+    drush_php(site, '\\Drupal\\node\\Entity\\NodeType::create(["type" => "hike_screenshot", "name" => "Hike"])->save();')
+    try:
+        page.goto(site["url"] + "/admin/structure/types/manage/hike_screenshot/fields")
+        page.click("text=Re-use an existing field")
+        page.wait_for_selector(".ui-dialog")
+        page.wait_for_timeout(2000)
+        # When the reader gets here, Body is the only field to re-use; the
+        # finished site has more, so the window shows only Body's row.
+        page.evaluate("() => document.querySelectorAll('.ui-dialog tbody tr').forEach(r => { if (!r.textContent.includes('field_body')) r.remove(); })")
+        snap("07-reuse-field")
+        page.locator(".ui-dialog tr", has_text="field_body").locator("input, button").first.click()
+        page.wait_for_url("**/node.hike_screenshot.field_body")
+        page.wait_for_load_state("networkidle")
+        page.fill("input[name='label']", "Description")
+        page.fill("textarea[name='description']", "What the hike is like: the route, the views, and what to bring.")
+        snap("07-reuse-settings")
+    finally:
+        drush_php(site, '\\Drupal\\node\\Entity\\NodeType::load("hike_screenshot")?->delete();')
+
+
 # name: (site, function, logged in, full page[, window width])
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
@@ -377,12 +520,25 @@ SHOTS = {
     "08-canvas-editor": ("cms", canvas_editor, True, False, 1600),
     "08-canvas-how-to-join": ("cms", visitor("/join"), False, False),
     "06-trash": ("cms", trash, True, False),
+    "07-add-hike": ("core", add_hike, True, False),
+    "07-add-date": ("core", add_date, True, False),
+    "07-date-settings": ("core", date_settings, True, False),
+    "07-distance-settings": ("core", distance_settings, True, False),
+    "07-difficulty-settings": ("core", difficulty_settings, True, False),
+    "07-hike-leader-settings": ("core", hike_leader_settings, True, False),
+    "07-hike-fields": ("core", hike_fields, True, False),
+    "07-hike-form-display": ("core", hike_form_display, True, False),
+    "07-hike-form": ("core", hike_form, True, False),
+    "07-hike-page": ("core", visitor("/hikes/turnhouse-hill"), False, True),
+    "07-hike-permissions": ("core", hike_permissions, True, False),
+    "07-cms-utility-page-fields": ("cms", cms_utility_page_fields, True, False),
 }
 
 
 # Sequences: several screenshots from one run of steps.
 # (site, function, window width, the names it takes)
 SEQUENCES = [
+    ("core", reuse_field_steps, 1280, ["07-reuse-field", "07-reuse-settings"]),
     ("core", layout_builder_steps, 1600, ["08-lb-start", "08-lb-choose-layout", "08-lb-column-widths", "08-lb-choose-block", "08-lb-content-block", "08-lb-body-block", "08-lb-remove-section", "08-lb-save"]),
     ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]

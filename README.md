@@ -31,7 +31,7 @@ covered by the same license.
 | `slides/` | The teachers' kit (to come): a deck and teaching notes per chapter. |
 | `examples/` | Files the book shows the reader, such as the photo club's recipe (to come). Pulled into chapters with `<!-- include: ... -->`. |
 | `archive/` | Drafts that are out of the book's scope, kept until we decide where they go. |
-| `tools/` | `build.py`, and later the test site and screenshot scripts. |
+| `tools/` | `build.py`, `update_numbers.py`, and `screenshots.py` (retakes the screenshots from the test sites). |
 | `PROJECT-LOG.md` | Decisions, history, open items, and the backlog. |
 
 ## Writing
@@ -76,6 +76,19 @@ python3 tools/build.py
 
 Numbers without an automatic source (support dates that haven't been announced, say) are listed at the end, with a link to check them by hand. The comment at the top of `data/numbers.yml` explains how to add one.
 
+### Screenshots
+
+`tools/screenshots.py` retakes the screenshots from the two test sites (see `PROJECT-LOG.md`, "Where we are"), with Playwright and its own Chromium, 1280 pixels wide. The sites must be running, and in the state the chapter leaves them in; the script only looks, it never saves a form. The exception is a step-by-step sequence, such as Chapter 6's Layout Builder and Canvas steps (1600 pixels wide, so the panels fit): it builds the page on a temporary copy, made with `ddev drush` in the site's directory (`CORE_DIR`, `CMS_DIR`), and deletes the copy at the end. If a sequence fails, `DEBUG_SHOT=/some/path.png` saves a screenshot of where it stopped.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/playwright install chromium          # once
+.venv/bin/python tools/screenshots.py 06       # one chapter's screenshots
+.venv/bin/python tools/screenshots.py          # all of them
+```
+
+So far it has Chapter 6's and Chapter 8's screenshots; Chapters 4 and 5 are still to be added.
+
 ## Contents and status
 
 | Chapter | Status |
@@ -84,23 +97,24 @@ Numbers without an automatic source (support dates that haven't been announced, 
 | 1. What Is a CMS, and What Is Drupal? | **Reviewed by the author (2026-11-04).** Changes from the review: full-sentence pointers to later chapters, Default Admin stable in 11.5/12, and the "Coming from WordPress?" table. Figures 1.1 and 1.2 to be retaken. |
 | 2. Open Source and the Drupal Community | **Reviewed by the author (2026-11-04).** The author's own story is still to come (a `%%` placeholder in "Who makes Drupal?"). |
 | 3. A Short History of Drupal | **Reviewed by the author (2026-11-04).** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
-| 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 10. |
+| 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 11. |
 | 5. Finding Your Way Around | **Reviewed by the author (2026-11-05).** A tour of the Navigation sidebar on Drupal 12, Basic site settings and Regional settings for the club, contextual links, and the site as visitors see it. Checked on the test sites. |
-| 6. Your First Page | Not started. Canvas and Layout Builder, the content form, moderation, revisions, trash. |
+| 6. Your First Page | **Reviewed by the author (2026-11-05).** Basic page built by hand (machine name `page`, a `field_body` field), *About the club*, *How to join* and *Welcome* with menu links and aliases, the front page (`/node/3`), revisions, content moderation (Editorial), Trash. Layout Builder and Canvas moved to Chapter 8. Checked on the test sites; screenshots from `tools/screenshots.py`. |
 | 7. Everything Is an Entity | Draft: content types and fields. |
-| 8. Media and Image Styles | Short draft. |
-| 9. Taxonomy | Short draft. |
-| 10. Extending Drupal: Modules, Recipes, and Composer | Not started. Holds the Composer text moved from Chapter 4. |
-| 11. Views | Not started. |
-| 12. Blocks, Regions, and Menus | Not started. |
-| 13. Users, Roles, and Permissions | Short draft (the user entity). |
-| 14. Appearance: Themes | Not started. Holds the theme file structure moved from Chapter 1. |
-| 15. Nice URLs and SEO | Not started. Pathauto, Metatag, Redirect. |
-| 16. Multilingual Sites | Not started. |
-| 17. AI in Drupal CMS | Not started. |
-| 18. Keeping Your Site Safe | Not started. Updates, security advisories, backups. |
-| 19. Configuration and Going Live | Not started. Configuration export and import, moving a site. |
-| 20. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
+| 8. Laying Out Pages | **Split from Chapter 6 (2026-11-05).** Layout Builder on core (8 steps, a screenshot each) and Canvas on Drupal CMS (7 steps), the comparison table, the WordPress box, two exercises. The Manage display section (view modes, labels, formatters, on the Hike type) is a `%%` placeholder, to draft after Chapter 7. |
+| 9. Media and Image Styles | Short draft. |
+| 10. Taxonomy | Short draft. |
+| 11. Extending Drupal: Modules, Recipes, and Composer | Not started. Holds the Composer text moved from Chapter 4. |
+| 12. Views | Not started. |
+| 13. Blocks, Regions, and Menus | Not started. |
+| 14. Users, Roles, and Permissions | Short draft (the user entity). |
+| 15. Appearance: Themes | Not started. Holds the theme file structure moved from Chapter 1. |
+| 16. Nice URLs and SEO | Not started. Pathauto, Metatag, Redirect. |
+| 17. Multilingual Sites | Not started. |
+| 18. AI in Drupal CMS | Not started. |
+| 19. Keeping Your Site Safe | Not started. Updates, security advisories, backups. |
+| 20. Configuration and Going Live | Not started. Configuration export and import, moving a site. |
+| 21. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
 | Appendix A. Development Tools | Draft (Docker, DDEV, Lando, editors, Git, Xdebug). |
 | Appendix B. How Drupal Is Built | Draft (moved from "Where do I begin?": Symfony, Twig, Composer). New section "How Drupal's code has changed" (2026-11-04), from Chapter 3's draft, waiting for the author's review. |
 
@@ -109,6 +123,9 @@ Chapter numbers will be checked once, at the end, together with every cross-refe
 ## Check before publication
 
 Facts about releases and products that change quickly. Re-check each before a release.
+
+- Chapter 6: written on Drupal 12.0.0-beta2 and Drupal CMS 2.2.8 (2026-11-05). New content types get no fields, and the machine name `basic_page` (the chapter changes it to `page`); the body field is Formatted text > Long text, `field_body`; Promoted and Sticky are in the form display's Disabled part. The **Promoted** label (was "Promoted to front page") is from #3593281 (committed to main and 11.x in June 2026; Drupal CMS on 11.4.11 still shows the old label); #3538655 (removing the fields) was closed won't fix. Layout Builder is installed on Standard because Navigation depends on it. Content Moderation creates the **Editorial** workflow. The revision overview hides revisions that only changed the menu link. The front page setting stores the path as typed. Re-check all of it after the release.
+- Chapter 8: Drupal Canvas has no Drupal 12 release (1.12.0 and 1.x-dev require ^11.3; `canvas_version` in `data/numbers.yml`). When it does, move the Canvas section from the "On Drupal CMS" box to the core site, and retake its screenshots. The Canvas steps (Grid, Text, Icon card, **Move into**, **Review 1 change**) are from Canvas on Drupal CMS 2.2.8. Trash 3.1.2 supports `^11.3.3 | ^12`.
 
 - Chapter 5: the Navigation sidebar's items and the Structure, Configuration and Reports submenus are from Drupal 12.0.0-beta2; the top bar shows the page's **Edit** link and **More actions**; the Drupal CMS sidebar and Dashboard are from 2.2.8 (all 2026-11-04). Re-check after the release.
 

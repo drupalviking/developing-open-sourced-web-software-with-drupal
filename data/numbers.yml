@@ -66,3 +66,12 @@ numbers:
     value: 'December 2030'
     label: Drupal 12, end of life; from PSA-2026-11-02 (https://www.drupal.org/psa-2026-11-02) (Chapter 3, release table)
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
+
+  canvas_version:
+    value: '1.12.0'
+    label: Drupal Canvas, newest version; 1.12.0 and 1.x-dev require Drupal ^11.3, so no Drupal 12 support yet (Chapter 6). When it supports Drupal 12, rewrite Chapter 6's Canvas section for the core site.
+    source: https://www.drupal.org/project/canvas
+    fetch:
+      json: https://packages.drupal.org/files/packages/8/p2/drupal/canvas.json
+      path: packages.drupal/canvas.*.version
+      stable: true

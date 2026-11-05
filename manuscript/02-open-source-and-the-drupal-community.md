@@ -12,7 +12,7 @@ In this chapter we look at:
 - Why you'd choose open source software, and the honest trade-offs.
 - Who makes Drupal: the people, the companies, and the Drupal Association.
 
-There's no hands-on work in this chapter. We start building in Chapter 4. How *you* can take part in the community is the topic of Chapter 20, at the end of the book, once you know your way around.
+There's no hands-on work in this chapter. We start building in Chapter 4. How *you* can take part in the community is the topic of Chapter 21, at the end of the book, once you know your way around.
 
 ## What is open source?
 
@@ -57,7 +57,7 @@ This is called *copyleft*, a play on copyright: it uses copyright law to keep so
 
 Every module, theme, and recipe you can download from drupal.org is GPL too, version 2 or later. This is a rule of drupal.org: it only hosts code under that license (and code from elsewhere with a license that works with it).
 
-That rule is a big part of Drupal's success. Because everything shares one license, any module can be combined with any other, and with Drupal core, without anyone having to check whether their licenses allow it. When we install modules for the club site in Chapter 10, you'll never have to read a license first.
+That rule is a big part of Drupal's success. Because everything shares one license, any module can be combined with any other, and with Drupal core, without anyone having to check whether their licenses allow it. When we install modules for the club site in Chapter 11, you'll never have to read a license first.
 
 ### What the GPL asks of a site builder: almost nothing
 
@@ -105,7 +105,7 @@ Here are the licenses you're most likely to meet:
 | CC0 | Public domain | Anything | No conditions at all. |
 | Proprietary | Closed | Anything | Only what the owner allows, usually in a license agreement. |
 
-Creative Commons licenses will matter to the Lens & Trail club, by the way. The club needs photos for its site before its members have uploaded their own, and many of the photos you can find online are under Creative Commons licenses. We come back to finding photos you're allowed to use in Chapter 8.
+Creative Commons licenses will matter to the Lens & Trail club, by the way. The club needs photos for its site before its members have uploaded their own, and many of the photos you can find online are under Creative Commons licenses. We come back to finding photos you're allowed to use in Chapter 9.
 
 ## Why choose open source?
 
@@ -116,14 +116,14 @@ This isn't a contest, and commercial website builders are good products. For a o
 - **You own your site.** The code, the content, and the data are yours, on a server you choose. If your hosting company raises its prices, or closes, you move the site to another one.
 - **No lock-in.** If you stop paying for a commercial website builder, the site usually goes away, and moving it elsewhere is hard. With open source, nobody can switch your site off, or force you to upgrade.
 - **The cost.** Drupal costs nothing to download or use. You pay for hosting, and for people's time, which you would anyway.
-- **Security out in the open.** Anyone can read Drupal's code, including security experts, and Drupal has a dedicated security team that handles vulnerabilities and publishes security advisories. We look at how that works in Chapter 18.
+- **Security out in the open.** Anyone can read Drupal's code, including security experts, and Drupal has a dedicated security team that handles vulnerabilities and publishes security advisories. We look at how that works in Chapter 19.
 - **It lasts.** Drupal has been developed for more than twenty-five years. It doesn't depend on one company's business plans.
 - **A community.** When you're stuck, thousands of people have probably had the same problem, and many of them are happy to help.
 
 And the honest trade-offs:
 
 - **There's no company to call.** If something breaks, nobody is obliged to fix it for you. You can pay a Drupal agency or hosting company for support, but you have to choose one.
-- **You're responsible.** Updates, security, and backups are your job, or the job of whoever you pay. Chapter 18 shows how.
+- **You're responsible.** Updates, security, and backups are your job, or the job of whoever you pay. Chapter 19 shows how.
 - **It takes learning.** Drupal can do a lot, so there's a lot to learn. You're reading this book, so you've already accepted that ;-)
 - **It depends on people.** Open source projects are kept alive by people who contribute, as volunteers or because their employers pay them to. A project nobody contributes to slowly dies. Which brings us to who makes Drupal.
 
@@ -165,7 +165,7 @@ The Drupal Association doesn't decide what goes into Drupal. That's the work of 
 
 Drupal CMS, the product we met in Chapter 1, is made the same way. It started in 2024 as an initiative called *Starshot*, and it's built by a team of contributors from many companies, in public, on drupal.org, like everything else.
 
-> **Note:** You'll hear the Drupal motto again and again: **"Come for the code, stay for the community."** It's the line on the front page of a new Drupal site, too (look at Figure 1.1). We get to how you can be part of that community in Chapter 20.
+> **Note:** You'll hear the Drupal motto again and again: **"Come for the code, stay for the community."** It's the line on the front page of a new Drupal site, too (look at Figure 1.1). We get to how you can be part of that community in Chapter 21.
 
 ## Summary
 

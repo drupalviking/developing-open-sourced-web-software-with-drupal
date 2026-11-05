@@ -9,7 +9,7 @@ The book is also open source, meaning that you can freely download, reuse, modif
 I've written this book with three kinds of readers in mind.
 
 - **Students** in universities and colleges, taking a course on web development or content management. The book follows a semester well: one chapter a week, with exercises at the end of each one.
-- **Participants in a Drupal in a Day workshop**, held at DrupalCons, Drupal Camps, and other events. A workshop day covers a lot of ground quickly. This book is the place to read about it all again, more slowly and in more depth. The workshop covers roughly Chapters 4 to 18.
+- **Participants in a Drupal in a Day workshop**, held at DrupalCons, Drupal Camps, and other events. A workshop day covers a lot of ground quickly. This book is the place to read about it all again, more slowly and in more depth. The workshop covers roughly Chapters 4 to 19.
 - **The curious**, who want to learn Drupal on their own, at their own pace. Read the book from the start, and do the exercises. That's how it sticks.
 
 You don't need to know how to program. You don't need to know PHP, the language Drupal is written in, and you won't write any code in this book. You do need to be comfortable with a computer, and not afraid of typing a few commands into a terminal (the text window where you type commands to your computer). We install Drupal on your own computer in Chapter 4, and I show you every command you need, and what it does.
@@ -25,21 +25,22 @@ We start with the big picture, and then build a site, one piece at a time.
 - **Chapter 3, A Short History of Drupal**, tells the story from a student's message board at the University of Antwerp to the Drupal of today.
 - **Chapter 4, Installing Drupal**, gets Drupal, and Drupal CMS, running on your own computer.
 - **Chapter 5, Finding Your Way Around**, is a tour of the administration interface.
-- **Chapter 6, Your First Page**, creates content, and shows the two ways of laying out a page: Drupal Canvas and Layout Builder.
+- **Chapter 6, Your First Page**, creates content: the club's first pages, their revisions, and drafts that someone checks before they go online.
 - **Chapter 7, Everything Is an Entity**, explains how Drupal structures its data, with content types and fields.
-- **Chapter 8, Media and Image Styles**, handles photos, videos, and documents, and how Drupal resizes images for you.
-- **Chapter 9, Taxonomy**, classifies content with categories and tags.
-- **Chapter 10, Extending Drupal**, adds features with modules and recipes, and introduces Composer, the tool that manages them.
-- **Chapter 11, Views**, builds lists of content, such as upcoming hikes or the newest photos.
-- **Chapter 12, Blocks, Regions, and Menus**, places things on the page, and builds the site's navigation.
-- **Chapter 13, Users, Roles, and Permissions**, decides who can do what.
-- **Chapter 14, Appearance**, changes the look of the site with themes.
-- **Chapter 15, Nice URLs and SEO**, gives pages readable addresses, and helps search engines find them.
-- **Chapter 16, Multilingual Sites**, translates the site, its content, and its interface.
-- **Chapter 17, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
-- **Chapter 18, Keeping Your Site Safe**, covers updates, security advisories, and backups.
-- **Chapter 19, Configuration and Going Live**, moves your work from your computer to a real server.
-- **Chapter 20, Where Next?**, shows how to get involved in the community, and where to go from here.
+- **Chapter 8, Laying Out Pages**, decides how content looks: field displays, and the two ways of laying out a page, Layout Builder and Drupal Canvas.
+- **Chapter 9, Media and Image Styles**, handles photos, videos, and documents, and how Drupal resizes images for you.
+- **Chapter 10, Taxonomy**, classifies content with categories and tags.
+- **Chapter 11, Extending Drupal**, adds features with modules and recipes, and introduces Composer, the tool that manages them.
+- **Chapter 12, Views**, builds lists of content, such as upcoming hikes or the newest photos.
+- **Chapter 13, Blocks, Regions, and Menus**, places things on the page, and builds the site's navigation.
+- **Chapter 14, Users, Roles, and Permissions**, decides who can do what.
+- **Chapter 15, Appearance**, changes the look of the site with themes.
+- **Chapter 16, Nice URLs and SEO**, gives pages readable addresses, and helps search engines find them.
+- **Chapter 17, Multilingual Sites**, translates the site, its content, and its interface.
+- **Chapter 18, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
+- **Chapter 19, Keeping Your Site Safe**, covers updates, security advisories, and backups.
+- **Chapter 20, Configuration and Going Live**, moves your work from your computer to a real server.
+- **Chapter 21, Where Next?**, shows how to get involved in the community, and where to go from here.
 
 There are two appendices. **Appendix A, Development Tools**, explains the tools we use to run Drupal on our own computers (Docker, DDEV, Lando, editors, Git). **Appendix B, How Drupal Is Built**, looks under the hood, at the software Drupal is built from, for those who are curious.
 

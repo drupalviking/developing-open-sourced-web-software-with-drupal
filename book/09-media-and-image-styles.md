@@ -7,16 +7,16 @@ Drupal’s Media module provides a first-class system for managing reusable asse
 ## Navigating the Media system
 In order to see what Media types are installed on your Drupal instance, navigate to (/admin/structure/media). That will give you a list, similar to this one:
 
-![Media Types List](images/08-media-types-list.png)
+![Media Types List](images/09-media-types-list.png)
 *Media types list from a fresh Drupal CMS install*
 
 This list might seem familiar, and if you have already read the Content types chapter, it should, since this is a *list of bundles* from the *Media* entity. You can add fields to it, change how the form(s) are displayed and the different type of rendering options it has. 
 
 Let's take a look at Image display for an example (/admin/structure/media/manage/image/display).
 
-![Manage display of Media part 1](images/08-manage-display-of-media-part-1.png)
+![Manage display of Media part 1](images/09-manage-display-of-media-part-1.png)
 *Actual list is longer, cut for demoing purposes*
-![Manage display of Media part 2](images/08-manage-display-of-media-part-2.png)
+![Manage display of Media part 2](images/09-manage-display-of-media-part-2.png)
 *Manage display (Default option) for Media type Image*
 
 Yes, that's a long list! But that's one of Drupals' many amazing capabilities, to be able to configure everything in the way YOU want it to be configured.

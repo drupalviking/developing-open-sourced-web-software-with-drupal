@@ -45,14 +45,26 @@ Drupal saves the content type and takes you to its **Manage fields** tab, which 
 
 > **"No fields" is only half true.** Every piece of content already has a set of fields that Drupal itself provides, called *base fields*: the title, the author, when it was created and last changed, whether it's published, its URL alias, and a few more. You'll see them on the form in a moment, but not here, because **Manage fields** only lists the fields you add yourself. We look at base fields in Chapter 7.
 
-1. Select **Create a new field**. A window opens with the types of field Drupal knows about: **Plain text**, **Formatted text**, **Number**, **Reference**, **Date and time**, and more.
-2. Select **Formatted text**: text with formatting, such as bold, links and lists, written in a text editor.
-3. In **Label**, type `Body`. Drupal makes the machine name `field_body`; fields you add get `field_` at the front, so you can tell them apart from Drupal's own.
-4. Under **Choose a field type**, select **Long text**, for a text of any length, and select **Continue**.
-5. Drupal now shows the field's settings. **Allowed number of values** decides whether a page can have one body or several; one is right. **Help text** is shown under the field on the form; **Required field** makes it impossible to save a page without it; and **Allowed text formats** limits which formats (see below) editors may use. Leave them all as they are, and select **Save**.
+1. Select **Create a new field**. A window opens with the types of field Drupal knows about: **Plain text**, **Formatted text**, **Number**, **Reference**, **Date and time**, and more. Select **Formatted text**: text with formatting, such as bold, links and lists, written in a text editor.
 
 ![The Add field window, with the types of field to choose from](images/06-add-field.png)
 *Figure 6.2: Choosing a type of field*
+
+2. In **Label**, type `Body`. Next to it, Drupal makes the machine name `field_body`; fields you add get `field_` at the front, so you can tell them apart from Drupal's own.
+3. Under **Choose a field type**, select **Long text**, for a text of any length, and select **Continue**.
+
+![The Add field: Formatted text window, with Body as the label and Long text selected](images/06-add-field-type.png)
+*Figure 6.3: Naming the field, and choosing Long text*
+
+4. Drupal now shows the field's settings. **Allowed number of values** decides whether a page can have one body or several; one is right. **Help text** is shown under the field on the form; **Required field** makes it impossible to save a page without it; and **Allowed text formats** (further down) limits which formats editors may use, which we explain in "Writing the first page". Leave them all as they are, and select **Save**.
+
+![The Body settings for Basic page window, with Allowed number of values, Help text and Required field](images/06-add-field-settings.png)
+*Figure 6.4: The field's settings*
+
+5. Drupal closes the window, and **Manage fields** now lists **Body**, with its machine name and its type, Long text. **Edit** takes you back to its settings, if you need to change them later.
+
+![The Manage fields tab of Basic page, with the Body field](images/06-manage-fields.png)
+*Figure 6.5: Basic page, with its Body field. (The Layout field appears later in this chapter, when we turn on Layout Builder.)*
 
 The Basic page content type is ready, with a title and a body. We'll come back to its **Manage display** tab in a moment.
 
@@ -63,7 +75,7 @@ The Basic page content type is ready, with a title and a body. We'll come back t
 Select **Create** > **Basic page** in the sidebar, or go to `/node/add/page`.
 
 ![The form for a Basic page, with the About the club text, and Menu settings and URL alias open on the right](images/06-content-form.png)
-*Figure 6.3: Writing the About the club page*
+*Figure 6.6: Writing the About the club page*
 
 The form has two parts. On the left is the content itself: **Title** and **Body**. The body field is a text editor, called CKEditor, with buttons for bold, italic, links, lists, quotes, images and headings, much like a word processor's. Under it, **Text format** decides which formatting is allowed. **Basic HTML**, the default, allows the usual formatting and nothing that could break the page or the site's security; **Full HTML** allows everything, and should only be given to people you trust completely. Chapter 13 decides who may use which format.
 
@@ -113,14 +125,14 @@ First, find the Welcome page's number. Go to **Content**, and move the mouse ove
 3. Select **Save configuration**.
 
 ![Basic site settings, with /node/3 as the default front page](images/06-front-page-setting.png)
-*Figure 6.4: The front page setting*
+*Figure 6.7: The front page setting*
 
 Why `/node/3`, and not `/welcome`? Drupal accepts both, but it stores exactly what you type. If an editor ever changes the Welcome page's alias, say to `/welcome-to-lens-and-trail`, a front page set to `/welcome` breaks, while `/node/3` keeps working.
 
 Now open the site in a private browser window. Instead of "Access denied", visitors see the club's Welcome page, with **Home**, **About** and **Join us** in the menu.
 
 ![The front page as a visitor sees it: Welcome to Lens & Trail, with Home, About and Join us in the menu](images/06-front-page.png)
-*Figure 6.5: The new front page, as a visitor sees it*
+*Figure 6.8: The new front page, as a visitor sees it*
 
 The Welcome page is short for now. When the club has hikes and photos, we'll give the front page lists of the next hikes and the newest photos, in Chapter 11.
 
@@ -133,7 +145,7 @@ Every time you save a page, Drupal can keep the previous version, called a *revi
 Now select the **Revisions** tab at the top of the page. (On the site itself, it's under the **More actions** menu, the three dots in the top bar.)
 
 ![The Revisions tab of About the club, with two revisions](images/06-revisions.png)
-*Figure 6.6: The page's revisions*
+*Figure 6.9: The page's revisions*
 
 The list has one line per revision, the newest first: when, by whom, and the log message. That's why the log message matters: "Added the night walks." tells your fellow editors what changed, months later, without having to compare the two versions. Select the date of an older revision to see the page as it was then, and **Revert** to make that version the current one again. Reverting doesn't delete anything: Drupal saves the old version as a new revision, so you can always change your mind again.
 
@@ -161,7 +173,7 @@ A *workflow* is a set of states, and the steps between them, called *transitions
 Now edit *About the club*. The **Published** switch is gone. In its place, the form shows the page's **Current state**, Published, and a **Change to** list with Draft, Published and Archived.
 
 ![The form for About the club with content moderation: Current state Published, and Change to](images/06-moderation-state.png)
-*Figure 6.7: The moderation state on the form*
+*Figure 6.10: The moderation state on the form*
 
 > **Try it:** Add a fourth paragraph to *About the club*: "The club has around forty members, and new ones join every month." Set **Change to** to **Draft**, write the log message `Added the number of members. Check the number with the secretary.`, and select **Save**.
 >
@@ -204,12 +216,12 @@ Now let's give *How to join* two columns: the text on the left, and the club's m
 7. At the top, write `Two columns, with the meeting times on the right.` in **Revision log message**, and select **Save layout**.
 
 ![Layout Builder on How to join, with the body in the first column and the When and where block in the second](images/06-layout-builder.png)
-*Figure 6.8: Editing the layout of How to join*
+*Figure 6.11: Editing the layout of How to join*
 
 Until you select **Save layout**, nothing changes for visitors: Layout Builder keeps your work as a draft, and says "You have unsaved changes." **Discard changes** throws the draft away. **Revert to defaults** removes the page's own layout, so it uses the content type's template again.
 
 ![How to join as a visitor sees it, in two columns](images/06-how-to-join.png)
-*Figure 6.9: How to join, laid out with Layout Builder*
+*Figure 6.12: How to join, laid out with Layout Builder*
 
 The *When and where* box is a block that belongs to this page only. Chapter 12 is about blocks you can reuse on many pages, such as a box in every page's footer.
 
@@ -220,7 +232,7 @@ The *When and where* box is a block that belongs to this page only. Chapter 12 i
 > In Canvas, a page isn't a node with a body field. It's a kind of content of its own, called **Page**, with its own list under **Pages** in the sidebar (`/admin/content/pages`). Select **Add Page**, and the Canvas editor opens.
 >
 > ![The Canvas editor, with the component library on the left, the page in the middle, and the page's settings on the right](images/06-canvas-editor.png)
-> *Figure 6.10: The Canvas editor*
+> *Figure 6.13: The Canvas editor*
 >
 > In the middle is the page, as visitors will see it, in the site's theme (Mercury, on the Starter template). Above it, you can switch between desktop, tablet and phone sizes. On the left is a row of buttons:
 >
@@ -242,7 +254,7 @@ The *When and where* box is a block that belongs to this page only. Chapter 12 i
 > If a component lands in the wrong place, and with drag and drop it will, right-click it in **Layers**, and use **Move** > **Move up**, **Move down**, or **Move into**, to put it inside the grid.
 >
 > ![How to join on the Drupal CMS site, built with Canvas, in two columns with a card](images/06-canvas-how-to-join.png)
-> *Figure 6.11: How to join, built with Canvas*
+> *Figure 6.14: How to join, built with Canvas*
 
 ### Which one should I use?
 
@@ -266,7 +278,7 @@ Before you delete, think about unpublishing instead. An unpublished page, or an 
 > **On Drupal CMS:** deleting moves content to the **Trash** (in the sidebar, or `/admin/content/trash`), where you can **Restore** it, or delete it for good. The confirmation says so: "Deleting this content item will move it to the trash." Trash is a contributed module, and it supports Drupal 12, so if you'd like a safety net on the core site too, you can add it there. Chapter 10 shows how.
 >
 > ![The Trash in Drupal CMS, with a deleted page and its Restore button](images/06-trash.png)
-> *Figure 6.12: The Trash in Drupal CMS*
+> *Figure 6.15: The Trash in Drupal CMS*
 
 ## Summary
 

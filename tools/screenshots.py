@@ -71,6 +71,30 @@ def add_field(page: Page, url: str) -> None:
     page.wait_for_timeout(1500)
 
 
+def add_field_type(page: Page, url: str) -> None:
+    add_field(page, url)
+    page.click(".ui-dialog >> text=Formatted text")
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='label']", "Body")
+    page.wait_for_timeout(1500)
+    page.click(".ui-dialog label:has-text('Long text')")
+
+
+def add_field_settings(page: Page, url: str) -> None:
+    # The site already has field_body, so give the field a throwaway machine
+    # name: this step doesn't show it, and nothing is created until Save.
+    add_field_type(page, url)
+    page.click(".ui-dialog button:has-text('Edit')")
+    page.fill(".ui-dialog input[name='field_name']", "screenshot_only")
+    page.click(".ui-dialog button:has-text('Continue')")
+    page.wait_for_selector(".ui-dialog-title:has-text('settings')")
+    page.wait_for_timeout(1500)
+
+
+def manage_fields(page: Page, url: str) -> None:
+    page.goto(url + "/admin/structure/types/manage/page/fields")
+
+
 def content_form(page: Page, url: str) -> None:
     page.goto(url + "/node/1/edit")
     page.click("summary:has-text('Menu settings')")
@@ -120,6 +144,9 @@ def trash(page: Page, url: str) -> None:
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
     "06-add-field": ("core", add_field, True, False),
+    "06-add-field-type": ("core", add_field_type, True, False),
+    "06-add-field-settings": ("core", add_field_settings, True, False),
+    "06-manage-fields": ("core", manage_fields, True, False),
     "06-content-form": ("core", content_form, True, False),
     "06-front-page-setting": ("core", front_page_setting, True, False),
     "06-front-page": ("core", visitor("/"), False, False),

@@ -78,7 +78,7 @@ Numbers without an automatic source (support dates that haven't been announced, 
 
 ### Screenshots
 
-`tools/screenshots.py` retakes the screenshots from the two test sites (see `PROJECT-LOG.md`, "Where we are"), with Playwright and its own Chromium, 1280 pixels wide. The sites must be running, and in the state the chapter leaves them in; the script only looks, it never saves a form. The exception is a step-by-step sequence, such as Chapter 6's Layout Builder and Canvas steps (1600 pixels wide, so the panels fit): it builds the page on a temporary copy, made with `ddev drush` in the site's directory (`CORE_DIR`, `CMS_DIR`), and deletes the copy at the end. If a sequence fails, `DEBUG_SHOT=/some/path.png` saves a screenshot of where it stopped.
+`tools/screenshots.py` retakes the screenshots from the two test sites (see `PROJECT-LOG.md`, "Where we are"), with Playwright and its own Chromium, 1280 pixels wide. The sites must be running, and in the state the chapter leaves them in; the script only looks, it never saves a form. The exception is a step-by-step sequence, such as Chapter 8's Layout Builder and Canvas steps (1600 pixels wide, so the panels fit): it builds the page on a temporary copy, made with `ddev drush` in the site's directory (`CORE_DIR`, `CMS_DIR`), and deletes the copy at the end. If a sequence fails, `DEBUG_SHOT=/some/path.png` saves a screenshot of where it stopped. A screenshot of a dialog can be cropped to the dialog itself (`snap(name, ".ui-dialog")` in a sequence), at the same scale as the others, so its text is the same size in the book.
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt

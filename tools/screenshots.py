@@ -489,10 +489,16 @@ def reuse_field_steps(page: Page, site: dict, snap) -> None:
         page.click("text=Re-use an existing field")
         page.wait_for_selector(".ui-dialog")
         page.wait_for_timeout(2000)
-        # When the reader gets here, Body is the only field to re-use; the
-        # finished site has more, so the window shows only Body's row.
-        page.evaluate("() => document.querySelectorAll('.ui-dialog tbody tr').forEach(r => { if (!r.textContent.includes('field_body')) r.remove(); })")
-        snap("07-reuse-field")
+        # When the reader gets here, Body is the only field to re-use, and only
+        # Basic page uses it; the finished site has more, so the window shows
+        # only Body's row, used in Basic page.
+        page.evaluate("""() => document.querySelectorAll('.ui-dialog tbody tr').forEach(r => {
+            if (!r.textContent.includes('field_body')) { r.remove(); return; }
+            r.querySelectorAll('td *').forEach(e => {
+                if (e.children.length === 0 && e.textContent.trim().startsWith('Used in:')) e.textContent = 'Used in: Basic page';
+            });
+        })""")
+        snap("07-reuse-field", ".ui-dialog")
         page.locator(".ui-dialog tr", has_text="field_body").locator("input, button").first.click()
         page.wait_for_url("**/node.hike_screenshot.field_body")
         page.wait_for_load_state("networkidle")
@@ -548,10 +554,20 @@ def matches(name: str, wanted: list[str]) -> bool:
     return not wanted or any(name == w or name.startswith(w + "-") for w in wanted)
 
 
-def save(page: Page, name: str, full_page: bool = False) -> None:
+def save(page: Page, name: str, full_page: bool = False, element: str | None = None) -> None:
+    """Save a screenshot, at the same scale as the others (one image pixel per CSS pixel).
+
+    With element, only that part of the page (a dialog, say) is saved.
+    """
     target = IMAGES / f"{name}.png"
-    page.screenshot(path=str(target), full_page=full_page)
-    subprocess.run(["sips", "--resampleWidth", str(WIDTH), str(target)], check=True, capture_output=True)
+    if element:
+        box = page.locator(element).first
+        width = round(box.bounding_box()["width"])
+        box.screenshot(path=str(target))
+    else:
+        width = WIDTH
+        page.screenshot(path=str(target), full_page=full_page)
+    subprocess.run(["sips", "--resampleWidth", str(width), str(target)], check=True, capture_output=True)
     print(f"{target.relative_to(ROOT)}")
 
 
@@ -593,7 +609,7 @@ def main(wanted: list[str]) -> int:
             context = browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
             page = context.new_page()
             log_in(page, site)
-            steps(page, site, lambda name: save(page, name))
+            steps(page, site, lambda name, element=None: save(page, name, element=element))
             context.close()
         browser.close()
     return 0

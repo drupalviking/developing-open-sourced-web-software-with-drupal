@@ -1324,6 +1324,274 @@ foreach (['Carnethy Hill from Turnhouse Hill', 'The view from Carnethy Hill', 'G
     path = page.url.replace(url, "")
     as_visitor(page, site, path, "09-gallery-page")
 
+# Chapter 10: taxonomy.
+AREAS = [
+    # (name, parent, description)
+    ("Pentland Hills", None, "<p>A range of hills south-west of Edinburgh, most of it a regional park. The club's favourite: a bus from the city centre takes you to the foot of the hills.</p>"),
+    ("Turnhouse Hill", "Pentland Hills", ""),
+    ("Carnethy Hill", "Pentland Hills", ""),
+    ("Glencorse Reservoir", "Pentland Hills", ""),
+    ("Edinburgh", None, "<p>Hills, beaches and viewpoints inside the city: walks you can do in an afternoon.</p>"),
+    ("Arthur's Seat", "Edinburgh", ""),
+    ("Calton Hill", "Edinburgh", ""),
+    ("Portobello", None, ""),
+    ("East Lothian", None, "<p>The coast and hills east of Edinburgh.</p>"),
+    ("North Berwick Law", "East Lothian", ""),
+]
+PHOTO_THEMES = ["Landscape", "Water", "Winter", "City"]
+
+
+def reset_taxonomy(site: dict) -> None:
+    delete_fields(site, "node", "field_area")
+    delete_fields(site, "taxonomy_term", "field_photo")
+    delete_fields(site, "media", "field_themes")
+    drush_php(site, """foreach (['areas', 'photo_themes', 'tags'] as $v) {
+  $s = \\Drupal::entityTypeManager()->getStorage('taxonomy_term'); $s->delete($s->loadByProperties(['vid' => $v]));
+  \\Drupal\\taxonomy\\Entity\\Vocabulary::load($v)?->delete();
+}""")
+
+
+def add_term(page: Page, url: str, vocabulary: str, name: str, parent: str | None = None, description: str = "", shot=None) -> None:
+    page.goto(f"{url}/admin/structure/taxonomy/manage/{vocabulary}/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='name[0][value]']", name)
+    if description:
+        page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", description)
+    if parent:
+        page.click("summary:has-text('Relations')")
+        page.wait_for_timeout(500)
+        page.select_option("select[name='parent[]']", label=parent)
+        page.wait_for_timeout(500)
+    if shot:
+        shot()
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+
+def drag_term(page: Page, row: str, target: str | None = None, indent: int = 0, above: bool = False) -> None:
+    """Drags a term by its handle below (or above) another row, then to the right to put it under the row above."""
+    handle = page.locator(f"tr:has(a:text-is(\"{row}\")) .tabledrag-handle").first
+    handle.scroll_into_view_if_needed()
+    page.wait_for_timeout(300)
+    box = handle.bounding_box()
+    x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+    page.mouse.move(x, y)
+    page.mouse.down()
+    if target:
+        other = page.locator(f"tr:has(a:text-is(\"{target}\"))").first.bounding_box()
+        y = other["y"] + 5 if above else other["y"] + other["height"] - 5
+        page.mouse.move(x, y, steps=25)
+    for step in range(1, indent * 9 + 1):
+        page.mouse.move(x + step * 4, y)
+        page.wait_for_timeout(30)
+    page.mouse.up()
+    page.wait_for_timeout(800)
+    page.evaluate("window.getSelection().removeAllRanges()")
+
+
+def taxonomy_areas_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 10, part 1: the Areas vocabulary, its terms and fields, and Area on Hike and Gallery."""
+    url = site["url"]
+    reset_taxonomy(site)
+
+    page.goto(url + "/admin/structure/taxonomy/add")
+    page.fill("input[name='name']", "Areas")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='description']", "Regions, and the hills and places in them.")
+    snap("10-add-vocabulary")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    for name, parent, description in AREAS:
+        shot = (lambda: snap("10-add-term")) if name == "Turnhouse Hill" else None
+        add_term(page, url, "areas", name, parent, description, shot)
+    page.goto(url + "/admin/structure/taxonomy/manage/areas/overview")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    # Portobello was added without a parent: drag it under Edinburgh (down, then right), and Pentland Hills to the top.
+    drag_term(page, "Pentland Hills", "East Lothian", above=True)
+    drag_term(page, "Portobello", indent=1)
+    snap("10-areas-drag")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    snap("10-areas-overview")
+
+
+def term_id(site: dict, vocabulary: str, name: str) -> str:
+    php = "echo current(\\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => '%s', 'name' => \"%s\"]))->id();" % (vocabulary, name)
+    return drush_php(site, php)
+
+
+def taxonomy_fields_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 10, part 2: a Photo on Areas, and an Area field on Hike and Gallery."""
+    url = site["url"]
+    delete_fields(site, "node", "field_area")
+    delete_fields(site, "taxonomy_term", "field_photo")
+    drush_php(site, "\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.gallery.teaser')?->delete();")
+
+    # A photo for each area: a Media field on the vocabulary.
+    def photo_settings(p: Page) -> None:
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][image]']")
+        p.wait_for_timeout(2000)
+        dialog_fill(p, "description", "A photo of the area, shown at the top of its page.")
+
+    fields = url + "/admin/structure/taxonomy/manage/areas/overview/fields"
+    create_field(page, fields, "Media", "Photo", None, photo_settings)
+    page.goto(fields)
+    page.wait_for_load_state("networkidle")
+    snap("10-area-fields")
+
+    page.goto(url + "/admin/structure/taxonomy/manage/areas/overview/display/default")
+    page.wait_for_load_state("networkidle")
+    set_label(page, "field_photo", "hidden")
+    prefix = field_settings(page, "field_photo")
+    page.select_option(f"select[name='{prefix}[view_mode]']", "banner")
+    field_settings_update(page, "field_photo")
+    set_weights(page, {"field_photo": -10})
+    save_display(page)
+
+    pentlands = term_id(site, "areas", "Pentland Hills")
+    page.goto(f"{url}/taxonomy/term/{pentlands}/edit")
+    page.wait_for_load_state("networkidle")
+    page.click("input[name='field_photo-media-library-open-button']")
+    page.wait_for_selector(".media-library-widget-modal .js-media-library-item")
+    page.wait_for_timeout(2000)
+    page.locator(".media-library-widget-modal .js-media-library-item", has_text="The view from Carnethy Hill").locator("input[type='checkbox']").check()
+    page.click(".ui-dialog-buttonpane button:has-text('Insert selected')")
+    page.wait_for_selector(".ui-dialog", state="detached")
+    page.wait_for_timeout(2000)
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, f"/taxonomy/term/{pentlands}", "10-term-pentland-hills")
+
+    # An Area field on Hike.
+    def area_settings(p: Page) -> None:
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][areas]']")
+        p.wait_for_timeout(2000)
+        dialog_fill(p, "description", "Where the hike is. Choose the hill or place; choose the region only if no place fits.")
+        dialog_scroll_to(p, "[name='settings[handler_settings][target_bundles][areas]']")
+
+    create_field(page, url + "/admin/structure/types/manage/hike/fields", "Reference", "Area", "Taxonomy term", area_settings,
+                 lambda step: snap("10-area-field-settings", ".ui-dialog") if step == "settings" else None)
+
+    page.goto(url + "/admin/structure/types/manage/hike/form-display")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='fields[field_area][type]']", "options_select")
+    page.wait_for_timeout(1500)
+    set_weights(page, {"field_date": 1, "field_meeting_place": 2, "field_area": 3, "field_distance": 4, "field_difficulty": 5, "field_hike_leader": 6, "field_body": 7})
+    save_display(page)
+
+    page.goto(url + "/admin/structure/types/manage/hike/display/default")
+    page.wait_for_load_state("networkidle")
+    set_label(page, "field_area", "inline")
+    set_weights(page, {"field_date": 2, "field_meeting_place": 3, "field_area": 4, "field_distance": 5, "field_difficulty": 6, "field_hike_leader": 7, "field_body": 8})
+    save_display(page)
+
+    page.goto(url + "/node/7/edit")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='field_area']", label="-Turnhouse Hill")
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.locator("select[name='field_area']").evaluate("e => e.size = 13")
+    scroll_to(page, "select[name='field_area']", 250)
+    snap("10-hike-form-area")
+    page.locator("select[name='field_area']").evaluate("e => e.size = 0")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, "/hikes/turnhouse-hill", "10-hike-area")
+
+    # The Try it: Area on Gallery too, and a Teaser for galleries, so the term page lists the album briefly.
+    gallery_fields = url + "/admin/structure/types/manage/gallery/fields"
+    page.goto(gallery_fields)
+    page.click("text=Re-use an existing field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(2000)
+    page.locator(".ui-dialog tr", has_text="field_area").locator("input, button").first.click()
+    page.wait_for_url("**/node.gallery.field_area")
+    page.wait_for_load_state("networkidle")
+    page.fill("textarea[name='description']", "Where the photos were taken.")
+    page.click("input[value='Save settings']")
+    page.wait_for_url("**/gallery/fields")
+    drush_php(site, """$f = \\Drupal::service('entity_display.repository');
+$d = $f->getViewDisplay('node', 'gallery', 'default'); $d->setComponent('field_area', ['label' => 'inline', 'type' => 'entity_reference_label', 'weight' => 1])->save();
+$f->getFormDisplay('node', 'gallery', 'default')->setComponent('field_area', ['type' => 'options_select', 'weight' => 2])->save();
+$t = $d->createCopy('teaser'); $t->removeComponent('field_photos')->removeComponent('field_hike')
+  ->setComponent('field_body', ['label' => 'hidden', 'type' => 'text_trimmed', 'settings' => ['trim_length' => 200], 'weight' => 2])->save();
+$n = \\Drupal\\node\\Entity\\Node::load(11); $n->set('field_area', \\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'areas', 'name' => 'Turnhouse Hill'])); $n->save();""")
+    turnhouse = term_id(site, "areas", "Turnhouse Hill")
+    as_visitor(page, site, f"/taxonomy/term/{turnhouse}", "10-term-turnhouse-hill")
+
+
+def taxonomy_themes_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 10, part 3: Photo themes, a free-tagging vocabulary on the Image media type."""
+    url = site["url"]
+    delete_fields(site, "media", "field_themes")
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('taxonomy_term'); $s->delete($s->loadByProperties(['vid' => 'photo_themes']));
+\\Drupal\\taxonomy\\Entity\\Vocabulary::load('photo_themes')?->delete();""")
+
+    page.goto(url + "/admin/structure/taxonomy/add")
+    page.fill("input[name='name']", "Photo themes")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='description']", "What a photo shows. Anyone who uploads a photo can add a theme.")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    for name in PHOTO_THEMES:
+        add_term(page, url, "photo_themes", name)
+
+    def themes_settings(p: Page) -> None:
+        p.select_option(".ui-dialog select[name='field_storage[subform][cardinality]']", "-1")
+        p.wait_for_timeout(2000)
+        p.check(".ui-dialog input[name='settings[handler_settings][target_bundles][photo_themes]']")
+        p.wait_for_timeout(2000)
+        p.check(".ui-dialog input[name='settings[handler_settings][auto_create]']")
+        p.wait_for_timeout(1500)
+        dialog_fill(p, "description", "What the photo shows, such as Landscape or Winter. Separate themes with commas; a new theme is added to the list.")
+        dialog_scroll_to(p, "[name='settings[handler_settings][auto_create]']")
+
+    create_field(page, url + "/admin/structure/media/manage/image/fields", "Reference", "Themes", "Taxonomy term", themes_settings,
+                 lambda step: snap("10-themes-field-settings", ".ui-dialog") if step == "settings" else None)
+
+    for mode in ("default", "media_library"):
+        page.goto(f"{url}/admin/structure/media/manage/image/form-display/{mode}")
+        page.wait_for_load_state("networkidle")
+        if mode == "media_library":
+            row_weights(page, True)
+            page.select_option("select[name='fields[field_themes][region]']", "content")
+            page.wait_for_timeout(1500)
+            row_weights(page, False)
+        page.select_option("select[name='fields[field_themes][type]']", "entity_reference_autocomplete_tags")
+        page.wait_for_timeout(1500)
+        save_display(page)
+
+    media = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('media')->loadByProperties(['name' => 'Turnhouse Hill across Glencorse Reservoir']))->id();")
+    page.goto(f"{url}/media/{media}/edit")
+    page.wait_for_load_state("networkidle")
+    box = page.locator("input[name='field_themes[target_id]']")
+    scroll_to(page, "input[name='field_themes[target_id]']", 300)
+    # Choosing a theme from the suggestions writes its ID after it, as here; Hills is new.
+    box.fill(f"Landscape ({term_id(site, 'photo_themes', 'Landscape')}), Water ({term_id(site, 'photo_themes', 'Water')}), Hills")
+    page.wait_for_timeout(500)
+    snap("10-media-themes")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/structure/taxonomy/manage/photo_themes/overview")
+    page.wait_for_load_state("networkidle")
+    snap("10-photo-themes")
+
+
+def cms_tags(page: Page, url: str) -> None:
+    page.goto(url + "/node/add/page")
+    page.wait_for_load_state("networkidle")
+    box = page.locator(".field--name-field-tags .tagify__input").first
+    box.scroll_into_view_if_needed()
+    box.click()
+    for tag in ("Hiking", "Photography"):
+        page.keyboard.type(tag + ",")
+        page.wait_for_timeout(800)
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(1000)
+    scroll_to(page, ".field--name-field-tags", 300)
+
+
 # name: (site, function, logged in, full page[, window width])
 SHOTS = {
     "06-add-content-type": ("core", add_content_type, True, False),
@@ -1355,6 +1623,7 @@ SHOTS = {
     "07-cms-utility-page-fields": ("cms", cms_utility_page_fields, True, False),
     "08-cms-utility-page-display": ("cms", cms_utility_page_display, True, False),
     "09-cms-focal-point": ("cms", cms_focal_point, True, False),
+    "10-cms-tags": ("cms", cms_tags, True, False),
 }
 
 
@@ -1370,6 +1639,9 @@ SEQUENCES = [
     ("core", image_styles_steps, 1280, ["09-image-styles", "09-image-style-banner", "09-media-banner-display", "09-hike-photo-view-mode", "09-hike-banner", "09-responsive-style", "09-media-banner-responsive", "09-hike-phone"]),
     ("core", media_editor_steps, 1280, ["09-library-upload", "09-text-format-media", "09-editor-media"]),
     ("core", gallery_steps, 1280, ["09-gallery-fields", "09-gallery-upload", "09-gallery-page"]),
+    ("core", taxonomy_areas_steps, 1280, ["10-add-vocabulary", "10-add-term", "10-areas-drag", "10-areas-overview"]),
+    ("core", taxonomy_fields_steps, 1280, ["10-area-fields", "10-term-pentland-hills", "10-area-field-settings", "10-hike-form-area", "10-hike-area", "10-term-turnhouse-hill"]),
+    ("core", taxonomy_themes_steps, 1280, ["10-themes-field-settings", "10-media-themes", "10-photo-themes"]),
     ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 

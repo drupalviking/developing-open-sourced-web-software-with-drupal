@@ -195,6 +195,8 @@ That's a hike page. And because the credits are part of the media item's Banner 
 
 The Banner is 1280 pixels wide. On a large screen that's right, but a phone shows the hike's column about 350 pixels wide: it gets a photo that's far bigger than it needs. On the other hand, a very large, sharp screen could use more than 1280 pixels. The browser knows how wide the screen is, and how sharp; Drupal doesn't. So instead of choosing one copy, Drupal can offer the browser several, and let it pick. That's a *responsive image*.
 
+> **You can skip this section.** Responsive images are the hardest part of this chapter, and if it feels like too much right now, leave it for later: the site works without it, and phones get the Banner copy, which is larger than they need, but fine. Do one thing before you skip: install the **Responsive Image** module (the next paragraph), because the photo albums later in this chapter use one of its image styles. Then go on with the **Try it** at the end of this section. You can come back to the rest whenever you like.
+
 Responsive images come with core, in the **Responsive Image** module. Go to **Extend**, filter on `responsive`, check **Responsive Image**, and select **Install**. The module brings four image styles of its own, **Max 325x325** to **Max 2600x2600**, which scale a photo without cropping it.
 
 We need two more banner sizes. Make them as you made **Banner**, with the same two effects:
@@ -329,7 +331,7 @@ You can now:
 ## Exercises
 
 1. Add the photo of Portobello beach (`portobello-beach.jpg` in `examples/photos/`) to the library, with its credits from `examples/photos/CREDITS.md`. Then use it as the photo of one of the Portobello hikes from Chapter 7's exercises.
-2. Give the Hike's **Card** view mode from Chapter 8 a photo: a square one. Make an image style `Square` (**Scale and crop** to `400` by `400`), a media view mode `Square` that uses it (without the credits), and show the Photo in the Card display with that view mode. Is it all right to leave out the credits here? Where would a visitor find them?
+2. Give the Hike's **Card** view mode from Chapter 8 a photo: a square one. Make an image style `Square` (**Scale and crop** to `400` by `400`), and a media view mode `Square` that shows the image in that style. A card is small, so three lines of credits would crowd it: show only the **Photographer**, with its label hidden, below the photo. Then show the Photo in the Card display with that view mode. Why is the photographer's name worth keeping even on a small card, on a photography club's site?
 3. Edit the photo of Turnhouse Hill in the library (at **Content** > **Media**), and correct its name to `Turnhouse Hill from Glencorse`. Where does the change show up? What would have happened if the hike had a plain Image field instead?
 4. Delete the Video media type from **Structure** > **Media types**. Why might the club not want members to upload videos to the site itself?
 5. *(challenge)* Add a second album, for a photo evening, without a hike. Which of the club's photos would you reuse, and which fields would you want to add to Gallery for photo evenings? (Think about Chapter 10, where categories come in.)

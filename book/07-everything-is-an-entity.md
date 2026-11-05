@@ -226,7 +226,7 @@ The club also needs news: trip reports, competition results, announcements. A ne
 > 1. **Name**: `News`. **Description**: `News from the club: trip reports, competition results, and announcements.`
 > 2. Leave **Display author and date information** checked this time. On a news item, "By Ana, 5 November" is exactly what readers want to know.
 > 3. Under **Menu settings**, uncheck **Main navigation**, as for hikes.
-> 4. Save it, and re-use the Body field. Keep the label **Body**.
+> 4. Save it, and re-use the Body field. Drupal fills in the settings from a content type that already uses it, and it picks Hike (the first by machine name), so the **Label** says `Description`, with the hike's help text. Change the label back to `Body`, empty the **Help text**, and select **Save settings**.
 > 5. Add News to the Editorial workflow, as you did for Hike.
 > 6. Write the first news item: the title `The club has a website`, and this body:
 >

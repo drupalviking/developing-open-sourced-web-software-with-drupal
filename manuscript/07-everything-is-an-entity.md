@@ -1,151 +1,269 @@
 # Everything Is an Entity
 
-## Content types
+In Chapter 6, the club got its first pages: a content type, Basic page, with one field of its own, the body. That's enough for *About the club*, but not for the heart of the site, the hikes. In this chapter we build the club's **Hike** content type, with a field for every piece of information a hike has, and a **News** content type next to it. On the way, you'll learn what Drupal means by an *entity*, the idea that the title of this chapter is about, which kinds of field Drupal has, and how to shape the form editors fill in.
 
-One of the first thing you will discover in your Drupal journey are content types. A content type stores structured data in a database, you can add fields to it, control how it displays etc. 
+We start where Chapter 6 left us: the Basic page content type with its Body field, the pages *About the club*, *How to join* and *Welcome*, and content moderation with the Editorial workflow.
 
-From an entity perspective (take a look at the chapter name), content types comes with Drupal core, so that we have a building block to build our content on.
+## Why a hike isn't a Basic page
 
-In Drupal, a “content type” is the configuration blueprint that defines a particular kind of node—the core content **entity** that Drupal stores and renders. The entity type is always _node_; a content type is a _bundle_ of that entity type, expressed as configuration that Drupal uses to shape both the structure of the data and the editorial experience around it. Put simply: the node is the thing that holds content, while the content type is the rulebook that says what that content looks like, how it’s edited, and how it’s displayed.
+We could write the hikes as Basic pages. The title would be the hike's name, and the body would say something like "Saturday 21 November, 9:30, Flotterstone car park, about 11 km, some climbing." It would work, for a while.
 
-Because a content type is configuration, it does not hold data itself. Instead, it declares which **fields** nodes of this kind possess (for example, a title, a body, an image, a taxonomy reference), and it determines how those fields behave. Drupal separates “field storage” (the underlying data definition shared by all bundles of an entity type) from “field instance” settings (how a given field is attached to this specific content type). This gives site builders strong control over cardinality, translatability, and data types at the storage layer, while letting them tune requirements, help text, and defaults per type.
+The trouble is that Drupal can't read. To Drupal, that body is a block of text. It doesn't know which part is the date, so it can't show the next five hikes in date order, or hide the ones that are over. It can't list only the easy hikes for beginners, or every hike Ana leads. And every editor writes the details a little differently: one writes "21/11", another "Sat 21st", and a third forgets the meeting place altogether.
 
-A content type also governs the **editorial interface** through _form displays_. Here, site builders choose widgets for each field, arrange their order, and group them to create an efficient edit form. The **public presentation** is controlled separately via _view displays_ and _view modes_. The same node can therefore appear differently in different contexts—say, a concise “Teaser” on a listing page and a full “Default” rendering on the canonical page—without duplicating content. This separation of edit-time and view-time concerns is central to Drupal’s flexibility.
+So we give each piece of information its own *field*: a date field for the date, a number for the distance, a list to choose the difficulty from. Editors fill in a form, Drupal checks what they type (a date must be a date), and because Drupal knows what each piece is, it can sort, filter and display it. This is called *structured content*, and it's what Drupal is best at. We use it to build lists of hikes in Chapter 12.
 
-Beyond fields and displays, content types carry behavioral policies. They can be configured to create a new revision for every edit and to require revision log messages, which is vital for auditability in collaborative teams. If Content Moderation and Workflows are enabled, a content type participates in states like Draft, Review, and Published, adding governance to the publishing process. Language and translation settings live at both the bundle and field levels, allowing the same type to support multilingual content with per-field translation when needed.
+## Entities: the things Drupal stores
 
-Finally, content types intersect with access and routing. Drupal exposes per-type permissions such as creating, editing, or deleting content of that type, enabling role-based access control. Modules can attach third-party settings to the type—menu options, table-of-contents behavior, or revision pruning policies—so that broader site features can act consistently across all nodes of that type. URL patterns (often via Pathauto) are typically defined per type as well, producing predictable, human-friendly paths.
+A Drupal site stores many kinds of things: pages and hikes, but also the people who log in, the tags on a photo, the photos themselves, and the boxes of text placed on a page. Drupal has one name for all of them: each of these things is an *entity*. A kind of entity is an *entity type*. A hike is an entity of the entity type *Content*; Ana's user account is an entity of the type *User*.
 
-Taken together, a Drupal content type is the canonical, configuration-driven definition of a content model slice: it specifies the schema of nodes, curates the editorial workflow, orchestrates how content is displayed in varied contexts, and integrates with permissions and routing. The node entity stores the actual data; the content type ensures that data is structured, editable, and presentable in a coherent, repeatable way.
+The reason this matters to you, and the reason for this chapter's title, is that entity types work alike. Once you know how to add a field to a content type, you know how to add one to a user account or a photo, because it's the same screen and the same steps. Learn it once, and you can use it everywhere. These are the entity types you'll meet in this book:
 
-![Content type listing of a newly installed Drupal site 1](images/07-content-type-listing-of-a-newly-installed-drupal-site-1.png)
-*When you explore /admin/structure/types this could be the list of content types on a newly installed Drupal CMS\* site, but it depends on other selections as well*
+| Entity type | What it is | Its kinds are called | In this book |
+|---|---|---|---|
+| Content | Pages, hikes, news | Content types | Chapters 6 to 8 |
+| User | A person with an account on the site | (only one kind) | Chapter 14 |
+| Taxonomy term | A category or a tag, such as "Pentland Hills" | Vocabularies | Chapter 10 |
+| Media | A photo, a video, a document | Media types | Chapter 9 |
+| Content block | A box of content placed on pages | Block types | Chapters 8 and 13 |
 
-### Navigating a content type
-The menu to the right of the description gives you a contextual menu of what you can do to manipulate the effect of the content type. If you open up the menu you will see the following options:
-![Contextual menu of a content type](images/07-contextual-menu-of-a-content-type.png)
+Most entity types can be divided into kinds, as content is divided into content types, and each kind can have fields of its own: a hike has a date, a news item doesn't. A user has only one kind, but it can still have fields. Say the club wants a phone number for every member: you add a field to the user account, with the same steps as for a hike.
 
-#### Edit
-The Edit menu gives you access to the basic components of the content type, the human-readble name, a description box for content editors to distinguish between what content types to use and then some more detailed settings, down to if to display the post information (Author and date information) or not. 
+Here's an example of how far that goes. Say the club adds an **Email** field to its *How to join* page, for the secretary's address, and also stores every member's email address on their user account. Both are fields of the same field type, Email, so they behave the same: Drupal checks that what you type looks like an email address, and can show it as a link that opens your email program. If you later want every email address on the site shown as "hello [at] lens-and-trail.ddev.site", to make life harder for spammers, you change it once for that field type, not once per place.
 
-You can change the label of the Title field, decide if the node should be previewed before submitting and have submission guidelines.
+Not everything in Drupal is an entity you can add fields to. Files, URL aliases and menu links are entities too, but Drupal manages their structure itself.
 
-It's also easy to configure if you want the content to be pubished by default or not, if it should be promoted to the front page, sticky at top of lists and if Drupal should create a new revision of the content each time you save.
+> **Drupalism: bundle.** Drupal's general word for "a kind of entity within an entity type" is *bundle*. A content type is a bundle of Content; a vocabulary is a bundle of Taxonomy term; a media type is a bundle of Media. You'll see the word in documentation and error messages, rarely on screen. When you do, read "content type, vocabulary, or media type, whichever fits".
 
-You also have access to the menu settings, if you'd want this particular content to be a part of any menu or not.
+> **A content type holds no content.** A content type is a set of rules: which fields a hike has, what the form looks like, how a hike is displayed. The hikes themselves are the content. Drupal stores the rules as *configuration*, the site's settings, and the hikes as *content*, and treats the two differently: when you move a site from your computer to a server, you move the configuration, while the content is written on the live site. We do exactly that in Chapter 20.
 
-#### Manage Fields
-As explained above, content types or bundle of a content type is composed of **fields**, that physically stores the data. Please read the following chapter on fields to get a deeper knowledge, but basically, in order to store any content as simple or complex it needs to be, we store each part of it in different fields. 
+### Fields you add, and fields Drupal adds
 
-When exploring the field list of a Basic page that ships with Drupal CMS, you will see a list similar to this one:
+In Chapter 6, we met *base fields*: the fields every content item has, because Drupal itself provides them, such as the title, the author, and when it was created. The fields you add yourself are listed on **Manage fields**, and their machine names start with `field_`. Both kinds are fields in the same sense: they hold a value, have a widget on the form, and are displayed in the same way. The difference is who decides they exist: Drupal, for every content type, or you, for one content type at a time.
 
-![Field list of Basic Page](images/07-field-list-of-basic-page.png)
-We will cover fields in more detail later in this book (The Fields Chapter).
-#### Manage form display
-Drupal is highly configurable, and one thing you might want to do is configure how the content editors add and/or edit their data. 
+## The field types
 
-![Manage Form display of Basic Page](images/07-manage-form-display-of-basic-page.png)
-*Manage form display for Basic page, as found here: /admin/structure/types/manage/page/form-display*
+When you select **Create a new field**, Drupal asks you to choose a *field type*: what kind of information the field holds. The field type decides how the value is stored, what the form shows, and what Drupal checks. Most types have a second choice once you've picked them. Here's what Drupal 12 offers, with an example from the club for each:
 
-As you can see from this screenshot, there are many fields available, even more than the fields listed in previous screenshots. That's because some fields you can add and configure, others are **system fields** that are created for each entity type, such as the **Content type** entity.
+| Field type | Its choices | For example |
+|---|---|---|
+| **Plain text** | Short text, Long text | A hike's meeting place |
+| **Formatted text** | Long text, Short text | The body of a page, with bold, links and lists |
+| **Number** | Integer (whole numbers), Decimal | The maximum number of participants; a hike's distance |
+| **Reference** | Content, Taxonomy term, User, Other | The member who leads a hike |
+| **File upload** | File, Image | A route description as a PDF |
+| **Selection list** | Text, Integer | A hike's difficulty: Easy, Moderate or Hard |
+| **Date and time** | Datetime, Timestamp | The day and time of a hike |
+| **Boolean** | | "Dogs welcome": yes or no |
+| **Email** | | The secretary's email address |
+| **Link** | | A link to the route on a map |
 
-These fields can be dragged and dropped to change the order the user will enter them, and you could even move some of them to the Disabled part, if you don't want the user to physically edit them, as the Scheduler Moderation module fields are in this example.
+A *reference* field is the most powerful of them. Instead of holding a value, it points to another entity: a hike points to the user who leads it, and later, a photo will point to the hike it was taken on. That's how Drupal connects things.
 
-Whats notable here is the fact that every field has a *widget* attached to it. Widgets are the display form of each field, since every field are different. Instead of just having everything as text boxes (which would not function at all!), you can have a Text field widget for simple text fields like title, Text areas (configurable with text editors if you want) for fields like Description and Content and a Autocomplete field for something like Author. Some of the field widgets are even configurable (the cog symbol to the far right). Between the widget selector and the cog is the summary of the config for the field.
+Modules add more field types. Drupal core has modules for **Telephone**, **Date range** and **Comments** that aren't installed on our site; installing one adds its field type to the list. The **Media** module (Chapter 9) adds a reference to media. Contributed modules add many more, such as *Address*, for postal addresses with the right format for each country. We look at installing modules in Chapter 11.
 
-#### Manage Display
-In the manage display view, here we configure how the actual data is displayed to the user. Here we have (as almost always) multiple ways to configure multiple things. 
-![Manage display for Basic Page](images/07-manage-display-for-basic-page.png)
-*/admin/structure/types/manage/page/display*
+## Building the Hike content type
 
-First we see a list of three things: Default, Card and Teaser. These are what we call *view modes*, a configurable way to look at the content in different ways. You might want to arrange a page view differently from when you are displaying list of items (like news articles), show different fields, and maybe skip fields between displays. In this particular content type (Basic page), it's configured do use those three view modes.
+Let's build it. The first steps are the same as for Basic page in Chapter 6, so we go through them more quickly.
 
-But for every bundle of content types, you could configure more view modes. If you open the *Custom display settings* menu, you see that there are three more view modes available for content types:
-![Custom display settings for Basic Page](images/07-custom-display-settings-for-basic-page.png)
-*The Custom display settings for Content type entity*
+1. Go to **Structure** > **Content types** (`/admin/structure/types`), and select **Add content type**.
+2. Type `Hike` as the **Name**. The machine name becomes `hike`.
+3. As the **Description**, type `A hike or photo walk the club organizes, with its date, meeting place, distance and difficulty.`
+4. Under **Display settings**, uncheck **Display author and date information**. "Submitted by admin" says nothing useful about a hike: we'll have a field for the hike leader instead.
+5. Under **Menu settings**, uncheck **Main navigation**. These checkboxes decide which menus a hike *may* be placed in. Hikes come and go every two weeks, and they don't belong in the main menu: they'll be in a list, which we build in Chapter 12. With no menu checked, editors don't even see the menu settings on the hike form, which is one less thing to get wrong.
+6. Select **Save and manage fields**.
 
-Based on your needs, you could check any of them, and then configure what fields to be displayed for that particular display. There is also a link to the *Manage view modes* page, which we will cover in more detail later.
+![The Add content type form, with Hike as the name, its description, and the Menu settings tab with no menus checked](images/07-add-hike.png)
+*Figure 7.1: Adding the Hike content type*
 
-For the **Default** view, the Layout builder* has been selected. Very briefly, the Layout builder is a drag-and-drop page-building UI for arranging content in sections with chosen layout plugins. 
+### Re-using the Body field
 
-But when you take a look at either Card or Teaser displays, you can see that they are arranged with fields and field formatters:
-![Card Display for Basic Page](images/07-card-display-for-basic-page.png)*Card display for Basic Page. Can you spot the difference between Card and Teaser layout?*
+A hike needs a text that describes it: the route, the views, what to bring. Basic page already has a field for that, the body. Instead of creating a new one, we re-use it.
 
-The Layout Builder is quite a new tool in Drupal, before it we did arrange the displays with fields. What is very notable here are the **Field formatters**, that configure "how" the content of the field is rendered. If we take a look at the formatter for Featured image, we can see it actually has four:
-![Field formatters for Featured image](images/07-field-formatters-for-featured-image.png)
-*Field formatters for Media type **image** 
+1. On **Manage fields** for Hike, select **Re-use an existing field**. A window opens with the fields that other content types have, and Hike doesn't yet. There's one: `field_body`, a **Long text**, and the content types that use it, so far only Basic page.
 
-If you would choose the Entity ID formatter, instead of displaying an image in 16:9 format in medium size, you would only display the ID of the media entity itself. Not very "usable", but it shows that you could display each piece of data in different ways, based on the view point.
+![The Re-use an existing field window, with field_body, Long text, used in Basic page, and a Re-use button](images/07-reuse-field.png)
+*Figure 7.2: Re-using the Body field*
 
-#### Manage permissions
-Drupal has a very elaborate user permission system, where you can very granularly configure who can access, edit and manipulate every single config on the page. We will go into the access control system in more detail later, but for now, we are taking a quick look on how it works for the Basic page bundle.
+2. Select **Re-use**. Drupal adds the field to Hike, and takes you to its settings.
+3. Change the **Label** to `Description`: on a hike, that's the better word. As the **Help text**, type `What the hike is like: the route, the views, and what to bring.`
+4. Select **Save settings**.
 
-![Manage permissions for Basic Page](images/07-manage-permissions-for-basic-page.png)
-*Manage permissions for Basic Page*
+![The settings for the re-used field on Hike, with Description as the label and the help text filled in, below a Field Storage section](images/07-reuse-settings.png)
+*Figure 7.3: The re-used field, renamed Description*
 
-Here we see that there are three categories of permissions, one for the Content Moderation module, another for the Layout Builder and the third for the Node itself. Some of those permissions belong to the Administrator group, other also to the Content editor group, but none of them are available for Anonymous users (users that are not logged in) and Authenticated users (users that are logged in, but have very limited access on what they can do in the system).
+Look at the settings page again, and you'll see it's in two parts. The **Field Storage** part says "These settings apply to the Body field everywhere it is used": here, that's **Allowed number of values**. Change it on Hike, and you've changed it on Basic page too. Everything below it, the label, the help text, whether the field is required, the allowed text formats, belongs to this content type only. So the same field is "Body" on a Basic page and "Description" on a hike.
 
-## Fields
+> **Drupalism: field storage.** Drupal splits a field in two. The *field storage* is the field itself: its machine name (`field_body`), its type, and the settings that decide how the values are stored in the database, shared by every content type that uses the field. Each content type then has its own *field settings* for it: label, help text, required or not. Some storage settings can't be changed once there is content in the field, because the database would have to change with them. Drupal greys them out, and tells you why.
 
-In Drupal, a **field** is the atomic unit of structure you attach to an entity—in your case, to a content type (which is a bundle of the `node` entity). Fields don’t just store values; they carry the semantics of those values (date, text, image, entity reference, etc.) and define how editors enter them and how readers see them. Drupal’s Field API deliberately separates a field’s _data definition_ from its _attachment_ to a particular content type, so that the same kind of data can be reused consistently across bundles while still being tailored to each editorial context.
+Why re-use, instead of creating a new field? Because a field that means the same thing everywhere is easier to work with later. When we build a list of everything new on the site in Chapter 12, or a search, one `field_body` is simpler than a `field_body`, a `field_description` and a `field_text` that all hold the same kind of thing. The rule of thumb: re-use a field when it holds the same kind of information, and create a new one when it doesn't, even if the type is the same. A hike's date and a news item's "valid until" date are both dates, but they're not the same thing.
 
-At the data layer, a field is defined by its **field storage** configuration. Storage says, “for nodes, there exists a field called `field_event_date` of type `datetime`, with this cardinality, these indexes, and this translatability.” Storage is per entity type and shared by all bundles that use it, which is what lets you keep one coherent schema for, say, an “Image” field across multiple content types. When you attach that field to a specific content type, you create a **field instance** (often just called the field on that bundle). The instance adds bundle-specific concerns: is it required, what’s the help text, any default value, and any per-bundle settings the field type exposes. Think of storage as the column definition; the instance is the column’s role on a particular table layout.
+> **Machine names are forever.** Drupal makes the machine name from the label you type: "Meeting place" becomes `field_meeting_place`. The label can change whenever you like; the machine name can't, once the field exists. That's worth a thought if you work in another language than English. A Spanish-speaking committee would type "Lugar de encuentro", and get `field_lugar_de_encuentro`. That works, but many teams have a rule that machine names are in English, so that anyone, including a developer from another country, can read them. If that's your rule, select **Edit** next to the machine name, and type your own, before you continue.
 
-Fields come to life through two complementary presentation layers: **widgets** and **formatters**. A **widget** is the edit-time UI: the control editors interact with on the node form. For a date field, that might be a single date picker; for entity references, an autocomplete or a select list; for media, a library browser. Widgets are chosen and arranged in the content type’s **form display**, which is a configuration map of “which widget for which field, in what order, with what widget settings.” You can even define different **form modes** (e.g., a compact “Quick Create” vs. a full “Editorial” form) so that the same fields are optimized for different authoring moments.
+### Adding the hike's own fields
 
-A **formatter** is the view-time UI: how a field’s stored value is rendered for readers. A text field might render as trimmed text with a “read more,” a date as a localized long date, an image as a responsive picture with a specific image style, an entity reference as a rendered teaser of the target entity. Formatters are chosen and arranged in the **view display**, and you can vary that choice per **view mode**—so an image might render as a small thumbnail in the Teaser mode but as a full-width responsive image on the Default node page. Each formatter carries its own settings (links on/off, trim length, image style, date format), letting you present the same underlying data in multiple, coherent ways without duplicating content.
+Now the fields only a hike has. Each one starts the same way as the Body field in Chapter 6: on **Manage fields**, select **Create a new field**, choose the field type, type the **Label**, choose the field type's sub-choice, and select **Continue**. Then fill in the settings, and select **Save**.
 
-Several other facets round out how fields behave. **Translatability** can be enabled at storage and then toggled per instance, allowing per-language values where needed. **Cardinality** controls whether a field holds a single value or a list, which affects both the widget (repeatable inputs) and the formatter (lists, galleries, carousels). **Constraints** (required, allowed file types, reference target bundles) enforce valid content at save time. Some fields are **base fields**—core properties provided by the entity type (e.g., node title, created time)—while others are **configurable fields** that you add. And because fields are first-class citizens of Drupal’s configuration system, they participate in export/import, permissions (e.g., field-level permissions with contrib), and even **third-party settings** when modules need to attach extra behavior to a field or to its displays.
+**Date.** Choose **Date and time**, type `Date` as the label, and choose **Datetime**.
 
-Yet another fact regarding Fields is the fact that fields can be attached to different entity types! You can have a field type like "Email" and create a field on your basic page, for example to display the company's email, but you can use the same field type for the User entity, to store (and maybe display) the users email.
+![The Add field window for Date and time, with Date as the label, and Datetime chosen over Timestamp](images/07-add-date.png)
+*Figure 7.4: The Date field, as a Datetime*
 
-And here is actually a great example for field formatter. Although you would store an email in the email field as example@somewhere.com, you might want to display the employees' emails as example [at] somwhere.com. That kind of formatter most likely exists somewhere, and if not, it's easy to write by yourself.
+*Timestamp* is for moments the site records itself, such as when a page was saved; it can only store dates between 1901 and 2038. *Datetime* is for dates people type in, and that's what a hike's date is.
 
-Put together, a field in Drupal is not just a bucket for data. It is a reusable, strictly defined data type (via storage), a contextualized attachment to a content type (via the instance), and a pair of coordinated presentation strategies: **widgets for authors** and **formatters for readers**, orchestrated through form and view displays (and their modes). This design lets you model content once and then tailor the editing experience and the front-end rendering to each context where that content appears—without compromising the integrity of the underlying schema.
+In the settings, leave **Date type** at **Date and time**: we need the time we meet, not only the day. As the **Help text**, type `The day and time we meet.`, and check **Required field**: a hike without a date is no use to anyone.
 
-### Field types that ship with Drupal CMS
-There are multiple field types that ship with core Drupal CMS
+![The Date settings for Hike window, with Date type Date and time, the help text, and Required field checked](images/07-date-settings.png)
+*Figure 7.5: The Date field's settings*
 
-![Field types in Drupal CMS](images/07-field-types-in-drupal-cms.png)*Available field types* 
+**Meeting place.** Choose **Plain text**, type `Meeting place`, and choose **Short text**: a place name fits on one line. As the **Help text**, type `Where we meet, for example: Flotterstone car park.`, and check **Required field**. A help text with an example is the quickest way to show editors what you expect.
 
-These are just the field types that *ship* with Drupal CMS. There are multiple custom fields available for download, both via separate modules like YouTube Field and Video Embed fields modules, but also do many functional modules like Commerce create their own fields based on the functionality purpose the have.
+**Distance.** Choose **Number**, type `Distance`, and choose **Decimal**, because hikes aren't always a whole number of kilometers. In the settings:
 
-Third option, if you cannot find a field that serves the need you have, you can always create one yourself! That will be covered, in detail, later in this book, under the Module development section.
-### Adding a field to an entity
-As we mentioned in the Content types chapter (and as the title of the section hints), everything in Drupal is an Entity. That's very much a "programmers" explanation but in a nutshell, we can think of "Entity" as a global parent of everything that's being created in Drupal. Entity is the parent of everything. That means that Content type is an entity, Taxonomy vocabularies are entities and also Blocks and Users. And by that definition we can claim that "all entities are field-able". We can add custom fields to all entities! And that's one of the biggest strengths of Drupal.
+- **Precision** is the total number of digits, and **Scale** the number of digits after the decimal point. Leave **Precision** at 10, and set **Scale** to `1`: 11.5 km is precise enough for a hike.
+- **Help text**: `The length of the walk, in kilometers.`
+- **Minimum**: `0`. Drupal won't accept a negative distance.
+- **Suffix**: ` km`, with a space before it. Drupal shows the suffix after the number, on the form and on the hike.
 
-The method is always the same. In this example we are using a content type, since that's the most frequent use-cases of adding fields to entities, but generally it's the same everywhere.
+Leave **Required field** unchecked: sometimes the route isn't decided yet.
 
-If you navigate the Content type page (/admin/structure/types) you will see a list of content types. The list below is from a Drupal CMS instance with all shipped content types installed:
+![The Distance settings for Hike window, with Scale 1, the help text, Minimum 0 and Suffix km](images/07-distance-settings.png)
+*Figure 7.6: The Distance field's settings*
 
-![Content type listing of a newly installed Drupal site 1](images/07-content-type-listing-of-a-newly-installed-drupal-site-1.png)
-*When you explore /admin/structure/types this would be the list of content types on a newly installed Drupal CMS\* site.*
+**Difficulty.** Choose **Selection list**, type `Difficulty`, and choose **Text**. A selection list gives editors a fixed set of choices, so every hike uses the same three words, and we can later list "all easy hikes". Under **Allowed values**, type `Easy` as the first **Name**. Drupal makes a machine name for it, `easy`, and shows it under the name. Select **Add another item**, and add `Moderate` and `Hard` in the same way.
 
-Press Manage fields for the ***Basic Page*** to bring up the list of fields already in the content type.
-![Manage Fields for Basic Page](images/07-manage-fields-for-basic-page.png)
-*Manage fields view for Basic Page in Drupal CMS*
+The *name* is what people see; the machine name is the *value* Drupal stores. You can change a name later, say "Hard" to "Challenging", and every hard hike shows the new word. You can't change a value once hikes use it, because it's stored in every one of them.
 
-Here we have two options: Create a new field or Re-use an existing field. If we have already created an email field for a content type, you should not create another field with the same purpose, you can re-use the previously built field. But I digress.
+As the **Help text**, type `Easy: short and flat. Moderate: some climbing. Hard: long, steep, or rough ground.`, and check **Required field**.
 
-Press Create a new field to display an option of fields to add:
-![Field types in Drupal CMS](images/07-field-types-in-drupal-cms.png)
-*Field types available with standard Drupal CMS install*
+![The Difficulty settings for Hike window, with the allowed values Easy, Moderate and Hard, and their machine names easy, moderate and hard](images/07-difficulty-settings.png)
+*Figure 7.7: The Difficulty field's allowed values*
 
-Let's create an Formatted text field. A contextual window with the configuration for Formatted text appears, where we give the field a name, "Excerpt" and let's choose Text (formatted, long) as the field type.
+**Hike leader.** Choose **Reference**, type `Hike leader`, and choose **User**: the hike leader is one of the site's users. In the settings:
 
-![Add Formatted Text Field](images/07-add-formatted-text-field.png)
+- As the **Help text**, type `The member who leads the hike.`
+- Under **Reference type**, set **Sort by** to **Name**, so the list of members is in alphabetical order.
+- Uncheck **Include the anonymous user**. The "anonymous user" is how Drupal refers to visitors who aren't logged in, and they can't lead a hike.
 
-Take notice that the "Machine name" is generated from the label, but you can change the machine name by pressing the Edit link. Normally you can leave this as is, but there are use cases where you want to change the machine name. One of it is when the label is in a non-english language, but company policy is that all machine names should be in English.
+**Filter by** can limit the list to users with a certain role. Right now, the only user is you, and there's no "hike leader" role yet. We create one in Chapter 14, and can come back here then.
 
-After you press continue, another configuration form appears. This form is to configure both the Field Storage part (cardinality for an example) but also all the field specific configuration. Normally you can require the field to be mandatory in all content and you can give it a default value. 
+![The Hike leader settings for Hike window, with Reference type set to sort by Name, and Include the anonymous user unchecked](images/07-hike-leader-settings.png)
+*Figure 7.8: The Hike leader field's settings*
 
-Since this is a text field, if you have languages and translations configured, you can allow the field to be "translate-able". Also you can control what text formats are allowed in the editor, if the editor is shown at all! (That's yet another configuration we'll cover later).
+**Manage fields** now lists the six fields of a hike, in alphabetical order, with their machine names and types.
 
-![Field Settings for Excerpt](images/07-field-settings-for-excerpt.png)
-*Field settings for Text (formatted, long) field called excerpt*
+![The Manage fields tab of Hike, with Date, Description, Difficulty, Distance, Hike leader and Meeting place](images/07-hike-fields.png)
+*Figure 7.9: The Hike content type's fields*
 
-When you press Save, the field is created and it's added to the entity. 
+> **Try it:** If you did Exercise 5 in Chapter 1, where you planned the information a hike needs, compare your plan with these six fields. Did you think of something we left out? A field for the maximum number of participants, perhaps? Exercise 1 at the end of this chapter adds it.
 
-![Excerpt Field added to the Field list](images/07-excerpt-field-added-to-the-field-list.png)
+## Shaping the form: Manage form display
 
-Now that we have added the field, we can arrange where it's displayed in the form (Manage Form Display) and also how it's displayed as users view the content (Manage Display). That was covered in the Content Types chapter.
+The order of **Manage fields** is alphabetical, and it's not the order an editor thinks in. The form for a hike should start with the essentials, *when* and *where*, and end with the description. That's what the **Manage form display** tab is for. It lists every field on the form, base fields included, in the order the form shows them, and for each one, its *widget*.
+
+A *widget* is the part of the form for one field: a text box, a date picker, a list to choose from, checkboxes. A field type usually has several widgets to choose from. A Selection list, for example, can be a drop-down list or a row of radio buttons, and a Reference can be a drop-down list or a box that suggests names as you type.
+
+1. Go to **Manage form display** for Hike.
+2. Drag the fields, by the cross on the left of each row, into this order: **Title**, **Date**, **Meeting place**, **Distance**, **Difficulty**, **Hike leader**, **Description**. If dragging is awkward, select **Show row weights** at the top: each row then gets a number, and fields with lower numbers come first.
+3. For **Difficulty**, set the widget to **Check boxes/radio buttons**. With three choices, radio buttons show them all at once, and choosing takes one click instead of two. (Because the field allows only one value, Drupal shows radio buttons, not checkboxes.)
+4. For **Hike leader**, set the widget to **Select list**. The default, **Autocomplete**, is a text box that suggests names as you type; it's the right choice when a site has hundreds of users, but the club has a handful of hike leaders, and a list shows them all.
+5. Select **Save**.
+
+![The Manage form display tab of Hike, with the fields in their new order, and the Difficulty and Hike leader widgets changed](images/07-hike-form-display.png)
+*Figure 7.10: The form for a hike, arranged*
+
+The cog at the end of a row opens the widget's own settings, such as the size of a text box or a placeholder text shown in an empty field. The summary next to the widget tells you what's set. Fields in the **Disabled** part at the bottom aren't on the form at all; on Drupal 12, **Promoted** and **Sticky at top of lists** start there, as we saw in Chapter 6. And Drupal puts some base fields, such as **Authored by** and **URL alias**, in the form's sidebar, whatever their place in the list.
+
+### Drafts for hikes too
+
+In Chapter 6, we applied the Editorial workflow to Basic page. Hikes need it even more: in Chapter 14, hike leaders will write their hikes as drafts, and the secretary will publish them. Go to **Configuration** > **Workflow** > **Workflows**, **Edit** the Editorial workflow, select **Select** next to **Content types**, check **Hike**, select **Save**, and then **Save** at the bottom of the page.
+
+## Writing the first hike
+
+> **Try it:** Select **Create** > **Hike**, and fill in the club's first hike.
+>
+> 1. **Title**: `Turnhouse Hill and Carnethy Hill`.
+> 2. **Date**: a Saturday a few weeks from now, at `09:30`.
+> 3. **Meeting place**: `Flotterstone car park`.
+> 4. **Distance**: `11.5`.
+> 5. **Difficulty**: **Moderate**.
+> 6. **Hike leader**: yourself, **admin**.
+> 7. **Description**, in two paragraphs:
+>
+>    Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy Hill, and come back down through the glen.
+>
+>    Bring boots, a waterproof jacket, something warm, lunch, and your camera. The path is steep in places and can be muddy.
+>
+> 8. Under **URL alias**, type `/hikes/turnhouse-hill`.
+> 9. Set **Save as** to **Published**, and select **Save**.
+
+![The form for a new hike, with the Turnhouse Hill hike filled in, the fields in the new order, and Difficulty as radio buttons](images/07-hike-form.png)
+*Figure 7.11: Writing the first hike*
+
+Try leaving the date empty, or typing `-3` as the distance, before you save: Drupal refuses, and tells you what's wrong. That's the structure at work.
+
+Now look at the hike as a visitor sees it.
+
+![The Turnhouse Hill hike as a visitor sees it, with the description first and then Date, Meeting place, Distance, Difficulty and Hike leader, each with a label](images/07-hike-page.png)
+*Figure 7.12: The first hike, as Drupal shows it for now*
+
+All the information is there, but it's not pretty. The description comes first and the date last, the other fields each have a label, and the distance says "11.50 km", with two decimals, although we stored one. How a hike *looks* is decided somewhere else, on the **Manage display** tab, and that's the subject of Chapter 8.
+
+## Who may create hikes: Manage permissions
+
+The last tab of a content type, **Manage permissions**, shows the permissions that belong to this content type: who may create hikes, edit their own or anyone's hikes, delete them, and see or revert their revisions. Because Hike uses the Editorial workflow, the workflow's transitions are listed too, such as who may publish.
+
+![The Manage permissions tab of Hike, with permissions such as Hike: Create new content and Hike: Edit own content, and a column per role](images/07-hike-permissions.png)
+*Figure 7.13: The permissions for hikes*
+
+There's a column for each *role*, a group of users with the same permissions: **Anonymous user** (visitors who aren't logged in), **Authenticated user** (everyone who is), and the two roles Drupal's installation created, **Content editor** and **Administrator**. Leave them as they are for now. In Chapter 14, we create the club's own roles, such as hike leader and secretary, and come back to this tab.
+
+## Try it: the News content type
+
+The club also needs news: trip reports, competition results, announcements. A news item is simpler than a hike, so this one is up to you.
+
+> **Try it:** Create a content type for news.
+>
+> 1. **Name**: `News`. **Description**: `News from the club: trip reports, competition results, and announcements.`
+> 2. Leave **Display author and date information** checked this time. On a news item, "By Ana, 5 November" is exactly what readers want to know.
+> 3. Under **Menu settings**, uncheck **Main navigation**, as for hikes.
+> 4. Save it, and re-use the Body field. Keep the label **Body**.
+> 5. Add News to the Editorial workflow, as you did for Hike.
+> 6. Write the first news item: the title `The club has a website`, and this body:
+>
+>    Lens & Trail finally has a website of its own. From now on, you'll find the hike program, news from the club, and the members' best photos here.
+>
+>    The website is new, and we're building it as we go. If something is missing or wrong, tell the secretary.
+>
+> News gets a photo in Chapter 9, and tags in Chapter 10.
+
+> **On Drupal CMS:** the Starter template comes with one content type, **Utility page**, and it already has more fields than our Basic page: **Content** (the body), a required **Description** (a short summary, used by search engines), a **Featured image**, **Tags**, and four SEO fields that decide how the page looks in search results and when it's shared. Other site templates bring more content types; Byte, for example, comes with a blog. You add fields to them, and arrange their forms, with the same tabs as on Drupal core.
+>
+> ![The Manage fields tab of Utility page on Drupal CMS, with Content, Description, Featured image, SEO fields and Tags](images/07-cms-utility-page-fields.png)
+> *Figure 7.14: Utility page's fields on Drupal CMS*
+
+> **Coming from WordPress?** What Drupal calls a content type is closest to a WordPress *custom post type*, and Drupal's fields are closest to what the *Advanced Custom Fields* (ACF) plugin adds. The difference is where they come from. WordPress core registers custom post types in code, with `register_post_type()`, usually in a plugin, and its own custom fields are free-form pairs of a name and a value, hidden in the block editor until you turn them on, and shown on the site through the theme's code. That's why so many WordPress sites use ACF, which has field groups, more than 30 field types, and lately a screen for post types too. In Drupal, all of this is part of core, in the administration interface: content types, typed fields that Drupal checks, widgets for the form, and, as you'll see in Chapter 8, display settings for every field.
+
+## Summary
+
+You can now:
+
+- explain why structured content, with a field for each piece of information, is better than one block of text;
+- tell an entity, an entity type and a bundle apart, and name the entity types you'll meet in this book;
+- choose the right field type for a piece of information;
+- re-use a field on another content type, and know which of its settings are shared;
+- add text, number, list, date and reference fields, with help texts and checks;
+- arrange the form for editors, and choose a widget for each field;
+- find the permissions that belong to a content type.
+
+## Exercises
+
+1. Add a **Maximum participants** field to Hike: a whole number, at least 1, not required. Put it after **Difficulty** on the form. Which field type and sub-choice did you use, and why not Decimal?
+2. Write two more hikes: an easy one, a sunset photo walk along Portobello beach (5 km, meeting at Portobello Town Hall), and a hard one of your own choosing. Then go to **Content** and filter the list by **Content type**: Hike.
+3. Change the name of the difficulty **Hard** to **Challenging**. Look at the hard hike you wrote in Exercise 2: what does it say now? Then try to change the *value* `hard` as well. What does Drupal tell you, and why?
+4. The club wants a page for each committee member, with their name, their role on the committee (such as "Secretary"), and one or more email addresses. Create a **Committee member** content type for it. What should the **Title field label** be (remember Chapter 6)? Which field allows more than one email address, and where did you set that?
+5. *(challenge)* The club runs a photo competition every spring. Plan a **Photo competition** content type on paper: which fields does it need, which field type is each one, and which of them could re-use an existing field? Which information would be better as a reference to another entity than as a field of its own?
+
+## Want to know more?
+
+- The Drupal User Guide, drupal.org's free book about Drupal core: [Concept: Content Entities and Fields](https://www.drupal.org/docs/user_guide/en/planning-data-types.html), [Adding a Content Type](https://www.drupal.org/docs/user_guide/en/structure-content-type.html), [Adding Basic Fields to a Content Type](https://www.drupal.org/docs/user_guide/en/structure-fields.html), [Setting Up a Reference Field](https://www.drupal.org/docs/user_guide/en/structure-reference-fields.html), and [Changing Content Entry Forms](https://www.drupal.org/docs/user_guide/en/structure-form-editing.html).
+- [Registering Custom Post Types](https://developer.wordpress.org/plugins/post-types/registering-custom-post-types/) and [Assign custom fields](https://wordpress.org/documentation/article/assign-custom-fields/), on wordpress.org, and the [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/) plugin, if you'd like to compare.

@@ -15,6 +15,8 @@ We start where Chapter 7 left us: the Basic pages *About the club*, *How to join
 - formatters and their settings (the cog): a date as "Saturday, 14 March", a text as its summary or trimmed, a link as plain text or a button;
 - view modes: Default, Teaser and others, Custom display settings, and which one a list uses (the hand-off to Views, Chapter 12);
 - what Manage display can't do: columns, boxes on the side (the hand-off to the next section);
+- the hike as Chapter 7 leaves it: the description first, every field with a label, "11.50 km" with two decimals (the Decimal formatter's Scale fixes it);
+- from the author's earlier Chapter 7 draft (in Git history): the Card and Teaser view modes and Custom display settings, the Featured image formatters, and the Entity ID formatter as an example of showing the same data in a different way;
 - screenshots after each step, as for the Body field in Chapter 6. %%
 
 ## Laying out a page by hand

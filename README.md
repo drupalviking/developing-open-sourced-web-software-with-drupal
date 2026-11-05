@@ -31,7 +31,7 @@ covered by the same license.
 | `slides/` | The teachers' kit (to come): a deck and teaching notes per chapter. |
 | `examples/` | Files the book shows the reader, such as the photo club's recipe (to come). Pulled into chapters with `<!-- include: ... -->`. |
 | `archive/` | Drafts that are out of the book's scope, kept until we decide where they go. |
-| `tools/` | `build.py`, and later the test site and screenshot scripts. |
+| `tools/` | `build.py`, `update_numbers.py`, and `screenshots.py` (retakes the screenshots from the test sites). |
 | `PROJECT-LOG.md` | Decisions, history, open items, and the backlog. |
 
 ## Writing
@@ -76,6 +76,19 @@ python3 tools/build.py
 
 Numbers without an automatic source (support dates that haven't been announced, say) are listed at the end, with a link to check them by hand. The comment at the top of `data/numbers.yml` explains how to add one.
 
+### Screenshots
+
+`tools/screenshots.py` retakes the screenshots from the two test sites (see `PROJECT-LOG.md`, "Where we are"), with Playwright and its own Chromium, 1280 pixels wide. The sites must be running, and in the state the chapter leaves them in; the script only looks, it never saves a form.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/playwright install chromium          # once
+.venv/bin/python tools/screenshots.py 06       # one chapter's screenshots
+.venv/bin/python tools/screenshots.py          # all of them
+```
+
+So far it has Chapter 6's screenshots; Chapters 4 and 5 are still to be added.
+
 ## Contents and status
 
 | Chapter | Status |
@@ -86,7 +99,7 @@ Numbers without an automatic source (support dates that haven't been announced, 
 | 3. A Short History of Drupal | **Reviewed by the author (2026-11-04).** A story for site builders, with a release table and how to read version numbers; the programmers' material moved to Appendix B. Support dates come from `data/numbers.yml`. A `%%` placeholder for the author's own memories. |
 | 4. Installing Drupal | **Reviewed by the author (2026-11-04).** DDEV only, on Drupal 12 with Drush; the browser installer; a first look at a new site; Olivero from contrib; Drupal CMS 2.2.8. Checked on test sites. The Composer text moved to Chapter 10. |
 | 5. Finding Your Way Around | **Reviewed by the author (2026-11-05).** A tour of the Navigation sidebar on Drupal 12, Basic site settings and Regional settings for the club, contextual links, and the site as visitors see it. Checked on the test sites. |
-| 6. Your First Page | Not started. Canvas and Layout Builder, the content form, moderation, revisions, trash. |
+| 6. Your First Page | **Draft, waiting for the author's review (2026-11-05).** Basic page built by hand (machine name `page`, a `field_body` field), *About the club*, *How to join* and *Welcome* with menu links and aliases, the front page (`/node/3`), revisions, content moderation (Editorial), Layout Builder on core and Canvas on Drupal CMS, a comparison table, Trash. Checked on the test sites; screenshots from `tools/screenshots.py`. |
 | 7. Everything Is an Entity | Draft: content types and fields. |
 | 8. Media and Image Styles | Short draft. |
 | 9. Taxonomy | Short draft. |
@@ -109,6 +122,9 @@ Chapter numbers will be checked once, at the end, together with every cross-refe
 ## Check before publication
 
 Facts about releases and products that change quickly. Re-check each before a release.
+
+- Chapter 6: written on Drupal 12.0.0-beta2 and Drupal CMS 2.2.8 (2026-11-05). New content types get no fields, and the machine name `basic_page` (the chapter changes it to `page`); the body field is Formatted text > Long text, `field_body`; Promoted and Sticky are in the form display's Disabled part. The **Promoted** label (was "Promoted to front page") is from #3593281 (committed to main and 11.x in June 2026; Drupal CMS on 11.4.11 still shows the old label); #3538655 (removing the fields) was closed won't fix. Layout Builder is installed on Standard because Navigation depends on it. Content Moderation creates the **Editorial** workflow. The revision overview hides revisions that only changed the menu link. The front page setting stores the path as typed. Re-check all of it after the release.
+- Chapter 6: Drupal Canvas has no Drupal 12 release (1.12.0 and 1.x-dev require ^11.3; `canvas_version` in `data/numbers.yml`). When it does, move the Canvas section from the "On Drupal CMS" box to the core site, and retake its screenshots. The Canvas steps (Grid, Text, Icon card, **Move into**, **Review 1 change**) are from Canvas on Drupal CMS 2.2.8. Trash 3.1.2 supports `^11.3.3 | ^12`.
 
 - Chapter 5: the Navigation sidebar's items and the Structure, Configuration and Reports submenus are from Drupal 12.0.0-beta2; the top bar shows the page's **Edit** link and **More actions**; the Drupal CMS sidebar and Dashboard are from 2.2.8 (all 2026-11-04). Re-check after the release.
 

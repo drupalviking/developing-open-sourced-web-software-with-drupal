@@ -225,27 +225,59 @@ The field list disappears, and a **Manage layout** button takes its place: from 
 
 Now let's give *How to join* two columns: the text on the left, and the club's meeting times in a box on the right.
 
-1. Go to the *How to join* page, and select **Layout** in the **More actions** menu (or go to `/node/2/layout`). You see the page in editing mode, with the message "You are editing the layout for this Basic page content item."
+1. Go to the *How to join* page, and select **Layout** in the **More actions** menu (or go to `/node/2/layout`). You see the page in editing mode, with the message "You are editing the layout for this Basic page content item." Because the site has content moderation, there's also **Current state** and **Change to**, as on the edit form; leave it at **Published**, so the new layout goes online when you save it.
+
+![The Edit layout for How to join page, with Save layout, Discard changes and Revert to defaults at the top](images/06-lb-start.png)
+*Figure 6.11: Editing the layout of How to join*
+
 2. Select **Add section** at the top. A panel opens on the right, with the layouts to choose from: **One column**, **Two column**, **Three column** and **Four column**. (**Navigation layout** is the sidebar's own, and of no use on a page.) Select **Two column**.
+
+![The Choose a layout panel, with One column, Two column, Three column, Four column and Navigation layout](images/06-lb-choose-layout.png)
+*Figure 6.12: Choosing a layout for the new section*
+
 3. Set **Column widths** to **67%/33%**, and select **Add section**.
-4. In the new section, select **Add block** in the **Second region**, then **Create content block**. Type `When and where` as the **Title**, and this as the **Body**:
+
+![The Configure section panel, with Column widths set to 67%/33%](images/06-lb-column-widths.png)
+*Figure 6.13: The section's column widths*
+
+4. In the new section, select **Add block** in the **Second region**. The panel lists the blocks you can place; select **Create content block** at the top.
+
+![The Choose a block panel, with Create content block at the top and the blocks to choose from below](images/06-lb-choose-block.png)
+*Figure 6.14: Choosing a block for the second region*
+
+5. Type `When and where` as the **Title**, and this as the **Body**:
 
    Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.
 
    Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.
 
    Then select **Add block**.
-5. Select **Add block** in the **First region**. Under **Content fields**, select **Body**, set **Label** to **- Hidden -**, and select **Add block**.
-6. The old one-column section is still below, with the body in it a second time. Select **Remove Section 2**, and confirm with **Remove**.
-7. At the top, write `Two columns, with the meeting times on the right.` in **Revision log message**, and select **Save layout**.
+
+![The Configure block panel, with When and where as the title and the meeting times as the body](images/06-lb-content-block.png)
+*Figure 6.15: The When and where block*
+
+6. Select **Add block** in the **First region**. Under **Content fields**, select **Body**, set **Label** to **- Hidden -**, and select **Add block**.
+
+![The Configure block panel for the Body field, with Label set to Hidden](images/06-lb-body-block.png)
+*Figure 6.16: Placing the body in the first region*
+
+7. The old one-column section is still below, with the body in it a second time. Select **Remove Section 2**, and confirm with **Remove**.
+
+![The panel asking Are you sure you want to remove section 2, with Remove and Cancel](images/06-lb-remove-section.png)
+*Figure 6.17: Removing the old section*
+
+8. At the top, write `Two columns, with the meeting times on the right.` in **Revision log message**, and select **Save layout**.
+
+![The top of the layout page, with the revision log message filled in, ready to save](images/06-lb-save.png)
+*Figure 6.18: Saving the layout*
 
 ![Layout Builder on How to join, with the body in the first column and the When and where block in the second](images/06-layout-builder.png)
-*Figure 6.11: Editing the layout of How to join*
+*Figure 6.19: The finished layout*
 
 Until you select **Save layout**, nothing changes for visitors: Layout Builder keeps your work as a draft, and says "You have unsaved changes." **Discard changes** throws the draft away. **Revert to defaults** removes the page's own layout, so it uses the content type's template again.
 
 ![How to join as a visitor sees it, in two columns](images/06-how-to-join.png)
-*Figure 6.12: How to join, laid out with Layout Builder*
+*Figure 6.20: How to join, laid out with Layout Builder*
 
 The *When and where* box is a block that belongs to this page only. Chapter 12 is about blocks you can reuse on many pages, such as a box in every page's footer.
 
@@ -256,7 +288,7 @@ The *When and where* box is a block that belongs to this page only. Chapter 12 i
 > In Canvas, a page isn't a node with a body field. It's a kind of content of its own, called **Page**, with its own list under **Pages** in the sidebar (`/admin/content/pages`). Select **Add Page**, and the Canvas editor opens.
 >
 > ![The Canvas editor, with the component library on the left, the page in the middle, and the page's settings on the right](images/06-canvas-editor.png)
-> *Figure 6.13: The Canvas editor*
+> *Figure 6.21: The Canvas editor*
 >
 > In the middle is the page, as visitors will see it, in the site's theme (Mercury, on the Starter template). Above it, you can switch between desktop, tablet and phone sizes. On the left is a row of buttons:
 >
@@ -269,16 +301,44 @@ The *When and where* box is a block that belongs to this page only. Chapter 12 i
 > To build *How to join*:
 >
 > 1. In **Page data**, type `How to join` as the **Title** and `/join` as the **URL alias**.
-> 2. Open the **Library**, and drag a **Heading** onto the page, where it says "Place items here". Its settings open on the right: type `How to join` as the **Heading**, and set **Heading level** to **1**.
-> 3. Drag a **Grid**, from **Layout**, onto the page below the heading. Set **Columns** to **2 columns 67%-33%**.
-> 4. Drag a **Text** into the grid, and replace the example text with the three paragraphs of *How to join*.
-> 5. Drag an **Icon card** into the grid, after the text. Set **Icon name** to `calendar-dots`, **Heading** to `When and where`, **Description** to the meeting times, and **Text alignment** to **Left**.
-> 6. Canvas saves your work as you go, as a draft. When the page looks right, select **Review 1 change** at the top right, check **How to join**, and select **Publish 1 selected**.
 >
-> If a component lands in the wrong place, and with drag and drop it will, right-click it in **Layers**, and use **Move** > **Move up**, **Move down**, or **Move into**, to put it inside the grid.
+> ![The Page data tab, with How to join as the title and /join as the URL alias, and an empty page in the middle](images/06-canvas-page-data.png)
+> *Figure 6.22: The page's title and URL alias*
+>
+> 2. Open the **Library**, and drag a **Heading** onto the page, where it says "Place items here". Its settings open on the right: type `How to join` as the **Heading**, and set **Heading level** to **1**.
+>
+> ![The Canvas editor with a How to join heading on the page, and its settings on the right](images/06-canvas-heading.png)
+> *Figure 6.23: The heading, at level 1*
+>
+> 3. Drag a **Grid**, from **Layout**, onto the page below the heading. Set **Columns** to **2 columns 67%-33%**. The grid is empty for now, a thin box below the heading.
+>
+> ![The Canvas editor with an empty grid below the heading, and Columns set to 2 columns 67%-33%](images/06-canvas-grid.png)
+> *Figure 6.24: The grid, with two columns*
+>
+> 4. Drag a **Text** into the grid, and replace the example text with the three paragraphs of *How to join*.
+>
+> ![The Canvas editor with the three paragraphs of How to join in the grid, and the rich text editor on the right](images/06-canvas-text.png)
+> *Figure 6.25: The text, in the grid*
+>
+> 5. Drag an **Icon card**, from **Card**, into the grid, after the text. This is the fiddly part: drag and drop puts it in the wrong place more often than not, for example after the grid instead of inside it. Don't worry, you can put it right in **Layers**. Right-click the **Icon card** there, and select **Move** > **Move into** > **Grid (Grid)**. That puts the card first in the grid, so right-click the **Text** and select **Move** > **Move up**, to put the text back on the left.
+>
+> ![Layers, with the Icon card's right-click menu open at Move, Move into, Grid (Grid)](images/06-canvas-move.png)
+> *Figure 6.26: Moving the card into the grid*
+>
+> 6. Select the **Icon card**, and set **Icon name** to `calendar-dots`, **Heading** to `When and where`, **Description** to the meeting times, and **Text alignment** to **Left**.
+>
+> ![The Canvas editor with the text on the left and the When and where card on the right, and the card's settings](images/06-canvas-card.png)
+> *Figure 6.27: The When and where card*
+>
+> 7. Canvas saves your work as you go, as a draft. When the page looks right, select **Review 1 change** at the top right, check **How to join**, and select **Publish 1 selected**.
+>
+> ![The Unpublished changes panel, with How to join checked and the Publish 1 selected button](images/06-canvas-publish.png)
+> *Figure 6.28: Publishing the page*
+>
+> The same right-click menu works for every component: **Move up**, **Move down** and **Move into** put a component that landed in the wrong place where you want it.
 >
 > ![How to join on the Drupal CMS site, built with Canvas, in two columns with a card](images/06-canvas-how-to-join.png)
-> *Figure 6.14: How to join, built with Canvas*
+> *Figure 6.29: How to join, built with Canvas*
 
 ### Which one should I use?
 
@@ -302,7 +362,7 @@ Before you delete, think about unpublishing instead. An unpublished page, or an 
 > **On Drupal CMS:** deleting moves content to the **Trash** (in the sidebar, or `/admin/content/trash`), where you can **Restore** it, or delete it for good. The confirmation says so: "Deleting this content item will move it to the trash." Trash is a contributed module, and it supports Drupal 12, so if you'd like a safety net on the core site too, you can add it there. Chapter 10 shows how.
 >
 > ![The Trash in Drupal CMS, with a deleted page and its Restore button](images/06-trash.png)
-> *Figure 6.15: The Trash in Drupal CMS*
+> *Figure 6.30: The Trash in Drupal CMS*
 
 ## Summary
 

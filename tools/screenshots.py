@@ -5,6 +5,9 @@ The test sites are DDEV projects outside this repository (see PROJECT-LOG.md,
 "Where we are"): `lens-and-trail` (Drupal core) and `lens-and-trail-cms`
 (Drupal CMS). Each must be running, and in the state the chapter leaves it in.
 The script only looks: it fills in forms to show them, but never saves them.
+The exception is a step-by-step sequence (Layout Builder, Canvas), which
+changes a page as it goes: it works on a temporary copy, made with
+`ddev drush` in the site's directory, and deletes the copy when it's done.
 
 Screenshots are taken at twice the size (for sharp text) and resized to 1280
 pixels wide, into manuscript/images/.
@@ -18,7 +21,8 @@ Usage:
   .venv/bin/python tools/screenshots.py 06-revisions # one screenshot
 
 Set CORE_URL or CMS_URL if your sites have other addresses (on the author's
-machine, DDEV's router uses port 8443).
+machine, DDEV's router uses port 8443), and CORE_DIR or CMS_DIR if their
+DDEV projects aren't in ~/websites/open-university/.
 """
 
 from __future__ import annotations
@@ -37,11 +41,13 @@ WIDTH = 1280
 SITES = {
     "core": {
         "url": os.environ.get("CORE_URL", "https://lens-and-trail.ddev.site:8443"),
+        "dir": os.environ.get("CORE_DIR", str(Path.home() / "websites/open-university/lens-and-trail")),
         "user": "admin",
         "password": "12345",
     },
     "cms": {
         "url": os.environ.get("CMS_URL", "https://lens-and-trail-cms.ddev.site:8443"),
+        "dir": os.environ.get("CMS_DIR", str(Path.home() / "websites/open-university/lens-and-trail-cms")),
         "user": "admin@lens-and-trail-cms.ddev.site",
         "password": "12345",
     },
@@ -117,6 +123,220 @@ def moderation_state(page: Page, url: str) -> None:
     page.locator("select[name='moderation_state[0][state]']").scroll_into_view_if_needed()
 
 
+def drush_php(site: dict, php: str) -> str:
+    result = subprocess.run(["ddev", "drush", "php:eval", php], cwd=site["dir"], check=True, capture_output=True, text=True)
+    return result.stdout.strip()
+
+
+def scroll_to(page: Page, selector: str, offset: int = 120) -> None:
+    page.locator(selector).first.evaluate(f"e => window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - {offset})")
+    page.wait_for_timeout(400)
+
+
+def layout_builder_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 6's Layout Builder steps, on a copy of How to join (node 2)."""
+    nid = drush_php(site, '$n = \\Drupal\\node\\Entity\\Node::load(2)->createDuplicate(); $n->set("layout_builder__layout", []); $n->set("path", ["alias" => ""]); $n->set("moderation_state", "published"); $n->save(); echo $n->id();')
+    url = site["url"]
+
+    def panel_submit() -> None:
+        page.click("#drupal-off-canvas input.form-submit.button--primary")
+        page.wait_for_timeout(3500)
+        page.wait_for_load_state("networkidle")
+
+    try:
+        page.goto(f"{url}/node/{nid}/layout")
+        page.wait_for_load_state("networkidle")
+        scroll_to(page, "h1")
+        snap("06-lb-start")
+        page.click("a:has-text('Add section')")
+        page.wait_for_timeout(2500)
+        snap("06-lb-choose-layout")
+        page.click("#drupal-off-canvas a:has-text('Two column')")
+        page.wait_for_timeout(2500)
+        page.select_option("#drupal-off-canvas select", "67-33")
+        snap("06-lb-column-widths")
+        panel_submit()
+        page.locator("a:has-text('Add block')").nth(1).click()
+        page.wait_for_timeout(3000)
+        snap("06-lb-choose-block")
+        page.click("#drupal-off-canvas a:has-text('Create content block')")
+        page.wait_for_timeout(3000)
+        page.fill("#drupal-off-canvas input[name='settings[label]']", "When and where")
+        page.evaluate("h => document.querySelector('#drupal-off-canvas .ck-editor__editable').ckeditorInstance.setData(h)", MEETING_TIMES)
+        snap("06-lb-content-block")
+        panel_submit()
+        page.locator("a:has-text('Add block')").nth(0).click()
+        page.wait_for_timeout(3000)
+        page.click("#drupal-off-canvas a:text-is('Body')")
+        page.wait_for_timeout(3000)
+        page.select_option("#drupal-off-canvas select[name='settings[formatter][label]']", "hidden")
+        snap("06-lb-body-block")
+        panel_submit()
+        page.click("a:has-text('Remove Section 2')")
+        page.wait_for_timeout(3000)
+        snap("06-lb-remove-section")
+        panel_submit()
+        page.fill("textarea[name='revision_log[0][value]']", "Two columns, with the meeting times on the right.")
+        scroll_to(page, "h1")
+        snap("06-lb-save")
+    finally:
+        drush_php(site, f'\\Drupal\\node\\Entity\\Node::load({nid})->delete();')
+
+
+def canvas_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 6's Canvas steps, on a new Canvas page, deleted afterwards."""
+    url = site["url"]
+    page.goto(url + "/admin/content/pages")
+    page.click("a:has-text('Add Page')")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(6000)
+    editor = page.url
+    page_id = editor.rstrip("/").split("/")[-1]
+
+    def reload() -> None:
+        # Scale to fit zooms the preview; a fresh load puts it back at 100%,
+        # where the drop positions below are measured.
+        page.goto(editor)
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(6000)
+
+    def open_panel(label: str, marker: str) -> None:
+        if not page.get_by_text(marker, exact=True).first.is_visible():
+            page.click(f"button[aria-label='{label}']")
+            page.wait_for_timeout(1000)
+
+    def fit() -> None:
+        page.click("[data-testid='scale-to-fit']")
+        page.wait_for_timeout(1500)
+
+    def drag(name: str, x: float, y: float) -> None:
+        open_panel("Library", "Components")
+        box = page.get_by_text(name, exact=True).first.bounding_box()
+        page.mouse.move(box["x"] + 20, box["y"] + 8)
+        page.mouse.down()
+        for i in range(1, 25):
+            page.mouse.move(box["x"] + 20 + (x - box["x"] - 20) * i / 24, box["y"] + 8 + (y - box["y"] - 8) * i / 24)
+            page.wait_for_timeout(40)
+        page.wait_for_timeout(700)
+        page.mouse.up()
+        page.wait_for_timeout(3500)
+
+    def in_preview(selector: str, last: bool = False) -> dict:
+        for frame in page.frames[1:]:
+            boxes = [frame.locator(selector).nth(i).bounding_box() for i in range(frame.locator(selector).count())]
+            boxes = [b for b in boxes if b and b["width"] > 0]
+            if boxes:
+                return boxes[-1] if last else boxes[0]
+        raise RuntimeError(f"{selector} not found in the Canvas preview")
+
+    def set_field(suffix: str, value: str) -> None:
+        field = page.locator(f"input[name$='{suffix}']")
+        field.fill(value)
+        field.press("Tab")
+        page.wait_for_timeout(1500)
+
+    def set_rich_text(html: str) -> None:
+        page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)", html)
+        page.locator(".ck-editor__editable").last.click()
+        page.keyboard.press("End")
+        page.wait_for_timeout(2500)
+
+    def layer_menu(row: str, *path: str) -> None:
+        open_panel("Layers", "Mercury theme")
+        page.get_by_text(row, exact=True).first.click(button="right")
+        page.wait_for_timeout(800)
+        for item in path:
+            page.get_by_role("menuitem", name=item).hover()
+            page.wait_for_timeout(700)
+
+    try:
+        set_field("title[0][value]", "How to join")
+        alias = page.locator("input[name='path[0][alias]']")
+        alias.fill("/join")
+        snap("06-canvas-page-data")
+        # The real How to join already has /join, so the copy gets another alias.
+        alias.fill("/join-screenshot")
+        alias.press("Tab")
+        page.wait_for_timeout(2000)
+        placeholder = page.get_by_text("Place items here").bounding_box()
+        drag("Heading", placeholder["x"] + 40, placeholder["y"] + 5)
+        set_field("[heading_text][0][value]", "How to join")
+        page.select_option("select[name$='[level]']", "1")
+        page.wait_for_timeout(2500)
+        fit()
+        snap("06-canvas-heading")
+        page.get_by_text("Layout", exact=True).first.click()
+        heading = in_preview("h1")
+        drag("Grid", heading["x"] + 150, heading["y"] + heading["height"] - 4)
+        page.select_option("select[name$='[columns]']", "2 columns 67%-33%")
+        page.wait_for_timeout(2500)
+        fit()
+        snap("06-canvas-grid")
+        reload()
+        heading = in_preview("h1")
+        drag("Text", heading["x"] + 500, heading["y"] + heading["height"] + 20)
+        set_rich_text(HOW_TO_JOIN.replace("lens-and-trail.ddev.site", "lens-and-trail-cms.ddev.site"))
+        fit()
+        snap("06-canvas-text")
+        # Dropped below the text, the card lands after the grid; move it in.
+        reload()
+        text = in_preview("p:has-text('Membership')")
+        # Where a drop near the grid lands varies a little: try a few heights
+        # until the card sits after the grid, so "Move into" offers the grid.
+        for dy in (-4, -12, 4, -24, 12):
+            drag("Icon card", text["x"] + 300, text["y"] + text["height"] + dy)
+            open_panel("Layers", "Mercury theme")
+            if not page.get_by_text("Icon card", exact=True).first.is_visible():
+                continue  # The drop missed: try again.
+            layer_menu("Icon card", "Move", "Move into")
+            if page.get_by_role("menuitem", name="Grid (Grid)").count():
+                break
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(500)
+            layer_menu("Icon card")
+            page.get_by_role("menuitem", name="Delete").click()
+            page.wait_for_timeout(2500)
+        else:
+            raise RuntimeError("Couldn't drop the Icon card after the grid")
+        snap("06-canvas-move")
+        page.get_by_role("menuitem", name="Grid (Grid)").click()
+        page.wait_for_timeout(3000)
+        layer_menu("Text", "Move")
+        page.get_by_role("menuitem", name="Move up").click()
+        page.wait_for_timeout(3000)
+        page.get_by_text("Icon card", exact=True).first.click()
+        page.wait_for_timeout(2500)
+        set_field("[icon][0][value]", "calendar-dots")
+        set_field("[text][0][value]", "When and where")
+        page.select_option("select[name$='[text_align]']", "left")
+        page.wait_for_timeout(1500)
+        set_rich_text(MEETING_TIMES)
+        fit()
+        snap("06-canvas-card")
+        page.click("button:has-text('Review')")
+        page.wait_for_timeout(2500)
+        page.get_by_text("Select All").click()
+        page.wait_for_timeout(800)
+        snap("06-canvas-publish")
+    except Exception:
+        if os.environ.get("DEBUG_SHOT"):
+            page.screenshot(path=os.environ["DEBUG_SHOT"])
+        raise
+    finally:
+        drush_php(site, f'\\Drupal::service("trash.manager")->executeInTrashContext("inactive", fn() => \\Drupal::entityTypeManager()->getStorage("canvas_page")->load({page_id})->delete());')
+
+
+HOW_TO_JOIN = (
+    "<p>Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance.</p>"
+    "<p>If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail.ddev.site.</p>"
+    "<p>Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes.</p>"
+)
+MEETING_TIMES = (
+    "<p>Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.</p>"
+    "<p>Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.</p>"
+)
+
+
 def layout_builder(page: Page, url: str) -> None:
     page.goto(url + "/node/2/layout")
     page.wait_for_load_state("networkidle")
@@ -160,6 +380,25 @@ SHOTS = {
 }
 
 
+# Sequences: several screenshots from one run of steps.
+# (site, function, window width, the names it takes)
+SEQUENCES = [
+    ("core", layout_builder_steps, 1600, ["06-lb-start", "06-lb-choose-layout", "06-lb-column-widths", "06-lb-choose-block", "06-lb-content-block", "06-lb-body-block", "06-lb-remove-section", "06-lb-save"]),
+    ("cms", canvas_steps, 1600, ["06-canvas-page-data", "06-canvas-heading", "06-canvas-grid", "06-canvas-text", "06-canvas-move", "06-canvas-card", "06-canvas-publish"]),
+]
+
+
+def matches(name: str, wanted: list[str]) -> bool:
+    return not wanted or any(name == w or name.startswith(w + "-") for w in wanted)
+
+
+def save(page: Page, name: str, full_page: bool = False) -> None:
+    target = IMAGES / f"{name}.png"
+    page.screenshot(path=str(target), full_page=full_page)
+    subprocess.run(["sips", "--resampleWidth", str(WIDTH), str(target)], check=True, capture_output=True)
+    print(f"{target.relative_to(ROOT)}")
+
+
 def log_in(page: Page, site: dict) -> None:
     page.goto(site["url"] + "/user/login")
     page.fill("#edit-name", site["user"])
@@ -169,8 +408,9 @@ def log_in(page: Page, site: dict) -> None:
 
 
 def main(wanted: list[str]) -> int:
-    names = [n for n in SHOTS if not wanted or any(n == w or n.startswith(w + "-") for w in wanted)]
-    if not names:
+    names = [n for n in SHOTS if matches(n, wanted)]
+    sequences = [s for s in SEQUENCES if any(matches(n, wanted) for n in s[3])]
+    if not names and not sequences:
         print(f"No screenshots match {' '.join(wanted)}.")
         return 1
     with sync_playwright() as playwright:
@@ -190,11 +430,15 @@ def main(wanted: list[str]) -> int:
             show(page, site["url"])
             page.wait_for_load_state("networkidle")
             page.wait_for_timeout(500)
-            target = IMAGES / f"{name}.png"
-            page.screenshot(path=str(target), full_page=full_page)
+            save(page, name, full_page)
             page.close()
-            subprocess.run(["sips", "--resampleWidth", str(WIDTH), str(target)], check=True, capture_output=True)
-            print(f"{target.relative_to(ROOT)}")
+        for site_name, steps, width, _ in sequences:
+            site = SITES[site_name]
+            context = browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+            page = context.new_page()
+            log_in(page, site)
+            steps(page, site, lambda name: save(page, name))
+            context.close()
         browser.close()
     return 0
 

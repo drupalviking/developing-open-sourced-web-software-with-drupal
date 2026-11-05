@@ -39,7 +39,7 @@ Two of the most important things in Drupal's history happened outside Drupal cor
 - **CCK**, the Content Construction Kit, let site builders create their own kinds of content, with their own fields: an event with a date and a place, a product with a price. Before CCK, adding a field meant writing code.
 - **Views** let site builders make lists of content, such as "the ten newest events, with their dates", by clicking instead of writing database queries.
 
-Together, CCK and Views turned Drupal from a tool for programmers into a tool for site builders. Both are now part of Drupal core, as you'll see in Chapter 7 (content types and fields) and Chapter 11 (Views).
+Together, CCK and Views turned Drupal from a tool for programmers into a tool for site builders. Both are now part of Drupal core, as you'll see in Chapter 7 (content types and fields) and Chapter 12 (Views).
 
 Drupal 4.7, released in May 2006, is often called the release where Drupal grew up. It made Drupal fit for big, complex sites, and it was the first version that CCK and Views worked with. (For developers, it was also the release that brought the Form API, which Appendix B describes.)
 
@@ -54,7 +54,7 @@ The community was growing too. The first **DrupalCon**, the Drupal conference, w
 - *installation profiles*, ready-made setups for a particular kind of site, the great-grandparents of today's recipes;
 - a reorganized administration section, and a new default theme, Garland, which a whole generation of Drupal sites looked like.
 
-**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (today's Update Manager), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 18.
+**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (today's Update Manager), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 19.
 
 Around Drupal, an ecosystem was forming. The **Drupal Association**, a non-profit, was founded in 2006 to look after drupal.org and to support DrupalCon. In 2007, Dries co-founded **Acquia**, a company that offers Drupal hosting and services. It was one of the first companies built around Drupal, and today there are thousands of them, from one-person agencies to companies with hundreds of employees. (Chapter 2 tells you more about who's who.)
 
@@ -65,7 +65,7 @@ Drupal also became famous. In October 2009, **whitehouse.gov** moved to Drupal 6
 **Drupal 7** took almost three years to make, and was released on 5 January 2011. It was a big step for site builders:
 
 - **Fields moved into core.** What CCK did as a contributed module became part of Drupal itself, and not only for content: users and taxonomy terms could have fields too. Behind that was a new idea, the *entity*, a general name for any piece of data Drupal manages. Entities are the subject of Chapter 7, and they're the reason Drupal is as flexible as it is.
-- **Images in core.** Image fields, and *image styles*, which resize and crop images automatically for every place they're shown. Chapter 8 covers them.
+- **Images in core.** Image fields, and *image styles*, which resize and crop images automatically for every place they're shown. Chapter 9 covers them.
 - **A new look.** Two new themes, Bartik for the site and Seven for the administration pages, a toolbar along the top of the screen, and shortcuts.
 
 Views stayed a contributed module, and Drupal 7 sites came to depend on a set of contributed modules almost every site used: Views, Pathauto, Token, Features, Rules, Panels, and more.
@@ -84,9 +84,9 @@ It took almost five years. **Drupal 8** was released on **19 November 2015**, Dr
 
 - **Views in core**, and many administration pages rebuilt as views, so you can change them.
 - **A text editor in core** (CKEditor), so editors no longer need to write HTML.
-- **Multilingual everything**: the interface, the content, and the configuration, in four core modules. Chapter 16 uses them.
-- **Configuration management**: the site's settings can be exported to files, and moved from one copy of the site to another, such as from your computer to the live server. Chapter 19 shows how.
-- A **mobile-friendly** administration interface, and **Twig**, a new template language for themes (Chapter 14).
+- **Multilingual everything**: the interface, the content, and the configuration, in four core modules. Chapter 17 uses them.
+- **Configuration management**: the site's settings can be exported to files, and moved from one copy of the site to another, such as from your computer to the live server. Chapter 20 shows how.
+- A **mobile-friendly** administration interface, and **Twig**, a new template language for themes (Chapter 15).
 
 And a new way of releasing. Drupal 8 introduced **semantic versioning**, with three-part version numbers such as 8.5.3, and a new *minor* release every six months. Minor releases may add features, but they must not break anything. So Drupal 8 kept growing for five years after its release: content moderation, media handling, the Media Library, and Layout Builder (Chapter 6) all arrived as minor releases.
 
@@ -107,7 +107,7 @@ Drupal does the same with its code. When a better way of doing something is adde
 For you as a site builder, this means:
 
 - **Minor updates** (from 11.3 to 11.4, say) are safe, and you should do them. They add features, and fix bugs, without breaking things.
-- **Major updates** (from 10 to 11, say) are no longer rebuilds. Your site, its content and its configuration stay as they are. What you need is for your contributed modules and themes to be ready for the new version, and in most cases, they are long before you need them. A module called **Upgrade Status** tells you which of yours aren't. We come back to that in Chapter 18.
+- **Major updates** (from 10 to 11, say) are no longer rebuilds. Your site, its content and its configuration stay as they are. What you need is for your contributed modules and themes to be ready for the new version, and in most cases, they are long before you need them. A module called **Upgrade Status** tells you which of yours aren't. We come back to that in Chapter 19.
 
 The programmers' side of this, and the tools that update modules automatically, are in Appendix B.
 
@@ -116,7 +116,7 @@ The programmers' side of this, and the tools that update modules automatically, 
 Each major version since has followed the same pattern: new features in the minor releases, and a clean-up, plus newer versions of the foundations underneath, in the major ones.
 
 - **Drupal 9** (June 2020) ran on newer versions of Symfony and Twig, and was otherwise Drupal 8.9 without the deprecated code. Its minor releases brought a new administration theme, Claro, and a new site theme, Olivero, and **CKEditor 5**.
-- **Drupal 10** (15 December 2022) made Claro and Olivero the defaults, made CKEditor 5 the only editor, and brought a tool for starting your own theme. Its minor releases brought an easier way to add fields (Drupal 10.2), and **recipes** (Drupal 10.3, 2024), ready-made bundles of modules and configuration you apply to a site, which Chapter 10 explains.
+- **Drupal 10** (15 December 2022) made Claro and Olivero the defaults, made CKEditor 5 the only editor, and brought a tool for starting your own theme. Its minor releases brought an easier way to add fields (Drupal 10.2), and **recipes** (Drupal 10.3, 2024), ready-made bundles of modules and configuration you apply to a site, which Chapter 11 explains.
 - **Drupal 11** (2 August 2024) ran on Symfony 7 and PHP 8.3, and dropped a few old modules from core, such as Forum, which live on as contributed modules. Its minor releases brought a lot:
   - **11.1** (December 2024): recipes that ask questions when you apply them (an API key for a remote service, say), and new content types that no longer get a Body field automatically.
   - **11.2** (June 2025): much faster installation of modules and recipes, and support for the AVIF image format.
@@ -178,7 +178,7 @@ You'll see version numbers everywhere: on your site's status report, on every mo
 
 You'll also meet older module versions written like **8.x-1.5** or **7.x-3.2**. That's the old style, from before 2020, where the first part said which Drupal core the module was for. Many modules still have a few of those releases on their pages. A module in the 7.x style is for Drupal 7, and won't work on a modern site.
 
-> **Note:** Each Drupal version is supported for a limited time, and the dates are on drupal.org, on the page *Drupal core release cycle: major, minor, and patch releases*. When a version reaches its end of life, it gets no more security updates, and a site on it should be updated. We look at keeping a site up to date in Chapter 18.
+> **Note:** Each Drupal version is supported for a limited time, and the dates are on drupal.org, on the page *Drupal core release cycle: major, minor, and patch releases*. When a version reaches its end of life, it gets no more security updates, and a site on it should be updated. We look at keeping a site up to date in Chapter 19.
 
 ## Summary
 

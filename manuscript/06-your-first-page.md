@@ -1,6 +1,6 @@
 # Your First Page
 
-Up to now, the Lens & Trail site has been an empty house: a name, a slogan, and a front page that tells visitors "Access denied". In this chapter we move in. The club gets its first three pages, *About the club*, *How to join*, and a *Welcome* page that visitors see when they arrive. On the way, you'll learn how Drupal keeps track of every change to a page, how to work on a draft while the old version stays online, and the two ways of laying out a page: Layout Builder in Drupal core, and Drupal Canvas in Drupal CMS.
+Up to now, the Lens & Trail site has been an empty house: a name, a slogan, and a front page that tells visitors "Access denied". In this chapter we move in. The club gets its first three pages, *About the club*, *How to join*, and a *Welcome* page that visitors see when they arrive. On the way, you'll learn how Drupal keeps track of every change to a page, how to work on a draft while the old version stays online, and what happens when you delete one. How the pages *look* is the subject of Chapter 8.
 
 We start where Chapter 5 left us: Drupal 12 with Olivero, the club's slogan in place, and you logged in as `admin`.
 
@@ -30,7 +30,7 @@ Below the description are four tabs of settings. Go through them one by one.
 **Publishing options** are the defaults for every new page of this type:
 
 - **Published**: whether a new page is visible to visitors as soon as it's saved. Leave it on. We come back to drafts later in this chapter.
-- **Promoted** and **Sticky at top of lists**: two flags that lists of content can use. *Promoted* marks content as featured, and *sticky* content stays at the top of a list. In older versions of Drupal, Promoted was called "Promoted to front page", because Drupal's front page used to be a list of promoted content. Most sites today have a front page of their own, as Lens & Trail will by the end of this chapter, so leave both off. We meet them again when we build lists of content in Chapter 11.
+- **Promoted** and **Sticky at top of lists**: two flags that lists of content can use. *Promoted* marks content as featured, and *sticky* content stays at the top of a list. In older versions of Drupal, Promoted was called "Promoted to front page", because Drupal's front page used to be a list of promoted content. Most sites today have a front page of their own, as Lens & Trail will by the end of this chapter, so leave both off. We meet them again when we build lists of content in Chapter 12.
 - **Create new revision**: whether Drupal keeps the old version of a page every time it's changed. Leave it on; it's what makes "Revisions" later in this chapter work.
 
 **Display settings** has one checkbox, **Display author and date information**. On a news item, "Submitted by Ana on 4 May" is useful. On *About the club* it isn't, so uncheck it.
@@ -64,11 +64,11 @@ Drupal saves the content type and takes you to its **Manage fields** tab, which 
 5. Drupal closes the window, and **Manage fields** now lists **Body**, with its machine name and its type, Long text. **Edit** takes you back to its settings, if you need to change them later.
 
 ![The Manage fields tab of Basic page, with the Body field](images/06-manage-fields.png)
-*Figure 6.5: Basic page, with its Body field. (The Layout field appears later in this chapter, when we turn on Layout Builder.)*
+*Figure 6.5: Basic page, with its Body field. (The Layout field appears in Chapter 8, when we turn on Layout Builder.)*
 
 The Basic page content type is ready, with a title and a body. We'll come back to its **Manage display** tab in a moment.
 
-> **On Drupal CMS:** you don't need to build anything. Drupal CMS comes with a content type for this, called **Utility page** (with the machine name `page`), and with a second way to make pages, Drupal Canvas, which we look at later in this chapter.
+> **On Drupal CMS:** you don't need to build anything. Drupal CMS comes with a content type for this, called **Utility page** (with the machine name `page`), and with a second way to make pages, Drupal Canvas, which we look at in Chapter 8.
 
 ## Writing the first page
 
@@ -77,7 +77,7 @@ Select **Create** > **Basic page** in the sidebar, or go to `/node/add/page`.
 ![The form for a Basic page, with the About the club text, and Menu settings and URL alias open on the right](images/06-content-form.png)
 *Figure 6.6: Writing the About the club page*
 
-The form has two parts. On the left is the content itself: **Title** and **Body**. The body field is a text editor, called CKEditor, with buttons for bold, italic, links, lists, quotes, images and headings, much like a word processor's. Under it, **Text format** decides which formatting is allowed. **Basic HTML**, the default, allows the usual formatting and nothing that could break the page or the site's security; **Full HTML** allows everything, and should only be given to people you trust completely. Chapter 13 decides who may use which format.
+The form has two parts. On the left is the content itself: **Title** and **Body**. The body field is a text editor, called CKEditor, with buttons for bold, italic, links, lists, quotes, images and headings, much like a word processor's. Under it, **Text format** decides which formatting is allowed. **Basic HTML**, the default, allows the usual formatting and nothing that could break the page or the site's security; **Full HTML** allows everything, and should only be given to people you trust completely. Chapter 14 decides who may use which format.
 
 On the right is everything *about* the content:
 
@@ -110,7 +110,7 @@ Look closely, though. Above the text, Olivero shows the word **Body**: the field
 2. Drupal lists the *view modes* of the content type: the ways a page can be shown. **Default** is the only one in use; select **Manage** next to it.
 3. In the row for **Body**, set **Label** to **- Hidden -**, and select **Save**.
 
-Reload the About page: the label is gone. **Manage display** decides how every page of the content type is shown: which fields appear, in which order, and how. We use it again for Layout Builder later in this chapter, and Chapter 7 explains view modes.
+Reload the About page: the label is gone. **Manage display** decides how every page of the content type is shown: which fields appear, in which order, and how. Chapter 8 is all about it: view modes, formatters, and laying out pages with Layout Builder and Canvas.
 
 > **Try it:** Create two more Basic pages.
 >
@@ -130,7 +130,7 @@ Reload the About page: the label is gone. **Manage display** decides how every p
 >
 > Then go to **Content** (`/admin/content`). All three pages are there, with their type, author, status, and when they were last changed.
 
-> **On Drupal CMS:** a module called *Pathauto* makes the URL alias for you, from the page's title, so you rarely type one. Drupal core doesn't have it; we add it to the core site in Chapter 15, which is about addresses and search engines.
+> **On Drupal CMS:** a module called *Pathauto* makes the URL alias for you, from the page's title, so you rarely type one. Drupal core doesn't have it; we add it to the core site in Chapter 16, which is about addresses and search engines.
 
 ## Setting the front page
 
@@ -152,7 +152,7 @@ Now open the site in a private browser window. Instead of "Access denied", visit
 ![The front page as a visitor sees it: Welcome to Lens & Trail, with Home, About and Join us in the menu](images/06-front-page.png)
 *Figure 6.8: The new front page, as a visitor sees it*
 
-The Welcome page is short for now. When the club has hikes and photos, we'll give the front page lists of the next hikes and the newest photos, in Chapter 11.
+The Welcome page is short for now. When the club has hikes and photos, we'll give the front page lists of the next hikes and the newest photos, in Chapter 12.
 
 ## Revisions
 
@@ -169,7 +169,7 @@ The list has one line per revision, the newest first: when, by whom, and the log
 
 The list only shows revisions that changed the content itself. If you only change the page's menu link, Drupal saves a revision, but doesn't list it.
 
-> **Drupal core can't compare revisions side by side.** To see exactly which words changed between two revisions, you need a contributed module called *Diff*. Chapter 10 shows how to add modules like it.
+> **Drupal core can't compare revisions side by side.** To see exactly which words changed between two revisions, you need a contributed module called *Diff*. Chapter 11 shows how to add modules like it.
 
 ## Drafts and reviews: content moderation
 
@@ -185,7 +185,7 @@ Content moderation is part of Drupal core, but it isn't installed. Let's install
 A *workflow* is a set of states, and the steps between them, called *transitions*. Installing Content Moderation creates one for you, called **Editorial**. Go to **Configuration** > **Workflow** > **Workflows** (`/admin/config/workflow/workflows`), and select **Edit** for it.
 
 - Its **States** are **Draft**, **Published** and **Archived**. An archived page is no longer online, but it isn't deleted either.
-- Its **Transitions** are the moves between them: **Create New Draft**, **Publish**, **Archive**, **Restore to Draft** and **Restore**. In Chapter 13, we decide who may make which move: hike leaders may write drafts, for example, and only the secretary may publish them.
+- Its **Transitions** are the moves between them: **Create New Draft**, **Publish**, **Archive**, **Restore to Draft** and **Restore**. In Chapter 14, we decide who may make which move: hike leaders may write drafts, for example, and only the secretary may publish them.
 - Under **This workflow applies to**, select **Select** next to **Content types**, check **Basic page**, and select **Save**. Then select **Save** at the bottom of the page.
 
 Now edit *About the club*. The **Published** switch is gone. In its place, the form shows the page's **Current state**, Published, and a **Change to** list with Draft, Published and Archived.
@@ -201,168 +201,16 @@ To see every draft on the site, go to **Content**, and select the **Moderated co
 
 > **On Drupal CMS:** content moderation is already installed, with a workflow called **Basic editorial** for Utility pages. Drupal CMS also comes with the *Scheduler* module, which publishes or unpublishes content at a time you choose, such as the morning the hike programme goes online.
 
-## Laying out a page
-
-So far, every Basic page looks the same: the title, then the body. That's because of **Manage display**: it decides, for every page of the content type, which fields are shown, and in what order. This is the classic way to build a Drupal site, and for content with a fixed structure, such as a hike, it's still the best way: every hike looks the same, and editors fill in fields instead of arranging the page.
-
-Sometimes, though, you want to arrange a page yourself: two columns, a box on the side, a big photo at the top. Drupal has two tools for this, and you'll meet both in real projects:
-
-- **Layout Builder**, part of Drupal core. You divide the page into *sections* with columns, and place *blocks* in them: the page's own fields, menus, lists, or boxes of text. It works on a content type's display, and, if you allow it, on a single page.
-- **Drupal Canvas**, the page builder that comes with Drupal CMS. You build the page in a visual editor, from *components* such as headings, texts, cards and grids, and see the result as you work.
-
-Neither is the "right" one. Canvas is newer and more visual, and it's where Drupal CMS is heading. Layout Builder has been in core since Drupal 8.7, and many developers prefer it, or prefer plain field displays, because they keep pages consistent. We build *How to join* both ways, and you can judge for yourself.
-
-### Layout Builder
-
-Layout Builder is already installed on your site: the Navigation sidebar uses it, so Drupal installs it with the sidebar. We only have to turn it on for Basic page.
-
-1. Go to **Structure** > **Content types** > **Manage display** for Basic page, and **Manage** the **Default** view mode.
-2. At the bottom, under **Layout options**, check **Use Layout Builder**.
-3. Check **Allow each content item to have its layout customized**. Without it, every Basic page shares one layout, which you design once for the content type, its *template*. With it, each page can also have a layout of its own.
-4. Select **Save**.
-
-The field list disappears, and a **Manage layout** button takes its place: from now on, the layout decides how a Basic page is shown. Every page still uses the template, which shows the body, so nothing changes on the site yet.
-
-Now let's give *How to join* two columns: the text on the left, and the club's meeting times in a box on the right.
-
-1. Go to the *How to join* page, and select **Layout** in the **More actions** menu (or go to `/node/2/layout`). You see the page in editing mode, with the message "You are editing the layout for this Basic page content item." Because the site has content moderation, there's also **Current state** and **Change to**, as on the edit form; leave it at **Published**, so the new layout goes online when you save it.
-
-![The Edit layout for How to join page, with Save layout, Discard changes and Revert to defaults at the top](images/06-lb-start.png)
-*Figure 6.11: Editing the layout of How to join*
-
-2. Select **Add section** at the top. A panel opens on the right, with the layouts to choose from: **One column**, **Two column**, **Three column** and **Four column**. (**Navigation layout** is the sidebar's own, and of no use on a page.) Select **Two column**.
-
-![The Choose a layout panel, with One column, Two column, Three column, Four column and Navigation layout](images/06-lb-choose-layout.png)
-*Figure 6.12: Choosing a layout for the new section*
-
-3. Set **Column widths** to **67%/33%**, and select **Add section**.
-
-![The Configure section panel, with Column widths set to 67%/33%](images/06-lb-column-widths.png)
-*Figure 6.13: The section's column widths*
-
-4. In the new section, select **Add block** in the **Second region**. The panel lists the blocks you can place; select **Create content block** at the top.
-
-![The Choose a block panel, with Create content block at the top and the blocks to choose from below](images/06-lb-choose-block.png)
-*Figure 6.14: Choosing a block for the second region*
-
-5. Type `When and where` as the **Title**, and this as the **Body**:
-
-   Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.
-
-   Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.
-
-   Then select **Add block**.
-
-![The Configure block panel, with When and where as the title and the meeting times as the body](images/06-lb-content-block.png)
-*Figure 6.15: The When and where block*
-
-6. Select **Add block** in the **First region**. Under **Content fields**, select **Body**, set **Label** to **- Hidden -**, and select **Add block**.
-
-![The Configure block panel for the Body field, with Label set to Hidden](images/06-lb-body-block.png)
-*Figure 6.16: Placing the body in the first region*
-
-7. The old one-column section is still below, with the body in it a second time. Select **Remove Section 2**, and confirm with **Remove**.
-
-![The panel asking Are you sure you want to remove section 2, with Remove and Cancel](images/06-lb-remove-section.png)
-*Figure 6.17: Removing the old section*
-
-8. At the top, write `Two columns, with the meeting times on the right.` in **Revision log message**, and select **Save layout**.
-
-![The top of the layout page, with the revision log message filled in, ready to save](images/06-lb-save.png)
-*Figure 6.18: Saving the layout*
-
-![Layout Builder on How to join, with the body in the first column and the When and where block in the second](images/06-layout-builder.png)
-*Figure 6.19: The finished layout*
-
-Until you select **Save layout**, nothing changes for visitors: Layout Builder keeps your work as a draft, and says "You have unsaved changes." **Discard changes** throws the draft away. **Revert to defaults** removes the page's own layout, so it uses the content type's template again.
-
-![How to join as a visitor sees it, in two columns](images/06-how-to-join.png)
-*Figure 6.20: How to join, laid out with Layout Builder*
-
-The *When and where* box is a block that belongs to this page only. Chapter 12 is about blocks you can reuse on many pages, such as a box in every page's footer.
-
-### Drupal Canvas
-
-> **On Drupal CMS:** Canvas is part of Drupal CMS, but it doesn't support Drupal 12 yet: its newest version, {{ number:canvas_version }}, needs Drupal 11.3 or later, but not 12. So we build the Canvas version of *How to join* on the Drupal CMS site from Chapter 4, if you made one.
->
-> In Canvas, a page isn't a node with a body field. It's a kind of content of its own, called **Page**, with its own list under **Pages** in the sidebar (`/admin/content/pages`). Select **Add Page**, and the Canvas editor opens.
->
-> ![The Canvas editor, with the component library on the left, the page in the middle, and the page's settings on the right](images/06-canvas-editor.png)
-> *Figure 6.21: The Canvas editor*
->
-> In the middle is the page, as visitors will see it, in the site's theme (Mercury, on the Starter template). Above it, you can switch between desktop, tablet and phone sizes. On the left is a row of buttons:
->
-> - **Library**: the *components* you can put on the page. **Base** has the simple ones, such as **Heading**, **Text**, **Image** and **Button**; **Card** and **Hero** have bigger boxes; **Layout** has **Grid**, **Section** and **Group**, which hold other components.
-> - **Layers**: the page's components as a tree, which is often the easiest way to select one, or to see what's inside what.
-> - **Code**, **Pages**, **Templates** and **Brand kit**: writing your own components, the list of pages, the templates pages are built on, and the site's colors and fonts. We leave them for now; building your own component is a topic for later.
->
-> On the right, **Page data** has the page's **Title**, **URL alias** and **SEO settings**, and when you select a component, a **Settings** tab with that component's settings.
->
-> To build *How to join*:
->
-> 1. In **Page data**, type `How to join` as the **Title** and `/join` as the **URL alias**.
->
-> ![The Page data tab, with How to join as the title and /join as the URL alias, and an empty page in the middle](images/06-canvas-page-data.png)
-> *Figure 6.22: The page's title and URL alias*
->
-> 2. Open the **Library**, and drag a **Heading** onto the page, where it says "Place items here". Its settings open on the right: type `How to join` as the **Heading**, and set **Heading level** to **1**.
->
-> ![The Canvas editor with a How to join heading on the page, and its settings on the right](images/06-canvas-heading.png)
-> *Figure 6.23: The heading, at level 1*
->
-> 3. Drag a **Grid**, from **Layout**, onto the page below the heading. Set **Columns** to **2 columns 67%-33%**. The grid is empty for now, a thin box below the heading.
->
-> ![The Canvas editor with an empty grid below the heading, and Columns set to 2 columns 67%-33%](images/06-canvas-grid.png)
-> *Figure 6.24: The grid, with two columns*
->
-> 4. Drag a **Text** into the grid, and replace the example text with the three paragraphs of *How to join*.
->
-> ![The Canvas editor with the three paragraphs of How to join in the grid, and the rich text editor on the right](images/06-canvas-text.png)
-> *Figure 6.25: The text, in the grid*
->
-> 5. Drag an **Icon card**, from **Card**, into the grid, after the text. This is the fiddly part: drag and drop puts it in the wrong place more often than not, for example after the grid instead of inside it. Don't worry, you can put it right in **Layers**. Right-click the **Icon card** there, and select **Move** > **Move into** > **Grid (Grid)**. That puts the card first in the grid, so right-click the **Text** and select **Move** > **Move up**, to put the text back on the left.
->
-> ![Layers, with the Icon card's right-click menu open at Move, Move into, Grid (Grid)](images/06-canvas-move.png)
-> *Figure 6.26: Moving the card into the grid*
->
-> 6. Select the **Icon card**, and set **Icon name** to `calendar-dots`, **Heading** to `When and where`, **Description** to the meeting times, and **Text alignment** to **Left**.
->
-> ![The Canvas editor with the text on the left and the When and where card on the right, and the card's settings](images/06-canvas-card.png)
-> *Figure 6.27: The When and where card*
->
-> 7. Canvas saves your work as you go, as a draft. When the page looks right, select **Review 1 change** at the top right, check **How to join**, and select **Publish 1 selected**.
->
-> ![The Unpublished changes panel, with How to join checked and the Publish 1 selected button](images/06-canvas-publish.png)
-> *Figure 6.28: Publishing the page*
->
-> The same right-click menu works for every component: **Move up**, **Move down** and **Move into** put a component that landed in the wrong place where you want it.
->
-> ![How to join on the Drupal CMS site, built with Canvas, in two columns with a card](images/06-canvas-how-to-join.png)
-> *Figure 6.29: How to join, built with Canvas*
-
-### Which one should I use?
-
-| | Field display | Layout Builder | Drupal Canvas |
-|---|---|---|---|
-| Where it comes from | Drupal core | Drupal core | Drupal CMS (a contributed module) |
-| Who arranges the page | The site builder, once per content type | The site builder for the template; editors per page, if allowed | Editors, per page |
-| What you arrange | Fields | Sections and blocks | Components |
-| Best for | Content with a fixed structure: hikes, news, events | Content types where some pages need their own layout | Landing pages and one-off pages |
-
-Many sites use more than one: plain field displays for hikes and news, and Canvas or Layout Builder for the front page and a few special pages.
-
-> **Coming from WordPress?** Canvas will feel familiar: like the WordPress block editor, you build a page from pieces (Canvas calls them components, WordPress calls them blocks) and see the result as you go. Two differences matter. A Drupal *block* is something else, a box placed on the page, closer to a WordPress widget (see the box in Chapter 1). And in Drupal, structured content such as a hike usually isn't laid out by hand at all: it has fields, and the content type's display decides how every hike looks.
-
 ## Deleting content, and the Trash
 
 To delete a page, edit it and select **Delete** at the bottom of the form. On Drupal core, Drupal asks you to confirm, and warns that "This action cannot be undone." It means it: the page and all its revisions are gone.
 
 Before you delete, think about unpublishing instead. An unpublished page, or an archived one with content moderation, disappears from the site, but you can bring it back whenever you like.
 
-> **On Drupal CMS:** deleting moves content to the **Trash** (in the sidebar, or `/admin/content/trash`), where you can **Restore** it, or delete it for good. The confirmation says so: "Deleting this content item will move it to the trash." Trash is a contributed module, and it supports Drupal 12, so if you'd like a safety net on the core site too, you can add it there. Chapter 10 shows how.
+> **On Drupal CMS:** deleting moves content to the **Trash** (in the sidebar, or `/admin/content/trash`), where you can **Restore** it, or delete it for good. The confirmation says so: "Deleting this content item will move it to the trash." Trash is a contributed module, and it supports Drupal 12, so if you'd like a safety net on the core site too, you can add it there. Chapter 11 shows how.
 >
 > ![The Trash in Drupal CMS, with a deleted page and its Restore button](images/06-trash.png)
-> *Figure 6.30: The Trash in Drupal CMS*
+> *Figure 6.11: The Trash in Drupal CMS*
 
 ## Summary
 
@@ -374,8 +222,6 @@ You can now:
 - set the site's front page, by the page's own address;
 - see a page's revisions, and go back to an older one;
 - install Content Moderation, and work on a draft while the published version stays online;
-- lay out a page with Layout Builder, and, on Drupal CMS, with Canvas;
-- tell when to use a field display, Layout Builder, or Canvas;
 - delete content, and know when it can and can't be restored.
 
 ## Exercises
@@ -384,13 +230,9 @@ You can now:
 2. Edit *Photo tips for beginners* three times, with a log message each time. Then revert it to the first version. How many revisions does the page have now, and why?
 3. Change the Welcome page's URL alias to `/welcome-to-lens-and-trail`. Does the front page still work? What would have happened if the front page had been set to `/welcome`?
 4. With content moderation, archive *Photo tips for beginners*. What do visitors see at `/photo-tips` now? Where can you find the page, and how do you bring it back?
-5. Use Layout Builder to give *About the club* a layout of its own, with a box on the side that says when the club was founded (make up a year). Then select **Revert to defaults**. What happens to the box?
-6. *(challenge)* Change the Basic page *template*, at **Manage display** > **Manage layout**, so that every page has a one-line box at the bottom: "Questions? Write to hello@lens-and-trail.ddev.site." Which pages get the box, and which don't? Why?
 
 ## Want to know more?
 
 - The Drupal User Guide, drupal.org's free book about Drupal core: [Adding a Content Type](https://www.drupal.org/docs/user_guide/en/structure-content-type.html), [Creating a Content Item](https://www.drupal.org/docs/user_guide/en/content-create.html), [Editing a Content Item](https://www.drupal.org/docs/user_guide/en/content-edit.html), and [Designating a Front Page for your Site](https://www.drupal.org/docs/user_guide/en/menu-home.html).
-- [Layout Builder](https://www.drupal.org/docs/8/core/modules/layout-builder), drupal.org's documentation of the module, with templates and per-page layouts.
 - [Content Moderation](https://www.drupal.org/docs/8/core/modules/content-moderation/overview) and [Workflows](https://www.drupal.org/docs/8/core/modules/workflows/overview), on drupal.org.
-- [Drupal Canvas](https://www.drupal.org/project/canvas) and [Trash](https://www.drupal.org/project/trash), the project pages of the two contributed modules, with their newest versions and the Drupal versions they support.
-- [The WordPress Block Editor](https://wordpress.org/documentation/article/wordpress-block-editor/), on wordpress.org, if you'd like to compare.
+- [Trash](https://www.drupal.org/project/trash), the project page of the contributed module, with its newest version and the Drupal versions it supports.

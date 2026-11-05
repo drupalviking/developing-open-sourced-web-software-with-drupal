@@ -134,7 +134,7 @@ def scroll_to(page: Page, selector: str, offset: int = 120) -> None:
 
 
 def layout_builder_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 6's Layout Builder steps, on a copy of How to join (node 2)."""
+    """Chapter 8's Layout Builder steps, on a copy of How to join (node 2)."""
     nid = drush_php(site, '$n = \\Drupal\\node\\Entity\\Node::load(2)->createDuplicate(); $n->set("layout_builder__layout", []); $n->set("path", ["alias" => ""]); $n->set("moderation_state", "published"); $n->save(); echo $n->id();')
     url = site["url"]
 
@@ -147,44 +147,44 @@ def layout_builder_steps(page: Page, site: dict, snap) -> None:
         page.goto(f"{url}/node/{nid}/layout")
         page.wait_for_load_state("networkidle")
         scroll_to(page, "h1")
-        snap("06-lb-start")
+        snap("08-lb-start")
         page.click("a:has-text('Add section')")
         page.wait_for_timeout(2500)
-        snap("06-lb-choose-layout")
+        snap("08-lb-choose-layout")
         page.click("#drupal-off-canvas a:has-text('Two column')")
         page.wait_for_timeout(2500)
         page.select_option("#drupal-off-canvas select", "67-33")
-        snap("06-lb-column-widths")
+        snap("08-lb-column-widths")
         panel_submit()
         page.locator("a:has-text('Add block')").nth(1).click()
         page.wait_for_timeout(3000)
-        snap("06-lb-choose-block")
+        snap("08-lb-choose-block")
         page.click("#drupal-off-canvas a:has-text('Create content block')")
         page.wait_for_timeout(3000)
         page.fill("#drupal-off-canvas input[name='settings[label]']", "When and where")
         page.evaluate("h => document.querySelector('#drupal-off-canvas .ck-editor__editable').ckeditorInstance.setData(h)", MEETING_TIMES)
-        snap("06-lb-content-block")
+        snap("08-lb-content-block")
         panel_submit()
         page.locator("a:has-text('Add block')").nth(0).click()
         page.wait_for_timeout(3000)
         page.click("#drupal-off-canvas a:text-is('Body')")
         page.wait_for_timeout(3000)
         page.select_option("#drupal-off-canvas select[name='settings[formatter][label]']", "hidden")
-        snap("06-lb-body-block")
+        snap("08-lb-body-block")
         panel_submit()
         page.click("a:has-text('Remove Section 2')")
         page.wait_for_timeout(3000)
-        snap("06-lb-remove-section")
+        snap("08-lb-remove-section")
         panel_submit()
         page.fill("textarea[name='revision_log[0][value]']", "Two columns, with the meeting times on the right.")
         scroll_to(page, "h1")
-        snap("06-lb-save")
+        snap("08-lb-save")
     finally:
         drush_php(site, f'\\Drupal\\node\\Entity\\Node::load({nid})->delete();')
 
 
 def canvas_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 6's Canvas steps, on a new Canvas page, deleted afterwards."""
+    """Chapter 8's Canvas steps, on a new Canvas page, deleted afterwards."""
     url = site["url"]
     page.goto(url + "/admin/content/pages")
     page.click("a:has-text('Add Page')")
@@ -253,7 +253,7 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         set_field("title[0][value]", "How to join")
         alias = page.locator("input[name='path[0][alias]']")
         alias.fill("/join")
-        snap("06-canvas-page-data")
+        snap("08-canvas-page-data")
         # The real How to join already has /join, so the copy gets another alias.
         alias.fill("/join-screenshot")
         alias.press("Tab")
@@ -264,20 +264,20 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         page.select_option("select[name$='[level]']", "1")
         page.wait_for_timeout(2500)
         fit()
-        snap("06-canvas-heading")
+        snap("08-canvas-heading")
         page.get_by_text("Layout", exact=True).first.click()
         heading = in_preview("h1")
         drag("Grid", heading["x"] + 150, heading["y"] + heading["height"] - 4)
         page.select_option("select[name$='[columns]']", "2 columns 67%-33%")
         page.wait_for_timeout(2500)
         fit()
-        snap("06-canvas-grid")
+        snap("08-canvas-grid")
         reload()
         heading = in_preview("h1")
         drag("Text", heading["x"] + 500, heading["y"] + heading["height"] + 20)
         set_rich_text(HOW_TO_JOIN.replace("lens-and-trail.ddev.site", "lens-and-trail-cms.ddev.site"))
         fit()
-        snap("06-canvas-text")
+        snap("08-canvas-text")
         # Dropped below the text, the card lands after the grid; move it in.
         reload()
         text = in_preview("p:has-text('Membership')")
@@ -298,7 +298,7 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
             page.wait_for_timeout(2500)
         else:
             raise RuntimeError("Couldn't drop the Icon card after the grid")
-        snap("06-canvas-move")
+        snap("08-canvas-move")
         page.get_by_role("menuitem", name="Grid (Grid)").click()
         page.wait_for_timeout(3000)
         layer_menu("Text", "Move")
@@ -312,12 +312,12 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         page.wait_for_timeout(1500)
         set_rich_text(MEETING_TIMES)
         fit()
-        snap("06-canvas-card")
+        snap("08-canvas-card")
         page.click("button:has-text('Review')")
         page.wait_for_timeout(2500)
         page.get_by_text("Select All").click()
         page.wait_for_timeout(800)
-        snap("06-canvas-publish")
+        snap("08-canvas-publish")
     except Exception:
         if os.environ.get("DEBUG_SHOT"):
             page.screenshot(path=os.environ["DEBUG_SHOT"])
@@ -372,10 +372,10 @@ SHOTS = {
     "06-front-page": ("core", visitor("/"), False, False),
     "06-revisions": ("core", revisions, True, False),
     "06-moderation-state": ("core", moderation_state, True, False),
-    "06-layout-builder": ("core", layout_builder, True, False),
-    "06-how-to-join": ("core", visitor("/join"), False, False),
-    "06-canvas-editor": ("cms", canvas_editor, True, False, 1600),
-    "06-canvas-how-to-join": ("cms", visitor("/join"), False, False),
+    "08-layout-builder": ("core", layout_builder, True, False),
+    "08-how-to-join": ("core", visitor("/join"), False, False),
+    "08-canvas-editor": ("cms", canvas_editor, True, False, 1600),
+    "08-canvas-how-to-join": ("cms", visitor("/join"), False, False),
     "06-trash": ("cms", trash, True, False),
 }
 
@@ -383,8 +383,8 @@ SHOTS = {
 # Sequences: several screenshots from one run of steps.
 # (site, function, window width, the names it takes)
 SEQUENCES = [
-    ("core", layout_builder_steps, 1600, ["06-lb-start", "06-lb-choose-layout", "06-lb-column-widths", "06-lb-choose-block", "06-lb-content-block", "06-lb-body-block", "06-lb-remove-section", "06-lb-save"]),
-    ("cms", canvas_steps, 1600, ["06-canvas-page-data", "06-canvas-heading", "06-canvas-grid", "06-canvas-text", "06-canvas-move", "06-canvas-card", "06-canvas-publish"]),
+    ("core", layout_builder_steps, 1600, ["08-lb-start", "08-lb-choose-layout", "08-lb-column-widths", "08-lb-choose-block", "08-lb-content-block", "08-lb-body-block", "08-lb-remove-section", "08-lb-save"]),
+    ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 
 

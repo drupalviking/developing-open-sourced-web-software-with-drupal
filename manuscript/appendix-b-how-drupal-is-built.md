@@ -76,7 +76,7 @@ The Form API is still the way forms are built in Drupal, although today a form i
 
 The first Drupal themes were PHP files that printed HTML directly, so theming meant editing PHP. Then came *theme engines*, which let themes use templates: by Drupal 4.7 and 5, PHPTemplate was the standard, with its `.tpl.php` files, HTML with small pieces of PHP in them. It was a big step towards separating logic from presentation, but a template could still run any PHP it liked, including database queries, and that made themes slow and insecure in the wrong hands.
 
-Drupal 8 replaced PHPTemplate with **Twig**. A Twig template can't run arbitrary PHP: it prints variables, loops over lists, and calls a limited set of filters and functions. And Twig escapes everything it prints by default, which closes off a whole class of security problems (cross-site scripting). Chapter 14 shows Twig templates.
+Drupal 8 replaced PHPTemplate with **Twig**. A Twig template can't run arbitrary PHP: it prints variables, loops over lists, and calls a limited set of filters and functions. And Twig escapes everything it prints by default, which closes off a whole class of security problems (cross-site scripting). Chapter 15 shows Twig templates.
 
 ### Drupal 7: render arrays, entities and a new database layer (2011)
 
@@ -96,7 +96,7 @@ Up to Drupal 7, Drupal was written in *procedural* PHP: thousands of functions, 
 - **Routing and events from Symfony.** A URL is matched to a *route*, which points to a *controller* that returns the page. Modules can react to events in the request's life, as described at the start of this appendix.
 - **Plugins.** Many things that used to be hooks became *plugins*: small classes, found automatically, for blocks, field types, field widgets and formatters, image effects, and much more.
 - **The Configuration Management Initiative (CMI).** All configuration is stored in one system, and can be exported to YAML files and imported on another copy of the site. Before Drupal 8, configuration was spread over many database tables, and moving it between sites took contributed modules such as Features.
-- **Composer.** Drupal 8 brought Composer, PHP's dependency manager, into the picture, and the Composer-based way of building a Drupal site matured over its minor releases, up to the `drupal/recommended-project` template in Drupal 8.8 (2019). Chapter 10 shows how site builders use it.
+- **Composer.** Drupal 8 brought Composer, PHP's dependency manager, into the picture, and the Composer-based way of building a Drupal site matured over its minor releases, up to the `drupal/recommended-project` template in Drupal 8.8 (2019). Chapter 11 shows how site builders use it.
 - **Web services.** REST in core from the start, and JSON:API in core from Drupal 8.7, for *decoupled* (or *headless*) sites, where Drupal stores the content and a separate front end, such as a React application, shows it.
 
 The transition was hardest for developers who had spent years learning Drupal's procedural style. Many had to learn object-oriented PHP from scratch, and many contributed modules had to be rewritten rather than ported.

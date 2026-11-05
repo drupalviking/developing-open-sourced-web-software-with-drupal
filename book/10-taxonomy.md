@@ -11,7 +11,7 @@ In short, a **vocabulary** is the blueprint that defines a classification scheme
 ## Taxonomies in Drupal CMS
 After installation of Drupal CMS, it creates one vocabulary: Tags and has one term in it: Drupal.
 
-![Taxonomy Vocabularies in Drupal CMS](images/09-taxonomy-vocabularies-in-drupal-cms.png)
+![Taxonomy Vocabularies in Drupal CMS](images/10-taxonomy-vocabularies-in-drupal-cms.png)
 */admin/structure/taxonomy*
 
-![Terms in the Tag Vocabulary](images/09-terms-in-the-tag-vocabulary.png)*/admin/structure/taxonomy/manage/tags/overview* 
+![Terms in the Tag Vocabulary](images/10-terms-in-the-tag-vocabulary.png)*/admin/structure/taxonomy/manage/tags/overview* 

@@ -90,7 +90,14 @@ On the right is everything *about* the content:
 > **Try it:** Write the club's first page.
 >
 > 1. **Title**: `About the club`.
-> 2. **Body**, in three paragraphs: "Lens & Trail is a small club for people in and around Edinburgh who like taking photos and going for walks, usually at the same time." "We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in town to look at each other's photos over a cup of tea." "Many of our members came to Scotland from Spain and Latin America, so you'll hear as much Spanish as English on the trail. Everyone is welcome, whatever camera you have. A phone is fine!"
+> 2. **Body**, in three paragraphs:
+>
+>    Lens & Trail is a small club for people in and around Edinburgh who like taking photos and going for walks, usually at the same time.
+>
+>    We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in town to look at each other's photos over a cup of tea.
+>
+>    Many of our members came to Scotland from Spain and Latin America, so you'll hear as much Spanish as English on the trail. Everyone is welcome, whatever camera you have. A phone is fine!
+>
 > 3. Under **Menu settings**, turn on **Provide a menu link**, type `About` as the **Menu link title**, and set **Weight** to `1`.
 > 4. Under **URL alias**, type `/about`.
 > 5. Select **Save**.
@@ -107,8 +114,19 @@ Reload the About page: the label is gone. **Manage display** decides how every p
 
 > **Try it:** Create two more Basic pages.
 >
-> - `How to join`, with the body "Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance." "If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail.ddev.site." "Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes." Give it a menu link titled `Join us`, with **Weight** `2`, and the URL alias `/join`.
-> - `Welcome to Lens & Trail`, with the body "We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them." "Read more about the club, or find out how to join." No menu link, and the URL alias `/welcome`.
+> - `How to join`, with a menu link titled `Join us`, with **Weight** `2`, and the URL alias `/join`. The body:
+>
+>   Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance.
+>
+>   If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail.ddev.site.
+>
+>   Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes.
+>
+> - `Welcome to Lens & Trail`, with no menu link, and the URL alias `/welcome`. The body:
+>
+>   We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them.
+>
+>   Read more about the club, or find out how to join.
 >
 > Then go to **Content** (`/admin/content`). All three pages are there, with their type, author, status, and when they were last changed.
 
@@ -210,7 +228,13 @@ Now let's give *How to join* two columns: the text on the left, and the club's m
 1. Go to the *How to join* page, and select **Layout** in the **More actions** menu (or go to `/node/2/layout`). You see the page in editing mode, with the message "You are editing the layout for this Basic page content item."
 2. Select **Add section** at the top. A panel opens on the right, with the layouts to choose from: **One column**, **Two column**, **Three column** and **Four column**. (**Navigation layout** is the sidebar's own, and of no use on a page.) Select **Two column**.
 3. Set **Column widths** to **67%/33%**, and select **Add section**.
-4. In the new section, select **Add block** in the **Second region**, then **Create content block**. Type `When and where` as the **Title**, and as the **Body**: "Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before." and "Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith." Select **Add block**.
+4. In the new section, select **Add block** in the **Second region**, then **Create content block**. Type `When and where` as the **Title**, and this as the **Body**:
+
+   Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.
+
+   Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.
+
+   Then select **Add block**.
 5. Select **Add block** in the **First region**. Under **Content fields**, select **Body**, set **Label** to **- Hidden -**, and select **Add block**.
 6. The old one-column section is still below, with the body in it a second time. Select **Remove Section 2**, and confirm with **Remove**.
 7. At the top, write `Two columns, with the meeting times on the right.` in **Revision log message**, and select **Save layout**.

@@ -2617,7 +2617,323 @@ $d['default']['display_options']['pager']['options']['items_per_page'] = 10;
 $v->set('display', $d); $v->save();""")
 
 
+# Chapter 14: blocks, regions and menus.
+
+CH14_BLOCKS = ["olivero_next_hikes", "olivero_newest_photos", "olivero_club_info", "olivero_join_the_club", "olivero_footer"]
+
+
+def blocks14_reset(site: dict) -> None:
+    """The site as Chapter 13 leaves it: no Chapter 14 blocks, block type, menu links or Privacy page; menus in their old order."""
+    ids = "', '".join(CH14_BLOCKS)
+    drush_php(site, f"""$et = \\Drupal::entityTypeManager();
+foreach (['{ids}'] as $id) {{ $et->getStorage('block')->load($id)?->delete(); }}
+foreach ($et->getStorage('block_content')->loadByProperties(['reusable' => TRUE]) as $b) {{ $b->delete(); }}
+$et->getStorage('block_content_type')->load('club_info')?->delete();
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['menu_name' => 'footer']) as $l) {{ $l->delete(); }}
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['title' => 'Hike archive']) as $l) {{ $l->delete(); }}
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['menu_name' => 'main']) as $l) {{ $l->set('weight', $l->getTitle() == 'About' ? 1 : 2)->set('expanded', FALSE)->save(); }}
+foreach ($et->getStorage('node')->loadByProperties(['title' => 'Privacy']) as $n) {{ $n->delete(); }}
+foreach (['hikes', 'albums'] as $id) {{ $v = \\Drupal\\views\\Entity\\View::load($id); $d = $v->get('display'); $d['page_1']['display_options']['menu']['weight'] = 0; $d['page_1']['display_options']['menu']['expanded'] = FALSE; $v->set('display', $d); $v->save(); }}
+\\Drupal::service('menu_link.static.overrides')->deleteMultipleOverrides(['standard.front_page']);
+\\Drupal::service('plugin.manager.menu.link')->rebuild();
+drupal_flush_all_caches();""")
+
+
+def place_block(page: Page, url: str, plugin: str, region: str, block_id: str, label: str | None = None, show_label: bool = True, setup=None, shot=None) -> None:
+    """Places a block in Olivero through its Configure block form (what Place block opens)."""
+    page.goto(f"{url}/admin/structure/block/add/{plugin}/olivero?region={region}")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("v => { const e = document.querySelector(\"input[name='id']\"); e.value = v; }", block_id)
+    if label is not None:
+        page.fill("input[name='settings[label]']", label)
+    if not show_label:
+        page.uncheck("input[name='settings[label_display]']")
+    if setup:
+        setup(page)
+    if shot:
+        shot()
+    page.click("input[value='Save block']")
+    page.wait_for_load_state("networkidle")
+
+
+def block_visibility_tab(page: Page, tab: str) -> None:
+    page.locator(".vertical-tabs__menu-item a, .vertical-tabs__menu a", has_text=tab).first.click()
+    page.wait_for_timeout(600)
+
+
+def visitor_shot(page: Page, site: dict, path: str, name: str, element: str | None = None, hover: str | None = None, full: bool = False) -> None:
+    """A screenshot of path, logged out: the window, the whole page, or one element; optionally hovering over something first."""
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(site["url"] + path)
+    visit.wait_for_load_state("networkidle")
+    if hover:
+        visit.locator(hover).first.hover()
+        visit.wait_for_timeout(1200)
+    if element:
+        # Olivero's header follows you down the page; keep it out of a shot of one element.
+        visit.add_style_tag(content=".site-header__fixable, .is-fixed .site-header__fixable { position: absolute !important; }")
+        visit.locator(element).first.scroll_into_view_if_needed()
+        visit.wait_for_timeout(500)
+    save(visit, name, full_page=full, element=element)
+    context.close()
+
+
+def blocks14_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14, part 1: the block layout, regions, placing blocks and visibility."""
+    url = site["url"]
+    blocks14_reset(site)
+
+    # The block layout and the regions.
+    # The whole Block layout, in a window as tall as the page: a full-page shot would show the fixed admin sidebar over it.
+    page.goto(url + "/admin/structure/block")
+    page.wait_for_load_state("networkidle")
+    row_weights(page, False)
+    page.set_viewport_size({"width": WIDTH, "height": page.evaluate("document.documentElement.scrollHeight")})
+    page.wait_for_timeout(800)
+    save(page, "14-block-layout")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    page.goto(url + "/admin/structure/block/demo/olivero")
+    page.wait_for_load_state("networkidle")
+    page.add_style_tag(content=".admin-toolbar, .admin-toolbar-control-bar { display: none !important; } body { padding-inline-start: 0 !important; margin-inline-start: 0 !important; } .dialog-off-canvas-main-canvas { margin-inline-start: 0 !important; }")
+    page.wait_for_timeout(800)
+    save(page, "14-regions", full_page=True)
+
+    # Place block: the list of blocks, filtered.
+    page.goto(url + "/admin/structure/block")
+    page.wait_for_load_state("networkidle")
+    page.locator("a[href*='/admin/structure/block/library/olivero?region=sidebar']").first.evaluate("e => e.click()")
+    page.wait_for_selector(".ui-dialog input[type='search'], .ui-dialog input.block-filter-text")
+    page.wait_for_timeout(1500)
+    page.locator(".ui-dialog input[type='search'], .ui-dialog input.block-filter-text").first.press_sequentially("hikes", delay=80)
+    page.mouse.move(5, 5)
+    page.wait_for_timeout(1000)
+    snap("14-place-block", element=".ui-dialog")
+
+    # Next hikes in the sidebar, on hike pages only.
+    def next_hikes(p: Page) -> None:
+        block_visibility_tab(p, "Content type")
+        p.check("input[name='visibility[entity_bundle:node][bundles][hike]']")
+        p.wait_for_timeout(500)
+
+    def next_hikes_shot() -> None:
+        scroll_to(page, "input[name='visibility[entity_bundle:node][bundles][hike]']", 400)
+        snap("14-configure-block")
+
+    place_block(page, url, "views_block:hikes-block_1", "sidebar", "olivero_next_hikes", setup=next_hikes, shot=next_hikes_shot)
+
+    # Newest photos in Footer Top, on every page except the front page (which has them already).
+    def newest_photos(p: Page) -> None:
+        block_visibility_tab(p, "Pages")
+        p.fill("textarea[name='visibility[request_path][pages]']", "<front>")
+        p.check("input[name='visibility[request_path][negate]'][value='1']")
+
+    def newest_photos_shot() -> None:
+        scroll_to(page, "textarea[name='visibility[request_path][pages]']", 300)
+        snap("14-visibility-pages")
+
+    place_block(page, url, "views_block:photos-block_1", "footer_top", "olivero_newest_photos", setup=newest_photos, shot=newest_photos_shot)
+    visitor_shot(page, site, "/hikes/turnhouse-hill", "14-sidebar", full=True)
+
+
+def blocks14_content_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14, part 2: content blocks (a Club info block type for the footer, a Join the club block for visitors). After blocks14_steps."""
+    url = site["url"]
+    views_admin_shot(page, url, "/admin/structure/block-content", "14-block-types", full=False)
+
+    # A block type of our own, with fields.
+    page.goto(url + "/admin/structure/block-content/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='label']", "Club info")
+    page.wait_for_timeout(1500)
+    page.fill("textarea[name='description']", "The club's contact details and meeting times, for the footer.")
+    page.click("input[value='Save and manage fields']")
+    page.wait_for_load_state("networkidle")
+    fields = url + "/admin/structure/block-content/manage/club_info/fields"
+    create_field(page, fields, "Formatted text", "Meeting times", "Long text")
+    create_field(page, fields, "Email", "Email", None)
+
+    def links(p: Page) -> None:
+        p.select_option(".ui-dialog select[name='field_storage[subform][cardinality]']", "-1")
+        p.wait_for_timeout(2000)
+        p.check(".ui-dialog input[name='settings[link_type]'][value='16']")
+        p.check(".ui-dialog input[name='settings[title]'][value='2']")
+
+    create_field(page, fields, "Link", "Follow us", None, links)
+    page.goto(fields)
+    page.wait_for_load_state("networkidle")
+    snap("14-club-info-fields")
+
+    # The content block itself.
+    page.goto(url + "/block/add/club_info")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='info[0][value]']", "Club info")
+    page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)",
+                  "<p><strong>Hikes:</strong> every other Saturday at 9:30.<br><strong>Photo evenings:</strong> the first Thursday of the month at 19:00, in a café in Leith.</p>")
+    page.fill("input[name='field_email[0][value]']", "hello@lens-and-trail.ddev.site")
+    page.fill("input[name='field_follow_us[0][uri]']", "https://www.flickr.com/groups/lens-and-trail/")
+    page.fill("input[name='field_follow_us[0][title]']", "Flickr")
+    page.wait_for_timeout(1000)
+    snap("14-add-club-info")
+    page.click("input[value='Save and configure']")
+    page.wait_for_load_state("networkidle")
+    # Save and configure goes on to the block's Configure block form, for the default theme.
+    page.evaluate("v => { const e = document.querySelector(\"input[name='id']\"); if (e) e.value = v; }", "olivero_club_info")
+    page.select_option("select[name='region']", "footer_top")
+    page.uncheck("input[name='settings[label_display]']")
+    page.click("input[value='Save block']")
+    page.wait_for_load_state("networkidle")
+
+    # Club info before Newest photos in Footer Top.
+    # (The book drags the row; the script sets the weights.)
+    drush_php(site, "\\Drupal\\block\\Entity\\Block::load('olivero_club_info')->setWeight(-10)->save(); \\Drupal\\block\\Entity\\Block::load('olivero_newest_photos')->setWeight(0)->save();")
+    page.goto(url + "/admin/structure/block")
+    page.wait_for_load_state("networkidle")
+    row_weights(page, False)
+    page.wait_for_timeout(800)
+    scroll_to(page, "tr.region-title-footer_top", 150)
+    snap("14-footer-top")
+
+    # Join the club: a Basic block, for visitors only, not on the page about joining.
+    page.goto(url + "/block/add/basic")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='info[0][value]']", "Join the club")
+    page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)",
+                  "<p>New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students.</p><p><a href=\"/join\">How to join</a></p>")
+    page.wait_for_timeout(1000)
+    page.click("input[value='Save']")
+    page.wait_for_load_state("networkidle")
+    views_admin_shot(page, url, "/admin/content/block", "14-content-blocks", full=False)
+    uuid = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['info' => 'Join the club']))->uuid();").strip()
+
+    def join(p: Page) -> None:
+        block_visibility_tab(p, "Roles")
+        p.check("input[name='visibility[user_role][roles][anonymous]']")
+        block_visibility_tab(p, "Pages")
+        p.fill("textarea[name='visibility[request_path][pages]']", "/join")
+        p.check("input[name='visibility[request_path][negate]'][value='1']")
+        block_visibility_tab(p, "Roles")
+
+    def join_shot() -> None:
+        scroll_to(page, "input[name='visibility[user_role][roles][anonymous]']", 300)
+        snap("14-visibility-roles")
+
+    place_block(page, url, f"block_content:{uuid}", "sidebar", "olivero_join_the_club", setup=join, shot=join_shot)
+    # Join the club above Next hikes.
+    drush_php(site, "\\Drupal\\block\\Entity\\Block::load('olivero_join_the_club')->setWeight(-10)->save();")
+    visitor_shot(page, site, "/hikes/turnhouse-hill", "14-sidebar-visitor", full=True)
+    visitor_shot(page, site, "/about", "14-footer", element="footer.site-footer")
+
+
+def menus14_reset(site: dict) -> None:
+    """The site as the blocks part of Chapter 14 leaves it: no footer menu block, footer links, Hike archive link or Privacy page; Hikes not expanded."""
+    drush_php(site, """$et = \\Drupal::entityTypeManager();
+$et->getStorage('block')->load('olivero_footer')?->delete();
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['menu_name' => 'footer']) as $l) { $l->delete(); }
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['title' => 'Hike archive']) as $l) { $l->delete(); }
+foreach ($et->getStorage('node')->loadByProperties(['title' => 'Privacy']) as $n) { $n->delete(); }
+$v = \\Drupal\\views\\Entity\\View::load('hikes'); $d = $v->get('display'); $d['page_1']['display_options']['menu']['expanded'] = FALSE; $v->set('display', $d); $v->save();
+\\Drupal::service('menu_link.static.overrides')->deleteMultipleOverrides(['standard.front_page']);
+\\Drupal::service('plugin.manager.menu.link')->rebuild();
+drupal_flush_all_caches();""")
+
+
+def menus14_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14, part 3: menus. Sorts the main menu, nests a link, fills the footer menu and places it. After blocks14_content_steps."""
+    url = site["url"]
+    menus14_reset(site)
+    views_admin_shot(page, url, "/admin/structure/menu", "14-menus", full=False)
+
+    # Sort the main menu: Home, Hikes, Albums, About, Join us.
+    # (The book drags the rows; the script sets the weights. The views links keep theirs in the view.)
+    drush_php(site, """$et = \\Drupal::entityTypeManager();
+foreach ($et->getStorage('menu_link_content')->loadByProperties(['menu_name' => 'main']) as $l) { $l->set('weight', $l->getTitle() == 'About' ? 3 : 4)->save(); }
+foreach (['hikes' => 1, 'albums' => 2] as $id => $w) { $v = \\Drupal\\views\\Entity\\View::load($id); $d = $v->get('display'); $d['page_1']['display_options']['menu']['weight'] = $w; $v->set('display', $d); $v->save(); }
+\\Drupal::service('plugin.manager.menu.link')->rebuild();
+drupal_flush_all_caches();""")
+    page.goto(url + "/admin/structure/menu/manage/main")
+    page.wait_for_load_state("networkidle")
+    row_weights(page, False)
+    page.wait_for_timeout(500)
+    snap("14-main-menu")
+
+    # Hike archive, under Hikes.
+    page.goto(url + "/admin/structure/menu/manage/main/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='title[0][value]']", "Hike archive")
+    page.fill("input[name='link[0][uri]']", "/hikes/archive")
+    page.select_option("select[name='menu_parent']", "main:views_view:views.hikes.page_1")
+    page.wait_for_timeout(500)
+    snap("14-add-link")
+    page.click("input[value='Save']")
+    page.wait_for_load_state("networkidle")
+
+    # Hikes: show as expanded, so the dropdown appears.
+    page.goto(url + "/admin/structure/menu/link/views_view:views.hikes.page_1/edit")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("() => document.querySelectorAll('form details').forEach(d => d.open = true)")
+    page.wait_for_timeout(300)
+    page.check("input[name='expanded']")
+    page.wait_for_timeout(500)
+    snap("14-expanded")
+    page.click("input[value='Save']")
+    page.wait_for_load_state("networkidle")
+    drush_php(site, "drupal_flush_all_caches();")
+    visitor_shot(page, site, "/about", "14-dropdown", hover="#block-olivero-main-menu li.primary-nav__menu-item--has-children")
+
+    # A Privacy page, for the footer.
+    page.goto(url + "/node/add/page")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='title[0][value]']", "Privacy")
+    page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)",
+                  "<p>Lens &amp; Trail keeps only what it needs to run the club: your name and email address if you join, and the photos you choose to share. We never sell or pass on your details.</p>")
+    page.evaluate("() => document.querySelectorAll('form details').forEach(d => d.open = true)")
+    page.wait_for_timeout(300)
+    page.fill("input[name='path[0][alias]']", "/privacy")
+    # Basic pages go through the Editorial workflow (Chapter 6).
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    # The footer menu: Privacy and the hikes feed.
+    for title, uri in (("Privacy", "/privacy"), ("Upcoming hikes (RSS)", "/hikes/feed")):
+        page.goto(url + "/admin/structure/menu/manage/footer/add")
+        page.wait_for_load_state("networkidle")
+        page.fill("input[name='title[0][value]']", title)
+        page.fill("input[name='link[0][uri]']", uri)
+        page.click("input[value='Save']")
+        page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/structure/menu/manage/footer")
+    page.wait_for_load_state("networkidle")
+    snap("14-footer-menu")
+
+    # The Footer menu block, in Footer Bottom.
+    place_block(page, url, "system_menu_block:footer", "footer_bottom", "olivero_footer", show_label=False)
+    visitor_shot(page, site, "/about", "14-footer-menu-visitor", element="footer.site-footer")
+
+    # The breadcrumb, deep in the hike archive.
+    visitor_shot(page, site, "/hikes/archive/202612", "14-breadcrumb")
+
+
+def cms_page_template_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14, On Drupal CMS: the Mercury theme's page template in Canvas, with its layers."""
+    page.goto(site["url"] + "/canvas")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    page.locator("button[aria-label*='emplate']").first.click()
+    page.wait_for_timeout(2500)
+    page.get_by_text("Mercury theme").first.click()
+    page.wait_for_timeout(6000)
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+    snap("14-cms-page-template")
+
+
 SEQUENCES = [
+    ("cms", cms_page_template_steps, 1440, ["14-cms-page-template"]),
+    ("core", menus14_steps, 1280, ["14-menus", "14-main-menu", "14-add-link", "14-expanded", "14-dropdown", "14-footer-menu", "14-footer-menu-visitor", "14-breadcrumb"]),
+    ("core", blocks14_content_steps, 1280, ["14-block-types", "14-club-info-fields", "14-add-club-info", "14-footer-top", "14-content-blocks", "14-visibility-roles", "14-sidebar-visitor", "14-footer"]),
+    ("core", blocks14_steps, 1280, ["14-block-layout", "14-regions", "14-place-block", "14-configure-block", "14-visibility-pages", "14-sidebar"]),
     ("core", views2_answer_steps, 1280, ["appendix-c-next-hike-attachment", "appendix-c-offset", "appendix-c-easy"]),
     ("core", views2_displays_steps, 1280, ["13-add-display", "13-display-actions", "13-views-settings"]),
     ("core", views2_more_steps, 1280, ["13-attachment", "13-archive-attachment", "13-feed", "13-feed-icon", "13-caching", "13-sql"]),

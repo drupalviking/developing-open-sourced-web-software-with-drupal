@@ -1,0 +1,16 @@
+{% if page.sidebar %}
+  <div class="sidebar-grid grid-full">
+    <main class="site-main">
+      {{ page.content_above }}
+      {{ page.content }}
+    </main>
+
+    {{ page.sidebar }}
+  </div>
+{% else %}
+  <main>
+    {{ page.content_above }}
+    {{ page.content }}
+  </main>
+{% endif %}
+{{ page.content_below }}

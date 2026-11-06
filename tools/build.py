@@ -55,6 +55,7 @@ LANGUAGES = {
     ".yml": "yaml",
     ".yaml": "yaml",
     ".json": "json",
+    ".twig": "twig",
     ".sh": "bash",
     ".php": "php",
     ".twig": "twig",

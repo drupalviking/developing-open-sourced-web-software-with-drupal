@@ -54,13 +54,13 @@ The blue drop at the top isn't a menu item: it takes you to the site's front pag
 
 | Item | What it's for | Chapter |
 |---|---|---|
-| **Block layout** | Which blocks appear in which part of each page, the *regions* of the theme | 12 |
-| **Block types** | The kinds of content blocks, and their fields | 12 |
+| **Block layout** | Which blocks appear in which part of each page, the *regions* of the theme | 14 |
+| **Block types** | The kinds of content blocks, and their fields | 14 |
 | **Content types** | The kinds of content, and their fields | 7 |
 | **Display modes** | Different ways to show the same content, such as in full or as a short teaser | 6 and 7 |
-| **Menus** | The site's menus, such as the main menu at the top of every page | 12 |
-| **Taxonomy** | Categories and tags, such as places and photo themes | 9 |
-| **Views** | Lists of content, such as "upcoming hikes" or "latest photos" | 11 |
+| **Menus** | The site's menus, such as the main menu at the top of every page | 14 |
+| **Taxonomy** | Categories and tags, such as places and photo themes | 10 |
+| **Views** | Lists of content, such as "upcoming hikes" or "latest photos" | 12 and 13 |
 
 ### Appearance
 

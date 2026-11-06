@@ -76,7 +76,7 @@ The Form API is still the way forms are built in Drupal, although today a form i
 
 The first Drupal themes were PHP files that printed HTML directly, so theming meant editing PHP. Then came *theme engines*, which let themes use templates: by Drupal 4.7 and 5, PHPTemplate was the standard, with its `.tpl.php` files, HTML with small pieces of PHP in them. It was a big step towards separating logic from presentation, but a template could still run any PHP it liked, including database queries, and that made themes slow and insecure in the wrong hands.
 
-Drupal 8 replaced PHPTemplate with **Twig**. A Twig template can't run arbitrary PHP: it prints variables, loops over lists, and calls a limited set of filters and functions. And Twig escapes everything it prints by default, which closes off a whole class of security problems (cross-site scripting). Chapter 15 shows Twig templates.
+Drupal 8 replaced PHPTemplate with **Twig**. A Twig template can't run arbitrary PHP: it prints variables, loops over lists, and calls a limited set of filters and functions. And Twig escapes everything it prints by default, which closes off a whole class of security problems (cross-site scripting). Chapter 16 shows Twig templates.
 
 ### Drupal 7: render arrays, entities and a new database layer (2011)
 
@@ -270,7 +270,7 @@ ddev drush updatedb                            # run the updates the new version
 ddev drush cache:rebuild
 ```
 
-`--with-all-dependencies` (or `-W`) lets Composer update the libraries Diff needs too; without it, an update often stops with "Your requirements could not be resolved". Updating Drupal core is the same, with `drupal/core-*` as the package name; Chapter 19 goes through it step by step.
+`--with-all-dependencies` (or `-W`) lets Composer update the libraries Diff needs too; without it, an update often stops with "Your requirements could not be resolved". Updating Drupal core is the same, with `drupal/core-*` as the package name; Chapter 20 goes through it step by step.
 
 When Composer refuses, two commands explain why:
 
@@ -289,4 +289,4 @@ Sometimes a module has a bug, and someone has posted a fix in its issue queue, b
 
 ### Security advisories
 
-`composer audit` checks every package in `composer.lock` against public lists of security advisories, including Drupal's, and Composer runs it after every `require` and `update`. That's the "security vulnerability advisories" message you may have seen in Chapter 11. Chapter 19 is about what to do with it.
+`composer audit` checks every package in `composer.lock` against public lists of security advisories, including Drupal's, and Composer runs it after every `require` and `update`. That's the "security vulnerability advisories" message you may have seen in Chapter 11. Chapter 20 is about what to do with it.

@@ -99,20 +99,22 @@ Each chapter adds a piece of this, and starts where the previous one left off:
 |---|---|
 | 4. Installing Drupal | The empty site, on your own computer. |
 | 5. Finding Your Way Around | The club's name, slogan, and email address. |
-| 6. Your First Page | *About the club* and *How to join*, laid out two ways. |
+| 6. Your First Page | *About the club* and *How to join*, with their revisions. |
 | 7. Everything Is an Entity | The *Hike* and *News* content types, with their fields. |
-| 8. Media and Image Styles | Photos, with photographer and location, in the right sizes. |
-| 9. Taxonomy | Categories for places and photo themes. |
-| 10. Extending Drupal | New features from contributed modules and recipes. |
-| 11. Views | Lists: upcoming hikes, the newest photos, a gallery per hike. |
-| 12. Blocks, Regions, and Menus | The menus, and what goes in the sidebar and footer. |
-| 13. Users, Roles, and Permissions | Members, hike leaders, and the secretary, each with the right access. |
-| 14. Appearance | A look of the club's own. |
-| 15. Nice URLs and SEO | Addresses such as `/hikes/pentland-hills-ridge`. |
-| 16. Multilingual Sites | Spanish. |
-| 17. AI in Drupal CMS | Help with writing and describing photos. |
-| 18. Keeping Your Site Safe | Updates and backups. |
-| 19. Configuration and Going Live | The site on a real server. |
+| 8. Laying Out Pages | How a hike looks, and a page laid out in columns. |
+| 9. Media and Image Styles | Photos, with photographer and location, in the right sizes. |
+| 10. Taxonomy | Categories for places and photo themes. |
+| 11. Extending Drupal | New features from contributed modules and recipes. |
+| 12. Views: Lists of Content | Lists: upcoming hikes, the newest photos, all the albums. |
+| 13. Going Deeper with Views | A table of photos with their credits, and lists that change with the page they're on. |
+| 14. Blocks, Regions, and Menus | The menus, and what goes in the sidebar and footer. |
+| 15. Users, Roles, and Permissions | Members, hike leaders, and the secretary, each with the right access. |
+| 16. Appearance | A look of the club's own. |
+| 17. Nice URLs and SEO | Addresses such as `/hikes/pentland-hills-ridge`. |
+| 18. Multilingual Sites | Spanish. |
+| 19. AI in Drupal CMS | Help with writing and describing photos. |
+| 20. Keeping Your Site Safe | Updates and backups. |
+| 21. Configuration and Going Live | The site on a real server. |
 
 ## A map of Drupal's building blocks
 
@@ -160,23 +162,23 @@ A **recipe** is a newer way of adding features. It installs a set of modules and
 
 **Views** is Drupal's data-gathering tool. If you need a list of upcoming hikes, the ten newest photos, all news from last year, or a table of members, you build it with Views: you choose what to list, how to filter and sort it, and how to show it, all in the browser. Then you show the result as a page of its own, or as a block on other pages.
 
-Views was a contributed module for many years. So many sites installed it as their very first module that it was finally moved into Drupal core, in Drupal 8. Views is one of the most powerful parts of Drupal, and gets all of Chapter 12.
+Views was a contributed module for many years. So many sites installed it as their very first module that it was finally moved into Drupal core, in Drupal 8. Views is one of the most powerful parts of Drupal, and gets two chapters, 12 and 13.
 
 ### Blocks and regions
 
 A **block** is a reusable chunk of content or functionality that you place in a part of the page: a sidebar, the header, the footer. Those parts are called **regions**, and each theme decides which regions it has.
 
-A block can be completely static, like a short text about the club in the footer, or created on the fly, like the list of the next three hikes, built by a view. One block that comes with Drupal core displays **Powered by Drupal**. You decide for each block where it appears, and when: only on the front page, only for logged-in members, only on hikes. We place the club's first blocks in Chapter 13.
+A block can be completely static, like a short text about the club in the footer, or created on the fly, like the list of the next three hikes, built by a view. One block that comes with Drupal core displays **Powered by Drupal**. You decide for each block where it appears, and when: only on the front page, only for logged-in members, only on hikes. We place the club's first blocks in Chapter 14.
 
 ### Menus
 
-**Menus** are collections of links that help visitors navigate your website. A site usually has several. The main menu is normally at the top of the page, a footer menu at the bottom, and the user account menu holds links such as **My account** and **Log out**. You can create as many menus of your own as you need. We build the club's menus in Chapter 13 too, together with blocks.
+**Menus** are collections of links that help visitors navigate your website. A site usually has several. The main menu is normally at the top of the page, a footer menu at the bottom, and the user account menu holds links such as **My account** and **Log out**. You can create as many menus of your own as you need. We build the club's menus in Chapter 14 too, together with blocks.
 
 ### Users, roles, and permissions
 
 **Users** in Drupal can very roughly be divided into two groups. An *anonymous* user is anyone who visits your site without logging in, which is most of the people on the internet. An *authenticated* user is anyone who has logged in. You then divide authenticated users into **roles**, such as *Member*, *Hike leader*, and *Secretary*, and give each role the **permissions** it needs: who can add hikes, who can upload photos, who can publish news.
 
-When you install Drupal, one user is always created: *user 1*, often named *admin*. User 1 is not only an administrator, it's **THE** administrator, a superuser that gets past every access check you set up. That's handy, but with great power comes great responsibility, and that's why some sites switch user 1's special powers off. We meet user 1 again in Chapter 14, where we set up the club's roles.
+When you install Drupal, one user is always created: *user 1*, often named *admin*. User 1 is not only an administrator, it's **THE** administrator, a superuser that gets past every access check you set up. That's handy, but with great power comes great responsibility, and that's why some sites switch user 1's special powers off. We meet user 1 again in Chapter 15, where we set up the club's roles.
 
 ### Themes
 
@@ -184,13 +186,13 @@ When you install Drupal, one user is always created: *user 1*, often named *admi
 
 You can think of Drupal as a layered cake. Drupal core and the modules handle the data, the logic, and the features: the cake. The theme adds the frosting: the layout, the colors, the typography, and the visual style. Themes never change the content in the database.
 
-A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal's admin theme is *Default Admin*, built from Gin, a popular contributed admin theme. It arrived as an experimental theme in Drupal 11.4, and since Drupal 11.5 and 12 it's stable, and the admin theme a new site gets. You'll see it in every screenshot of the admin interface in this book. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. We give the club a look of its own in Chapter 15.
+A site has two themes. The **front-end theme** is what your visitors see. The **admin theme** is what editors and administrators see while they work. Drupal's admin theme is *Default Admin*, built from Gin, a popular contributed admin theme. It arrived as an experimental theme in Drupal 11.4, and since Drupal 11.5 and 12 it's stable, and the admin theme a new site gets. You'll see it in every screenshot of the admin interface in this book. And then there's the hidden third: many editors like to see the result as they work, so the front-end theme also shows some editing tools. Drupal Canvas works that way. We give the club a look of its own in Chapter 16.
 
 ### Configuration
 
 Finally, a word that's easy to miss, but important. Drupal separates **content** from **configuration**. Content is what the site is about: the hikes, the news, the photos, the members. Configuration is how the site works: its name, its content types and fields, its vocabularies, its views, which modules are installed, and who may do what.
 
-Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. We move our first configuration from one copy of the site to another in Chapter 20.
+Why does that matter? Because you'll often build or change a site on your own computer first, and then move your changes to the live site. You want to move the configuration (the new *Hike* content type), but not the content (the test hikes you made up while building it). Drupal can export the configuration to files, and import it on another copy of the site. We move our first configuration from one copy of the site to another in Chapter 21.
 
 ## Coming from WordPress?
 
@@ -233,7 +235,7 @@ We come back to WordPress a few times later in the book, but only where knowing 
 1. **A CMS or not?** Think of three websites you use often. For each, guess whether it's built with a CMS, and who edits it. What content on it changes often, and what rarely changes?
 2. **Find a module.** Go to the module listing on drupal.org (<https://www.drupal.org/project/project_module>) and find a module that could show the club's hikes on a map. On its project page, find out: how many sites use it, whether it works with Drupal 11, and whether it's covered by the Drupal security team (look for the shield icon and the text about security advisory coverage).
 3. **Content, or configuration?** Sort these into content and configuration: the hike *Arthur's Seat at Sunrise*; the *Hike* content type; the site's name; a photo of Edinburgh Castle; the *Places* vocabulary; the term *Pentland Hills*; the permission that lets hike leaders add hikes.
-4. **Who does what?** List the people who use the Lens & Trail site (visitors, members, and so on). For each, write down two things they need to do on the site, and two things they must *not* be able to do. Keep your list: we use it in Chapter 14.
+4. **Who does what?** List the people who use the Lens & Trail site (visitors, members, and so on). For each, write down two things they need to do on the site, and two things they must *not* be able to do. Keep your list: we use it in Chapter 15.
 5. **Model a hike** *(challenge)*. Write down every piece of information the club might want to store about a hike. For each, think about its type: is it text, a number, a date, a link, a photo, or a reference to something else, such as a place or a member? Which pieces would you want to sort or filter hikes by? Compare your answer with the *Hike* content type we build in Chapter 7.
 
 ## Want to know more?

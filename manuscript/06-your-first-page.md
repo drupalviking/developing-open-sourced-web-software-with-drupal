@@ -77,7 +77,7 @@ Select **Create** > **Basic page** in the sidebar, or go to `/node/add/page`.
 ![The form for a Basic page, with the About the club text, and Menu settings and URL alias open on the right](images/06-content-form.png)
 *Figure 6.6: Writing the About the club page*
 
-The form has two parts. On the left is the content itself: **Title** and **Body**. The body field is a text editor, called CKEditor, with buttons for bold, italic, links, lists, quotes, images and headings, much like a word processor's. Under it, **Text format** decides which formatting is allowed. **Basic HTML**, the default, allows the usual formatting and nothing that could break the page or the site's security; **Full HTML** allows everything, and should only be given to people you trust completely. Chapter 14 decides who may use which format.
+The form has two parts. On the left is the content itself: **Title** and **Body**. The body field is a text editor, called CKEditor, with buttons for bold, italic, links, lists, quotes, images and headings, much like a word processor's. Under it, **Text format** decides which formatting is allowed. **Basic HTML**, the default, allows the usual formatting and nothing that could break the page or the site's security; **Full HTML** allows everything, and should only be given to people you trust completely. Chapter 15 decides who may use which format.
 
 On the right is everything *about* the content:
 
@@ -130,7 +130,7 @@ Reload the About page: the label is gone. **Manage display** decides how every p
 >
 > Then go to **Content** (`/admin/content`). All three pages are there, with their type, author, status, and when they were last changed.
 
-> **On Drupal CMS:** a module called *Pathauto* makes the URL alias for you, from the page's title, so you rarely type one. Drupal core doesn't have it; we add it to the core site in Chapter 16, which is about addresses and search engines.
+> **On Drupal CMS:** a module called *Pathauto* makes the URL alias for you, from the page's title, so you rarely type one. Drupal core doesn't have it; we add it to the core site in Chapter 17, which is about addresses and search engines.
 
 ## Setting the front page
 
@@ -185,7 +185,7 @@ Content moderation is part of Drupal core, but it isn't installed. Let's install
 A *workflow* is a set of states, and the steps between them, called *transitions*. Installing Content Moderation creates one for you, called **Editorial**. Go to **Configuration** > **Workflow** > **Workflows** (`/admin/config/workflow/workflows`), and select **Edit** for it.
 
 - Its **States** are **Draft**, **Published** and **Archived**. An archived page is no longer online, but it isn't deleted either.
-- Its **Transitions** are the moves between them: **Create New Draft**, **Publish**, **Archive**, **Restore to Draft** and **Restore**. In Chapter 14, we decide who may make which move: hike leaders may write drafts, for example, and only the secretary may publish them.
+- Its **Transitions** are the moves between them: **Create New Draft**, **Publish**, **Archive**, **Restore to Draft** and **Restore**. In Chapter 15, we decide who may make which move: hike leaders may write drafts, for example, and only the secretary may publish them.
 - Under **This workflow applies to**, select **Select** next to **Content types**, check **Basic page**, and select **Save**. Then select **Save** at the bottom of the page.
 
 Now edit *About the club*. The **Published** switch is gone. In its place, the form shows the page's **Current state**, Published, and a **Change to** list with Draft, Published and Archived.

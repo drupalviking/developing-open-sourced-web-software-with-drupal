@@ -54,7 +54,7 @@ The community was growing too. The first **DrupalCon**, the Drupal conference, w
 - *installation profiles*, ready-made setups for a particular kind of site, the great-grandparents of today's recipes;
 - a reorganized administration section, and a new default theme, Garland, which a whole generation of Drupal sites looked like.
 
-**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (today's Update Manager), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 19.
+**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (today's Update Manager), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 20.
 
 Around Drupal, an ecosystem was forming. The **Drupal Association**, a non-profit, was founded in 2006 to look after drupal.org and to support DrupalCon. In 2007, Dries co-founded **Acquia**, a company that offers Drupal hosting and services. It was one of the first companies built around Drupal, and today there are thousands of them, from one-person agencies to companies with hundreds of employees. (Chapter 2 tells you more about who's who.)
 
@@ -84,9 +84,9 @@ It took almost five years. **Drupal 8** was released on **19 November 2015**, Dr
 
 - **Views in core**, and many administration pages rebuilt as views, so you can change them.
 - **A text editor in core** (CKEditor), so editors no longer need to write HTML.
-- **Multilingual everything**: the interface, the content, and the configuration, in four core modules. Chapter 17 uses them.
-- **Configuration management**: the site's settings can be exported to files, and moved from one copy of the site to another, such as from your computer to the live server. Chapter 20 shows how.
-- A **mobile-friendly** administration interface, and **Twig**, a new template language for themes (Chapter 15).
+- **Multilingual everything**: the interface, the content, and the configuration, in four core modules. Chapter 18 uses them.
+- **Configuration management**: the site's settings can be exported to files, and moved from one copy of the site to another, such as from your computer to the live server. Chapter 21 shows how.
+- A **mobile-friendly** administration interface, and **Twig**, a new template language for themes (Chapter 16).
 
 And a new way of releasing. Drupal 8 introduced **semantic versioning**, with three-part version numbers such as 8.5.3, and a new *minor* release every six months. Minor releases may add features, but they must not break anything. So Drupal 8 kept growing for five years after its release: content moderation, media handling, the Media Library, and Layout Builder (Chapter 6) all arrived as minor releases.
 
@@ -109,7 +109,7 @@ Drupal does the same with its code. When a better way of doing something is adde
 For you as a site builder, this means:
 
 - **Minor updates** (from 11.3 to 11.4, say) are safe, and you should do them. They add features, and fix bugs, without breaking things.
-- **Major updates** (from 10 to 11, say) are no longer rebuilds. Your site, its content and its configuration stay as they are. What you need is for your contributed modules and themes to be ready for the new version, and in most cases, they are long before you need them. A module called **Upgrade Status** tells you which of yours aren't. We come back to that in Chapter 19.
+- **Major updates** (from 10 to 11, say) are no longer rebuilds. Your site, its content and its configuration stay as they are. What you need is for your contributed modules and themes to be ready for the new version, and in most cases, they are long before you need them. A module called **Upgrade Status** tells you which of yours aren't. We come back to that in Chapter 20.
 
 The programmers' side of this, and the tools that update modules automatically, are in Appendix B.
 
@@ -180,7 +180,7 @@ You'll see version numbers everywhere: on your site's status report, on every mo
 
 You'll also meet older module versions written like **8.x-1.5** or **7.x-3.2**. That's the old style, from before 2020, where the first part said which Drupal core the module was for. Many modules still have a few of those releases on their pages. A module in the 7.x style is for Drupal 7, and won't work on a modern site.
 
-> **Note:** Each Drupal version is supported for a limited time, and the dates are on drupal.org, on the page *Drupal core release cycle: major, minor, and patch releases*. When a version reaches its end of life, it gets no more security updates, and a site on it should be updated. We look at keeping a site up to date in Chapter 19.
+> **Note:** Each Drupal version is supported for a limited time, and the dates are on drupal.org, on the page *Drupal core release cycle: major, minor, and patch releases*. When a version reaches its end of life, it gets no more security updates, and a site on it should be updated. We look at keeping a site up to date in Chapter 20.
 
 ## Summary
 

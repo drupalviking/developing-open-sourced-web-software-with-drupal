@@ -30,7 +30,7 @@ Before we build anything, a question that comes up on every site: when should so
 | Can sit in a tree | No | Yes | Not by itself |
 | Revisions and workflow | No | Revisions, and published or not | Revisions, and moderation (Chapter 6) |
 
-A **list field** is right for a short set of choices that rarely changes, and that only the people who build the site should change: three difficulties will be three difficulties for years. Its values are part of the site's configuration, not its content (more about that difference in Chapter 20).
+A **list field** is right for a short set of choices that rarely changes, and that only the people who build the site should change: three difficulties will be three difficulties for years. Its values are part of the site's configuration, not its content (more about that difference in Chapter 21).
 
 A **vocabulary** is right when editors should be able to add to the list, when each choice deserves a page that gathers everything about it, or when the choices form a tree. The club will hike in new places, and a visitor will want to see everything from the Pentland Hills in one place.
 
@@ -107,7 +107,7 @@ Now select the name **Pentland Hills** in the list to see the term's page.
 ![The Pentland Hills term page: the photo across the column, its credits, and the description below](images/10-term-pentland-hills.png)
 *Figure 10.6: The page of an area*
 
-A photo, its credits, and the description: a page for the Pentland Hills, made from one photo the club already had. Its address is `/taxonomy/term/` followed by the term's ID, a number; in Chapter 16, we'll give term pages addresses such as `/areas/pentland-hills`. At the bottom, the small square icon is a *feed*: the same list of content, for feed readers.
+A photo, its credits, and the description: a page for the Pentland Hills, made from one photo the club already had. Its address is `/taxonomy/term/` followed by the term's ID, a number; in Chapter 17, we'll give term pages addresses such as `/areas/pentland-hills`. At the bottom, the small square icon is a *feed*: the same list of content, for feed readers.
 
 ## Areas on hikes
 
@@ -144,7 +144,7 @@ Now edit the hike *Turnhouse Hill and Carnethy Hill*. The **Area** list shows th
 ![The Turnhouse Hill term page, listing the album Pentlands, 21 November with its area and description, and the hike Turnhouse Hill and Carnethy Hill with its date, distance, difficulty and description](images/10-term-turnhouse-hill.png)
 *Figure 10.10: Everything from Turnhouse Hill*
 
-Now look at the page of **Pentland Hills** again. The hike isn't there. A term page lists only the content that refers to that exact term, and our hike refers to Turnhouse Hill, not to the Pentland Hills. A visitor would expect the Pentland Hills to include its hills, and in Chapter 12 we'll change the list that term pages use, so that it does (in Views, this is called *depth*). Until then, the hierarchy already helps editors find the right place in the list, and visitors see where they are in the breadcrumb: *Home > Pentland Hills* above Turnhouse Hill.
+Now look at the page of **Pentland Hills** again. The hike isn't there. A term page lists only the content that refers to that exact term, and our hike refers to Turnhouse Hill, not to the Pentland Hills. A visitor would expect the Pentland Hills to include its hills, and in Chapter 13 we'll change the list that term pages use, so that it does (in Views, this is called *depth*). Until then, the hierarchy already helps editors find the right place in the list, and visitors see where they are in the breadcrumb: *Home > Pentland Hills* above Turnhouse Hill.
 
 ## Photo themes: letting members add terms
 
@@ -185,7 +185,7 @@ The numbers in brackets are the terms' IDs, which Drupal adds when you choose a 
 ![The Basic page form on Drupal CMS, with the Tags field showing Hiking and Photography as labels with a cross](images/10-cms-tags.png)
 *Figure 10.14: Tags on Drupal CMS*
 
-> **Coming from WordPress?** WordPress has two built-in taxonomies for posts: **categories**, which can have parents, and **tags**, which can't. In Drupal, those are two vocabularies, one with a hierarchy (like our Areas) and one with free tagging (like our Photo themes), and you can have as many more as you like, on any content type, on media and on users. In WordPress, more taxonomies are *custom taxonomies*, registered with code or a plugin; in Drupal, they're made in the interface, the same way. Two differences to know. Every WordPress post is filed under at least one category, and gets the default category if you don't choose one; a Drupal field is only required if you make it so. And the page of a WordPress parent category lists the posts in its sub-categories too; Drupal's term page lists only the content with that exact term, until you change it with Views (Chapter 12).
+> **Coming from WordPress?** WordPress has two built-in taxonomies for posts: **categories**, which can have parents, and **tags**, which can't. In Drupal, those are two vocabularies, one with a hierarchy (like our Areas) and one with free tagging (like our Photo themes), and you can have as many more as you like, on any content type, on media and on users. In WordPress, more taxonomies are *custom taxonomies*, registered with code or a plugin; in Drupal, they're made in the interface, the same way. Two differences to know. Every WordPress post is filed under at least one category, and gets the default category if you don't choose one; a Drupal field is only required if you make it so. And the page of a WordPress parent category lists the posts in its sub-categories too; Drupal's term page lists only the content with that exact term, until you change it with Views (Chapter 13).
 
 ## Summary
 

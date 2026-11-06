@@ -1809,7 +1809,823 @@ SHOTS = {
 
 # Sequences: several screenshots from one run of steps.
 # (site, function, window width, the names it takes)
+# Chapter 12: Views. The hikes the chapter asks the reader to add (title, date, meeting place, km,
+# difficulty, area, photo media ID, description). Dates are fixed, like the Turnhouse hike's (21 November
+# 2026): the "upcoming" screenshots show what they should only when taken before that date, so move the
+# dates (here and on node 7) if you retake them later.
+MORE_HIKES = [
+    ("Arthur's Seat at sunrise", "2026-10-24T06:30:00", "Holyrood Palace car park", 5.5, "moderate", "Arthur's Seat", 10, "An early start for the best light of the day: up Arthur's Seat by the Salisbury Crags path, in time for the sun to rise over the Firth of Forth. Bring a head torch for the way up."),
+    ("North Berwick Law and the harbour", "2026-12-05T09:30:00", "North Berwick railway station", 7, "easy", "North Berwick Law", None, "A short climb up North Berwick Law, with the whalebone arch at the top and views to the Bass Rock, then down to the harbour for lunch. We take the train from Edinburgh Waverley at 8:55."),
+    ("Glencorse Reservoir loop", "2026-12-19T09:30:00", "Flotterstone car park", 9, "easy", "Glencorse Reservoir", 17, "A gentle walk along the reservoir and back over the lower slopes, good for winter light on the water. A good first hike with the club."),
+    ("Pentland Hills ridge", "2027-01-02T09:00:00", "Flotterstone car park", 16, "hard", "Pentland Hills", 18, "The whole ridge, from Turnhouse Hill over Carnethy, Scald Law and the Kips, and back through the glen. A long day, with a lot of climbing: bring plenty of food and water."),
+]
+NO_HIKES = "<p>No hikes are planned right now. New hikes are usually announced a month ahead, so check back soon.</p>"
+
+
+def add_more_hikes(site: dict) -> None:
+    for title, date, place, km, difficulty, area, photo, body in MORE_HIKES:
+        php = """$s = \\Drupal::entityTypeManager()->getStorage('node');
+if (!$s->loadByProperties(['title' => %s])) {
+  $t = \\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'areas', 'name' => %s]);
+  $d = new \\DateTime(%s, new \\DateTimeZone('Europe/London')); $d->setTimezone(new \\DateTimeZone('UTC'));
+  $s->create(['type' => 'hike', 'title' => %s, 'uid' => 1, 'field_date' => $d->format('Y-m-d\\\\TH:i:s'), 'field_meeting_place' => %s, 'field_distance' => %s, 'field_difficulty' => %s, 'field_hike_leader' => 1, 'field_area' => $t ? reset($t)->id() : NULL, 'field_photo' => %s, 'field_body' => ['value' => %s, 'format' => 'basic_html'], 'moderation_state' => 'published'])->save();
+}""" % (php_str(title), php_str(area), php_str(date), php_str(title), php_str(place), km, php_str(difficulty), photo if photo else "NULL", php_str(f"<p>{body}</p>"))
+        drush_php(site, php)
+    # A second album, so the Albums page has more than one.
+    drush_php(site, """$s = \\Drupal::entityTypeManager()->getStorage('node');
+if (!$s->loadByProperties(['title' => 'Edinburgh, 24 October'])) {
+  $h = $s->loadByProperties(['title' => "Arthur's Seat at sunrise"]);
+  $t = \\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'areas', 'name' => 'Edinburgh']);
+  $s->create(['type' => 'gallery', 'title' => 'Edinburgh, 24 October', 'uid' => 1, 'field_photos' => [10], 'field_hike' => $h ? reset($h)->id() : NULL, 'field_area' => $t ? reset($t)->id() : NULL, 'field_body' => ['value' => '<p>Sunrise from Arthur\\'s Seat, and the Old Town from Calton Hill on the way home.</p>', 'format' => 'basic_html'], 'moderation_state' => 'published'])->save();
+}""")
+
+
+def php_str(value: str) -> str:
+    return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'"
+
+
+def views_dialog(page: Page, path: str) -> None:
+    """Open a Views UI dialog by its link (the part of the URL after /admin/structure/views/nojs/)."""
+    link = page.locator(f"a[href='/admin/structure/views/nojs/{path}']").first
+    link.evaluate("e => e.scrollIntoView({block: 'center'})")
+    page.wait_for_timeout(300)
+    # A click by script: the Navigation sidebar can cover links in the left column. Retried, because a
+    # click before Drupal's scripts have attached to the link does nothing.
+    for attempt in range(3):
+        link.evaluate("e => e.click()")
+        try:
+            page.wait_for_selector(".ui-dialog", timeout=8000)
+            break
+        except Exception:
+            if attempt == 2:
+                raise
+    page.wait_for_timeout(1800)
+
+
+def views_apply(page: Page, label: str = "Apply") -> None:
+    page.click(f".ui-dialog-buttonpane button:has-text('{label}')")
+    page.wait_for_timeout(2500)
+
+
+def views_add(page: Page, path: str, search: str, name: str, override: bool = False) -> None:
+    """Add a handler (filter, sort, area...) through the Add dialog, and open its settings."""
+    views_dialog(page, f"add-handler/{path}")
+    if override:
+        page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+        page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='override[controls_options_search]']", search)
+    page.wait_for_timeout(500)
+    page.check(f".ui-dialog input[name='name[{name}]']")
+    page.wait_for_timeout(300)
+    # The first button: "Apply (all displays)", "Apply (this display)" or "Add and configure fields".
+    page.locator(".ui-dialog-buttonpane button").first.click()
+    page.wait_for_timeout(2500)
+
+
+def views_save(page: Page) -> None:
+    with page.expect_navigation():
+        page.locator("#edit-actions input[value='Save']").evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+
+
+def layout_add_view_block(page: Page, url: str, block: str, shot=None) -> None:
+    page.goto(url + "/node/3/layout")
+    page.wait_for_load_state("networkidle")
+    page.locator("a:has-text('Add block')").last.click()
+    page.wait_for_timeout(3000)
+    if shot:
+        page.fill("#drupal-off-canvas input[type='search']", "hikes")
+        page.wait_for_timeout(800)
+        shot()
+    page.click(f"#drupal-off-canvas a:text-is('{block}')")
+    page.wait_for_timeout(3000)
+    page.click("#drupal-off-canvas input.form-submit.button--primary")
+    page.wait_for_timeout(3500)
+    page.wait_for_load_state("networkidle")
+
+
+def views_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 12: the Hikes view (page and block), the Photos block, the front page, and Albums."""
+    url = site["url"]
+    drush_php(site, """foreach (['hikes', 'photos', 'albums', 'news'] as $id) { \\Drupal\\views\\Entity\\View::load($id)?->delete(); }
+\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('media.image.small')?->delete();
+\\Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('media.small')?->delete();
+foreach (\\Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['menu_name' => 'main']) as $l) { if (in_array($l->getTitle(), ['Hikes', 'Albums'])) $l->delete(); }
+$n = \\Drupal\\node\\Entity\\Node::load(3); if (!$n->get('layout_builder__layout')->isEmpty()) { $n->set('layout_builder__layout', []); $n->setNewRevision(FALSE); $n->save(); }
+\\Drupal::configFactory()->getEditable('views.settings')->set('ui.show.sql_query.enabled', FALSE)->save();""")
+    add_more_hikes(site)
+
+    page.goto(url + "/admin/structure/views")
+    page.wait_for_load_state("networkidle")
+    snap("12-views-list")
+
+    # The Hikes view, with the wizard: a page and a block.
+    page.goto(url + "/admin/structure/views/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-label", "Hikes")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='show[type]']", "hike")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.check("input[name='page[create]']")
+    page.wait_for_timeout(800)
+    page.fill("input[name='page[title]']", "Upcoming hikes")
+    page.fill("input[name='page[path]']", "hikes")
+    page.fill("input[name='page[items_per_page]']", "10")
+    page.check("input[name='page[link]']")
+    page.wait_for_timeout(800)
+    page.select_option("select[name='page[link_properties][parent]']", "main:")
+    page.fill("input[name='page[link_properties][title]']", "Hikes")
+    page.check("input[name='block[create]']")
+    page.wait_for_timeout(800)
+    page.fill("input[name='block[title]']", "Next hikes")
+    page.select_option("select[name='block[style][row_plugin]']", "teasers")
+    page.fill("input[name='block[items_per_page]']", "3")
+    page.set_viewport_size({"width": 1280, "height": 2200})
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(500)
+    snap("12-add-view", element="main form")
+    page.set_viewport_size({"width": 1280, "height": 1000})
+    page.click("input[value='Save and edit']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    snap("12-view-edit")
+
+    # Only upcoming hikes, soonest first.
+    views_add(page, "hikes/page_1/filter", "field_date", "node__field_date.field_date_value")
+    page.select_option(".ui-dialog select[name='options[operator]']", ">=")
+    page.wait_for_timeout(500)
+    page.check(".ui-dialog input[name='options[value][type]'][value='offset']")
+    page.fill(".ui-dialog input[name='options[value][value]']", "now")
+    snap("12-filter-date", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "handler/hikes/page_1/sort/created")
+    views_apply(page, "Remove")
+    views_add(page, "hikes/page_1/sort", "field_date", "node__field_date.field_date_value")
+    views_apply(page)
+    views_add(page, "hikes/page_1/empty", "text", "views.area")
+    page.fill(".ui-dialog textarea[name='options[content][value]']", NO_HIKES)
+    snap("12-no-results", element=".ui-dialog")
+    views_apply(page)
+    scroll_to(page, ".views-display-columns")
+    snap("12-view-filtered")
+    views_save(page)
+    as_visitor(page, site, "/hikes", "12-hikes-page")
+
+    # The block: the Card view mode, a more link, and a name for the block list.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/block_1")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "display/hikes/block_1/row")
+    page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+    page.wait_for_timeout(1500)
+    snap("12-block-override", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/hikes/block_1/row_options")
+    page.select_option(".ui-dialog select[name='row_options[view_mode]']", "card")
+    snap("12-block-card", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/hikes/block_1/block_description")
+    page.fill(".ui-dialog input[name='block_description']", "Next hikes")
+    views_apply(page)
+    views_dialog(page, "display/hikes/block_1/use_more")
+    page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+    page.wait_for_timeout(1500)
+    page.check(".ui-dialog input[name='use_more']")
+    page.wait_for_timeout(800)
+    page.check(".ui-dialog input[name='use_more_always']")
+    page.fill(".ui-dialog input[name='use_more_text']", "All upcoming hikes")
+    snap("12-more-link", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/hikes/block_1/link_display")
+    page.check(".ui-dialog input[name='link_display'][value='page_1']")
+    views_apply(page)
+    views_save(page)
+
+    # An exposed filter, on the page only.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_add(page, "hikes/page_1/filter", "field_difficulty", "node__field_difficulty.field_difficulty_value", override=True)
+    page.check(".ui-dialog input[name='options[expose_button][checkbox][checkbox]']")
+    page.wait_for_timeout(2500)
+    page.fill(".ui-dialog input[name='options[expose][label]']", "Difficulty")
+    snap("12-exposed-filter", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/hikes?field_difficulty_value=easy", "12-hikes-easy")
+
+    # Newest photos: a Small view mode for images, and a block of them.
+    drush_php(site, """$m = \\Drupal\\Core\\Entity\\Entity\\EntityViewMode::create(['id' => 'media.small', 'label' => 'Small', 'targetEntityType' => 'media']); $m->save();
+$d = \\Drupal\\Core\\Entity\\Entity\\EntityViewDisplay::create(['targetEntityType' => 'media', 'bundle' => 'image', 'mode' => 'small', 'status' => TRUE]);
+$d->setComponent('field_media_image', ['type' => 'image', 'label' => 'hidden', 'settings' => ['image_style' => 'banner_small', 'image_link' => '', 'image_loading' => ['attribute' => 'lazy']], 'weight' => 0]);
+$d->setComponent('field_photographer', ['type' => 'string', 'label' => 'inline', 'weight' => 1]);
+foreach (array_keys($d->getComponents()) as $name) { if (!in_array($name, ['field_media_image', 'field_photographer'])) $d->removeComponent($name); }
+$d->save();""")
+    page.goto(url + "/admin/structure/views/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-label", "Photos")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='show[wizard_key]']", "media")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(2000)
+    page.select_option("select[name='show[type]']", "image")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='show[sort]']", "media_field_data-created:DESC")
+    page.check("input[name='block[create]']")
+    page.wait_for_timeout(800)
+    page.fill("input[name='block[title]']", "Newest photos")
+    page.select_option("select[name='block[style][style_plugin]']", "grid_responsive")
+    page.wait_for_timeout(800)
+    page.select_option("select[name='block[style][row_plugin]']", "entity:media")
+    page.wait_for_timeout(800)
+    page.fill("input[name='block[items_per_page]']", "6")
+    page.click("input[value='Save and edit']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    views_dialog(page, "display/photos/block_1/row_options")
+    page.select_option(".ui-dialog select[name='row_options[view_mode]']", "small")
+    views_apply(page)
+    views_dialog(page, "display/photos/block_1/style_options")
+    page.fill(".ui-dialog input[name='style_options[columns]']", "3")
+    snap("12-grid-settings", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/photos/block_1/block_description")
+    page.fill(".ui-dialog input[name='block_description']", "Newest photos")
+    views_apply(page)
+    views_save(page)
+
+    # Both blocks on the Welcome page, with Layout Builder.
+    layout_add_view_block(page, url, "Next hikes", shot=lambda: snap("12-lb-choose-block"))
+    layout_add_view_block(page, url, "Newest photos")
+    page.fill("textarea[name='revision_log[0][value]']", "The next hikes and the newest photos.")
+    page.click("input[value='Save layout']")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, "/", "12-front-page")
+
+    # Albums: a page of Gallery teasers in a grid.
+    page.goto(url + "/admin/structure/views/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-label", "Albums")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='show[type]']", "gallery")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='show[sort]']", "node_field_data-created:DESC")
+    page.check("input[name='page[create]']")
+    page.wait_for_timeout(800)
+    page.fill("input[name='page[title]']", "Albums")
+    page.fill("input[name='page[path]']", "galleries")
+    page.select_option("select[name='page[style][style_plugin]']", "grid_responsive")
+    page.wait_for_timeout(800)
+    page.fill("input[name='page[items_per_page]']", "12")
+    page.check("input[name='page[link]']")
+    page.wait_for_timeout(800)
+    page.select_option("select[name='page[link_properties][parent]']", "main:")
+    page.fill("input[name='page[link_properties][title]']", "Albums")
+    page.click("input[value='Save and edit']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    views_dialog(page, "display/albums/page_1/style_options")
+    page.fill(".ui-dialog input[name='style_options[columns]']", "2")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/galleries", "12-galleries")
+
+
+
+# Chapter 13: Going deeper with Views.
+
+def views_new(page: Page, url: str, label: str, steps: list) -> None:
+    """The Add view wizard: steps are (name, value) pairs, in order; True checks a checkbox."""
+    page.goto(url + "/admin/structure/views/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-label", label)
+    page.wait_for_timeout(1500)
+    for name, value in steps:
+        field = page.locator(f"[name='{name}']")
+        if value is True:
+            field.check()
+        elif field.evaluate("e => e.tagName") == "SELECT":
+            field.select_option(value)
+            page.wait_for_load_state("networkidle")
+        else:
+            field.fill(value)
+        page.wait_for_timeout(1200)
+    page.click("input[value='Save and edit']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+
+
+def views_field_label(page: Page, label: str) -> None:
+    create = page.locator(".ui-dialog input[name='options[custom_label]']")
+    if create.count() and not create.is_checked():
+        create.check()
+        page.wait_for_timeout(500)
+    page.fill(".ui-dialog input[name='options[label]']", label)
+
+
+def dialog_open_details(page: Page, summary: str) -> None:
+    details = page.locator(f".ui-dialog details:has(summary:has-text('{summary}'))").first
+    if details.get_attribute("open") is None:
+        details.locator("summary").first.click()
+        page.wait_for_timeout(500)
+
+
+def views_admin_shot(page: Page, url: str, path: str, name: str, full: bool = True) -> None:
+    page.goto(url + path)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(500)
+    save(page, name, full_page=full)
+
+
+def views2_reset(site: dict) -> None:
+    drush_php(site, """foreach (['photo_credits', 'photographers', 'hike_admin'] as $id) { \\Drupal\\views\\Entity\\View::load($id)?->delete(); }
+foreach (\\Drupal::entityTypeManager()->getStorage('block')->loadByProperties(['plugin' => 'views_block:albums-block_1']) as $b) { $b->delete(); }""")
+    # Core's term view, as the Taxonomy module ships it.
+    drush_php(site, """$f = \\Drupal::service('extension.list.module')->getPath('taxonomy') . '/config/optional/views.view.taxonomy_term.yml';
+$data = \\Symfony\\Component\\Yaml\\Yaml::parseFile(DRUPAL_ROOT . '/' . $f);
+$v = \\Drupal\\views\\Entity\\View::load('taxonomy_term'); foreach ($data as $k => $val) { if (!in_array($k, ['uuid', '_core'])) $v->set($k, $val); } $v->save();""")
+
+
+def views2_fields_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, part 1: a table of photo credits (fields, a reverse relationship) and photographers (aggregation)."""
+    url = site["url"]
+    views2_reset(site)
+    views_new(page, url, "Photo credits", [
+        ("show[wizard_key]", "media"), ("show[type]", "image"), ("show[sort]", "media_field_data-name:DESC"),
+        ("page[create]", True), ("page[title]", "Photo credits"), ("page[path]", "admin/content/photo-credits"),
+        ("page[style][style_plugin]", "table"), ("page[items_per_page]", "50"),
+    ])
+    # The thumbnail, the photographer, the license and the source.
+    views_add(page, "photo_credits/page_1/field", "thumbnail", "media_field_data.thumbnail__target_id")
+    views_field_label(page, "Photo")
+    page.select_option(".ui-dialog select[name='options[settings][image_style]']", "thumbnail")
+    snap("13-field-thumbnail", element=".ui-dialog")
+    views_apply(page)
+    for search, name in [("photographer", "field_photographer"), ("license", "field_license"), ("source", "field_source")]:
+        views_add(page, "photo_credits/page_1/field", search, f"media__{name}.{name}")
+        views_apply(page)
+    views_dialog(page, "display/photo_credits/page_1/style_options")
+    for column in ["name", "field_photographer", "field_license"]:
+        page.check(f".ui-dialog input[name='style_options[info][{column}][sortable]']")
+    page.check(".ui-dialog input[name='style_options[default]'][value='name']")
+    snap("13-table-settings", element=".ui-dialog")
+    views_apply(page)
+    # Which album is each photo in? The reverse of the albums' Photos field.
+    views_add(page, "photo_credits/page_1/relationship", "field_photos", "media_field_data.reverse__node__field_photos")
+    snap("13-reverse-relationship", element=".ui-dialog")
+    views_apply(page)
+    views_add(page, "photo_credits/page_1/field", "title", "node_field_data.title")
+    views_field_label(page, "Album")
+    views_apply(page)
+    views_access(page, "photo_credits/page_1", "access media overview")
+    views_save(page)
+    views_admin_shot(page, url, "/admin/content/photo-credits", "13-photo-credits")
+
+    # Photographers, counted: aggregation.
+    views_new(page, url, "Photographers", [
+        ("show[wizard_key]", "media"), ("show[type]", "image"), ("show[sort]", "none"),
+        ("page[create]", True), ("page[title]", "Photographers"), ("page[path]", "admin/content/photo-credits/photographers"),
+        ("page[style][style_plugin]", "table"), ("page[items_per_page]", "50"),
+    ])
+    views_dialog(page, "display/photographers/page_1/group_by")
+    page.check(".ui-dialog input[name='group_by']")
+    snap("13-use-aggregation", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "handler/photographers/page_1/field/name")
+    views_apply(page, "Remove")
+    views_add(page, "photographers/page_1/field", "photographer", "media__field_photographer.field_photographer")
+    views_apply(page)
+    views_add(page, "photographers/page_1/field", "ID", "media_field_data.mid")
+    # Adding a field with aggregation on asks for its aggregation type first.
+    page.select_option(".ui-dialog select[name='options[group_type]']", "count")
+    snap("13-aggregation-count", element=".ui-dialog")
+    views_apply(page)
+    views_field_label(page, "Photos")
+    views_apply(page)
+    views_dialog(page, "display/photographers/page_1/style_options")
+    page.check(".ui-dialog input[name='style_options[info][field_photographer][sortable]']")
+    page.check(".ui-dialog input[name='style_options[default]'][value='field_photographer']")
+    views_apply(page)
+    views_access(page, "photographers/page_1", "access media overview")
+    views_save(page)
+    views_admin_shot(page, url, "/admin/content/photo-credits/photographers", "13-photographers", full=False)
+
+
+def views_access(page: Page, display_path: str, permission: str) -> None:
+    """Page settings > Access > Permission: choose which permission the page needs."""
+    views_dialog(page, f"display/{display_path}/access_options")
+    page.select_option(".ui-dialog select[name='access_options[perm]']", permission)
+    views_apply(page)
+
+
+def views_field_relationship(page: Page, relationship: str) -> None:
+    page.select_option(".ui-dialog select[name='options[relationship]']", relationship)
+    page.wait_for_timeout(1500)
+
+
+def views_add_display(page: Page, kind: str) -> None:
+    """Add a display (Page, Block, Attachment, Feed) with the Add button above the displays."""
+    page.locator(f"#views-display-menu-tabs input[value='{kind}'], input[name='op'][value='{kind}']").first.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+
+
+def views_override_title(page: Page, display_path: str, title: str) -> None:
+    views_dialog(page, f"display/{display_path}/title")
+    page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='title']", title)
+    views_apply(page)
+
+
+def views2_hike_admin_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, part 2: a table of hikes for hike leaders (a relationship to the leader, rewritten results)."""
+    url = site["url"]
+    drush_php(site, "\\Drupal\\views\\Entity\\View::load('hike_admin')?->delete();")
+    views_new(page, url, "Hike admin", [
+        ("show[type]", "hike"), ("show[sort]", "none"),
+        ("page[create]", True), ("page[title]", "Hikes"), ("page[path]", "admin/content/hikes"),
+        ("page[style][style_plugin]", "table"), ("page[items_per_page]", "50"),
+    ])
+    views_add(page, "hike_admin/page_1/field", "date", "node__field_date.field_date")
+    page.select_option(".ui-dialog select[name='options[settings][format_type]']", "medium")
+    views_apply(page)
+    views_add(page, "hike_admin/page_1/field", "difficulty", "node__field_difficulty.field_difficulty")
+    page.check(".ui-dialog input[name='options[exclude]']")
+    views_apply(page)
+    views_add(page, "hike_admin/page_1/field", "distance", "node__field_distance.field_distance")
+    views_field_label(page, "Distance and difficulty")
+    page.fill(".ui-dialog input[name='options[settings][scale]']", "1")
+    dialog_open_details(page, "Rewrite results")
+    page.check(".ui-dialog input[name='options[alter][alter_text]']")
+    page.wait_for_timeout(500)
+    page.fill(".ui-dialog textarea[name='options[alter][text]']", "{{ field_distance }}, {{ field_difficulty }}")
+    dialog_scroll_to(page, "textarea[name='options[alter][text]']")
+    snap("13-rewrite", element=".ui-dialog")
+    views_apply(page)
+    # The hike leader is a user: a relationship, then the user's name.
+    views_add(page, "hike_admin/page_1/relationship", "hike leader", "node__field_hike_leader.field_hike_leader")
+    views_apply(page)
+    views_add(page, "hike_admin/page_1/field", "name", "users_field_data.name")
+    views_field_label(page, "Leader")
+    snap("13-leader-field", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/hike_admin/page_1/style_options")
+    page.check(".ui-dialog input[name='style_options[info][field_date][sortable]']")
+    page.check(".ui-dialog input[name='style_options[default]'][value='field_date']")
+    page.select_option(".ui-dialog select[name='style_options[info][field_date][default_sort_order]']", "desc")
+    views_apply(page)
+    views_access(page, "hike_admin/page_1", "access content overview")
+    views_save(page)
+    views_admin_shot(page, url, "/admin/content/hikes", "13-hike-admin", full=False)
+
+
+def views2_albums_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, part 3: albums as fields (the first photo), sorted by their hike's date (a relationship)."""
+    url = site["url"]
+    views2_restore(site, "albums")
+    page.goto(url + "/admin/structure/views/view/albums/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "display/albums/page_1/row")
+    page.check(".ui-dialog input[name='row[type]'][value='fields']")
+    views_apply(page)
+    if page.locator(".ui-dialog").count():
+        views_apply(page)
+    views_add(page, "albums/page_1/field", "photos", "node__field_photos.field_photos")
+    page.uncheck(".ui-dialog input[name='options[custom_label]']")
+    page.select_option(".ui-dialog select[name='options[type]']", "entity_reference_entity_view")
+    page.wait_for_timeout(2000)
+    page.select_option(".ui-dialog select[name='options[settings][view_mode]']", "small")
+    dialog_open_details(page, "Multiple field settings")
+    page.fill(".ui-dialog input[name='options[delta_limit]']", "1")
+    dialog_scroll_to(page, "input[name='options[delta_limit]']")
+    snap("13-first-photo", element=".ui-dialog")
+    views_apply(page)
+    # The album's hike: its title and its date.
+    views_add(page, "albums/page_1/relationship", "field_hike", "node__field_hike.field_hike")
+    page.check(".ui-dialog input[name='options[required]']")
+    snap("13-hike-relationship", element=".ui-dialog")
+    views_apply(page)
+    views_add(page, "albums/page_1/field", "title", "node_field_data.title")
+    views_field_relationship(page, "field_hike")
+    views_field_label(page, "Hike")
+    page.check(".ui-dialog input[name='options[element_label_colon]']")
+    views_apply(page)
+    views_add(page, "albums/page_1/field", "date", "node__field_date.field_date")
+    views_field_relationship(page, "field_hike")
+    page.uncheck(".ui-dialog input[name='options[custom_label]']")
+    views_apply(page)
+    views_dialog(page, "handler/albums/page_1/sort/created")
+    views_apply(page, "Remove")
+    views_add(page, "albums/page_1/sort", "field_date", "node__field_date.field_date_value")
+    views_field_relationship(page, "field_hike")
+    page.check(".ui-dialog input[name='options[order]'][value='DESC']")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/galleries", "13-galleries")
+
+    # One row per photo: what a relationship to a multiple-value field does (not saved).
+    views_add(page, "albums/page_1/relationship", "field_photos", "node__field_photos.field_photos")
+    views_apply(page)
+    views_add(page, "albums/page_1/field", "photographer", "media__field_photographer.field_photographer")
+    views_apply(page)
+    page.wait_for_timeout(2000)
+    scroll_to(page, ".view-content")
+    page.mouse.move(1200, 600)
+    page.wait_for_timeout(800)
+    snap("13-duplicates")
+    # Throw the experiment away (what Cancel does).
+    drush_php(site, "\\Drupal::service('tempstore.shared')->get('views')->delete('albums');")
+    page.wait_for_load_state("networkidle")
+
+
+def views_argument_title(page: Page, title: str) -> None:
+    """A contextual filter's Override title, under When the filter value IS in the URL."""
+    dialog_open_details(page, "When the filter value IS in the URL")
+    page.check(".ui-dialog input[name='options[title_enable]']")
+    page.wait_for_timeout(500)
+    page.fill(".ui-dialog input[name='options[title]']", title)
+
+
+def views2_restore(site: dict, *views: str) -> None:
+    """Put views back as Chapter 12 leaves them (tools/fixtures/chapter-12/), and drop unsaved changes."""
+    for view in views:
+        restore_config(site, f"views.view.{view}", "chapter-12")
+    drush_php(site, "$t = \\Drupal::service('tempstore.shared')->get('views'); foreach (%s as $v) { $t->delete($v); } drupal_flush_all_caches();" % ("['" + "', '".join(views + ("taxonomy_term",)) + "']"))
+
+
+def views2_contextual_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, part 4: contextual filters (term pages with depth, albums from this hike, a member's hikes, an archive)."""
+    url = site["url"]
+    views2_restore(site, "hikes")
+    drush_php(site, """foreach (\\Drupal::entityTypeManager()->getStorage('block')->loadByProperties(['plugin' => 'views_block:albums-block_1']) as $b) { $b->delete(); }
+$v = \\Drupal\\views\\Entity\\View::load('albums'); $d = $v->get('display'); unset($d['block_1']); $v->set('display', $d); $v->save();
+$f = \\Drupal::service('extension.list.module')->getPath('taxonomy') . '/config/optional/views.view.taxonomy_term.yml';
+$data = \\Symfony\\Component\\Yaml\\Yaml::parseFile(DRUPAL_ROOT . '/' . $f);
+$v = \\Drupal\\views\\Entity\\View::load('taxonomy_term'); foreach ($data as $k => $val) { if (!in_array($k, ['uuid', '_core'])) $v->set($k, $val); } $v->save();""")
+    pentland = term_id(site, "areas", "Pentland Hills")
+    as_visitor(page, site, f"/taxonomy/term/{pentland}", "13-term-before")
+
+    # Term pages with depth: swap the term view's contextual filter.
+    page.goto(url + "/admin/structure/views/view/taxonomy_term/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, ".views-display-columns")
+    snap("13-term-view")
+    views_dialog(page, "handler/taxonomy_term/page_1/argument/tid")
+    views_apply(page, "Remove")
+    views_add(page, "taxonomy_term/page_1/argument", "depth", "node_field_data.term_node_tid_depth")
+    page.select_option(".ui-dialog select[name='options[depth]']", "2")
+    page.check(".ui-dialog input[name='options[default_action]'][value='not found']")
+    views_argument_title(page, "{{ arguments.term_node_tid_depth }}")
+    page.check(".ui-dialog input[name='options[specify_validation]']")
+    page.wait_for_timeout(800)
+    page.select_option(".ui-dialog select[name='options[validate][type]']", "entity---taxonomy_term")
+    page.wait_for_timeout(1500)
+    dialog_scroll_to(page, "select[name='options[depth]']")
+    snap("13-depth", element=".ui-dialog")
+    views_apply(page)
+    # The header shows the term itself; it still points at the old contextual filter.
+    views_dialog(page, "handler/taxonomy_term/page_1/header/entity_taxonomy_term")
+    page.fill(".ui-dialog input[name='options[target]']", "{{ raw_arguments.term_node_tid_depth }}")
+    snap("13-header-target", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, f"/taxonomy/term/{pentland}", "13-term-after")
+
+    # Albums from this hike: a block whose contextual filter takes the hike from the page it's on.
+    page.goto(url + "/admin/structure/views/view/albums/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_add_display(page, "Block")
+    views_override_title(page, "albums/block_1", "Albums from this hike")
+    views_add(page, "albums/block_1/argument", "hike", "node__field_hike.field_hike_target_id", override=True)
+    page.check(".ui-dialog input[name='options[default_action]'][value='default']")
+    page.wait_for_timeout(800)
+    page.select_option(".ui-dialog select[name='options[default_argument_type]']", "node")
+    page.wait_for_timeout(800)
+    snap("13-default-argument", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/albums/block_1/block_description")
+    page.fill(".ui-dialog input[name='block_description']", "Albums from this hike")
+    views_apply(page)
+    views_dialog(page, "display/albums/block_1/block_hide_empty")
+    page.check(".ui-dialog input[name='block_hide_empty']")
+    views_apply(page)
+    views_save(page)
+    drush_php(site, """\\Drupal\\block\\Entity\\Block::create(['id' => 'olivero_albums_from_this_hike', 'theme' => 'olivero', 'region' => 'content', 'weight' => 100, 'plugin' => 'views_block:albums-block_1', 'settings' => ['id' => 'views_block:albums-block_1', 'label' => '', 'label_display' => 'visible', 'provider' => 'views', 'items_per_page' => 'none'], 'visibility' => ['entity_bundle:node' => ['id' => 'entity_bundle:node', 'negate' => FALSE, 'context_mapping' => ['node' => '@node.node_route_context:node'], 'bundles' => ['hike' => 'hike']]]])->save();""")
+    as_visitor(page, site, "/hikes/turnhouse-hill", "13-hike-albums")
+
+    # The hikes a member leads: a tab on their profile.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_add_display(page, "Page")
+    views_dialog(page, "display/hikes/page_2/path")
+    page.fill(".ui-dialog input[name='path']", "user/%user/hikes")
+    views_apply(page)
+    views_dialog(page, "display/hikes/page_2/menu")
+    page.check(".ui-dialog input[name='menu[type]'][value='tab']")
+    page.wait_for_timeout(800)
+    page.fill(".ui-dialog input[name='menu[title]']", "Hikes")
+    snap("13-menu-tab", element=".ui-dialog")
+    views_apply(page)
+    views_add(page, "hikes/page_2/argument", "hike leader", "node__field_hike_leader.field_hike_leader_target_id", override=True)
+    views_argument_title(page, "Hikes led by {{ arguments.field_hike_leader_target_id }}")
+    views_apply(page)
+    views_save(page)
+    views_admin_shot(page, url, "/user/1/hikes", "13-user-hikes", full=False)
+
+    # An archive by month: a summary when there's no month in the address.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_add_display(page, "Page")
+    views_dialog(page, "display/hikes/page_3/path")
+    page.fill(".ui-dialog input[name='path']", "hikes/archive")
+    views_apply(page)
+    views_override_title(page, "hikes/page_3", "Hike archive")
+    views_dialog(page, "handler/hikes/page_3/filter/field_date_value")
+    page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+    page.wait_for_timeout(1500)
+    views_apply(page, "Remove")
+    views_add(page, "hikes/page_3/argument", "date", "node__field_date.field_date_value_year_month", override=True)
+    page.check(".ui-dialog input[name='options[default_action]'][value='summary']")
+    page.wait_for_timeout(800)
+    page.check(".ui-dialog input[name='options[summary][sort_order]'][value='desc']")
+    page.check(".ui-dialog input[name='options[summary][format]'][value='default_summary']")
+    page.wait_for_timeout(800)
+    views_argument_title(page, "Hikes in {{ arguments.field_date_value_year_month }}")
+    dialog_scroll_to(page, "input[name='options[default_action]'][value='summary']")
+    snap("13-summary", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/hikes/archive", "13-archive")
+
+
+def views2_more_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, part 5: an attachment, a feed, caching and the SQL (run after views2_contextual_steps)."""
+    url = site["url"]
+    drush_php(site, "$v = \\Drupal\\views\\Entity\\View::load('hikes'); $d = $v->get('display'); unset($d['attachment_1'], $d['feed_1']); $v->set('display', $d); $v->save(); \\Drupal::service('tempstore.shared')->get('views')->delete('hikes');")
+
+    # An attachment: the list of months above every month of the archive.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_3")
+    page.wait_for_load_state("networkidle")
+    views_add_display(page, "Attachment")
+    views_dialog(page, "display/hikes/attachment_1/displays")
+    page.check(".ui-dialog input[name='displays[page_3]']")
+    views_apply(page)
+    views_dialog(page, "display/hikes/attachment_1/inherit_arguments")
+    page.uncheck(".ui-dialog input[name='inherit_arguments']")
+    views_apply(page)
+    views_dialog(page, "handler/hikes/attachment_1/filter/field_date_value")
+    page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+    page.wait_for_timeout(1500)
+    views_apply(page, "Remove")
+    views_add(page, "hikes/attachment_1/argument", "date", "node__field_date.field_date_value_year_month", override=True)
+    page.check(".ui-dialog input[name='options[default_action]'][value='summary']")
+    page.wait_for_timeout(800)
+    page.check(".ui-dialog input[name='options[summary][sort_order]'][value='desc']")
+    page.check(".ui-dialog input[name='options[summary][format]'][value='default_summary']")
+    page.wait_for_timeout(800)
+    views_apply(page)
+    # Now the attachment lists the months, so the page itself shows all hikes when there's no month.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_3")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "handler/hikes/page_3/argument/field_date_value_year_month")
+    page.check(".ui-dialog input[name='options[default_action]'][value='ignore']")
+    page.wait_for_timeout(800)
+    views_apply(page)
+    views_save(page)
+    page.goto(url + "/admin/structure/views/view/hikes/edit/attachment_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    snap("13-attachment")
+    as_visitor(page, site, "/hikes/archive/202612", "13-archive-attachment")
+
+    # A feed of upcoming hikes, with its icon on the hikes page.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_add_display(page, "Feed")
+    views_dialog(page, "display/hikes/feed_1/path")
+    page.fill(".ui-dialog input[name='path']", "hikes/feed")
+    views_apply(page)
+    views_dialog(page, "display/hikes/feed_1/displays")
+    page.check(".ui-dialog input[name='displays[page_1]']")
+    views_apply(page)
+    views_save(page)
+    page.goto(url + "/admin/structure/views/view/hikes/edit/feed_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    snap("13-feed")
+    as_visitor(page, site, "/hikes", "13-feed-icon")
+
+    # Caching.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "display/hikes/page_1/cache")
+    snap("13-caching", element=".ui-dialog")
+    page.locator(".ui-dialog-buttonpane button", has_text="Cancel").first.click()
+    page.wait_for_timeout(1000)
+
+    # Under the hood: the SQL in the preview of the albums view, with its joins.
+    drush_php(site, "\\Drupal::configFactory()->getEditable('views.settings')->set('ui.show.sql_query.enabled', TRUE)->save();")
+    try:
+        page.goto(url + "/admin/structure/views/view/albums/edit/page_1")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        page.locator(".views-query-info").scroll_into_view_if_needed()
+        snap("13-sql", element=".views-query-info")
+    finally:
+        drush_php(site, "\\Drupal::configFactory()->getEditable('views.settings')->set('ui.show.sql_query.enabled', FALSE)->save();")
+
+
+def views2_displays_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, Displays in depth: the Add menu, the display's actions, and the Views settings (after views2_more_steps)."""
+    url = site["url"]
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.locator("#views-display-menu-tabs li.add > a").first.evaluate("e => e.click()")
+    page.wait_for_timeout(800)
+    page.mouse.move(1200, 900)
+    snap("13-add-display")
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_2")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.locator(".views-display-columns, #edit-display-settings-top").first.scroll_into_view_if_needed()
+    page.locator("#edit-display-settings-top .dropbutton-toggle button, .views-ui-display-tab-actions .dropbutton-toggle button").first.evaluate("e => e.click()")
+    page.wait_for_timeout(800)
+    snap("13-display-actions")
+    page.goto(url + "/admin/structure/views/settings")
+    page.wait_for_load_state("networkidle")
+    snap("13-views-settings")
+
+
+def views2_answer_steps(page: Page, site: dict, snap) -> None:
+    """Appendix C, the answer to Exercise 13.6: the next hike in an attachment, the rest with an offset (after views2_more_steps; undone at the end)."""
+    url = site["url"]
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    # A new attachment. (Not Duplicate as Attachment: the copy would share the page's pager, and
+    # its Items to display would change every display that shares it.)
+    views_add_display(page, "Attachment")
+    display = page.url.rstrip("/").split("/")[-1]
+    views_dialog(page, f"display/hikes/{display}/display_title")
+    page.fill(".ui-dialog input[name='display_title']", "Next hike")
+    views_apply(page)
+    # The same exposed filter as the page, so that the attachment has something to inherit.
+    views_add(page, f"hikes/{display}/filter", "field_difficulty", "node__field_difficulty.field_difficulty_value", override=True)
+    page.check(".ui-dialog input[name='options[expose_button][checkbox][checkbox]']")
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='options[expose][label]']", "Difficulty")
+    views_apply(page)
+    views_dialog(page, f"display/hikes/{display}/displays")
+    page.check(".ui-dialog input[name='displays[page_1]']")
+    views_apply(page)
+    views_dialog(page, f"display/hikes/{display}/inherit_exposed_filters")
+    page.check(".ui-dialog input[name='inherit_exposed_filters']")
+    views_apply(page)
+    # A new attachment's pager is its own.
+    views_dialog(page, f"display/hikes/{display}/pager_options")
+    page.fill(".ui-dialog input[name='pager_options[items_per_page]']", "1")
+    views_apply(page)
+    page.wait_for_timeout(1000)
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(500)
+    snap("appendix-c-next-hike-attachment")
+    # The page skips the hike the attachment shows.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "display/hikes/page_1/pager")
+    if page.locator(".ui-dialog select[name='override[dropdown]']").count():
+        page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+        page.wait_for_timeout(1500)
+    page.check(".ui-dialog input[name='pager[type]'][value='mini']")
+    views_apply(page)
+    if not page.locator(".ui-dialog input[name='pager_options[offset]']").count():
+        views_dialog(page, "display/hikes/page_1/pager_options")
+    page.fill(".ui-dialog input[name='pager_options[offset]']", "1")
+    dialog_scroll_to(page, "input[name='pager_options[offset]']")
+    snap("appendix-c-offset", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/hikes?field_difficulty_value=easy", "appendix-c-easy")
+    # Undo, so the hikes view stays as Chapter 13 leaves it.
+    drush_php(site, """$v = \\Drupal\\views\\Entity\\View::load('hikes'); $d = $v->get('display');
+foreach ($d as $id => $x) { if ($x['display_plugin'] == 'attachment' && $id != 'attachment_1') unset($d[$id]); }
+unset($d['page_1']['display_options']['pager']); $d['page_1']['display_options']['defaults']['pager'] = TRUE;
+$d['default']['display_options']['pager']['options']['items_per_page'] = 10;
+$v->set('display', $d); $v->save();""")
+
+
 SEQUENCES = [
+    ("core", views2_answer_steps, 1280, ["appendix-c-next-hike-attachment", "appendix-c-offset", "appendix-c-easy"]),
+    ("core", views2_displays_steps, 1280, ["13-add-display", "13-display-actions", "13-views-settings"]),
+    ("core", views2_more_steps, 1280, ["13-attachment", "13-archive-attachment", "13-feed", "13-feed-icon", "13-caching", "13-sql"]),
+    ("core", views2_contextual_steps, 1280, ["13-term-before", "13-term-view", "13-depth", "13-header-target", "13-term-after", "13-default-argument", "13-hike-albums", "13-menu-tab", "13-user-hikes", "13-summary", "13-archive"]),
+    ("core", views2_hike_admin_steps, 1280, ["13-rewrite", "13-leader-field", "13-hike-admin"]),
+    ("core", views2_albums_steps, 1280, ["13-first-photo", "13-hike-relationship", "13-galleries", "13-duplicates"]),
+    ("core", views2_fields_steps, 1280, ["13-field-thumbnail", "13-table-settings", "13-reverse-relationship", "13-photo-credits", "13-use-aggregation", "13-aggregation-count", "13-photographers"]),
+    ("core", views_steps, 1280, ["12-views-list", "12-add-view", "12-view-edit", "12-filter-date", "12-no-results", "12-view-filtered", "12-hikes-page", "12-block-override", "12-block-card", "12-more-link", "12-exposed-filter", "12-hikes-easy", "12-grid-settings", "12-lb-choose-block", "12-front-page", "12-galleries"]),
     ("core", reuse_field_steps, 1280, ["07-reuse-field", "07-reuse-settings"]),
     ("core", layout_builder_steps, 1600, ["08-lb-start", "08-lb-choose-layout", "08-lb-column-widths", "08-lb-choose-block", "08-lb-content-block", "08-lb-body-block", "08-lb-remove-section", "08-lb-save"]),
     ("core", manage_display_steps, 1280, ["08-hike-before", "08-display-overview", "08-display-default", "08-display-order", "08-display-labels", "08-display-distance", "08-display-hike-leader", "08-date-format", "08-display-date", "08-hike-after", "08-display-teaser", "08-view-mode-add", "08-display-card"]),

@@ -9,7 +9,7 @@ The book is also open source, meaning that you can freely download, reuse, modif
 I've written this book with three kinds of readers in mind.
 
 - **Students** in universities and colleges, taking a course on web development or content management. The book follows a semester well: one chapter a week, with exercises at the end of each one.
-- **Participants in a Drupal in a Day workshop**, held at DrupalCons, Drupal Camps, and other events. A workshop day covers a lot of ground quickly. This book is the place to read about it all again, more slowly and in more depth. The workshop covers roughly Chapters 4 to 19.
+- **Participants in a Drupal in a Day workshop**, held at DrupalCons, Drupal Camps, and other events. A workshop day covers a lot of ground quickly. This book is the place to read about it all again, more slowly and in more depth. The workshop covers roughly Chapters 4 to 20, without Chapter 13, which goes deeper into Views than a day allows.
 - **The curious**, who want to learn Drupal on their own, at their own pace. Read the book from the start, and do the exercises. That's how it sticks.
 
 You don't need to know how to program. You don't need to know PHP, the language Drupal is written in, and you won't write any code in this book. You do need to be comfortable with a computer, and not afraid of typing a few commands into a terminal (the text window where you type commands to your computer). We install Drupal on your own computer in Chapter 4, and I show you every command you need, and what it does.
@@ -31,16 +31,17 @@ We start with the big picture, and then build a site, one piece at a time.
 - **Chapter 9, Media and Image Styles**, handles photos, videos, and documents, and how Drupal resizes images for you.
 - **Chapter 10, Taxonomy**, classifies content with categories and tags.
 - **Chapter 11, Extending Drupal**, adds features with modules and recipes, and introduces Composer, the tool that manages them.
-- **Chapter 12, Views**, builds lists of content, such as upcoming hikes or the newest photos.
-- **Chapter 13, Blocks, Regions, and Menus**, places things on the page, and builds the site's navigation.
-- **Chapter 14, Users, Roles, and Permissions**, decides who can do what.
-- **Chapter 15, Appearance**, changes the look of the site with themes.
-- **Chapter 16, Nice URLs and SEO**, gives pages readable addresses, and helps search engines find them.
-- **Chapter 17, Multilingual Sites**, translates the site, its content, and its interface.
-- **Chapter 18, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
-- **Chapter 19, Keeping Your Site Safe**, covers updates, security advisories, and backups.
-- **Chapter 20, Configuration and Going Live**, moves your work from your computer to a real server.
-- **Chapter 21, Where Next?**, shows how to get involved in the community, and where to go from here.
+- **Chapter 12, Views: Lists of Content**, builds lists of content, such as upcoming hikes or the newest photos.
+- **Chapter 13, Going Deeper with Views**, adds tables of fields, relationships between content, and lists that change with the page they're on. You can skip it on a first reading.
+- **Chapter 14, Blocks, Regions, and Menus**, places things on the page, and builds the site's navigation.
+- **Chapter 15, Users, Roles, and Permissions**, decides who can do what.
+- **Chapter 16, Appearance**, changes the look of the site with themes.
+- **Chapter 17, Nice URLs and SEO**, gives pages readable addresses, and helps search engines find them.
+- **Chapter 18, Multilingual Sites**, translates the site, its content, and its interface.
+- **Chapter 19, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
+- **Chapter 20, Keeping Your Site Safe**, covers updates, security advisories, and backups.
+- **Chapter 21, Configuration and Going Live**, moves your work from your computer to a real server.
+- **Chapter 22, Where Next?**, shows how to get involved in the community, and where to go from here.
 
 There are two appendices. **Appendix A, Development Tools**, explains the tools we use to run Drupal on our own computers (Docker, DDEV, Lando, editors, Git). **Appendix B, How Drupal Is Built**, looks under the hood, at the software Drupal is built from, for those who are curious.
 

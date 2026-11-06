@@ -30,8 +30,10 @@ answered; for the questions they skip, use your recommendation and say so in the
 
 Match the author's own chapters (the best examples: Chapter 1, the history, the installation).
 
-- Conversational and warm. "I" for the author's experience ("I've been teaching Drupal for a long
-  time"), "we" for doing things together, "you" for the reader.
+- Conversational and warm. "We" for the authors' experience ("we've been teaching Drupal for a long
+  time") and for doing things together, "you" for the reader. Never "I": the book will have more
+  than one author (the author's decision, 2026-11-06). Older chapters still say "I" in places; that
+  refactor is in the backlog in `PROJECT-LOG.md`.
 - Reassure where it's hard: "don't worry", "it takes a while to wrap your head around this".
   Admit when there's no clean answer ("sometimes we have to follow our guts").
 - Light humor is welcome, and so are the author's emoticons (`;-)`, `:-)`): they make the tone personal.
@@ -63,7 +65,10 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 7. **Summary**: a short list of what the reader can now do.
 8. **Exercises**: 3–6 per chapter, from repeating a step on new data to a small open task on the photo
    club site. Mark harder ones "(challenge)". Exercises must be doable with what the book has
-   covered so far.
+   covered so far. An exercise that goes a step beyond its chapter is "(advanced)", ends with
+   "(The answer is in Appendix C.)", and gets a tested answer, with the reasons, in
+   `manuscript/appendix-c-answers-to-the-advanced-exercises.md`: the author doesn't want readers
+   left hanging.
 9. **Want to know more?**: links to drupal.org documentation and other free resources. Verify every
    link.
 

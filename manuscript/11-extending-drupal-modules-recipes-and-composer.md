@@ -21,7 +21,7 @@ That gives every contributed module two steps: first you *download* its code int
 Before you add a module, look it up on drupal.org. Every project has a page at `drupal.org/project/` followed by its machine name; Diff's is [drupal.org/project/diff](https://www.drupal.org/project/diff). I look at the same things every time:
 
 1. **Does it work with my Drupal?** Under **Releases**, each release says which Drupal versions it works with, such as `^10.5 || ^11 || ^12`. Diff's newest release works with Drupal 12; Focal Point, the module Drupal CMS uses to keep the important spot of a photo when it's cropped (Chapter 9), doesn't have a release for Drupal 12 yet, while I write this.
-2. **Is it covered by the security team?** A shield icon, and the words "Stable releases for this project are covered by the security advisory policy", mean that the Drupal Security Team handles security problems in it, and announces fixes (more in Chapter 19). A project without the shield may be fine, but you're on your own.
+2. **Is it covered by the security team?** A shield icon, and the words "Stable releases for this project are covered by the security advisory policy", mean that the Drupal Security Team handles security problems in it, and announces fixes (more in Chapter 20). A project without the shield may be fine, but you're on your own.
 3. **Is it maintained?** The **Maintenance status** ("Actively maintained", "Minimally maintained", "Seeking new maintainer") and the date of the last release tell you whether anyone is looking after it.
 4. **Do other sites use it?** The usage count shows how many sites report using it. A module used by tens of thousands of sites has had most of its problems found by someone else.
 5. **What does the issue queue say?** Every project has an issue queue, where people report bugs and post fixes. Lots of open issues is normal for a popular module; lots of open *bugs*, with nobody answering, is a warning.
@@ -66,7 +66,7 @@ It downloaded Diff, and the library Diff needs, and added a line to `composer.js
 
 `^2.1` means "version 2.1 or any later 2.x". When Diff 2.2 comes out, Composer may update to it; when Diff 3.0 comes out, which may change how the module works, it won't, until you ask. (Appendix B explains these version rules, and more of Composer, for when you need them.)
 
-Don't worry if Composer also prints something about "packages looking for funding" or "security vulnerability advisories". The first is open source projects asking for support. The second is worth reading, and Chapter 19 is about it.
+Don't worry if Composer also prints something about "packages looking for funding" or "security vulnerability advisories". The first is open source projects asking for support. The second is worth reading, and Chapter 20 is about it.
 
 > **Tip:** If your site shows an error after a Composer command, rebuild Drupal's cache: `ddev drush cache:rebuild` (or `ddev drush cr`). Composer rewrites the list of code files, and Drupal sometimes still remembers the old one.
 
@@ -146,7 +146,7 @@ Before you apply a recipe, read it: it says exactly what it will do. Recipes are
 
 <!-- include: examples/recipes/comment_base/recipe.yml as=web/core/recipes/comment_base/recipe.yml -->
 
-You don't need to understand every line. Under `install`, the modules it installs: Comment, and Node and Views, which we have already. Under `config`, the settings it brings along, such as the field for comments, and the views that list them. And under `actions`, changes to the site's existing settings: anonymous visitors may read comments, and logged-in users may read and post them, without waiting for approval. Keep that last one in mind; we'll come back to it in Chapter 14, when we sort out the club's roles.
+You don't need to understand every line. Under `install`, the modules it installs: Comment, and Node and Views, which we have already. Under `config`, the settings it brings along, such as the field for comments, and the views that list them. And under `actions`, changes to the site's existing settings: anonymous visitors may read comments, and logged-in users may read and post them, without waiting for approval. Keep that last one in mind; we'll come back to it in Chapter 15, when we sort out the club's roles.
 
 Project Browser's **View Commands** shows a command for applying the recipe on the server. With DDEV, Drush does the same:
 
@@ -183,7 +183,7 @@ Some modules help you *build* a site, and have no business on the live one. Comp
 ddev composer require --dev drupal/devel
 ```
 
-When the site goes live (Chapter 20), the server installs everything except the `require-dev` list.
+When the site goes live (Chapter 21), the server installs everything except the `require-dev` list.
 
 **Devel** is the classic one. It comes with a submodule, **Devel Generate**, which fills a site with test content: nodes, terms, users and media, with Latin-looking titles and text. It's useful when you need to see how a list of fifty hikes looks before the club has written five.
 
@@ -197,7 +197,7 @@ Devel's Drupal 12 release is still on its way while I write this, so I tried it 
 
 Generated content is for testing: delete it when you're done, with the same form's **Delete all content** switch, or from **Content**. Never generate content on a live site.
 
-**WebProfiler** is another one for developers, and for curious site builders. It adds a bar at the bottom of every page that shows how long the page took, how many database queries it needed, which blocks, views and caches were used, and much more; it's how you find out *why* a page is slow. I'd like to show it to you, but it doesn't run on either of our sites yet: it has no release for Drupal 12, and on Drupal CMS 2.2.8 it stopped the whole site with an error, because it clashes with Canvas. I uninstalled it at once. That's a good lesson in itself: try development modules on a copy of your site, never on the live one, and ask the five questions from "Choosing a module" before you do. And when something breaks, tell the people who can fix it: I couldn't find anyone who had reported the problem, so I opened an issue in WebProfiler's issue queue on drupal.org. %% Add the link to the issue once it's created (see the backlog in PROJECT-LOG.md). %% That's how open source gets better: a problem one person runs into becomes a fix for everyone. Chapter 21 shows how you can take part too.
+**WebProfiler** is another one for developers, and for curious site builders. It adds a bar at the bottom of every page that shows how long the page took, how many database queries it needed, which blocks, views and caches were used, and much more; it's how you find out *why* a page is slow. I'd like to show it to you, but it doesn't run on either of our sites yet: it has no release for Drupal 12, and on Drupal CMS 2.2.8 it stopped the whole site with an error, because it clashes with Canvas. I uninstalled it at once. That's a good lesson in itself: try development modules on a copy of your site, never on the live one, and ask the five questions from "Choosing a module" before you do. And when something breaks, tell the people who can fix it: I couldn't find anyone who had reported the problem, so I opened an issue in WebProfiler's issue queue on drupal.org. %% Add the link to the issue once it's created (see the backlog in PROJECT-LOG.md). %% That's how open source gets better: a problem one person runs into becomes a fix for everyone. Chapter 22 shows how you can take part too.
 
 > **On Drupal CMS:** Project Browser comes installed, and it can download modules itself: on a module's card, the button says **Install**, not **View Commands**. Select it, and Drupal CMS runs Composer for you, in the background: on my laptop, adding Module Filter took a little over a minute, and afterwards `composer.json` had the new line, just as if I'd typed the command. **Extend** also has a **Recommended add-ons** tab, a short list chosen by the Drupal CMS team, and an **Update** tab. And the site template you chose when you installed Drupal CMS (Chapter 4) is a recipe, applied by the installer.
 
@@ -224,7 +224,7 @@ You can now:
 ## Exercises
 
 1. Uninstall Module Filter: on **Extend**, select the **Uninstall** tab, check **Module Filter**, and select **Uninstall**. Then remove its code with `ddev composer remove drupal/module_filter`. Look at `composer.json` before and after. What would have happened if you'd run the Composer command first?
-2. Chapter 16 will use a module called **Pathauto**. Look it up on drupal.org, and answer the five questions from "Choosing a module". Would you add it to the club's site today?
+2. Chapter 17 will use a module called **Pathauto**. Look it up on drupal.org, and answer the five questions from "Choosing a module". Would you add it to the club's site today?
 3. Apply core's *Tags* recipe: `ddev drush recipe core/recipes/tags_taxonomy`. What did it add? If you did the Tags Try it in Chapter 10, what happened to your own Tags vocabulary, and which line of the recipe decides that? (Read `web/core/recipes/tags_taxonomy/recipe.yml`.)
 4. Members want to comment on hikes too. Re-use the **Comments** field on Hike. Then look at **People** > **Permissions** for the permissions the recipe changed. Would you keep **Skip comment approval** for all logged-in users on the club's site?
 5. *(challenge)* In Chapter 10's Exercise 5, you thought about the hikes' meeting places. Find a contributed module that shows a place on a map. Answer the five questions for it, and check whether it works with Drupal 12. Don't install it on the club's site; write down what you'd need to know before you did.

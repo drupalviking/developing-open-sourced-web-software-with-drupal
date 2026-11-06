@@ -147,7 +147,7 @@ What comes after is decided in public, like everything else in Drupal: in the is
 
 ## Every major version, at a glance
 
-The support dates were checked on 4 November 2026; drupal.org has the current ones.
+The support dates were checked on 6 November 2026; drupal.org has the current ones.
 
 | Version | Released | Supported until | What it meant for site builders |
 |---|---|---|---|

@@ -89,6 +89,14 @@ Every chapter ends with a **summary** of what you've learned, a set of **exercis
 
 A teachers' kit is being written alongside the book, with slides and teaching notes for each chapter: how long it takes, what to show live, and what to leave for the exercises. It works for a Drupal in a Day workshop and for a university course. You'll find it in the `slides/` folder of the book's repository.
 
+## How this book was made
+
+%% For the author: a first version of the backlog item "How this book was written, and how it's kept up to date" (2026-11-05), because Chapter 19 points here. The part about covering two versions at once, and moving to one around Drupal 12.1, is still to come. Please check that it describes how you work. %%
+
+We say it openly, because Chapter 19 asks you to be honest about AI on your own site: an AI assistant, Claude, helps with this book, mostly with keeping it up to date. The layout of the book, its structure and its text were decided by people first. The AI's work is the part that's dull for people and quick for a machine: checking every step against a running Drupal site, retaking the screenshots when Drupal's screens change, checking facts and links against drupal.org, and keeping version numbers and support dates current. A person reviews everything before it goes in.
+
+The book is built so that this is possible. Screenshots are taken by a script from two test sites, version numbers and dates come from one file, and the files you see in the book come from the `examples/` folder. When Drupal changes, we replace the parts that changed, without rewriting the book around them.
+
 ## Help make this book better
 
 This book lives in a public Git repository: <https://github.com/drupalviking/developing-open-sourced-web-software-with-drupal>. If you find a mistake, a screen that has changed, or an explanation that didn't work for you, please open an issue there, or, even better, send a pull request with the fix. That's how open source works, and it's how this book will stay current. Come for the code, stay for the community!

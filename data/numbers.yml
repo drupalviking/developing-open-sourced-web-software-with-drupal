@@ -26,7 +26,7 @@
 # Options: pick: first|max, stable: true (skip beta, rc...), add: N,
 # format: thousands.
 
-checked: '2026-11-04'
+checked: '2026-11-06'
 
 numbers:
 
@@ -75,3 +75,22 @@ numbers:
       json: https://packages.drupal.org/files/packages/8/p2/drupal/canvas.json
       path: packages.drupal/canvas.*.version
       stable: true
+
+  ai_version:
+    value: '1.5.2'
+    label: The AI module, newest stable version; 1.5.x requires Drupal ^10.5 || ^11.2, so no Drupal 12 support yet (Chapter 19, On Drupal core). When it supports Drupal 12, rewrite the box and try it on the core site.
+    source: https://www.drupal.org/project/ai
+    fetch:
+      json: https://packages.drupal.org/files/packages/8/p2/drupal/ai.json
+      path: packages.drupal/ai.*.version
+      stable: true
+
+  amazeeio_trial_days:
+    value: '30'
+    label: amazee.ai's free trial, in days, without a credit card (Chapter 19)
+    source: https://www.drupal.org/project/ai_provider_amazeeio
+
+  amazeeio_starter_price:
+    value: '$15 a month'
+    label: amazee.ai's cheapest paid plan, after the trial (Chapter 19)
+    source: https://www.drupal.org/project/ai_provider_amazeeio

@@ -218,12 +218,10 @@ Mercury's **Settings** are short:
 
 A logo, a favicon, a light or dark color scheme further down, and whether Canvas draws the page template (Chapter 14). There's no color picker: Mercury's fonts and colors live in two small files, which you copy next to Drupal's `index.php` and change there (the note at the top points to the instructions). That's a file, not a form, so it's for whoever looks after the site's code.
 
-Here's the front page in Mercury:
+Here's *How to join*, the page we built with Canvas in Chapter 8, in Mercury (open `/join` in a private window):
 
-![The Drupal CMS front page in Mercury: the Mercury logo, a Home button, and a centered hero, Your hero content goes here, Bring your site to life, starting here, and a blue Call to action button](images/16-cms-mercury.png)
-*Figure 16.17: The front page in Mercury, the Starter template's placeholder*
-
-(It's the Starter template's placeholder home page: we built *How to join* with Canvas in Chapter 8, but never changed the front page.)
+![How to join on Drupal CMS in Mercury: the Mercury logo and a Home link, the title How to join, three paragraphs about coming along, becoming a member and the membership fee in the left column, and on the right a card with a calendar icon, When and where, and the times of the hikes and photo evenings](images/16-cms-mercury.png)
+*Figure 16.17: How to join in Mercury*
 
 ### Four themes, one site
 
@@ -233,30 +231,30 @@ Let's try the same page in other themes. Olivero is part of Drupal 11's core, so
 ddev composer require drupal/tara drupal/byte_theme
 ```
 
-**Tara** is a popular general-purpose theme, with a front-page slider and many settings. **Byte (theme)** is the theme of *Byte*, a Drupal CMS *site template*: a ready-made starting point for a particular kind of site (Byte's is a marketing site for a software product), with its own content types, pages and theme.
+**Tara** is a popular general-purpose theme, with many settings and a slider for the front page. **Byte (theme)** is the theme of *Byte*, a Drupal CMS *site template*: a ready-made starting point for a particular kind of site (Byte's is a marketing site for a software product), with its own content types, pages and theme.
 
 %% Author: as we write this (2026-11-06), Tara 11.0.9, Byte (theme) 1.0.4 and Mercury 1.0.5 support Drupal 11 only, so this tour runs on the Drupal CMS site (Drupal 11.4). Expect Drupal 12 releases soon after 12.0.0; re-run the tour on the core site then (`themes16_cms_steps` in `tools/screenshots.py`), and drop this note. %%
 
-On **Appearance**, select **Install and set as default** next to each in turn, and open the front page in a private window each time. First Olivero:
+On **Appearance**, select **Install and set as default** next to each in turn, and open `/join` in a private window each time. First Olivero:
 
-![The front page in Olivero on Drupal CMS: an empty blue branding box and an empty blue header, a close button and a Home link as a plain list, a menu button, and below, Your hero content goes here in Olivero's heading font, the subtitle, and a plain gray Call to action button; the dark footer is empty](images/16-cms-olivero.png)
-*Figure 16.18: The Canvas page in Olivero*
+![How to join in Olivero on Drupal CMS: an empty blue branding box and an empty blue header, a close button and a Home link as a plain list, a menu button, and below, the title and the three paragraphs in one column, followed by the calendar icon, When and where and the times, no longer in a card; the dark footer is empty](images/16-cms-olivero.png)
+*Figure 16.18: How to join in Olivero*
 
 Then Tara:
 
-![The front page in Tara: a row of social media icons, a large slider with colored pencils, Slider Heading One and Lorem ipsum text, and below it, Your hero content goes here, the subtitle and an orange Call to action button squeezed into one line](images/16-cms-tara.png)
-*Figure 16.19: The Canvas page in Tara, under Tara's demonstration slider*
+![How to join in Tara: a beige page with a row of social media icons at the top, the title and the three paragraphs across the whole width, then the calendar icon, When and where and the times squeezed into one line beside each other, no card and no menu; a footer with © 2026 Lens & Trail, All rights reserved and the social media icons again](images/16-cms-tara.png)
+*Figure 16.19: How to join in Tara*
 
 And Byte:
 
-![The front page in Byte: a dark page with the Byte logo, a Home button, and the hero, Your hero content goes here, the subtitle and a blue Call to action button, centered, in white](images/16-cms-byte.png)
-*Figure 16.20: The Canvas page in Byte*
+![How to join in Byte: a dark page with the Byte logo and a Home link, the title and the three paragraphs in the left column, and the When and where card on the right, as in Mercury, in white on dark blue](images/16-cms-byte.png)
+*Figure 16.20: How to join in Byte*
 
 Olivero and Tara both look broken, in different ways, and Byte looks right. Why?
 
-The home page is a Canvas page, built from Mercury's components: a hero with a heading, a text and a button. A component's look comes from its theme. In Olivero and Tara, the page still has Mercury's hero, but neither theme knows how it should look: the button turns gray, the layout falls apart. Olivero's header is empty too, because Mercury places no blocks in Block layout (Chapter 14), so there was nothing to copy into Olivero's regions. Tara adds its own demonstration slider on top.
+*How to join* is a Canvas page, built from Mercury's components: two columns, a text, and an icon card. A component's look comes from its theme. In Olivero and Tara, the page still has Mercury's components, but neither theme knows how they should look: the columns become one, the card loses its border, and in Tara the card's icon, heading and text end up side by side. Olivero's header is empty too, because Mercury places no blocks in Block layout (Chapter 14), so there was nothing to copy into Olivero's regions; Tara has no main menu for the same reason, and adds its social media icons instead.
 
-Byte was made *from* Mercury: it has the same components, with its own colors and fonts. So the same page, with the same hero, looks right, only dark.
+Byte was made *from* Mercury: it has the same components, with its own colors and fonts. So the same page, with the same columns and card, looks right, only dark.
 
 That's the lesson of Drupal CMS's approach. On Drupal CMS, the theme and the pages you build with Canvas go together: the components you place come from the theme. Changing the theme of a site built with Canvas only works with a theme made for it, such as one made from Mercury. Changing to a theme like Olivero or Tara means building the pages again. Pages built from fields and view modes, like our hikes on the core site, move between themes with much less work, as Solo showed.
 

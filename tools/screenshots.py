@@ -3466,11 +3466,11 @@ def themes16_cms_steps(page: Page, site: dict, snap) -> None:
     themes16_cms_reset(site)
     views_admin_shot(page, url, "/admin/appearance", "16-cms-appearance", full=False)
     views_admin_shot(page, url, "/admin/appearance/settings/mercury", "16-cms-mercury-settings", full=False)
-    as_visitor(page, site, "/", "16-cms-mercury")
+    as_visitor(page, site, "/join", "16-cms-mercury")
     composer(site, "require", "drupal/tara", "drupal/byte_theme")
     for theme in ["olivero", "tara", "byte_theme"]:
         theme_link(page, url, theme)
-        as_visitor(page, site, "/", f"16-cms-{theme.replace('_theme', '')}")
+        as_visitor(page, site, "/join", f"16-cms-{theme.replace('_theme', '')}")
     theme_link(page, url, "mercury")
     themes16_cms_reset(site)
 

@@ -2617,6 +2617,55 @@ $d['default']['display_options']['pager']['options']['items_per_page'] = 10;
 $v->set('display', $d); $v->save();""")
 
 
+def views2_album_count_undo(site: dict) -> None:
+    """The Albums view as Chapter 13 leaves it: no aggregation, no relationship to the photos, no count."""
+    drush_php(site, """\\Drupal::service('tempstore.shared')->get('views')->delete('albums');
+$v = \\Drupal\\views\\Entity\\View::load('albums'); $d = $v->get('display');
+foreach ($d as $id => $x) {
+  $o =& $d[$id]['display_options'];
+  unset($o['group_by'], $o['relationships']['field_photos'], $o['fields']['mid']);
+  if (isset($o['fields']['field_photos'])) { $o['fields']['field_photos']['group_column'] = 'target_id'; }
+  unset($o);
+}
+$v->set('display', $d); $v->save();""")
+
+
+def views2_album_count_steps(page: Page, site: dict, snap) -> None:
+    """Appendix C, the answer to Exercise 13.7: the number of photos in each album (after views2_albums_steps; undone at the end)."""
+    url = site["url"]
+    views2_album_count_undo(site)
+    page.goto(url + "/admin/structure/views/view/albums/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    views_dialog(page, "display/albums/page_1/group_by")
+    page.check(".ui-dialog input[name='group_by']")
+    views_apply(page)
+    views_add(page, "albums/page_1/relationship", "field_photos", "node__field_photos.field_photos")
+    views_apply(page)
+    views_add(page, "albums/page_1/field", "ID", "media_field_data.mid")
+    page.select_option(".ui-dialog select[name='options[group_type]']", "count")
+    views_apply(page)
+    views_field_relationship(page, "field_photos")
+    views_field_label(page, "Photos")
+    page.check(".ui-dialog input[name='options[element_label_colon]']")
+    views_apply(page)
+    # The trap: the first photo's field groups by each photo's ID, so every album and photo is a row of its own.
+    page.wait_for_timeout(2000)
+    scroll_to(page, ".view-content")
+    page.mouse.move(1200, 600)
+    page.wait_for_timeout(800)
+    snap("appendix-c-count-duplicates")
+    # Group the first photo's field by the album instead.
+    views_dialog(page, "handler-group/albums/page_1/field/field_photos")
+    page.select_option(".ui-dialog select[name='options[group_column]']", "entity_id")
+    page.wait_for_timeout(500)
+    snap("appendix-c-group-column", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/galleries", "appendix-c-album-count")
+    views2_album_count_undo(site)
+
+
 # Chapter 14: blocks, regions and menus.
 
 CH14_BLOCKS = ["olivero_next_hikes", "olivero_newest_photos", "olivero_club_info", "olivero_join_the_club", "olivero_footer"]
@@ -2930,6 +2979,7 @@ def cms_page_template_steps(page: Page, site: dict, snap) -> None:
 
 
 SEQUENCES = [
+    ("core", views2_album_count_steps, 1280, ["appendix-c-count-duplicates", "appendix-c-group-column", "appendix-c-album-count"]),
     ("cms", cms_page_template_steps, 1440, ["14-cms-page-template"]),
     ("core", menus14_steps, 1280, ["14-menus", "14-main-menu", "14-add-link", "14-expanded", "14-dropdown", "14-footer-menu", "14-footer-menu-visitor", "14-breadcrumb"]),
     ("core", blocks14_content_steps, 1280, ["14-block-types", "14-club-info-fields", "14-add-club-info", "14-footer-top", "14-content-blocks", "14-visibility-roles", "14-sidebar-visitor", "14-footer"]),

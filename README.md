@@ -118,7 +118,7 @@ So far it has the screenshots of Chapters 6 to 8; Chapters 4 and 5 are still to 
 | 22. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
 | Appendix A. Development Tools | Draft (Docker, DDEV, Lando, editors, Git, Xdebug). |
 | Appendix B. How Drupal Is Built | Draft (moved from "Where do I begin?": Symfony, Twig, Composer). New section "Composer, in more detail" (2026-11-05, with Chapter 11: composer.json, version constraints, stability, install vs. update, why/why-not, autoloading, patches, audit). New section "How Drupal's code has changed" (2026-11-04), from Chapter 3's draft, waiting for the author's review. |
-| Appendix C. Answers to the Advanced Exercises | Started 2026-11-06 (the author: don't leave readers hanging). Chapter 13, Exercise 6 (the next hike in an attachment, with an offset and the exposed filter), checked on the test site; 3 screenshots from `tools/screenshots.py`. |
+| Appendix C. Answers to the Advanced Exercises | Started 2026-11-06 (the author: don't leave readers hanging). Chapter 13, Exercise 6 (the next hike in an attachment, with an offset and the exposed filter), checked on the test site; Chapter 13, Exercise 7 (the number of photos in each album: aggregation, and **Group column** **Entity ID** on the first-photo field), checked on the test site (2026-11-06); 3 + 3 screenshots from `tools/screenshots.py`. |
 
 Chapter numbers will be checked once, at the end, together with every cross-reference.
 

@@ -3666,8 +3666,18 @@ SEO17_TIPS_BODY = ("<p>Hiking photography is about travelling light and stopping
                    "<h2>Keep up with the group</h2><p>Tell the hike leader when you stop for a photo, and catch up at the next gate.</p>")
 
 
+SEO17_SOCIAL_STYLES = ["social_media_facebook", "social_media_x"]
+
+
 def seo17_cms_reset(site: dict) -> None:
     drush_php(site, f"""
+foreach ({php_list(SEO17_SOCIAL_STYLES)} as $id) {{
+  $style = \\Drupal\\image\\Entity\\ImageStyle::load($id);
+  $has = FALSE;
+  foreach ($style->getEffects() as $e) {{ if ($e->getPluginId() == 'image_convert_avif') {{ $has = TRUE; }} }}
+  if (!$has) {{ $style->addImageEffect(['id' => 'image_convert_avif', 'weight' => -9, 'data' => ['extension' => 'webp']]); $style->save(); }}
+  $style->flush();
+}}
 foreach (\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => '{SEO17_TIPS}']) as $n) {{ $n->delete(); }}
 foreach (\\Drupal::entityTypeManager()->getStorage('media')->loadByProperties(['name' => 'Glencorse Reservoir from the hillside']) as $m) {{ $m->delete(); }}
 foreach (\\Drupal::entityTypeManager()->getStorage('path_alias')->loadMultiple() as $a) {{ if (str_starts_with($a->getAlias(), '/taking-photos-hike')) {{ $a->delete(); }} }}
@@ -3687,6 +3697,18 @@ def seo17_cms_steps(page: Page, site: dict, snap) -> None:
     page.wait_for_timeout(600)
     scroll_to(page, "summary:has-text('Open Graph')")
     snap("17-cms-metatag-node")
+    # Social media images as JPEG: delete the Convert to AVIF effect from the two social media image styles.
+    for style in SEO17_SOCIAL_STYLES:
+        page.goto(url + f"/admin/config/media/image-styles/manage/{style}")
+        page.wait_for_load_state("networkidle")
+        page.goto(url + page.locator("tr:has-text('Convert to AVIF') a[href$='/delete']").first.get_attribute("href"))
+        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+        if style == "social_media_facebook":
+            page.wait_for_timeout(500)
+            snap("17-cms-social-style")
     # A Basic page with a photo, made in the background; we only look at its SEO fields.
     shutil.copy(PHOTOS / "glencorse-reservoir-portrait.jpg", Path(site["dir"]) / "web/sites/default/files/glencorse-reservoir-portrait.jpg")
     nid = drush_php(site, f"""
@@ -3725,7 +3747,7 @@ echo $node->id();
 
 
 SEQUENCES = [
-    ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-metatag", "17-cms-metatag-node", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
+    ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
     ("core", seo17_steps, 1280, ["17-extend", "17-token-browser", "17-pattern-hike", "17-pattern-areas", "17-patterns", "17-pathauto-settings", "17-bulk", "17-aliases", "17-term-alias", "17-hike-alias", "17-redirects", "17-404", "17-sitemap-settings", "17-sitemap"]),
     ("core", themes16_twig_steps, 1280, ["16-development-settings"]),
     ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury", "16-cms-olivero", "16-cms-tara", "16-cms-byte"]),

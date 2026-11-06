@@ -261,10 +261,19 @@ The defaults go from general to specific. **Global** applies everywhere; **Front
 
 *Open Graph* is the set of meta tags that most social media sites read when a link is shared. Each field is one tag, filled in with tokens, and the descriptions under each say what it's for. One is new: `[node:field_seo_title|node:title]`, with a bar between two tokens, means "the SEO title, or if there isn't one, the node's title". Drupal CMS adds that with a small module, *Token OR*, so each page can have its own SEO title and description, and falls back on its ordinary title and description when it doesn't.
 
+One default is worth changing before you share anything. Further down the Open Graph section, the **Image** tags take the photo through an image style (Chapter 9): *Social media - Facebook*, 1200 by 630 pixels, and a second one for X. Like all of Drupal CMS's image styles, they end with **Convert to AVIF**, which makes small, sharp files that every current browser can show. Social media sites are another matter: as we write this, Facebook shows an AVIF image when a link is shared, and a few others do, but LinkedIn, X, Slack, Discord, iMessage, Bluesky and Mastodon don't, and the link goes out without a photo. JPEG works everywhere.
+
+Go to **Configuration** > **Media** > **Image styles**, and edit **Social media - Facebook**. Next to **Convert to AVIF**, open the arrow beside **Edit**, select **Delete**, and confirm. Do the same for **Social media - X (Twitter)**.
+
+![Edit style Social media - Facebook: "The image effect Convert to AVIF has been deleted.", a preview of the 800 by 600 source image and the 1200 by 630 derivative, and one effect left, Focal Point Scale and Crop 1200×630](images/17-cms-social-style.png)
+*Figure 17.18: The image style for sharing, without the conversion*
+
+Now the photo keeps the format it was uploaded in: JPEG, for photos from a camera or a phone. The image styles for the pages themselves keep their AVIF; only the shared photo changes.
+
 Those SEO fields are on the content form. Let's write a page with them: the club's tips for taking photos on a hike, a Utility page, with a photo in **Featured image**. Under the content, open **Search Engine Optimization (SEO) Information**:
 
 ![The SEO section of a Utility page: SEO title (empty), "Use this field to overwrite the default HTML page title for SEO."; SEO description (empty), "Write a description for search engines and social media sites."; SEO image with No media items are selected and Add media; and SEO analysis with the Focus keyword hiking photography](images/17-cms-seo-fields.png)
-*Figure 17.18: A page's own SEO title, description and image*
+*Figure 17.19: A page's own SEO title, description and image*
 
 - **SEO title**: a title for search engines, if you want one that's different from the page's. Most pages don't need one.
 - **SEO description**: the meta description. Write one or two sentences that make someone want to open the page, around 150 characters, because search engines cut longer ones short.
@@ -277,7 +286,7 @@ Write a description, and leave the title and image empty: the page's title and f
 Below the SEO fields is **SEO analysis**, from the **Real-time SEO** module. Type a **Focus keyword**, the words you hope people search for to find this page (`hiking photography`), and select **Seo preview**:
 
 ![SEO analysis: Focus keyword hiking photography, an orange dot and Okay, a snippet preview with the title Taking photos on a hike | Lens & Trail, the address, and the description, and a Content analysis: orange points for the keyword in no subheading, no alt text with the keyword, no outbound links, an SEO title that is too short, and the keyword not in the URL; green points for the keyword in the first paragraph, the meta description containing the keyword, and the meta description's length](images/17-cms-realtime-seo.png)
-*Figure 17.19: Real-time SEO's analysis of the page*
+*Figure 17.20: Real-time SEO's analysis of the page*
 
 The **Snippet preview** shows the page roughly as a search engine would list it. Under it, a checklist: green for what's good, orange for what could be better, red for what's missing. (Real-time SEO is built on the same analysis as Yoast SEO, a WordPress plugin, but isn't made by Yoast.)
 
@@ -286,7 +295,7 @@ Take its advice as a second opinion, not as orders. Some of it is good: a descri
 Save the page, and open it:
 
 ![The page Taking photos on a hike in Mercury: a breadcrumb, the title, the photo of Glencorse Reservoir, an introduction and three sections, Pack light, Shoot the light, and Keep up with the group](images/17-cms-tips.png)
-*Figure 17.20: The page, as visitors see it*
+*Figure 17.21: The page, as visitors see it*
 
 The meta tags don't show on the page. To see them, look at the page's source (right-click, then **View Page Source**), near the top:
 
@@ -301,27 +310,27 @@ The meta tags don't show on the page. To see them, look at the page's source (ri
 <meta property="og:url" content="https://lens-and-trail-cms.ddev.site:8443/taking-photos-hike">
 <meta property="og:title" content="Taking photos on a hike">
 <meta property="og:description" content="Tips from the Lens &amp; Trail photo club for hiking photography in the hills around Edinburgh: what to pack, when the light is best, and how to keep up with the group.">
-<meta property="og:image" content="https://lens-and-trail-cms.ddev.site:8443/sites/default/files/styles/social_media_facebook/public/glencorse-reservoir-portrait.jpg.avif?itok=Xk-cbYGW">
-<meta property="og:image:type" content="image/avif">
+<meta property="og:image" content="https://lens-and-trail-cms.ddev.site:8443/sites/default/files/styles/social_media_facebook/public/glencorse-reservoir-portrait.jpg?h=11c0af2c&amp;itok=hl0T2M47">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Glencorse Reservoir between the hills, seen from a grassy slope with two trees">
-<meta property="og:updated_time" content="2026-11-06T15:38:19+00:00">
+<meta property="og:updated_time" content="2026-11-06T15:55:23+00:00">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:description" content="Tips from the Lens &amp; Trail photo club for hiking photography in the hills around Edinburgh: what to pack, when the light is best, and how to keep up with the group.">
 <meta name="twitter:title" content="Taking photos on a hike">
-<meta name="twitter:image" content="https://lens-and-trail-cms.ddev.site:8443/sites/default/files/styles/social_media_x/public/glencorse-reservoir-portrait.jpg.avif?itok=gcT4vE8U">
+<meta name="twitter:image" content="https://lens-and-trail-cms.ddev.site:8443/sites/default/files/styles/social_media_x/public/glencorse-reservoir-portrait.jpg?h=11c0af2c&amp;itok=qlS85SK7">
 <meta name="twitter:image:alt" content="Glencorse Reservoir between the hills, seen from a grassy slope with two trees">
 ```
 
-The description you wrote is there three times: for search engines, for Open Graph, and for X (`twitter:`). The photo is there in a size made for sharing, 1200 by 630 pixels, by an image style (Chapter 9), with its alt text. The address is `/taking-photos-hike`: Pathauto left out "on" and "a".
+The description you wrote is there three times: for search engines, for Open Graph, and for X (`twitter:`). The photo is there in its size for sharing, 1200 by 630 pixels, as a JPEG, with its alt text. The address is `/taking-photos-hike`: Pathauto left out "on" and "a".
 
 ### The SEO Checklist
 
 Last, go to **Configuration** > **Search and metadata** > **SEO checklist**:
 
 ![The SEO checklist: "SEO checklist found 6 unchecked items that were already completed and checked them for you", a progress bar at 0 of 45, and vertical tabs Clean URLs, Meta tags and Schema.org Vocabularies, Search engines, Optimizing content, On-page optimization, Security and performance, and Mobile; under Clean URLs, Install and Enable Redirect module (checked), Configure the Redirect module, Configure the Redirect 404 module, Install and Enable Pathauto module (checked), Configure the Pathauto module, each with Download, Install, Configure and Configure permissions links](images/17-cms-seo-checklist.png)
-*Figure 17.21: A to-do list for a site's SEO*
+*Figure 17.22: A to-do list for a site's SEO*
 
 It's a to-do list of 45 things, from modules to install to accounts to set up with search engines, each with a short explanation and a link to the right page. It checks what it can see for itself (here, six items) and leaves the rest for you to tick off and save. Not every item fits every site, and some suggest modules that a small club doesn't need. Read it as a list of questions: you'll recognize most of them from this chapter.
 
@@ -340,7 +349,7 @@ You can now:
 - make a sitemap for search engines with Simple XML Sitemap, and explain what `robots.txt` does and doesn't do;
 - write titles, descriptions, headings, alt text and links that help people and search engines alike;
 - explain what structured data is, and why a hike might be a Schema.org Event;
-- on Drupal CMS, set meta tags with Metatag, write a page's SEO description, and weigh Real-time SEO's advice.
+- on Drupal CMS, set meta tags with Metatag, make shared photos work on every social media site, write a page's SEO description, and weigh Real-time SEO's advice.
 
 ## Exercises
 

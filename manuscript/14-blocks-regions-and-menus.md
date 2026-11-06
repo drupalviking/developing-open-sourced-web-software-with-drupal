@@ -45,7 +45,7 @@ Sidebar is on the right of the content, Footer Top and Footer Bottom are in the 
 >
 > <!-- include: examples/themes/olivero/page.html.twig as=web/themes/contrib/olivero/templates/layout/page.html.twig -->
 >
-> That's why regions belong to a theme: they exist only because a theme's template prints them. When you install another theme, Drupal copies the blocks of the default theme to it; a block whose region the new theme doesn't have lands in the new theme's default region, waiting for you to move it. Chapter 16 is about themes, and how to give one regions of your own.
+> That's why regions belong to a theme: they exist only because a theme's template prints them. When you install another theme that has no block placements of its own, Drupal copies the blocks of the default theme to it; a block whose region the new theme doesn't have lands in the new theme's default region, waiting for you to move it. (Many contributed themes come with their own placements instead, as we see in Chapter 16.) Giving a theme regions of your own takes a theme of your own, the subject of our companion book, *Theming Drupal*.
 
 ### The blocks Drupal places for you
 
@@ -99,7 +99,7 @@ Now open a hike, such as `/hikes/turnhouse-hill`, in a private window.
 ![The hike Turnhouse Hill and Carnethy Hill as a visitor sees it, with the hike's photo and details in the main column, and on the right, under Next hikes, three hikes with their dates and difficulties and a link All upcoming hikes; the dark footer below](images/14-sidebar.png)
 *Figure 14.5: The next hikes, in the sidebar of a hike's page*
 
-The page made room for the sidebar, and the next three hikes are on the right, in their Card view mode from Chapter 8. (The titles are large for such a narrow column; we make them smaller with the theme in Chapter 16.) Open *About the club*: no sidebar, because the block is for hikes only, and the page has the whole width again.
+The page made room for the sidebar, and the next three hikes are on the right, in their Card view mode from Chapter 8. (The titles are large for such a narrow column. Making them smaller takes a little CSS in a theme of your own: Chapter 16 shows where that work begins.) Open *About the club*: no sidebar, because the block is for hikes only, and the page has the whole width again.
 
 ## Visibility
 

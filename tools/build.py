@@ -60,6 +60,7 @@ LANGUAGES = {
     ".php": "php",
     ".twig": "twig",
     ".css": "css",
+    ".html": "html",
     ".txt": "text",
 }
 

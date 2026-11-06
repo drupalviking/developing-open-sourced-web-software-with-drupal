@@ -2978,6 +2978,14 @@ def cms_page_template_steps(page: Page, site: dict, snap) -> None:
     snap("14-cms-page-template")
 
 
+def cms_easy_breadcrumb_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14: Easy Breadcrumb's settings on Drupal CMS (looks only)."""
+    page.goto(site["url"] + "/admin/config/user-interface/easy-breadcrumb")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+    snap("14-cms-easy-breadcrumb")
+
+
 # Chapter 15: users, roles and permissions.
 
 ROLES15 = [("member", "Member"), ("hike_leader", "Hike leader"), ("secretary", "Secretary")]
@@ -3343,6 +3351,7 @@ def members15_steps(page: Page, site: dict, snap) -> None:
 
 
 SEQUENCES = [
+    ("cms", cms_easy_breadcrumb_steps, 1440, ["14-cms-easy-breadcrumb"]),
     ("core", members15_steps, 1280, ["appendix-c-members-block", "appendix-c-members-access", "appendix-c-members-view", "appendix-c-members-page", "appendix-c-members-denied"]),
     ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),
     ("core", users15_captcha_steps, 1280, ["15-extend-captcha", "15-captcha-points", "15-register-captcha"]),

@@ -2978,7 +2978,309 @@ def cms_page_template_steps(page: Page, site: dict, snap) -> None:
     snap("14-cms-page-template")
 
 
+# Chapter 15: users, roles and permissions.
+
+ROLES15 = [("member", "Member"), ("hike_leader", "Hike leader"), ("secretary", "Secretary")]
+PERMS15 = {
+    "member": ["skip comment approval", "create gallery content", "edit own gallery content", "delete own gallery content",
+               "create image media", "edit own image media", "access user profiles"],
+    "hike_leader": ["create hike content", "edit own hike content", "use editorial transition create_new_draft",
+                    "view own unpublished content", "view latest version", "access content overview",
+                    "access navigation", "view the administration theme"],
+    "secretary": ["create news content", "edit any news content", "delete own news content", "edit any hike content",
+                  "edit any page content", "edit any gallery content", "use editorial transition create_new_draft",
+                  "use editorial transition publish", "use editorial transition archive",
+                  "use editorial transition archived_draft", "use editorial transition archived_published",
+                  "view any unpublished content", "view latest version", "access content overview", "administer comments",
+                  "administer users", "edit any club_info block content", "access navigation",
+                  "view the administration theme", "access administration pages"],
+}
+USERS15 = [("morag", "morag@example.com", ["member", "secretary"]), ("jordi", "jordi@example.com", ["member", "hike_leader"]),
+           ("ailsa", "ailsa@example.com", ["member"])]
+MAILPIT = "https://lens-and-trail.ddev.site:8026"
+
+
+def users15_reset(site: dict) -> None:
+    """The site as Chapter 14 leaves it: only admin, Drupal's four roles, registration by administrators only, no CAPTCHA."""
+    drush_php(site, """$et = \\Drupal::entityTypeManager();
+foreach ($et->getStorage('user')->loadMultiple() as $u) { if ($u->id() > 1) { $u->delete(); } }
+foreach (['member', 'hike_leader', 'secretary'] as $r) { \\Drupal\\user\\Entity\\Role::load($r)?->delete(); }
+\\Drupal\\user\\Entity\\Role::load('authenticated')->grantPermission('skip comment approval')->save();
+foreach (['field_camera', 'field_about_me'] as $f) { \\Drupal\\field\\Entity\\FieldStorageConfig::loadByName('user', $f)?->delete(); }
+foreach ($et->getStorage('comment')->loadMultiple() as $c) { $c->delete(); }
+foreach ($et->getStorage('node')->loadByProperties(['title' => 'Arthur\\'s Seat by night']) as $n) { $n->delete(); }
+\\Drupal::configFactory()->getEditable('user.settings')->set('register', 'admin_only')->save();
+$f = \\Drupal\\field\\Entity\\FieldConfig::loadByName('node', 'hike', 'field_hike_leader'); $h = $f->getSetting('handler_settings'); $h['filter'] = ['type' => '_none']; $f->setSetting('handler_settings', $h)->save();""")
+    uninstall(site, "image_captcha", "captcha")
+    try:
+        subprocess.run(["curl", "-sk", "-X", "DELETE", MAILPIT + "/api/v1/messages"], check=True, capture_output=True)
+    except Exception:
+        pass
+
+
+def as_user(page: Page, site: dict, name: str, password: str = "12345"):
+    """A window of its own, logged in as someone else. Returns (context, page); close the context afterwards."""
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    other = context.new_page()
+    log_in(other, {**site, "user": name, "password": password})
+    return context, other
+
+
+def permissions_filter(page: Page, text: str) -> None:
+    page.locator("input[type='search']").first.press_sequentially(text, delay=60)
+    page.mouse.move(5, 5)
+    page.wait_for_timeout(1500)
+
+
+def users15_roles_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 15, part 1: the People page, the club's roles and their permissions, and the club's first accounts."""
+    url = site["url"]
+    users15_reset(site)
+    views_admin_shot(page, url, "/admin/people", "15-people", full=False)
+
+    # Three roles.
+    for machine, label in ROLES15:
+        page.goto(url + "/admin/people/roles/add")
+        page.wait_for_load_state("networkidle")
+        page.fill("input[name='label']", label)
+        page.wait_for_timeout(1500)
+        if machine == "member":
+            snap("15-add-role")
+        page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+    # Least permissive first (the book drags the rows).
+    order = ["anonymous", "authenticated", "member", "hike_leader", "secretary", "content_editor", "administrator"]
+    drush_php(site, "foreach (" + repr(order).replace("'", '"') + " as $w => $r) { \\Drupal\\user\\Entity\\Role::load($r)->setWeight($w)->save(); }")
+    views_admin_shot(page, url, "/admin/people/roles", "15-roles", full=False)
+
+    # Authenticated users' comments wait for approval; members' don't.
+    page.goto(url + "/admin/people/permissions/authenticated")
+    page.wait_for_load_state("networkidle")
+    page.uncheck("input[name='authenticated[skip comment approval]']")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    for role, permissions in PERMS15.items():
+        page.goto(url + f"/admin/people/permissions/{role}")
+        page.wait_for_load_state("networkidle")
+        for permission in permissions:
+            page.check(f"input[name='{role}[{permission}]']")
+        if role == "member":
+            permissions_filter(page, "comment")
+            snap("15-permissions-member")
+        if role == "hike_leader":
+            permissions_filter(page, "editorial")
+            snap("15-permissions-transitions")
+        page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/people/permissions")
+    page.wait_for_load_state("networkidle")
+    permissions_filter(page, "hike")
+    snap("15-permissions-all")
+
+    # The club's first accounts: the secretary through the form, the others alike.
+    for name, mail, roles in USERS15:
+        page.goto(url + "/admin/people/create")
+        page.wait_for_load_state("networkidle")
+        page.fill("input[name='mail']", mail)
+        page.fill("input[name='name']", name)
+        for role in roles:
+            page.check(f"input[name='roles[{role}]']")
+        if name == "morag":
+            page.wait_for_timeout(500)
+            snap("15-add-user")
+        page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+    # The script knows their passwords; they would set their own from the email.
+    for name, _, _ in USERS15:
+        drush(site, "user:password", name, "12345")
+    views_admin_shot(page, url, "/admin/people", "15-people-after", full=False)
+
+
+def users15_registration_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 15, part 2: registration with approval, the email, activating an account, and a comment waiting for approval. After users15_roles_steps."""
+    url = site["url"]
+    page.goto(url + "/admin/config/people/accounts")
+    page.wait_for_load_state("networkidle")
+    page.check("input[name='user_register'][value='visitors_admin_approval']")
+    page.wait_for_timeout(500)
+    scroll_to(page, "input[name='user_register'][value='admin_only']", 200)
+    snap("15-account-settings")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    # A visitor registers.
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(url + "/user/register")
+    visit.wait_for_load_state("networkidle")
+    visit.fill("input[name='mail']", "lucia@example.com")
+    visit.fill("input[name='name']", "lucia")
+    visit.wait_for_timeout(500)
+    save(visit, "15-register", full_page=True)
+    visit.click("#edit-submit")
+    visit.wait_for_load_state("networkidle")
+    save(visit, "15-register-done")
+    context.close()
+
+    # The secretary's mailbox: Mailpit catches everything the site sends.
+    page.wait_for_timeout(2000)
+    page.goto(MAILPIT)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    # Two emails: one to the visitor, one to the club's address. Open the club's.
+    page.locator(".message:has-text('hello@lens-and-trail'), a:has-text('pending admin approval'):has-text('hello@')").first.click()
+    page.wait_for_timeout(2000)
+    snap("15-mailpit")
+
+    # The secretary activates the account; the admin gives the role.
+    page.goto(url + "/admin/people")
+    page.wait_for_load_state("networkidle")
+    snap("15-people-blocked")
+    lucia = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'lucia']))->id();").strip()
+    context, secretary = as_user(page, site, "morag")
+    secretary.goto(url + f"/user/{lucia}/edit")
+    secretary.wait_for_load_state("networkidle")
+    secretary.check("input[name='status'][value='1']")
+    secretary.wait_for_timeout(500)
+    scroll_to(secretary, "input[name='status'][value='1']", 300)
+    save(secretary, "15-activate")
+    secretary.click("#edit-submit")
+    secretary.wait_for_load_state("networkidle")
+    context.close()
+    drush(site, "user:password", "lucia", "12345")
+
+    # Lucía isn't a member yet: her comment waits.
+    context, lucia_page = as_user(page, site, "lucia")
+    lucia_page.goto(url + "/node/11")
+    lucia_page.wait_for_load_state("networkidle")
+    lucia_page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)",
+                        "<p>Lovely light on the Turnhouse photo! Which lens was that?</p>")
+    lucia_page.click("form.comment-form input[value='Save'], form.comment-form #edit-submit")
+    lucia_page.wait_for_load_state("networkidle")
+    context.close()
+    views_admin_shot(page, url, "/admin/content/comment/approval", "15-unapproved", full=False)
+
+    # The admin makes her a member: the bulk action on People.
+    page.goto(url + "/admin/people")
+    page.wait_for_load_state("networkidle")
+    page.locator("tr:has-text('lucia') input[type='checkbox']").first.check()
+    page.wait_for_timeout(800)
+    page.select_option("select[name='action']", "user_add_role_action.member")
+    page.wait_for_timeout(500)
+    snap("15-bulk-role")
+    page.locator("input[value='Apply to selected items']").first.click()
+    page.wait_for_load_state("networkidle")
+
+
+
+def users15_captcha_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 15, part 3: CAPTCHA on the registration and password forms. After users15_registration_steps."""
+    url = site["url"]
+    uninstall(site, "image_captcha", "captcha")
+    # Downloaded with Composer, as in Chapter 11.
+    composer(site, "require", "drupal/captcha")
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.fill("input[name='text']", "captcha")
+    page.wait_for_timeout(1000)
+    page.check("input[name='modules[captcha][enable]']")
+    page.check("input[name='modules[image_captcha][enable]']")
+    page.wait_for_timeout(500)
+    snap("15-extend-captcha")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    page.goto(url + "/admin/config/people/captcha")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='default_challenge']", "image_captcha/Image")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    # The forms to protect: registration and the password reset.
+    for form in ("user_register_form", "user_pass"):
+        drush_php(site, f"$p = \\Drupal\\captcha\\Entity\\CaptchaPoint::load('{form}'); $p->enable()->save();")
+    views_admin_shot(page, url, "/admin/config/people/captcha/captcha-points", "15-captcha-points", full=False)
+    as_visitor(page, site, "/user/register", "15-register-captcha")
+
+
+def users15_more_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 15, part 4: user fields and a profile, time zones, the Hike leader field, and a hike from draft to published. After users15_captcha_steps."""
+    url = site["url"]
+    fields = url + "/admin/config/people/accounts/fields"
+    create_field(page, fields, "Plain text", "Camera", "Short text")
+    create_field(page, fields, "Plain text", "About me", "Long text")
+    page.goto(fields)
+    page.wait_for_load_state("networkidle")
+    snap("15-user-fields")
+    drush_php(site, """$u = current(\\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'jordi']));
+$u->set('field_camera', 'Fujifilm X-T5, and a phone when it rains')->set('field_about_me', "I moved to Edinburgh from Barcelona in 2019, and I've been leading hikes in the Pentlands ever since. Ask me about the best spots for sunrise.")->save();""")
+    jordi = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'jordi']))->id();").strip()
+    context, member = as_user(page, site, "ailsa")
+    member.goto(url + f"/user/{jordi}")
+    member.wait_for_load_state("networkidle")
+    save(member, "15-profile")
+    context.close()
+
+    # Time zones.
+    page.goto(url + "/admin/config/regional/settings")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "input[name='configurable_timezones']", 250)
+    snap("15-timezones")
+
+    # Only hike leaders in the Hike leader field.
+    page.goto(url + "/admin/structure/types/manage/hike/fields/node.hike.field_hike_leader")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='settings[handler_settings][filter][type]']", "role")
+    page.wait_for_timeout(2500)
+    page.check("input[name='settings[handler_settings][filter][role][hike_leader]']")
+    page.wait_for_timeout(500)
+    scroll_to(page, "select[name='settings[handler_settings][filter][type]']", 250)
+    snap("15-hike-leader-field")
+    page.locator("input[value='Save settings'], button:has-text('Save settings')").first.click()
+    page.wait_for_load_state("networkidle")
+
+    # Jordi writes a hike: he can only save it as a draft.
+    context, leader = as_user(page, site, "jordi")
+    leader.goto(url + "/node/add/hike")
+    leader.wait_for_load_state("networkidle")
+    leader.fill("input[name='title[0][value]']", "Arthur's Seat by night")
+    leader.fill("input[name='field_date[0][value][date]']", "2027-01-16")
+    leader.fill("input[name='field_date[0][value][time]']", "17:30:00")
+    leader.fill("input[name='field_meeting_place[0][value]']", "Holyrood Park, St Margaret's Loch car park")
+    leader.fill("input[name='field_distance[0][value]']", "5")
+    leader.check("input[name='field_difficulty'][value='moderate']")
+    leader.select_option("select[name='field_hike_leader']", label="jordi")
+    leader.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    leader.wait_for_timeout(500)
+    leader.locator("select[name='moderation_state[0][state]']").scroll_into_view_if_needed()
+    save(leader, "15-leader-draft")
+    leader.click("#edit-submit")
+    leader.wait_for_load_state("networkidle")
+    context.close()
+
+    # Morag, the secretary, publishes it.
+    node = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Arthur\\'s Seat by night']))->id();").strip()
+    context, secretary = as_user(page, site, "morag")
+    secretary.goto(url + "/admin/content")
+    secretary.wait_for_load_state("networkidle")
+    save(secretary, "15-secretary-content")
+    secretary.goto(url + f"/node/{node}/edit")
+    secretary.wait_for_load_state("networkidle")
+    secretary.select_option("select[name='moderation_state[0][state]']", "published")
+    secretary.locator("select[name='moderation_state[0][state]']").scroll_into_view_if_needed()
+    secretary.wait_for_timeout(500)
+    save(secretary, "15-secretary-publish")
+    secretary.click("#edit-submit")
+    secretary.wait_for_load_state("networkidle")
+    context.close()
+
+
 SEQUENCES = [
+    ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),
+    ("core", users15_captcha_steps, 1280, ["15-extend-captcha", "15-captcha-points", "15-register-captcha"]),
+    ("core", users15_registration_steps, 1280, ["15-account-settings", "15-register", "15-register-done", "15-mailpit", "15-people-blocked", "15-activate", "15-unapproved", "15-bulk-role"]),
+    ("core", users15_roles_steps, 1280, ["15-people", "15-add-role", "15-roles", "15-permissions-member", "15-permissions-transitions", "15-permissions-all", "15-add-user", "15-people-after"]),
     ("core", views2_album_count_steps, 1280, ["appendix-c-count-duplicates", "appendix-c-group-column", "appendix-c-album-count"]),
     ("cms", cms_page_template_steps, 1440, ["14-cms-page-template"]),
     ("core", menus14_steps, 1280, ["14-menus", "14-main-menu", "14-add-link", "14-expanded", "14-dropdown", "14-footer-menu", "14-footer-menu-visitor", "14-breadcrumb"]),

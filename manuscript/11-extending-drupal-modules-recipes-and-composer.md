@@ -32,7 +32,7 @@ Diff passes all five. One more piece of advice, from many years of looking after
 
 You could download a module as a zip file and unpack it into your site. Please don't. Many modules need other code to work, called *dependencies*: Diff, for example, needs a small library that compares texts, written by someone outside the Drupal community. Those dependencies need their own dependencies, and all of them have to be versions that work together, with each other and with your Drupal. Keeping track of that by hand would open up a can of worms that you would never reach the bottom of!
 
-That's the job of **Composer**, the tool we met briefly in Chapter 4. Think of it as two lists, kept in your project's folder:
+Because that's the job of **Composer**, the tool we met briefly in Chapter 4. Think of it as two lists, kept in your project's folder:
 
 - **`composer.json`** is the shopping list: what *you* asked for. "Drupal core 12, Olivero, Drush, and Diff, version 2.1 or a later 2.x."
 - **`composer.lock`** is the receipt: exactly which versions Composer chose, of everything on the list and everything they need, down to the last library.

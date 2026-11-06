@@ -28,6 +28,7 @@ DDEV projects aren't in ~/websites/open-university/.
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -3490,7 +3491,264 @@ def themes16_twig_steps(page: Page, site: dict, snap) -> None:
     drush(site, "cache:rebuild")
 
 
+# Chapter 17: nice URLs and SEO.
+
+SEO17_MODULES = ["simple_sitemap", "redirect_404", "redirect", "pathauto"]
+SEO17_ALIASES = ["/about", "/join", "/welcome", "/hikes/turnhouse-hill", "/privacy"]
+
+
+def seo17_reset(site: dict) -> None:
+    """Back to Chapter 16: no Pathauto, Redirect or sitemap; only the hand-made aliases; the Glencorse hike's old title."""
+    drush_php(site, """$installed = array_keys(\\Drupal::moduleHandler()->getModuleList());
+$gone = array_values(array_intersect(%s, $installed));
+if (in_array('redirect', $gone)) { $r = \\Drupal::entityTypeManager()->getStorage('redirect'); $r->delete($r->loadMultiple()); }
+if ($gone) { \\Drupal::service('module_installer')->uninstall($gone); }
+$storage = \\Drupal::entityTypeManager()->getStorage('path_alias');
+foreach ($storage->loadMultiple() as $a) { if (!in_array($a->getAlias(), %s)) { $a->delete(); } }
+foreach (\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Glencorse Reservoir winter loop']) as $n) { $n->setTitle('Glencorse Reservoir loop'); $n->setNewRevision(FALSE); $n->save(); }""" % (php_list(SEO17_MODULES), php_list(SEO17_ALIASES)))
+    drush(site, "cache:rebuild")
+
+
+def php_list(items: list[str]) -> str:
+    return "[" + ", ".join(php_str(i) for i in items) + "]"
+
+
+def add_pattern(page: Page, url: str, kind: str, pattern: str, bundles: list[str], label: str, shot=None) -> None:
+    page.goto(url + "/admin/config/search/path/patterns/add")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='type']", kind)
+    page.wait_for_selector("input[name='pattern']")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='pattern']", pattern)
+    for b in bundles:
+        page.check(f"input[name='bundles[{b}]']")
+    page.fill("input[name='label']", label)
+    page.wait_for_timeout(1500)  # The machine name follows the label.
+    if shot:
+        shot()
+    with page.expect_navigation():
+        page.click("input[value='Save']")
+    page.wait_for_load_state("networkidle")
+
+
+def keep_alias17(page: Page, site: dict, title: str) -> None:
+    """Unticks Generate automatic URL alias on a node, so Pathauto leaves its hand-made alias alone."""
+    nid = drush_php(site, f"echo array_key_first(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => {php_str(title)}]));").strip()
+    page.goto(site["url"] + f"/node/{nid}/edit")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.uncheck("input[name='path[0][pathauto]']")
+    if page.locator("select[name='moderation_state[0][state]']").count():
+        page.select_option("select[name='moderation_state[0][state]']", "published")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+
+def seo17_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 17 on core: Pathauto patterns and bulk aliases, Redirect and Redirect 404, Simple XML Sitemap."""
+    url = site["url"]
+    seo17_reset(site)
+    composer(site, "require", "drupal/pathauto", "drupal/redirect", "drupal/simple_sitemap")
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='text']", "path")
+    page.wait_for_timeout(800)
+    page.fill("input[name='text']", "")
+    for m in ["pathauto", "redirect", "redirect_404", "simple_sitemap"]:
+        page.check(f"input[name='modules[{m}][enable]']")
+    page.wait_for_timeout(500)
+    scroll_to(page, "input[name='modules[pathauto][enable]']")
+    snap("17-extend")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    if page.locator("input[value='Continue']").count():
+        with page.expect_navigation():
+            page.click("input[value='Continue']")
+        page.wait_for_load_state("networkidle")
+    # Patterns.
+    def token_browser() -> None:
+        page.click("a:has-text('Browse available tokens.')")
+        page.wait_for_selector(".ui-dialog .token-tree, .ui-dialog table", timeout=20000)
+        page.wait_for_timeout(1500)
+        page.locator(".ui-dialog tr:has-text('Nodes') .token-tree-toggle, .ui-dialog tr:has-text('Nodes') a").first.click()
+        page.wait_for_timeout(1500)
+        snap("17-token-browser", element=".ui-dialog")
+        page.click(".ui-dialog-titlebar-close")
+        page.wait_for_timeout(500)
+        snap("17-pattern-hike")
+
+    add_pattern(page, url, "canonical_entities:node", "/hikes/[node:title]", ["hike"], "Hikes", token_browser)
+    add_pattern(page, url, "canonical_entities:node", "/galleries/[node:title]", ["gallery"], "Albums")
+    add_pattern(page, url, "canonical_entities:node", "/news/[node:title]", ["news"], "News")
+
+    def areas() -> None:
+        snap("17-pattern-areas")
+
+    add_pattern(page, url, "canonical_entities:taxonomy_term", "/areas/[term:parents:join-path]/[term:name]", ["areas"], "Areas", areas)
+    add_pattern(page, url, "canonical_entities:taxonomy_term", "/photo-themes/[term:name]", ["photo_themes"], "Photo themes")
+    views_admin_shot(page, url, "/admin/config/search/path/patterns", "17-patterns", full=False)
+    page.goto(url + "/admin/config/search/path/settings")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "input[name='update_action']", offset=300)
+    snap("17-pathauto-settings")
+    # Aliases for everything that has none yet.
+    page.goto(url + "/admin/config/search/path/update_bulk")
+    page.wait_for_load_state("networkidle")
+    page.check("input[name='update[canonical_entities:node]']")
+    page.check("input[name='update[canonical_entities:taxonomy_term]']")
+    page.wait_for_timeout(300)
+    snap("17-bulk")
+    page.click("input[value='Update']")
+    page.wait_for_url("**/update_bulk*", timeout=120000)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.goto(url + "/admin/config/search/path")
+    page.wait_for_load_state("networkidle")
+    page.set_viewport_size({"width": WIDTH, "height": page.evaluate("document.documentElement.scrollHeight")})
+    page.wait_for_timeout(800)
+    snap("17-aliases")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    as_visitor(page, site, "/areas/pentland-hills/turnhouse-hill", "17-term-alias")
+    # A hike's alias on its form.
+    nid = drush_php(site, "echo array_key_first(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Glencorse Reservoir loop']));").strip()
+    page.goto(url + f"/node/{nid}/edit")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.wait_for_timeout(500)
+    snap("17-hike-alias", element="details:has(input[name='path[0][pathauto]'])")
+    # Keep the Turnhouse hike's hand-made alias: untick Generate automatic URL alias, and save.
+    keep_alias17(page, site, "Turnhouse Hill and Carnethy Hill")
+    page.goto(url + f"/node/{nid}/edit")
+    page.wait_for_load_state("networkidle")
+    # Rename the hike: Pathauto makes a new alias, Redirect keeps the old one working.
+    page.fill("input[name='title[0][value]']", "Glencorse Reservoir winter loop")
+    if page.locator("select[name='moderation_state[0][state]']").count():
+        page.select_option("select[name='moderation_state[0][state]']", "published")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    views_admin_shot(page, url, "/admin/config/search/redirect", "17-redirects", full=False)
+    # Redirect 404: an address that doesn't exist.
+    for path in ["/hikes/arthurs-seat", "/hikes/arthurs-seat", "/gallery"]:
+        context = page.context.browser.new_context(ignore_https_errors=True)
+        context.new_page().goto(url + path)
+        context.close()
+    views_admin_shot(page, url, "/admin/config/search/redirect/404", "17-404", full=False)
+    # The sitemap.
+    page.goto(url + "/admin/config/search/simplesitemap/entities/node")
+    page.wait_for_load_state("networkidle")
+    for b, label in [("hike", "Hike"), ("gallery", "Gallery"), ("news", "News"), ("page", "Basic page")]:
+        page.locator(f".vertical-tabs__menu a:has-text('{label}'), .vertical-tabs__menu-item a:has-text('{label}')").first.click()
+        page.wait_for_timeout(500)
+        page.evaluate(f"document.querySelector('#edit-bundles-{b}-default').open = true")
+        page.wait_for_timeout(500)
+        page.locator(f"label[for='edit-bundles-{b}-default-index-1']").click()
+        if b == "hike":
+            page.wait_for_timeout(400)
+            snap("17-sitemap-settings")
+    page.check("input[name='simple_sitemap_regenerate_now']")
+    with page.expect_navigation():
+        page.click("input[value='Save configuration']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(3000)
+    as_visitor(page, site, "/sitemap.xml", "17-sitemap")
+
+
+# Chapter 17 on Drupal CMS: Metatag, Real-time SEO and the SEO Checklist.
+
+SEO17_TIPS = "Taking photos on a hike"
+SEO17_TIPS_BODY = ("<p>Hiking photography is about travelling light and stopping often. Here are the tips we share with new members "
+                   "before their first hike with the club.</p><h2>Pack light</h2><p>One camera body and one zoom lens are enough for "
+                   "a day in the Pentland Hills. A phone is a fine second camera.</p><h2>Shoot the light</h2><p>Early starts give the "
+                   "best light on Glencorse Reservoir. On a grey day, look for details: frost on a gate, a burn in the snow.</p>"
+                   "<h2>Keep up with the group</h2><p>Tell the hike leader when you stop for a photo, and catch up at the next gate.</p>")
+
+
+SEO17_SOCIAL_STYLES = ["social_media_facebook", "social_media_x"]
+
+
+def seo17_cms_reset(site: dict) -> None:
+    drush_php(site, f"""
+foreach ({php_list(SEO17_SOCIAL_STYLES)} as $id) {{
+  $style = \\Drupal\\image\\Entity\\ImageStyle::load($id);
+  $has = FALSE;
+  foreach ($style->getEffects() as $e) {{ if ($e->getPluginId() == 'image_convert_avif') {{ $has = TRUE; }} }}
+  if (!$has) {{ $style->addImageEffect(['id' => 'image_convert_avif', 'weight' => -9, 'data' => ['extension' => 'webp']]); $style->save(); }}
+  $style->flush();
+}}
+foreach (\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => '{SEO17_TIPS}']) as $n) {{ $n->delete(); }}
+foreach (\\Drupal::entityTypeManager()->getStorage('media')->loadByProperties(['name' => 'Glencorse Reservoir from the hillside']) as $m) {{ $m->delete(); }}
+foreach (\\Drupal::entityTypeManager()->getStorage('path_alias')->loadMultiple() as $a) {{ if (str_starts_with($a->getAlias(), '/taking-photos-hike')) {{ $a->delete(); }} }}
+""")
+
+
+def seo17_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 17 on Drupal CMS: Metatag defaults, a Basic page's SEO fields, Real-time SEO and the SEO Checklist."""
+    url = site["url"]
+    seo17_cms_reset(site)
+    views_admin_shot(page, url, "/admin/config/search/path/patterns", "17-cms-patterns", full=False)
+    views_admin_shot(page, url, "/admin/config/search/metatag", "17-cms-metatag", full=False)
+    page.goto(url + "/admin/config/search/metatag/node")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = false)")
+    page.locator("summary:has-text('Open Graph')").first.click()
+    page.wait_for_timeout(600)
+    scroll_to(page, "summary:has-text('Open Graph')")
+    snap("17-cms-metatag-node")
+    # Social media images as JPEG: delete the Convert to AVIF effect from the two social media image styles.
+    for style in SEO17_SOCIAL_STYLES:
+        page.goto(url + f"/admin/config/media/image-styles/manage/{style}")
+        page.wait_for_load_state("networkidle")
+        page.goto(url + page.locator("tr:has-text('Convert to AVIF') a[href$='/delete']").first.get_attribute("href"))
+        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+        if style == "social_media_facebook":
+            page.wait_for_timeout(500)
+            snap("17-cms-social-style")
+    # A Basic page with a photo, made in the background; we only look at its SEO fields.
+    shutil.copy(PHOTOS / "glencorse-reservoir-portrait.jpg", Path(site["dir"]) / "web/sites/default/files/glencorse-reservoir-portrait.jpg")
+    nid = drush_php(site, f"""
+$file = \\Drupal\\file\\Entity\\File::create(['uri' => 'public://glencorse-reservoir-portrait.jpg', 'status' => 1]);
+$file->save();
+$media = \\Drupal\\media\\Entity\\Media::create(['bundle' => 'image', 'name' => 'Glencorse Reservoir from the hillside',
+  'field_media_image' => ['target_id' => $file->id(), 'alt' => 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees']]);
+$media->save();
+$node = \\Drupal\\node\\Entity\\Node::create(['type' => 'page', 'title' => '{SEO17_TIPS}', 'uid' => 1,
+  'field_description' => 'How the club takes photos on a hike: what to pack, when the light is best, and how to keep up with the group.',
+  'field_content' => ['value' => {SEO17_TIPS_BODY!r}, 'format' => 'content_format'],
+  'field_featured_image' => $media->id(), 'moderation_state' => 'published']);
+$node->save();
+echo $node->id();
+""")
+    page.goto(url + f"/node/{nid}/edit")
+    page.wait_for_load_state("networkidle")
+    page.locator("summary:has-text('Search Engine Optimization')").first.click()
+    page.wait_for_timeout(600)
+    page.fill("input[name='field_seo_analysis[0][focus_keyword]']", "hiking photography")
+    page.wait_for_timeout(4000)
+    scroll_to(page, "summary:has-text('Search Engine Optimization')")
+    snap("17-cms-seo-fields")
+    page.fill("textarea[name='field_seo_description[0][value]']", "Tips from the Lens & Trail photo club for hiking photography in the hills around Edinburgh: what to pack, when the light is best, and how to keep up with the group.")
+    page.click("input[value='Seo preview']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    scroll_to(page, "input[name='field_seo_analysis[0][focus_keyword]']", offset=200)
+    snap("17-cms-realtime-seo")
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    with page.expect_navigation():
+        page.click("input[value='Save']")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, f"/node/{nid}", "17-cms-tips")
+    views_admin_shot(page, url, "/admin/config/search/seo-checklist", "17-cms-seo-checklist", full=False)
+
+
 SEQUENCES = [
+    ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
+    ("core", seo17_steps, 1280, ["17-extend", "17-token-browser", "17-pattern-hike", "17-pattern-areas", "17-patterns", "17-pathauto-settings", "17-bulk", "17-aliases", "17-term-alias", "17-hike-alias", "17-redirects", "17-404", "17-sitemap-settings", "17-sitemap"]),
     ("core", themes16_twig_steps, 1280, ["16-development-settings"]),
     ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury", "16-cms-olivero", "16-cms-tara", "16-cms-byte"]),
     ("core", themes16_steps, 1280, ["16-appearance", "16-stark", "16-appearance-solo", "16-solo", "16-solo-settings", "16-solo-blocks", "16-uninstall-solo", "16-olivero-global", "16-olivero-color", "16-olivero-logo", "16-olivero-club", "16-admin-theme", "16-default-admin-settings"]),

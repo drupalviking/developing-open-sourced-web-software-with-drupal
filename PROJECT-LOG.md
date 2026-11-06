@@ -147,6 +147,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 
 - **2026-11-06**: Drafted Chapter 12, *Views: Lists of Content*, with the author's answers: the four lists Chapters 6 to 10 promised (`/hikes`, front page blocks, `/galleries`; term pages with depth moved to Chapter 13), exposed filters in this chapter, the view blocks placed with Layout Builder on the Welcome page (blocks and regions stay in Chapter 14), and four boxes (Drupalism view / display / view mode, Under the hood: SQL, On Drupal CMS, Coming from WordPress?, the last checked against wordpress.org's Query Loop block). From the Drupal in a Day manuscript: "bring out the big guns", the three columns of the edit screen, and the SQL. Found on the test site: the wizard adds an Authored on sort even with Unsorted; with teasers on both the page and the block, the wizard shares the row format, so choosing Card for the block without **This block (override)** changes the page too (the chapter teaches the override there); the add-handler buttons say **Apply (all displays)**; a new view mode form has "Enable this view mode for the following ... types". Four hikes and a second album added for the lists. One screenshot sequence (17 figures); Views dialogs are opened by a script click with retries (the Navigation sidebar covers the left column, and a click before Drupal's scripts attach does nothing).
 
+- **2026-11-06**: The author: the book will be co-written, so "I" becomes "we". The `write-chapter` skill updated; new text uses "we"; the refactor of earlier chapters is in the backlog.
+
 ## Open items
 
 - `archive/developer-qa/`: the author chose the module book's backlog (2026-11-04). The entry is in
@@ -163,6 +165,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 ## Backlog
 
 Ideas that have no chapter yet, or are waiting for one.
+
+- **"I" becomes "we" everywhere** (the author, 2026-11-06): the book will be co-written, so the authors speak as "we", also for experience ("we've been teaching Drupal…", "in our experience"). New text uses "we" from Chapter 13 on (the `write-chapter` skill says so). Still to do: the Preface, Chapters 1 to 4 and 8 to 12, and Appendices A and B (`grep -nwE "I|I'm|I've|I'd|my|me" manuscript/*.md`). Take care with the author's personal stories (Chapters 2 and 3, the `%%` placeholders): a story about one person may need "one of us" or a name, rather than "we".
 
 - **Report the WebProfiler crash on drupal.org** (the author, 2026-11-06; to do). WebProfiler 11.2.3 on Drupal CMS 2.2.8 (Drupal 11.4.11) gave a fatal error on every page: "Cannot make static method Drupal\webprofiler\Entity\ConfigEntityStorageDecorator::createInstance() non static in class Drupal\canvas\EntityHandlers\CanvasAssetStorageDecorator", from the generated code in `sites/default/files/php/webprofiler`. No existing issue found (2026-11-05). Open one in WebProfiler's queue (or Canvas's, if the maintainers say it's theirs), then put the link in Chapter 11's `%%` note in the WebProfiler paragraph, which already says the issue was opened.
 - **Explain "d.o"** (the author, 2026-11-06): the Drupalism for drupal.org, as in "post it on d.o" or "the d.o issue queue". Probably a Drupalism box where the book first sends the reader to drupal.org's project pages and issue queues (Chapter 11's "Choosing a module"), or in Chapter 22 with the community's other shorthand.

@@ -140,6 +140,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 
 - **2026-11-06**: The author reviewed Chapter 10 (no changes). Chapter 11: the sentence about keeping track of dependencies by hand made stronger, in the author's words.
 
+- **2026-11-06**: Chapter 11's WebProfiler paragraph stays (the author: it shows that things sometimes don't work), and now says the problem became an issue on drupal.org. Backlog: report the crash on d.o, and explain "d.o".
+
 ## Open items
 
 - `archive/developer-qa/`: the author chose the module book's backlog (2026-11-04). The entry is in
@@ -156,6 +158,9 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 ## Backlog
 
 Ideas that have no chapter yet, or are waiting for one.
+
+- **Report the WebProfiler crash on drupal.org** (the author, 2026-11-06; to do). WebProfiler 11.2.3 on Drupal CMS 2.2.8 (Drupal 11.4.11) gave a fatal error on every page: "Cannot make static method Drupal\webprofiler\Entity\ConfigEntityStorageDecorator::createInstance() non static in class Drupal\canvas\EntityHandlers\CanvasAssetStorageDecorator", from the generated code in `sites/default/files/php/webprofiler`. No existing issue found (2026-11-05). Open one in WebProfiler's queue (or Canvas's, if the maintainers say it's theirs), then put the link in Chapter 11's `%%` note in the WebProfiler paragraph, which already says the issue was opened.
+- **Explain "d.o"** (the author, 2026-11-06): the Drupalism for drupal.org, as in "post it on d.o" or "the d.o issue queue". Probably a Drupalism box where the book first sends the reader to drupal.org's project pages and issue queues (Chapter 11's "Choosing a module"), or in Chapter 21 with the community's other shorthand.
 
 - **Build your own Canvas component** (advanced; partly theming). Maybe the end of Chapter 15, or
   an appendix.

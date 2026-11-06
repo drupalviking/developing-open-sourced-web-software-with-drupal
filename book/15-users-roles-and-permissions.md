@@ -151,7 +151,7 @@ Now the people. The secretary first:
 
 5. Select **Create new account**.
 
-You never learn Morag's password, and you shouldn't. Drupal emails her a link where she sets it herself. (Turn off **Email user with password setup instructions**, and the form asks for a password and a status instead, for the rare case where you must set them yourself.)
+You never learn Morag's password, and you shouldn't. Drupal emails them a link where they set it themselves. (Turn off **Email user with password setup instructions**, and the form asks for a password and a status instead, for the rare case where you must set them yourself.)
 
 > **Where's the email?** Your DDEV site doesn't send email out into the world: it catches every message in **Mailpit**, a mailbox for testing. Type `ddev mailpit` in the project's folder, and it opens in your browser, with the message to `morag@example.com`. On a live site, email needs setting up properly, so that it arrives and isn't marked as spam; that's for Chapter 21.
 
@@ -335,7 +335,7 @@ Morag, the secretary, sees it on **Content**, marked **Unpublished**:
 ![The Content page as the secretary sees it: Arthur's Seat by night, a Hike by jordi, Unpublished, at the top, and the club's other content below, Published; tabs Overview and Moderated content](images/15-secretary-content.png)
 *Figure 15.25: The draft, waiting for the secretary*
 
-The **Moderated content** tab lists only content in the workflow that isn't published yet: a handy to-do list. She opens the hike, checks the details, and under **Change to**, chooses **Published**.
+The **Moderated content** tab lists only content in the workflow that isn't published yet: a handy to-do list. They open the hike, check the details, and under **Change to**, choose **Published**.
 
 ![The edit form of Arthur's Seat by night as the secretary sees it: Current state Draft, and Change to Published, on the right](images/15-secretary-publish.png)
 *Figure 15.26: The secretary publishes the hike*
@@ -348,7 +348,7 @@ When Jordi edits his hike after that (the meeting place has changed, say), his c
 > 2. **Entity access.** Modules can add rules for a single item: Content Moderation, for instance, checks which transitions he may use on this hike, and whether he may see its latest draft. A single "forbidden" from any module wins over every "allowed".
 > 3. **Node access grants.** For content only, modules can keep a list of who may see or edit each item, such as "only members of the Pentland group may see this hike". Core has none of its own; contributed modules such as [Group](https://www.drupal.org/project/group) use it. When a site's access seems to ignore the permissions page, look here.
 >
-> Views asks the same questions (Chapter 12's **Access** setting is the first layer for the whole page, and its query leaves out content a visitor may not see), and so do menus: a menu link to a page you may not see isn't shown. User 1 skips all of it.
+> Views asks the same questions (Chapter 12's **Access** setting is the first layer for the whole page, and its query leaves out content a visitor may not see), and so do menus: a menu link to a page you may not see isn't shown. User 1 gets past every *permission*, but not checks of other kinds: a page that only one role may open (an option in Views) is closed to user 1 too, unless user 1 has that role.
 
 > **On Drupal CMS:** People, roles and permissions work the same way, with the same four roles. Two differences. Drupal CMS's **Content editor** is a role you can use as it is: it may create and edit pages, Canvas pages and media, publish and unpublish through its workflow, schedule publishing, and use the trash, which is close to our secretary, without the accounts. And people can log in with their email address instead of their username, thanks to the Login Email or Username module: one thing less for members to forget. Registration starts as **Administrators only**, as on core, and no spam protection is installed.
 
@@ -377,6 +377,7 @@ You can now:
 4. Create an account for yourself with the **Administrator** role, log in with it, and check that you can do everything you need. Why is that better than using `admin` every day?
 5. *(challenge)* The club wants hike leaders to see each other's phone numbers, but nobody else. Can you do it with core alone? Which module would you look for, and how would you check whether it supports your version of Drupal?
 6. *(challenge)* Go back to your list from Chapter 1, Exercise 4. For each thing someone must *not* be able to do, find the permission (or the missing permission) that stops them. Is there anything on your list that permissions can't express?
+7. *(advanced)* The club wants a page for members only, at `/members`: where the photo evenings are, and the secretary's phone number for hike days. Visitors, and people with an account who aren't members yet, should get "Access denied", and the secretary should be able to change the text. Why doesn't a Basic page with that text work? Build it with what you know from Chapters 12 to 14. (The answer is in Appendix C.)
 
 ## Want to know more?
 

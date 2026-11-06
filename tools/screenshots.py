@@ -3276,7 +3276,74 @@ $u->set('field_camera', 'Fujifilm X-T5, and a phone when it rains')->set('field_
     context.close()
 
 
+def members15_undo(site: dict) -> None:
+    """Appendix C, Exercise 15.7: remove the Members' corner view and block."""
+    drush_php(site, """\\Drupal\\views\\Entity\\View::load('members_corner')?->delete();
+foreach (\\Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['info' => "Members' corner"]) as $b) { $b->delete(); }""")
+
+
+def members15_steps(page: Page, site: dict, snap) -> None:
+    """Appendix C, the answer to Exercise 15.7: a Members' corner at /members (after the Chapter 15 sequences; undone at the end)."""
+    url = site["url"]
+    members15_undo(site)
+    # The text, in a reusable Basic block that isn't placed anywhere.
+    page.goto(url + "/block/add/basic")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='info[0][value]']", "Members' corner")
+    page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)",
+                  "<p><strong>Photo evenings</strong> are in the back room of the Shore Café, 12 Water Street, Leith. Ring the bell if the door is closed.</p>"
+                  "<p><strong>On a hike and running late?</strong> Call or text the secretary: 07700 900123.</p>"
+                  "<p>The club's shared album for 2027 is open: ask Morag for the link.</p>")
+    page.wait_for_timeout(1000)
+    snap("appendix-c-members-block")
+    page.locator("#edit-actions input[value='Save'], #edit-submit").first.click()
+    page.wait_for_load_state("networkidle")
+    # A view of content blocks, with a page at /members.
+    views_new(page, url, "Members' corner", [
+        ("show[wizard_key]", "block_content"),
+        ("page[create]", True),
+        ("page[title]", "Members' corner"),
+        ("page[path]", "members"),
+        ("page[items_per_page]", "1"),
+    ])
+    page.goto(url + "/admin/structure/views/view/members_corner/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    # Only this block: a filter on its description.
+    views_add(page, "members_corner/page_1/filter", "Block description", "block_content_field_data.info")
+    page.fill(".ui-dialog input[name='options[value]']", "Members' corner")
+    views_apply(page)
+    # Show the block as it is, not as fields.
+    views_dialog(page, "display/members_corner/page_1/row")
+    page.check(".ui-dialog input[name='row[type]'][value='entity:block_content']")
+    views_apply(page)
+    # The row style's settings (the view mode), if Views asks for them.
+    if page.locator(".ui-dialog-buttonpane button:has-text('Apply')").count():
+        views_apply(page)
+    # Members only.
+    views_dialog(page, "display/members_corner/page_1/access")
+    page.check(".ui-dialog input[name='access[type]'][value='role']")
+    views_apply(page)
+    page.check(".ui-dialog input[name='access_options[role][member]']")
+    page.wait_for_timeout(500)
+    snap("appendix-c-members-access", element=".ui-dialog")
+    views_apply(page)
+    page.mouse.move(1200, 600)
+    page.wait_for_timeout(800)
+    snap("appendix-c-members-view")
+    views_save(page)
+    context, other = as_user(page, site, "ailsa")
+    other.goto(url + "/members")
+    other.wait_for_load_state("networkidle")
+    other.wait_for_timeout(800)
+    save(other, "appendix-c-members-page")
+    context.close()
+    as_visitor(page, site, "/members", "appendix-c-members-denied")
+    members15_undo(site)
+
+
 SEQUENCES = [
+    ("core", members15_steps, 1280, ["appendix-c-members-block", "appendix-c-members-access", "appendix-c-members-view", "appendix-c-members-page", "appendix-c-members-denied"]),
     ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),
     ("core", users15_captcha_steps, 1280, ["15-extend-captcha", "15-captcha-points", "15-register-captcha"]),
     ("core", users15_registration_steps, 1280, ["15-account-settings", "15-register", "15-register-done", "15-mailpit", "15-people-blocked", "15-activate", "15-unapproved", "15-bulk-role"]),

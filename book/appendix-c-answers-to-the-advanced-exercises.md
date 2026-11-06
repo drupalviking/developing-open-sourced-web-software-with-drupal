@@ -110,3 +110,69 @@ The **Albums from this hike** block on a hike's page uses the same fields, so it
 ### Is there another way?
 
 Not in Views without aggregation: an album doesn't store its number of photos, so something has to count them. If you'd rather keep the view simple, the theme can count the values of the **Photos** field when it shows an album, in its template (Chapter 16). That moves the counting out of the view, though, and the next person who wonders where "Photos: 4" comes from will look in the view first.
+
+## Chapter 15, Exercise 7: a page for members only
+
+*The club wants a page for members only, at `/members`: where the photo evenings are, and the secretary's phone number for hike days. Visitors, and people with an account who aren't members yet, should get "Access denied", and the secretary should be able to change the text. Why doesn't a Basic page with that text work? Build it with what you know from Chapters 12 to 14.*
+
+### Why not a Basic page
+
+In Drupal core, seeing content is one permission for all of it: **View published content**. Anonymous user has it, so every published page is visible to every visitor. Leaving the page out of the menu doesn't help: anyone who has the address, or tries `/node/` with a few numbers, reads it. Unpublishing doesn't help either: then members can't see it, unless you give them **View any unpublished content**, which shows them everyone's drafts.
+
+Core has no permission like "view published Basic page content". Deciding who may see *each piece* of content is the third layer of "Under the hood: access" in Chapter 15, node access grants, and core leaves that to contributed modules.
+
+But core can protect a *page*, rather than the content on it. A view's page has an **Access** setting (Chapter 13), and one of its options is a role. So we put the text where visitors can't open it on its own, in a content block that isn't placed anywhere, and show it on a view's page that only members may open.
+
+### The text: a content block
+
+1. On **Content** > **Blocks**, select **Add content block**, and choose **Basic block**.
+2. **Block description**: `Members' corner`. Write the text in **Body**.
+
+![The Add Basic block content block form: Block description Members' corner, and in Body: Photo evenings are in the back room of the Shore Café, 12 Water Street, Leith; the secretary's phone number for hike days; and the shared album for 2027; with Save and Save and configure buttons](images/appendix-c-members-block.png)
+*Figure C.7: The members' text, in a content block*
+
+3. Select **Save**, not **Save and configure**: this block doesn't go in a region.
+
+A content block has no page of its own that visitors can open. As long as nobody places it, nobody sees it, except where we show it.
+
+### The page: a view
+
+4. Go to **Structure** > **Views**, and select **Add view**. **View name**: `Members' corner`. Under **View settings**, **Show** **Content Block**.
+5. Check **Create a page**. **Page title**: `Members' corner`, **Path**: `members`, **Items to display**: `1`. Select **Save and edit**.
+6. Under **Filter criteria**, add **Block description** (in **Content block**), with **Value** `Members' corner`, and select **Apply**. Now the view lists only this block.
+7. Next to **Show** under **Format**, select **Fields**, choose **Content block view mode**, select **Apply**, and keep the **Default** view mode. The block appears as it was written, not as a list of fields.
+8. Under **Page settings**, select **Permission** next to **Access**, choose **Role**, and select **Apply**. Check **Member**, and select **Apply**.
+
+![The Page: Access options dialog, with the roles Anonymous user, Authenticated user, Member (checked), Hike leader, Secretary, Content editor and Administrator, and the text Only the checked roles will be able to access this display.](images/appendix-c-members-access.png)
+*Figure C.8: Members only*
+
+![The Members' corner view: the title Members' corner, Format Unformatted list showing Content block view mode Default, the filters Published, Reusable and Block description (= Members' corner), the path /members, and Access: Role, Member](images/appendix-c-members-view.png)
+*Figure C.9: The whole view*
+
+The wizard added the filters **Published** and **Reusable** by itself; leave them.
+
+9. **Save** the view. Log in as Ailsa, a member, and open `/members`:
+
+![The Members' corner page as a member sees it: the title, and the text about the photo evenings, the secretary's phone number and the shared album](images/appendix-c-members-page.png)
+*Figure C.10: What members see*
+
+In a private window, as a visitor:
+
+![The same address as a visitor sees it: Access denied, You are not authorized to access this page, with the Join the club block in the sidebar](images/appendix-c-members-denied.png)
+*Figure C.11: What everyone else sees*
+
+Lucía, before the administrator made her a member, would have seen the same: **Access denied** checks roles, not whether someone is logged in. Morag is a member as well as the secretary, so they see the page. Administrators, on the other hand, don't: a role check isn't a permission, so neither the Administrator role nor user 1 gets past it. Log in as `admin` and you get **Access denied** too. Check **Administrator** as well in step 8 if that's a problem.
+
+### Letting the secretary change it
+
+On the Secretary role's permissions, check **Basic block: Edit content block** and **Access the Content blocks overview page**. Morag then finds *Members' corner* on **Content** > **Blocks**, and edits it like any other block.
+
+That permission covers *every* Basic block, including *Join the club*. If the secretary should only change the members' text, give it a block type of its own (Chapter 14), such as *Members' text*, and give the secretary that type's **Edit content block** only.
+
+### What it doesn't do
+
+Only the page is protected, not the block. If someone places *Members' corner* in a region, it shows there for everyone who can see that region: write that in the block's description, or keep its type for this one use.
+
+A menu link to the page is safe: give the view's page a **Normal menu entry** in **Main navigation**, and Drupal shows it only to the people who may open the page (Chapter 15's "Under the hood: access").
+
+And it's one page. If members-only content grows (news for members, albums only members see), a page per item gets clumsy, and that's the time for a contributed module that decides access for each piece of content, such as [Group](https://www.drupal.org/project/group). Check which version of Drupal it supports before you choose.

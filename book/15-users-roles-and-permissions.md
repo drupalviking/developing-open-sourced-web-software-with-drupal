@@ -160,7 +160,7 @@ You never learn Morag's password, and you shouldn't. Drupal emails them a link w
 ![The People page with four users: ailsa (Member), jordi (Member, Hike leader), morag (Member, Secretary) and admin (Administrator), all active](images/15-people-after.png)
 *Figure 15.8: The club, so far*
 
-To see the site as one of them, open a private window and log in as them. (On your test site, you can set their passwords on their **Edit** form, or with `ddev drush user:password jordi 12345`.) That's the best way to test permissions: not as `admin`, who can do everything anyway.
+To see the site as one of them, open a private window and log in as them. (On your test site, you can set their passwords on their **Edit** form, or with `ddev drush user:password jordi 12345`.) That's the best way to test permissions: not as `admin`, who can do everything anyway. (Logging in and out gets tiring; Exercise 9 looks for a faster way.)
 
 ## Letting visitors apply for an account
 
@@ -378,6 +378,8 @@ You can now:
 5. *(challenge)* The club wants hike leaders to see each other's phone numbers, but nobody else. Can you do it with core alone? Which module would you look for, and how would you check whether it supports your version of Drupal?
 6. *(challenge)* Go back to your list from Chapter 1, Exercise 4. For each thing someone must *not* be able to do, find the permission (or the missing permission) that stops them. Is there anything on your list that permissions can't express?
 7. *(advanced)* The club wants a page for members only, at `/members`: where the photo evenings are, and the secretary's phone number for hike days. Visitors, and people with an account who aren't members yet, should get "Access denied", and the secretary should be able to change the text. Why doesn't a Basic page with that text work? Build it with what you know from Chapters 12 to 14. (The answer is in Appendix C.)
+8. *(challenge)* Some members want others to know their pronouns: Morag, for example, uses they/them. Add a **Pronouns** field to user accounts, and fill it in for Morag. Which field type would you choose: a list of choices, or plain text, and what does each mean for someone whose pronouns aren't on your list? Should it be required, and should it be on the registration form? Who sees it on the profile, and is that what members expect when they fill it in?
+9. *(challenge)* Logging out and back in as Jordi, Morag or Ailsa to test what they may do gets tiring. Find a contributed module that lets a site builder switch to another account and back with one click. Use the questions from Chapter 11: does it support your version of Drupal, is it covered by the security advisory policy, and how many sites use it? Then think about who should be allowed to use it: why is switching to someone else's account as much trust as **Administer users**?
 
 ## Want to know more?
 

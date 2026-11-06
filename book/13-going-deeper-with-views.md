@@ -6,6 +6,37 @@ This chapter is about those lists. We build rows out of single fields, follow re
 
 You can skip this chapter on a first read: nothing later in the book depends on it. But if you build Drupal sites for a living, you'll use most of it every week. We start where Chapter 12 left us: a page and a block of upcoming hikes, the newest photos on the front page, and a page of albums at `/galleries`.
 
+## Displays, in depth
+
+By the end of this chapter, the Hikes view has six displays. Before we add them, let's look more closely at what a display is.
+
+A view answers the three questions from Chapter 12: what to list, in what order, and how it looks. A *display* answers a fourth one: *where* the list appears. One view can have many displays, and each of them shows the same list, in a different place. That's the reason displays exist: you build the list once, and when the club decides that a hike needs one more filter, you change it once.
+
+There are six kinds of display. You add one with **Add**, at the top of the edit screen, next to the displays you already have.
+
+- A **Page** has its own address, such as `/hikes`, and can have a menu link or a tab.
+- A **Block** has no address. You place it on other pages, with Layout Builder (Chapter 8), Canvas, or the block layout (Chapter 14).
+- A **Feed** is the list for programs instead of people, in the RSS format. We add one later in this chapter.
+- An **Attachment** isn't shown on its own. It's shown before or after another display of the same view, on the same page. We add one of those too.
+- An **Entity Reference** display decides which items a reference field offers. Chapter 7's **Hike leader** field offers every user; with a view, it could offer only the members with the Hike leader role.
+- An **Embed** display is for themes and code, which can show it anywhere. Site builders rarely need it.
+
+### Shared settings and overrides
+
+Behind the displays you see, every view has one more, hidden display: the **Default** display. It holds the settings that all the displays share. When a dialog says **For** **All displays**, you're changing the Default display, and every display that hasn't overridden that setting follows. When you choose **This page (override)**, the page gets its own copy of the setting, shown in *italics*, and stops following the Default display for that setting only.
+
+So a display is mostly a list of exceptions. Our **Next hikes** block, from Chapter 12, shares the title, the filters, the sort and the no-results text with the Default display, and has its own format (Card), number of items and more link. If you want to see the Default display, turn on **Always show the default display** under **Structure** > **Views** > **Settings**. We prefer to leave it hidden, and to think about **For** in each dialog instead: it's harder to change every display by accident.
+
+One thing can't be different between the displays of a view: *what kind* of thing it lists. The Hikes view lists content; a display of it can't list media or users. That's chosen once, in the wizard's **Show**. A list of something else is a new view.
+
+### Keeping track of displays
+
+When a view has more than two displays, a few habits help:
+
+- **Give displays names.** The wizard names them **Page** and **Block**, and the next ones become **Page 2**, **Page 3**. Select **Display name**, below the displays, to call them something you'll recognize, such as *Member's hikes*. Only administrators see display names.
+- **Duplicate, disable and delete** are in the button at the right of the display name: **Duplicate Page** copies a display with all its settings, overridden or not; **Duplicate as Block** and the like make a display of another kind from it; **Disable Page** turns it off without throwing it away.
+- **The machine name**, under **Other**, such as `page_2`, is how Drupal knows the display, for example in a placed block's settings. You can change it, but do it before you use the display anywhere, or leave it as it is.
+
 ## Fields: building the row yourself
 
 In the wizard, **Display format** has a second half: what each row shows. So far we chose **teasers** or a view mode. The other choice is **fields**: you pick the fields one by one, and Views shows only those, in the order you choose, with the labels and formatting you choose.
@@ -331,6 +362,8 @@ A *feed* is a list for programs instead of people: a feed reader, another websit
 
 Open `/hikes/feed`, and your browser shows the feed as text: the same hikes, in a format programs read. The term pages have had a feed all along, and now you know where its icon comes from.
 
+> **Try it:** The Hikes view now has six displays: **Page**, **Block**, **Page 2**, **Page 3**, **Attachment** and **Feed**. Give them names you'll still understand next year, such as *Upcoming hikes*, *Next hikes*, *Member's hikes*, *Archive*, *Archive months* and *Upcoming hikes feed*.
+
 ## Caching and performance
 
 Every time someone opens `/hikes`, Views asks the database for the hikes. On a small club's site that takes no time at all; on a site with a hundred thousand articles and a view with five relationships, it does. So Drupal keeps the results, and the HTML they become, in its *cache*, and reuses them.
@@ -385,7 +418,7 @@ You can now:
 3. Change the depth of the term pages to `0`, and look at *Pentland Hills* again. Then try `-1` on *Turnhouse Hill*: what does a negative depth do?
 4. Make the member's **Hikes** tab list *all* the hikes they lead, past and future, newest first. Which settings must you override for that page only?
 5. *(challenge)* Add a column to the **Photographers** table with the date of each photographer's most recent photo. Which field do you add, and which aggregation type does it need?
-6. *(challenge)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design?
+6. *(advanced)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design?
 
 ## Want to know more?
 

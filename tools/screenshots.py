@@ -27,6 +27,7 @@ DDEV projects aren't in ~/websites/open-university/.
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -552,9 +553,9 @@ foreach (['node.hike.teaser', 'node.hike.card', 'node.news.teaser', 'node.news.c
     subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
 
 
-def as_visitor(page: Page, site: dict, path: str, name: str) -> None:
+def as_visitor(page: Page, site: dict, path: str, name: str, width: int = WIDTH) -> None:
     """A full-page screenshot of path, logged out, in a window of its own."""
-    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    context = page.context.browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
     visit = context.new_page()
     visit.goto(site["url"] + path)
     visit.wait_for_load_state("networkidle")
@@ -3746,7 +3747,543 @@ echo $node->id();
     views_admin_shot(page, url, "/admin/config/search/seo-checklist", "17-cms-seo-checklist", full=False)
 
 
+# Chapter 18: multilingual sites. The sequences restore a database snapshot taken when Chapter 17 was done.
+
+ES18_PAGES = {
+    "About the club": ("Sobre el club", "/sobre-el-club",
+        "<p>Lens &amp; Trail es un pequeño club para quienes viven en Edimburgo y sus alrededores y disfrutan de la fotografía y las caminatas, casi siempre a la vez.</p>"
+        "<p>Nos reunimos dos veces al mes: una para hacer una excursión por las Pentland Hills, por la costa o más lejos, en las Highlands, y otra en un café del centro para ver las fotos de todos con una taza de té. De vez en cuando también salimos de noche a fotografiar las luces de la ciudad desde Calton Hill.</p>"
+        "<p>Muchos de nuestros miembros llegaron a Escocia desde España y América Latina, así que en el camino se oye tanto español como inglés. Todo el mundo es bienvenido, tenga la cámara que tenga. ¡Un teléfono también sirve!</p>"
+        "<p>El club tiene unos cuarenta miembros, y cada mes se suman nuevos.</p>"),
+    "How to join": ("Cómo unirse", "/unete",
+        "<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p>"
+        "<p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail.ddev.site.</p>"
+        "<p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>"),
+    "Welcome to Lens & Trail": ("Te damos la bienvenida a Lens & Trail", "/bienvenida",
+        "<p>Somos un club de fotografía y senderismo en Edimburgo. Caminamos, tomamos fotos y las compartimos.</p>"
+        "<p>Lee más sobre el club o descubre cómo unirte.</p>"),
+    "Privacy": ("Privacidad", "/privacidad",
+        "<p>Lens &amp; Trail solo guarda lo que necesita para llevar el club: tu nombre y tu dirección de correo electrónico si te haces miembro, y las fotos que decides compartir. Nunca vendemos ni cedemos tus datos.</p>"),
+}
+ES18_HIKES = {
+    "Turnhouse Hill and Carnethy Hill": ("Turnhouse Hill y Carnethy Hill", "Estacionamiento de Flotterstone",
+        "<p>Dos de las cumbres más conocidas de las Pentland Hills, con vistas sobre Edimburgo y el estuario del Forth en un día despejado. Subimos a ritmo constante desde Flotterstone hasta Turnhouse Hill, seguimos la cresta hasta Carnethy Hill y bajamos por el valle.</p>"
+        "<p>Trae botas, una chaqueta impermeable, algo de abrigo, comida, tu cámara y una linterna frontal: en noviembre oscurece antes de las cinco. El camino es empinado en algunos tramos y puede haber barro.</p>"),
+    "Arthur's Seat at sunrise": ("Arthur's Seat al amanecer", "Estacionamiento del palacio de Holyrood",
+        "<p>Madrugamos para tener la mejor luz del día: subimos a Arthur's Seat por el sendero de Salisbury Crags, a tiempo para ver salir el sol sobre el estuario del Forth. Trae una linterna frontal para la subida.</p>"),
+    "North Berwick Law and the harbour": ("North Berwick Law y el puerto", "Estación de tren de North Berwick",
+        "<p>Una subida corta a North Berwick Law, con el arco de hueso de ballena en la cima y vistas a Bass Rock; después bajamos al puerto a comer. Tomamos el tren desde Edinburgh Waverley a las 8:55.</p>"),
+    "Glencorse Reservoir winter loop": ("Vuelta invernal al embalse de Glencorse", "Estacionamiento de Flotterstone",
+        "<p>Un paseo tranquilo junto al embalse, con vuelta por las laderas bajas; ideal para la luz de invierno sobre el agua. Una buena primera excursión con el club.</p>"),
+    "Pentland Hills ridge": ("La cresta de las Pentland Hills", "Estacionamiento de Flotterstone",
+        "<p>La cresta entera, de Turnhouse Hill a Carnethy, Scald Law y los Kips, con vuelta por el valle. Un día largo y con mucho desnivel: trae comida y agua de sobra.</p>"),
+}
+ES18_LUCIA = ("Arthur's Seat by night", "Arthur's Seat de noche", "Holyrood Park, estacionamiento de St Margaret's Loch")
+ES18_OTHER_NODES = {
+    "The club has a website": ("El club tiene sitio web",
+        "<p>Por fin Lens &amp; Trail tiene su propio sitio web. A partir de ahora encontrarás aquí el programa de excursiones, las noticias del club y las mejores fotos de los miembros.</p>"
+        "<p>El sitio es nuevo y lo vamos construyendo sobre la marcha. Si falta algo o hay un error, díselo a la secretaría.</p>"),
+    "Pentlands, 21 November": ("Pentlands, 21 de noviembre",
+        "<p>Nuestra primera excursión con el nuevo sitio web: Turnhouse Hill y Carnethy Hill, con sol, viento y, cerca de la cima, un poco de nieve.</p>"),
+    "Edinburgh, 24 October": ("Edimburgo, 24 de octubre",
+        "<p>El amanecer desde Arthur's Seat y, de vuelta a casa, el casco antiguo desde Calton Hill.</p>"),
+}
+ES18_TERMS = {
+    "Pentland Hills": ("Pentland Hills", "<p>Una cadena de colinas al suroeste de Edimburgo, casi toda parque regional. La favorita del club: un autobús desde el centro te deja al pie de las colinas.</p>"),
+    "Turnhouse Hill": ("Turnhouse Hill", None), "Carnethy Hill": ("Carnethy Hill", None),
+    "Glencorse Reservoir": ("Embalse de Glencorse", None),
+    "Edinburgh": ("Edimburgo", "<p>Colinas, playas y miradores dentro de la ciudad: caminatas que puedes hacer en una tarde.</p>"),
+    "Arthur's Seat": ("Arthur's Seat", None), "Calton Hill": ("Calton Hill", None), "Portobello": ("Portobello", None),
+    "East Lothian": ("East Lothian", "<p>La costa y las colinas al este de Edimburgo.</p>"),
+    "North Berwick Law": ("North Berwick Law", None),
+    "Landscape": ("Paisaje", None), "Water": ("Agua", None), "Winter": ("Invierno", None), "City": ("Ciudad", None), "Hills": ("Colinas", None),
+}
+ES18_MEDIA = {
+    "Turnhouse Hill across Glencorse Reservoir": ("Turnhouse Hill al otro lado del embalse de Glencorse", "Turnhouse Hill visto al otro lado del embalse de Glencorse, con una barca de remos en el embarcadero"),
+    "Edinburgh's Old Town from Calton Hill": ("El casco antiguo de Edimburgo desde Calton Hill", "El casco antiguo de Edimburgo y el castillo vistos desde Calton Hill, con árboles delante"),
+    "Carnethy Hill from Turnhouse Hill": ("Carnethy Hill desde Turnhouse Hill", "El sendero que baja de Turnhouse Hill, con Carnethy Hill alzándose detrás"),
+    "The view from Carnethy Hill": ("La vista desde Carnethy Hill", "Colinas verdes y onduladas bajo un cielo nublado, vistas desde la cima pedregosa de Carnethy Hill"),
+    "Glencorse Reservoir from the hillside": ("El embalse de Glencorse desde la ladera", "El embalse de Glencorse entre las colinas, visto desde una ladera de hierba con dos árboles"),
+    "A burn in the Pentland Hills in winter": ("Un arroyo en las Pentland Hills en invierno", "Un arroyo que atraviesa un valle nevado en las Pentland Hills"),
+}
+ES18_BLOCKS = {
+    "Club info": ("Información del club", {"field_meeting_times": {"value": "<p><strong>Excursiones:</strong> un sábado sí y otro no, a las 9:30.<br><strong>Tardes de fotografía:</strong> el primer jueves de cada mes a las 19:00, en un café de Leith.</p>", "format": "basic_html"}}),
+    "Join the club": ("Únete al club", {"body": {"value": "<p>Siempre hay sitio para gente nueva, traigas cámara, botas o las dos cosas. La cuota es de 20 £ al año, 10 £ para estudiantes.</p><p><a href=\"/es/unete\">Cómo unirse</a></p>", "format": "basic_html"}}),
+}
+ES18_LINKS = {"About": "Nosotros", "Join us": "Únete", "Hike archive": "Archivo de excursiones", "Privacy": "Privacidad", "Upcoming hikes (RSS)": "Próximas excursiones (RSS)"}
+ES18_PATTERNS = [
+    ("hikes_es", "Excursiones", "canonical_entities:node", "/excursiones/[node:title]", ["hike"]),
+    ("albums_es", "Álbumes", "canonical_entities:node", "/albumes/[node:title]", ["gallery"]),
+    ("news_es", "Noticias", "canonical_entities:node", "/noticias/[node:title]", ["news"]),
+    ("areas_es", "Zonas", "canonical_entities:taxonomy_term", "/zonas/[term:parents:join-path]/[term:name]", ["areas"]),
+    ("photo_themes_es", "Temas fotográficos", "canonical_entities:taxonomy_term", "/temas-fotograficos/[term:name]", ["photo_themes"]),
+]
+# Configuration in Spanish: (config name, key, Spanish). The Hikes view's page is translated in the form.
+ES18_CONFIG = [
+    ("system.site", "slogan", "Fotos y excursiones por Edimburgo"),
+    ("core.date_format.day_date_and_time", "pattern", "l, j \\d\\e F \\d\\e Y, \\a \\l\\a\\s H:i"),
+    ("views.view.hikes", "display.block_1.display_options.title", "Próximas excursiones"),
+    ("views.view.hikes", "display.block_1.display_options.use_more_text", "Todas las próximas excursiones"),
+    ("views.view.hikes", "display.page_2.display_options.menu.title", "Excursiones"),
+    ("views.view.hikes", "display.page_3.display_options.title", "Archivo de excursiones"),
+    ("views.view.hikes", "display.default.display_options.empty.area.content.value", "<p>No hay excursiones previstas por ahora. Solemos anunciarlas con un mes de antelación, así que vuelve pronto.</p>"),
+    ("views.view.albums", "display.default.display_options.title", "Álbumes"),
+    ("views.view.albums", "display.block_1.display_options.title", "Álbumes de esta excursión"),
+    ("views.view.albums", "display.page_1.display_options.menu.title", "Álbumes"),
+    ("views.view.photos", "display.default.display_options.title", "Fotos más recientes"),
+    ("block.block.olivero_join_the_club", "settings.label", "Únete al club"),
+    ("field.field.node.hike.field_date", "label", "Fecha"),
+    ("field.field.node.hike.field_meeting_place", "label", "Punto de encuentro"),
+    ("field.field.node.hike.field_distance", "label", "Distancia"),
+    ("field.field.node.hike.field_difficulty", "label", "Dificultad"),
+    ("field.field.node.hike.field_hike_leader", "label", "Guía"),
+    ("field.field.node.hike.field_area", "label", "Zona"),
+    ("field.field.node.hike.field_body", "label", "Descripción"),
+    ("field.field.node.gallery.field_area", "label", "Zona"),
+    ("field.field.node.gallery.field_hike", "label", "Excursión"),
+    ("field.field.node.gallery.field_body", "label", "Descripción"),
+    ("field.field.node.gallery.comment", "label", "Comentarios"),
+    ("field.field.media.image.field_photographer", "label", "Fotografía de"),
+    ("field.field.media.image.field_license", "label", "Licencia"),
+    ("field.field.media.image.field_source", "label", "Fuente"),
+    ("field.field.block_content.club_info.field_meeting_times", "label", "Horarios"),
+    ("field.field.block_content.club_info.field_email", "label", "Correo electrónico"),
+    ("field.field.block_content.club_info.field_follow_us", "label", "Síguenos"),
+    ("views.view.albums", "display.default.display_options.fields.title_1.label", "Excursión"),
+    ("field.storage.node.field_difficulty", "settings.allowed_values", [{"value": "easy", "label": "Fácil"}, {"value": "moderate", "label": "Moderada"}, {"value": "hard", "label": "Difícil"}]),
+]
+
+
+def i18n18_restore(site: dict, page: Page) -> None:
+    """Back to the end of Chapter 17 (a DDEV snapshot), and log in again: the sessions were in the database too."""
+    subprocess.run(["ddev", "snapshot", "restore", "ch17-done"], cwd=site["dir"], check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    log_in(page, site)
+
+
+def i18n18_php(site: dict, php: str, data) -> str:
+    """Runs PHP with data from Python, passed as a JSON file in the project folder ($data in PHP)."""
+    path = Path(site["dir"]) / "i18n18-data.json"
+    path.write_text(json.dumps(data, ensure_ascii=False))
+    try:
+        return drush_php(site, "$data = json_decode(file_get_contents('/var/www/html/i18n18-data.json'), TRUE);\n" + php)
+    finally:
+        path.unlink()
+
+
+def i18n18_translate_background(site: dict, skip: list[str]) -> None:
+    """Translates the club's content into Spanish without the browser, except the titles in skip."""
+    data = {
+        "pages": {k: v for k, v in ES18_PAGES.items() if k not in skip},
+        "hikes": {k: v for k, v in ES18_HIKES.items() if k not in skip},
+        "nodes": {k: v for k, v in ES18_OTHER_NODES.items() if k not in skip},
+        "terms": ES18_TERMS, "media": ES18_MEDIA, "blocks": ES18_BLOCKS, "links": ES18_LINKS,
+    }
+    i18n18_php(site, r"""
+$etm = \Drupal::entityTypeManager();
+$copy = function ($e) {
+  $values = [];
+  foreach ($e->getTranslatableFields(FALSE) as $name => $f) { $values[$name] = $f->getValue(); }
+  foreach (['langcode', 'default_langcode', 'content_translation_source', 'content_translation_outdated', 'revision_translation_affected', 'content_translation_uid', 'content_translation_status', 'content_translation_created', 'content_translation_changed'] as $k) { unset($values[$k]); }
+  return $values;
+};
+$tr = function ($e) use ($copy) {
+  if ($e->hasTranslation('es')) { return $e->getTranslation('es'); }
+  $t = $e->addTranslation('es', $copy($e));
+  $t->set('content_translation_source', 'en');
+  return $t;
+};
+$node = fn($title) => current($etm->getStorage('node')->loadByProperties(['title' => $title]));
+$publish = function ($t) { if ($t->hasField('moderation_state')) { $t->set('moderation_state', 'published'); } else { $t->setPublished(); } $t->save(); };
+foreach ($data['pages'] as $title => [$es, $alias, $body]) {
+  $n = $node($title); $t = $tr($n);
+  $t->set('title', $es); $t->set('field_body', ['value' => $body, 'format' => 'basic_html']); $t->set('path', ['alias' => $alias, 'pathauto' => 0]); $publish($t);
+}
+foreach ($data['hikes'] as $title => [$es, $place, $body]) {
+  $n = $node($title); $t = $tr($n);
+  $t->set('title', $es); $t->set('field_meeting_place', $place); $t->set('field_body', ['value' => $body, 'format' => 'basic_html']); $t->set('path', ['pathauto' => 1]); $publish($t);
+}
+foreach ($data['nodes'] as $title => [$es, $body]) {
+  $n = $node($title); $t = $tr($n);
+  $t->set('title', $es); $t->set('field_body', ['value' => $body, 'format' => 'basic_html']); $t->set('path', ['pathauto' => 1]); $publish($t);
+}
+foreach ($data['terms'] as $name => [$es, $desc]) {
+  $term = current($etm->getStorage('taxonomy_term')->loadByProperties(['name' => $name]));
+  $t = $tr($term); $t->setName($es); $t->set('path', ['pathauto' => 1]);
+  if ($desc) { $t->setDescription($desc); $t->setFormat('basic_html'); }
+  $t->save();
+}
+foreach ($data['media'] as $name => [$es, $alt]) {
+  $m = current($etm->getStorage('media')->loadByProperties(['name' => $name]));
+  $t = $tr($m); $t->setName($es); $t->get('field_media_image')->alt = $alt; $t->save();
+}
+foreach ($data['blocks'] as $info => [$es, $fields]) {
+  $b = current($etm->getStorage('block_content')->loadByProperties(['info' => $info]));
+  $t = $tr($b); $t->set('info', $es); foreach ($fields as $f => $v) { $t->set($f, $v); } $t->save();
+}
+foreach ($data['links'] as $title => $es) {
+  $l = current($etm->getStorage('menu_link_content')->loadByProperties(['title' => $title]));
+  $t = $tr($l); $t->set('title', $es); $t->save();
+}
+""", data)
+
+
+def i18n18_patterns_background(site: dict) -> None:
+    """The Spanish Pathauto patterns, except the first (made in the form), above the English ones."""
+    i18n18_php(site, r"""
+foreach ($data as [$id, $label, $type, $pattern, $bundles]) {
+  $p = \Drupal\pathauto\Entity\PathautoPattern::load($id);
+  if (!$p) {
+    $p = \Drupal\pathauto\Entity\PathautoPattern::create(['id' => $id, 'label' => $label, 'type' => $type, 'pattern' => $pattern]);
+    $entity = $type == 'canonical_entities:node' ? 'node' : 'taxonomy_term';
+    $p->addSelectionCondition(['id' => 'entity_bundle:' . $entity, 'bundles' => array_combine($bundles, $bundles), 'negate' => FALSE, 'context_mapping' => [$entity => $entity]]);
+    $p->addSelectionCondition(['id' => 'language', 'langcodes' => ['es' => 'es'], 'negate' => FALSE, 'context_mapping' => ['language' => $entity . ':langcode:language']]);
+    $p->addRelationship($entity . ':langcode:language', 'Language');
+  }
+  $p->set('weight', -10); $p->save();
+}
+$p = \Drupal\pathauto\Entity\PathautoPattern::load('excursiones'); $p->set('weight', -10); $p->save();
+""", ES18_PATTERNS[1:])
+
+
+def i18n18_config_background(site: dict, skip: list[str] | None = None) -> None:
+    i18n18_php(site, r"""
+foreach ($data as [$name, $key, $value]) {
+  \Drupal::languageManager()->getLanguageConfigOverride('es', $name)->set($key, $value)->save();
+}
+""", [c for c in ES18_CONFIG if not skip or c[0] not in skip])
+    drush(site, "cache:rebuild")
+
+
+def i18n18_setup_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on core: languages, interface translation, detection, the switcher, content translation, Spanish aliases."""
+    url = site["url"]
+    i18n18_restore(site, page)
+    # The four modules.
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    for m in ["language", "locale", "content_translation", "config_translation"]:
+        page.check(f"input[name='modules[{m}][enable]']")
+    scroll_to(page, "input[name='modules[config_translation][enable]']", offset=250)
+    snap("18-extend")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    # Spanish.
+    page.goto(url + "/admin/config/regional/language/add")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='predefined_langcode']", "es")
+    snap("18-add-language")
+    page.click("input[name='add_language']")
+    page.wait_for_url("**/admin/config/regional/language", timeout=300000)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    snap("18-languages")
+    views_admin_shot(page, url, "/admin/config/regional/language/detection", "18-detection", full=False)
+    views_admin_shot(page, url, "/admin/config/regional/language/detection/url", "18-url-prefixes", full=False)
+    # The language switcher in Olivero's Secondary menu region.
+    page.goto(url + "/admin/structure/block/add/language_block%3Alanguage_interface/olivero?region=secondary_menu")
+    page.wait_for_load_state("networkidle")
+    page.uncheck("input[name='settings[label_display]']")
+    snap("18-switcher-block")
+    with page.expect_navigation():
+        page.click("input[value='Save block']")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, "/es", "18-es-front-interface")
+    # Which content can be translated.
+    page.goto(url + "/admin/config/regional/content-language")
+    page.wait_for_load_state("networkidle")
+    for et in ["node", "taxonomy_term", "media", "block_content", "menu_link_content"]:
+        page.check(f"input[name='entity_types[{et}]']")
+    page.wait_for_timeout(500)
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.wait_for_timeout(500)
+    for et, bundle, fields in [("node", "page", ["field_body"]), ("node", "hike", ["field_body", "field_meeting_place"]),
+                               ("node", "news", ["field_body"]), ("node", "gallery", ["field_body"]),
+                               ("taxonomy_term", "areas", []), ("taxonomy_term", "photo_themes", []), ("media", "image", []),
+                               ("block_content", "basic", ["body"]), ("block_content", "club_info", ["field_meeting_times"]),
+                               ("menu_link_content", "menu_link_content", [])]:
+        page.check(f"input[name='settings[{et}][{bundle}][translatable]']")
+        page.wait_for_timeout(200)
+        # Checking the type checks all its fields: keep only the ones that hold words.
+        for box in page.locator(f"input[name^='settings[{et}][{bundle}][fields][']").all():
+            name = box.get_attribute("name")
+            field = name.split("[fields][")[1].rstrip("]")
+            if field.startswith("field_") or field in ("body", "comment"):
+                box.set_checked(field in fields)
+        if (et, bundle) == ("media", "image"):
+            page.check("input[name='settings[media][image][fields][field_media_image]']")
+            page.uncheck("input[name='settings[media][image][columns][field_media_image][file]']")
+        hide = f"input[name='settings[{et}][{bundle}][settings][content_translation][untranslatable_fields_hide]']"
+        if page.locator(hide).count():
+            page.check(hide)
+    scroll_to(page, "input[name='settings[node][hike][fields][field_area]']", offset=350)
+    snap("18-content-language")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    # A Spanish pattern for hikes; the others in the background.
+    add_pattern(page, url, "canonical_entities:node", "/excursiones/[node:title]", ["hike"], "Excursiones",
+                lambda: (page.check("input[name='languages[es]']"), page.wait_for_timeout(300), snap("18-pattern-es")))
+    i18n18_patterns_background(site)
+    page.goto(url + "/admin/config/search/path/patterns")
+    page.wait_for_load_state("networkidle")
+    page.set_viewport_size({"width": WIDTH, "height": page.evaluate("document.documentElement.scrollHeight")})
+    page.wait_for_timeout(800)
+    snap("18-patterns")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    # About the club, translated in the form.
+    page.goto(url + "/node/1/translations")
+    page.wait_for_load_state("networkidle")
+    snap("18-translations-about")
+    page.goto(url + "/es/node/1/translations/add/en/es")
+    page.wait_for_load_state("networkidle")
+    title, alias, body = ES18_PAGES["About the club"]
+    page.fill("input[name='title[0][value]']", title)
+    page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", body)
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.fill("input[name='path[0][alias]']", alias)
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.wait_for_timeout(500)
+    snap("18-translate-about")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    # The Turnhouse hike: the shared fields are hidden, and the alias is typed by hand.
+    nid = drush_php(site, "echo current(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Turnhouse Hill and Carnethy Hill']))->id();").strip()
+    page.goto(url + f"/es/node/{nid}/translations/add/en/es")
+    page.wait_for_load_state("networkidle")
+    title, place, body = ES18_HIKES["Turnhouse Hill and Carnethy Hill"]
+    page.fill("input[name='title[0][value]']", title)
+    page.fill("input[name='field_meeting_place[0][value]']", place)
+    page.evaluate("h => document.querySelector('.ck-editor__editable').ckeditorInstance.setData(h)", body)
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.fill("input[name='path[0][alias]']", "/excursiones/turnhouse-hill")
+    page.select_option("select[name='moderation_state[0][state]']", "published")
+    page.wait_for_timeout(500)
+    page.evaluate("() => window.scrollTo(0, 0)")
+    snap("18-translate-hike")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    # Everything else, in the background.
+    i18n18_translate_background(site, ["About the club", "Turnhouse Hill and Carnethy Hill"])
+    drush(site, "cache:rebuild")
+    page.goto(url + "/admin/config/search/path?search=")
+    page.wait_for_load_state("networkidle")
+    page.set_viewport_size({"width": WIDTH, "height": page.evaluate("document.documentElement.scrollHeight")})
+    page.wait_for_timeout(800)
+    snap("18-aliases")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    views_admin_shot(page, url, "/admin/content", "18-content", full=False)
+
+
+ES18_VIEWS = {"hikes": ("node_field_data", "node", []), "albums": ("node_field_data", "node", ["field_hike"]),
+              "hike_admin": ("node_field_data", "node", []), "photos": ("media_field_data", "media", []),
+              "photo_credits": ("media_field_data", "media", ["reverse__node__field_photos"]), "photographers": ("media_field_data", "media", [])}
+
+
+def i18n18_views_background(site: dict) -> None:
+    """One row per item on the club's views: a Default translation filter on every display with filters (and on the
+    relationships), and the page's language as the rendering language, so a missing translation falls back to English."""
+    i18n18_php(site, r"""
+foreach ($data as $id => [$table, $entity, $relationships]) {
+  $view = \Drupal::configFactory()->getEditable('views.view.' . $id);
+  foreach ($view->get('display') as $d => $display) {
+    // Rendering language is set per display: displays don't inherit it from the default display.
+    $view->set("display.$d.display_options.rendering_language", '***LANGUAGE_language_interface***');
+    if (!isset($display['display_options']['filters'])) { continue; }
+    foreach (array_merge(['none'], $relationships) as $i => $rel) {
+      $key = $i ? 'default_langcode_' . $i : 'default_langcode';
+      if (isset($display['display_options']['filters'][$key])) { continue; }
+      $view->set("display.$d.display_options.filters.$key", [
+        'id' => $key, 'table' => $rel == 'none' ? $table : 'node_field_data', 'field' => 'default_langcode', 'relationship' => $rel,
+        'group_type' => 'group', 'admin_label' => '', 'entity_type' => $rel == 'none' ? $entity : 'node', 'entity_field' => 'default_langcode',
+        'plugin_id' => 'boolean', 'operator' => '=', 'value' => '1',
+        'group' => 1, 'exposed' => FALSE, 'is_grouped' => FALSE,
+        'expose' => ['operator_id' => '', 'label' => '', 'description' => '', 'use_operator' => FALSE, 'operator' => '', 'operator_limit_selection' => FALSE, 'operator_list' => [], 'identifier' => '', 'required' => FALSE, 'remember' => FALSE, 'multiple' => FALSE, 'remember_roles' => ['authenticated' => 'authenticated']],
+        'group_info' => ['label' => '', 'description' => '', 'identifier' => '', 'optional' => TRUE, 'widget' => 'select', 'multiple' => FALSE, 'remember' => FALSE, 'default_group' => 'All', 'default_group_multiple' => [], 'group_items' => []],
+      ]);
+    }
+  }
+  $view->save();
+}
+""", ES18_VIEWS)
+    drush(site, "cache:rebuild")
+
+
+def i18n18_views_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on core: why every hike shows twice, the Default translation filter and the rendering language (after i18n18_setup_steps)."""
+    url = site["url"]
+    # View pages have no Pathauto pattern: their Spanish aliases are added by hand.
+    drush_php(site, """
+$storage = \\Drupal::entityTypeManager()->getStorage('path_alias');
+foreach (['/hikes' => '/excursiones', '/hikes/archive' => '/excursiones/archivo', '/galleries' => '/albumes'] as $path => $alias) {
+  if (!$storage->loadByProperties(['path' => $path, 'langcode' => 'es'])) {
+    $storage->create(['path' => $path, 'alias' => $alias, 'langcode' => 'es'])->save();
+  }
+}
+""")
+    as_visitor(page, site, "/es/excursiones", "18-es-hikes-twice")
+    page.goto(url + "/admin/structure/views/view/hikes/edit/block_1")
+    page.wait_for_load_state("networkidle")
+    views_add(page, "hikes/block_1/filter", "Default translation", "node_field_data.default_langcode")
+    page.check(".ui-dialog input[name='options[value]'][value='1']")
+    page.wait_for_timeout(300)
+    snap("18-views-default-translation", element=".ui-dialog")
+    views_apply(page)
+    views_dialog(page, "display/hikes/block_1/rendering_language")
+    page.select_option(".ui-dialog select[name='rendering_language']", "***LANGUAGE_language_interface***")
+    page.wait_for_timeout(300)
+    snap("18-views-rendering-language", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    i18n18_views_background(site)
+    as_visitor(page, site, "/es/excursiones", "18-es-hikes")
+
+
+def i18n18_config_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on core: configuration and interface translation, and the club in Spanish (after i18n18_setup_steps)."""
+    url = site["url"]
+    views_admin_shot(page, url, "/admin/config/regional/config-translation", "18-config-translation", full=False)
+    # The Hikes view, in the form.
+    page.goto(url + "/admin/structure/views/view/hikes/translate/es/add")
+    page.wait_for_load_state("networkidle")
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    t = "translation[config_names][views.view.hikes][display]"
+    page.fill(f"textarea[name='{t}[default][display_options][title]']", "Próximas excursiones")
+    page.fill(f"textarea[name='{t}[page_1][display_options][menu][title]']", "Excursiones")
+    scroll_to(page, f"textarea[name='{t}[default][display_options][title]']", offset=250)
+    snap("18-translate-view")
+    with page.expect_navigation():
+        page.click("input[value='Save translation']")
+    page.wait_for_load_state("networkidle")
+    i18n18_config_background(site)
+    # Interface text: Drupal's own strings, from localize.drupal.org.
+    page.goto(url + "/admin/config/regional/translate?string=Log+in&langcode=es&translation=all")
+    page.wait_for_load_state("networkidle")
+    snap("18-interface-translation")
+    # The club in Spanish.
+    # 1440 wide: at 1280 the longer Spanish menu labels make Olivero switch to its mobile menu.
+    as_visitor(page, site, "/es", "18-es-front", width=1440)
+    as_visitor(page, site, "/es/excursiones/turnhouse-hill", "18-es-hike", width=1440)
+    as_visitor(page, site, "/es/unete", "18-es-join", width=1440)
+
+
+def i18n18_people_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on core: a Translator role for Lucía, who translates and publishes a hike (after i18n18_config_steps).
+
+    Lucía publishes herself: on Drupal 12.0.0-beta2 the Default Admin theme hides the moderation select from users who
+    can translate but not edit (see PROJECT-LOG backlog), so a Spanish draft for Morag to publish isn't possible yet.
+    """
+    url = site["url"]
+    subprocess.run(["ddev", "drush", "role:delete", "translator"], cwd=site["dir"], capture_output=True)
+    drush(site, "role:create", "translator", "Translator")
+    drush(site, "role:perm:add", "translator", ",".join([
+        "create content translations", "update content translations", "translate hike node", "translate page node",
+        "translate news node", "translate gallery node", "use editorial transition publish", "view latest version",
+        "view the administration theme", "access navigation"]))
+    drush(site, "user:role:add", "translator", "lucia")
+    page.goto(url + "/admin/people/permissions/translator")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "input[name='translator[create content translations]']", offset=250)
+    snap("18-translator-permissions")
+    nid = drush_php(site, f"echo current(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => {php_str(ES18_LUCIA[0])}]))->id();").strip()
+    context, lucia = as_user(page, site, "lucia")
+    lucia.goto(url + f"/es/node/{nid}/translations/add/en/es")
+    lucia.wait_for_load_state("networkidle")
+    lucia.fill("input[name='title[0][value]']", ES18_LUCIA[1])
+    lucia.fill("input[name='field_meeting_place[0][value]']", ES18_LUCIA[2])
+    lucia.wait_for_timeout(300)
+    save(lucia, "18-lucia-translate")
+    with lucia.expect_navigation():
+        lucia.click("#edit-submit")
+    lucia.wait_for_load_state("networkidle")
+    context.close()
+    page.goto(url + f"/node/{nid}/translations")
+    page.wait_for_load_state("networkidle")
+    snap("18-translations-lucia")
+
+
+CMS18_JOIN = {
+    "title": "Cómo unirse",
+    "card": "Cuándo y dónde",
+    "text": "<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p>"
+            "<p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail-cms.ddev.site.</p>"
+            "<p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>",
+    "card_text": "<p>Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen.</p>"
+                 "<p>Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith.</p>",
+}
+
+
+def i18n18_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on Drupal CMS: Spanish, Canvas pages made translatable, and How to join translated in Canvas Translate."""
+    url = site["url"]
+    i18n18_restore(site, page)
+    drush(site, "pm:enable", "-y", "language", "locale", "content_translation", "config_translation", "canvas_translate")
+    drush(site, "language:add", "es")
+    drush(site, "cache:rebuild")
+    # Canvas pages, and their fields, translatable.
+    page.goto(url + "/admin/config/regional/content-language")
+    page.wait_for_load_state("networkidle")
+    page.check("input[name='entity_types[canvas_page]']")
+    page.evaluate("() => document.querySelectorAll('details').forEach(d => d.open = true)")
+    page.check("input[name='settings[canvas_page][canvas_page][translatable]']")
+    page.wait_for_timeout(500)
+    for field in ["title", "description", "components", "path", "image"]:
+        page.locator(f"input[name='settings[canvas_page][canvas_page][fields][{field}]']").set_checked(True)
+    scroll_to(page, "input[name='settings[canvas_page][canvas_page][translatable]']", offset=200)
+    snap("18-cms-content-language")
+    with page.expect_navigation():
+        page.locator("input[value='Save configuration']").last.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    # Work around the Canvas bug (PROJECT-LOG backlog): the Basic page template's empty heading link.
+    script = Path(site["dir"]) / "remove-empty-heading-links.php"
+    shutil.copy(ROOT / "examples/canvas-translate/remove-empty-heading-links.php", script)
+    try:
+        drush(site, "php:script", "remove-empty-heading-links.php")
+    finally:
+        script.unlink()
+    drush(site, "cache:rebuild")
+    # The dashboard.
+    page.goto(url + "/canvas/app/canvas_translate")
+    page.wait_for_load_state("networkidle")
+    frame = page.frame_locator("iframe").first
+    frame.locator("[title^='Translate “How to join”']").wait_for()
+    page.wait_for_timeout(1500)
+    snap("18-cms-translate-dashboard")
+    # The editor: source on the left, Spanish on the right.
+    frame.locator("[title^='Translate “How to join”']").click()
+    targets = frame.locator("textarea[placeholder^='Add translation']")
+    targets.first.wait_for()
+    page.wait_for_timeout(1500)
+    # The plain-text targets, in order: page title, meta description, heading, icon name, card heading.
+    targets.nth(0).fill(CMS18_JOIN["title"])
+    targets.nth(2).fill(CMS18_JOIN["title"])
+    editors = frame.locator(".ck-editor__editable")
+    editors.nth(0).evaluate("(e, html) => e.ckeditorInstance.setData(html)", CMS18_JOIN["text"])
+    page.wait_for_timeout(500)
+    targets.nth(4).fill(CMS18_JOIN["card"])
+    editors.nth(1).evaluate("(e, html) => e.ckeditorInstance.setData(html)", CMS18_JOIN["card_text"])
+    page.wait_for_timeout(3000)
+    snap("18-cms-translate-editor")
+    # Review and publish.
+    frame.get_by_text("Review & publish").click()
+    page.wait_for_timeout(2500)
+    frame.locator("tr:has-text('How to join') button[role='checkbox'], tr:has-text('How to join') input[type='checkbox']").first.click()
+    page.wait_for_timeout(500)
+    snap("18-cms-translate-review")
+    frame.get_by_text("Publish selected").click()
+    page.wait_for_timeout(4000)
+    as_visitor(page, site, "/es/join", "18-cms-es-join", width=1440)
+
+
 SEQUENCES = [
+    ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),
+    ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),
+    ("core", i18n18_views_steps, 1280, ["18-es-hikes-twice", "18-views-default-translation", "18-views-rendering-language", "18-es-hikes"]),
+    ("core", i18n18_config_steps, 1280, ["18-config-translation", "18-translate-view", "18-interface-translation", "18-es-front", "18-es-hike", "18-es-join"]),
+    ("core", i18n18_people_steps, 1280, ["18-translator-permissions", "18-lucia-translate", "18-translations-lucia"]),
     ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
     ("core", seo17_steps, 1280, ["17-extend", "17-token-browser", "17-pattern-hike", "17-pattern-areas", "17-patterns", "17-pathauto-settings", "17-bulk", "17-aliases", "17-term-alias", "17-hike-alias", "17-redirects", "17-404", "17-sitemap-settings", "17-sitemap"]),
     ("core", themes16_twig_steps, 1280, ["16-development-settings"]),

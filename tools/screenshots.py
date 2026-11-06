@@ -3350,7 +3350,150 @@ def members15_steps(page: Page, site: dict, snap) -> None:
     members15_undo(site)
 
 
+# Chapter 16: themes.
+
+LOGO16 = ROOT / "examples" / "club" / "lens-and-trail-logo.svg"
+
+
+def theme_link(page: Page, url: str, theme: str, action: str = "default") -> None:
+    """Appearance: select a theme's Install / Set as default link (action: install or default)."""
+    page.goto(url + "/admin/appearance")
+    page.wait_for_load_state("networkidle")
+    with page.expect_navigation():
+        page.locator(f"a[href^='/admin/appearance/{action}?theme={theme}&']").first.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+
+
+def themes16_reset(site: dict) -> None:
+    drush_php(site, """\\Drupal::configFactory()->getEditable('system.theme')->set('default', 'olivero')->save();
+\\Drupal::configFactory()->getEditable('olivero.settings')->set('base_primary_color', '#1b9ae4')->set('site_branding_bg_color', 'default')->set('mobile_menu_all_widths', 0)->set('logo.use_default', FALSE)->clear('logo.path')->save();
+\\Drupal::configFactory()->getEditable('system.theme.global')->set('features.node_user_picture', TRUE)->save();
+$installed = \\Drupal::service('theme_handler')->listInfo();
+$gone = array_values(array_intersect(['stark', 'solo'], array_keys($installed)));
+if ($gone) { \\Drupal::service('theme_installer')->uninstall($gone); }
+\\Drupal::configFactory()->getEditable('system.development')->set('twig_debug', FALSE)->set('twig_cache_disable', FALSE)->save();""")
+    drush(site, "cache:rebuild")
+
+
+def themes16_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 16 on core: Appearance, Stark, Solo from drupal.org, back to Olivero, Olivero's settings, the admin theme."""
+    url = site["url"]
+    themes16_reset(site)
+    page.goto(url + "/admin/appearance")
+    page.wait_for_load_state("networkidle")
+    page.set_viewport_size({"width": WIDTH, "height": page.evaluate("document.documentElement.scrollHeight")})
+    page.wait_for_timeout(1000)
+    snap("16-appearance")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    # Stark: what Drupal looks like without a theme's styling.
+    theme_link(page, url, "stark")
+    as_visitor(page, site, "/", "16-stark")
+    # A theme from drupal.org: Solo.
+    composer(site, "require", "drupal/solo")
+    page.goto(url + "/admin/appearance")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "h3:has-text('Solo')")
+    snap("16-appearance-solo")
+    theme_link(page, url, "solo")
+    as_visitor(page, site, "/", "16-solo")
+    page.goto(url + "/admin/appearance/settings/solo")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+    snap("16-solo-settings")
+    page.goto(url + "/admin/structure/block/list/solo")
+    page.wait_for_load_state("networkidle")
+    page.set_viewport_size({"width": WIDTH, "height": 1500})
+    page.wait_for_timeout(1000)
+    snap("16-solo-blocks")
+    page.set_viewport_size({"width": WIDTH, "height": 1000})
+    # Back to Olivero, and Solo and Stark out again.
+    theme_link(page, url, "olivero")
+    page.goto(url + "/admin/appearance")
+    page.wait_for_load_state("networkidle")
+    for theme in ["solo", "stark"]:
+        page.goto(url + f"/admin/appearance/uninstall?theme={theme}")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(800)
+        if theme == "solo":
+            if page.locator("details").first.get_attribute("open") is None:
+                page.locator("details summary").first.click()
+                page.wait_for_timeout(500)
+            snap("16-uninstall-solo")
+        with page.expect_navigation():
+            page.click("input[value='Uninstall']")
+        page.wait_for_load_state("networkidle")
+    composer(site, "remove", "drupal/solo")
+    # Olivero's settings: the club's colour and logo.
+    page.goto(url + "/admin/appearance/settings/olivero")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    snap("16-olivero-global")
+    scroll_to(page, "text=Olivero Utilities")
+    page.wait_for_timeout(500)
+    page.fill("input[name='base_primary_color']", "#1f6f5c")
+    page.locator("input[name='base_primary_color']").dispatch_event("change")
+    page.wait_for_timeout(800)
+    snap("16-olivero-color")
+    scroll_to(page, "input[name='default_logo']")
+    page.uncheck("input[name='default_logo']")
+    page.wait_for_timeout(500)
+    page.set_input_files("input[name='files[logo_upload]']", str(LOGO16))
+    page.wait_for_timeout(500)
+    snap("16-olivero-logo")
+    with page.expect_navigation():
+        page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    as_visitor(page, site, "/", "16-olivero-club")
+    # The administration theme.
+    page.goto(url + "/admin/appearance")
+    page.wait_for_load_state("networkidle")
+    snap("16-admin-theme", element="details:has(summary:has-text('Administration theme'))")
+    views_admin_shot(page, url, "/admin/appearance/settings/default_admin", "16-default-admin-settings", full=False)
+
+
+def themes16_cms_reset(site: dict) -> None:
+    drush_php(site, """\\Drupal::configFactory()->getEditable('system.theme')->set('default', 'mercury')->save();
+$installed = \\Drupal::service('theme_handler')->listInfo();
+$gone = array_values(array_intersect(['olivero', 'tara', 'byte_theme'], array_keys($installed)));
+if ($gone) { \\Drupal::service('theme_installer')->uninstall($gone); }""")
+    drush(site, "cache:rebuild")
+
+
+def themes16_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 16 on Drupal CMS: Mercury and its settings, then the same site in Olivero, Tara and Byte."""
+    url = site["url"]
+    themes16_cms_reset(site)
+    views_admin_shot(page, url, "/admin/appearance", "16-cms-appearance", full=False)
+    views_admin_shot(page, url, "/admin/appearance/settings/mercury", "16-cms-mercury-settings", full=False)
+    as_visitor(page, site, "/", "16-cms-mercury")
+    composer(site, "require", "drupal/tara", "drupal/byte_theme")
+    for theme in ["olivero", "tara", "byte_theme"]:
+        theme_link(page, url, theme)
+        as_visitor(page, site, "/", f"16-cms-{theme.replace('_theme', '')}")
+    theme_link(page, url, "mercury")
+    themes16_cms_reset(site)
+
+
+def themes16_twig_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 16, Under the hood: templates. Twig development mode on for a screenshot, then off again."""
+    url = site["url"]
+    page.goto(url + "/admin/config/development/settings")
+    page.wait_for_load_state("networkidle")
+    page.check("input[name='twig_development_mode']")
+    page.wait_for_timeout(500)
+    for name in ["twig_debug", "twig_cache_disable"]:
+        page.check(f"input[name='{name}']")
+    page.wait_for_timeout(500)
+    snap("16-development-settings")
+    drush_php(site, "\\Drupal::keyValue('development_settings')->deleteAll();")
+    drush(site, "cache:rebuild")
+
+
 SEQUENCES = [
+    ("core", themes16_twig_steps, 1280, ["16-development-settings"]),
+    ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury", "16-cms-olivero", "16-cms-tara", "16-cms-byte"]),
+    ("core", themes16_steps, 1280, ["16-appearance", "16-stark", "16-appearance-solo", "16-solo", "16-solo-settings", "16-solo-blocks", "16-uninstall-solo", "16-olivero-global", "16-olivero-color", "16-olivero-logo", "16-olivero-club", "16-admin-theme", "16-default-admin-settings"]),
     ("cms", cms_easy_breadcrumb_steps, 1440, ["14-cms-easy-breadcrumb"]),
     ("core", members15_steps, 1280, ["appendix-c-members-block", "appendix-c-members-access", "appendix-c-members-view", "appendix-c-members-page", "appendix-c-members-denied"]),
     ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),

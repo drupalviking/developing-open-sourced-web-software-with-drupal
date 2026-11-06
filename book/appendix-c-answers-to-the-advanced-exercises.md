@@ -57,7 +57,7 @@ It works, but it's a fragile pair: two displays that must always have the same f
 If the club only wants the next hike to stand out, there are simpler designs:
 
 - Show the next hike in a *different view mode*, such as Card, in a block above the page, without an offset: the next hike appears twice, once large and once in the list. Many sites do exactly that, and nobody minds.
-- Leave the list alone, and make the first teaser look different with the theme (Chapter 16).
+- Leave the list alone, and make the first teaser look different with a theme of your own (Chapter 16 shows where that begins; our companion book, *Theming Drupal*, shows how).
 
 The best answer to "is there a way out?" is sometimes another question: do we need this at all? That's a good question to ask in every Views design.
 
@@ -109,7 +109,7 @@ The **Albums from this hike** block on a hike's page uses the same fields, so it
 
 ### Is there another way?
 
-Not in Views without aggregation: an album doesn't store its number of photos, so something has to count them. If you'd rather keep the view simple, the theme can count the values of the **Photos** field when it shows an album, in its template (Chapter 16). That moves the counting out of the view, though, and the next person who wonders where "Photos: 4" comes from will look in the view first.
+Not in Views without aggregation: an album doesn't store its number of photos, so something has to count them. If you'd rather keep the view simple, the theme can count the values of the **Photos** field when it shows an album, in its template (see "Under the hood: templates" in Chapter 16, and our companion book, *Theming Drupal*). That moves the counting out of the view, though, and the next person who wonders where "Photos: 4" comes from will look in the view first.
 
 ## Chapter 15, Exercise 7: a page for members only
 

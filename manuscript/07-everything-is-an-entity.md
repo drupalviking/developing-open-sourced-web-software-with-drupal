@@ -21,10 +21,10 @@ The reason this matters to you, and the reason for this chapter's title, is that
 | Entity type | What it is | Its kinds are called | In this book |
 |---|---|---|---|
 | Content | Pages, hikes, news | Content types | Chapters 6 to 8 |
-| User | A person with an account on the site | (only one kind) | Chapter 14 |
+| User | A person with an account on the site | (only one kind) | Chapter 15 |
 | Taxonomy term | A category or a tag, such as "Pentland Hills" | Vocabularies | Chapter 10 |
 | Media | A photo, a video, a document | Media types | Chapter 9 |
-| Content block | A box of content placed on pages | Block types | Chapters 8 and 13 |
+| Content block | A box of content placed on pages | Block types | Chapters 8 and 14 |
 
 Most entity types can be divided into kinds, as content is divided into content types, and each kind can have fields of its own: a hike has a date, a news item doesn't. A user has only one kind, but it can still have fields. Say the club wants a phone number for every member: you add a field to the user account, with the same steps as for a hike.
 
@@ -34,7 +34,7 @@ Not everything in Drupal is an entity you can add fields to. Files, URL aliases 
 
 > **Drupalism: bundle.** Drupal's general word for "a kind of entity within an entity type" is *bundle*. A content type is a bundle of Content; a vocabulary is a bundle of Taxonomy term; a media type is a bundle of Media. You'll see the word in documentation and error messages, rarely on screen. When you do, read "content type, vocabulary, or media type, whichever fits".
 
-> **A content type holds no content.** A content type is a set of rules: which fields a hike has, what the form looks like, how a hike is displayed. The hikes themselves are the content. Drupal stores the rules as *configuration*, the site's settings, and the hikes as *content*, and treats the two differently: when you move a site from your computer to a server, you move the configuration, while the content is written on the live site. We do exactly that in Chapter 20.
+> **A content type holds no content.** A content type is a set of rules: which fields a hike has, what the form looks like, how a hike is displayed. The hikes themselves are the content. Drupal stores the rules as *configuration*, the site's settings, and the hikes as *content*, and treats the two differently: when you move a site from your computer to a server, you move the configuration, while the content is written on the live site. We do exactly that in Chapter 21.
 
 ### Fields you add, and fields Drupal adds
 
@@ -144,7 +144,7 @@ As the **Help text**, type `Easy: short and flat. Moderate: some climbing. Hard:
 - Under **Reference type**, set **Sort by** to **Name**, so the list of members is in alphabetical order.
 - Uncheck **Include the anonymous user**. The "anonymous user" is how Drupal refers to visitors who aren't logged in, and they can't lead a hike.
 
-**Filter by** can limit the list to users with a certain role. Right now, the only user is you, and there's no "hike leader" role yet. We create one in Chapter 14, and can come back here then.
+**Filter by** can limit the list to users with a certain role. Right now, the only user is you, and there's no "hike leader" role yet. We create one in Chapter 15, and can come back here then.
 
 ![The Hike leader settings for Hike window, with Reference type set to sort by Name, and Include the anonymous user unchecked](images/07-hike-leader-settings.png)
 *Figure 7.8: The Hike leader field's settings*
@@ -175,7 +175,7 @@ The cog at the end of a row opens the widget's own settings, such as the size of
 
 ### Drafts for hikes too
 
-In Chapter 6, we applied the Editorial workflow to Basic page. Hikes need it even more: in Chapter 14, hike leaders will write their hikes as drafts, and the secretary will publish them. Go to **Configuration** > **Workflow** > **Workflows**, **Edit** the Editorial workflow, select **Select** next to **Content types**, check **Hike**, select **Save**, and then **Save** at the bottom of the page.
+In Chapter 6, we applied the Editorial workflow to Basic page. Hikes need it even more: in Chapter 15, hike leaders will write their hikes as drafts, and the secretary will publish them. Go to **Configuration** > **Workflow** > **Workflows**, **Edit** the Editorial workflow, select **Select** next to **Content types**, check **Hike**, select **Save**, and then **Save** at the bottom of the page.
 
 ## Writing the first hike
 
@@ -215,7 +215,7 @@ The last tab of a content type, **Manage permissions**, shows the permissions th
 ![The Manage permissions tab of Hike, with permissions such as Hike: Create new content and Hike: Edit own content, and a column per role](images/07-hike-permissions.png)
 *Figure 7.13: The permissions for hikes*
 
-There's a column for each *role*, a group of users with the same permissions: **Anonymous user** (visitors who aren't logged in), **Authenticated user** (everyone who is), and the two roles Drupal's installation created, **Content editor** and **Administrator**. Leave them as they are for now. In Chapter 14, we create the club's own roles, such as hike leader and secretary, and come back to this tab.
+There's a column for each *role*, a group of users with the same permissions: **Anonymous user** (visitors who aren't logged in), **Authenticated user** (everyone who is), and the two roles Drupal's installation created, **Content editor** and **Administrator**. Leave them as they are for now. In Chapter 15, we create the club's own roles, such as hike leader and secretary, and come back to this tab.
 
 ## Try it: the News content type
 

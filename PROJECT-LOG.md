@@ -58,7 +58,7 @@ Made on 2026-11-04, at the start of the rewrite.
 | Photos (2026-11-04) | Openly licensed photos (compatible with CC BY-SA 4.0, credited) for what the reader sees, and Devel Generate for bulk test content. Taught in the book: see the backlog. |
 | Emoticons (2026-11-04) | Keep them: the author uses them a lot, and they make the tone personal. |
 | WordPress (2026-11-04) | A comparison, **never a contest**. One translation table in Chapter 1 ("Coming from WordPress?") with a Drupalism box on *plugin* and *block*; later, a `> **Coming from WordPress?**` box only where WordPress knowledge would mislead or help (see the backlog), never as a ritual at the start of every chapter. |
-| Theme file structure | Moved from Chapter 1 to Chapter 15 (`manuscript/15-appearance.md`), where it'll be reworked. |
+| Theme file structure | Moved from Chapter 1 to Chapter 16 (`manuscript/16-appearance.md`), where it'll be reworked. |
 | Numbers (2026-11-04) | Versions and support dates that change are placeholders, `{{ number:name }}`, filled from `data/numbers.yml`, which `tools/update_numbers.py` updates from each number's source (the author's idea, as in the `what-is-open-source` course material). |
 | Article and Page (2026-11-04) | Drupal 11.4's Standard profile no longer creates them (#3587118, change record node/3590571; checked on 11.4.11: a fresh Standard install has no content types), and Drupal 12 also removes core's `page_content_type` and `article_content_type` recipes. The author's choice: **Chapter 6** has the reader build **Basic page** by hand (name, description, body field), on 11.4, 11.5 and 12 alike; no recipe box, and no Project Browser route (the author dropped it on 2026-11-04). Why, from the tests on 2026-11-04: on core, Project Browser lists the recipe but only shows **View Commands** (installing from the browser needs Automatic Updates' Package Manager), and the command it shows, `php core/scripts/drupal recipe`, is deprecated in 11.4 and fails in the `recommended-project` layout; on Drupal CMS the recipe fails, because Utility page already has the machine name `page`. **Chapter 11** writes a small Lens & Trail recipe in `examples/recipes/` that creates the same Basic page, and applies it with `ddev drush recipe`, to show what recipes are for. |
 | Front-end theme (2026-11-04) | Drupal 12 has no front-end theme in core (Olivero and Claro moved to contrib; core keeps Default Admin, Stark and Starterkit). **Chapter 4** installs Olivero with `ddev composer require drupal/olivero` and sets it as the default theme; Default Admin stays the admin theme. Switch to Mercury when it has a stable Drupal 12 release (see the backlog). |
@@ -112,7 +112,7 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 
 | Chapter | Adds |
 |---|---|
-| 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 14; Exercise 5 (model a hike) is compared with Chapter 7. Also: the WordPress translation table. |
+| 1 | Introduces the club and what its site needs: hikes, photos, galleries, members, news, pages, categories (places, photo themes), English and Spanish; roles: visitor, member, hike leader, secretary, administrator. Exercise 4 (who does what) is reused in Chapter 15; Exercise 5 (model a hike) is compared with Chapter 7. Also: the WordPress translation table. |
 | 2 | Nothing built. The committee's questions (why Drupal, who's behind it, what's the catch) frame the chapter; Exercise 4 (commercial builder vs. Drupal) and Exercise 5 (a CC BY-SA photo of the Pentland Hills on a poster) set up Chapter 9's photo licensing. |
 | 3 | Nothing built. |
 | 4 | The DDEV project `lens-and-trail` (`https://lens-and-trail.ddev.site`) on Drupal 12, with Drush. Site name "Lens & Trail", site email `hello@lens-and-trail.ddev.site`, admin `admin` / `12345` (`admin@lens-and-trail.ddev.site`), time zone London. No content types; Olivero (contrib) is the default theme, Default Admin the admin theme; the front page is still `/admin/welcome` (Access denied for visitors) until Chapter 6. Optional second project `lens-and-trail-cms`: Drupal CMS with the Starter template, `admin@lens-and-trail-cms.ddev.site` / `12345`. |
@@ -142,6 +142,8 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 
 - **2026-11-06**: Chapter 11's WebProfiler paragraph stays (the author: it shows that things sometimes don't work), and now says the problem became an issue on drupal.org. Backlog: report the crash on d.o, and explain "d.o".
 
+- **2026-11-06**: The author reviewed Chapter 11 (merged as PR #20). Views split in two (the author): **Chapter 12, *Views: Lists of Content*** (the basics; part of Drupal in a Day) and **Chapter 13, *Going Deeper with Views*** (fields and tables, relationships, contextual filters, the SQL; for university courses and the curious). Chapters 13 to 21 became 14 to 22; cross-references, the Preface and Chapter 1's chapter map renumbered (the map was still on the numbering from before Chapter 8 was split off). Chapter 10's promise of term pages with depth now points to Chapter 13.
+
 ## Open items
 
 - `archive/developer-qa/`: the author chose the module book's backlog (2026-11-04). The entry is in
@@ -160,9 +162,9 @@ What each chapter adds to the Lens & Trail site. Later chapters and exercises mu
 Ideas that have no chapter yet, or are waiting for one.
 
 - **Report the WebProfiler crash on drupal.org** (the author, 2026-11-06; to do). WebProfiler 11.2.3 on Drupal CMS 2.2.8 (Drupal 11.4.11) gave a fatal error on every page: "Cannot make static method Drupal\webprofiler\Entity\ConfigEntityStorageDecorator::createInstance() non static in class Drupal\canvas\EntityHandlers\CanvasAssetStorageDecorator", from the generated code in `sites/default/files/php/webprofiler`. No existing issue found (2026-11-05). Open one in WebProfiler's queue (or Canvas's, if the maintainers say it's theirs), then put the link in Chapter 11's `%%` note in the WebProfiler paragraph, which already says the issue was opened.
-- **Explain "d.o"** (the author, 2026-11-06): the Drupalism for drupal.org, as in "post it on d.o" or "the d.o issue queue". Probably a Drupalism box where the book first sends the reader to drupal.org's project pages and issue queues (Chapter 11's "Choosing a module"), or in Chapter 21 with the community's other shorthand.
+- **Explain "d.o"** (the author, 2026-11-06): the Drupalism for drupal.org, as in "post it on d.o" or "the d.o issue queue". Probably a Drupalism box where the book first sends the reader to drupal.org's project pages and issue queues (Chapter 11's "Choosing a module"), or in Chapter 22 with the community's other shorthand.
 
-- **Build your own Canvas component** (advanced; partly theming). Maybe the end of Chapter 15, or
+- **Build your own Canvas component** (advanced; partly theming). Maybe the end of Chapter 16, or
   an appendix.
 - **Revisit Chapter 4 when Drupal 12.0.0 is released** (planned for the week of 7 December 2026): the installer was written against 12.0.0-beta2 (no profile step; Standard is chosen for you), so walk through it again, retake the screenshots, and drop the `@beta` note.
 - **Mercury instead of Olivero** in Chapter 4, once Mercury has a stable Drupal 12 release (1.0.5 requires ^11.3, 2026-11-04). It's Drupal CMS's front-end theme, so core and Drupal CMS readers would see the same site.
@@ -181,7 +183,7 @@ Ideas that have no chapter yet, or are waiting for one.
 - **"Coming from WordPress?" boxes** (the author, 2026-11-04), one each where it matters, as a comparison and
   never a contest: Chapter 8, the block editor vs. Canvas and Layout Builder (done); Chapter 7, custom post types and ACF (done)
   vs. content types and fields; Chapter 11, plugins vs. modules, and installing from the dashboard vs. Composer
-  (and Project Browser) (done); Chapter 13, widgets vs. blocks, and the two meanings of "block"; Chapter 14, the six
+  (and Project Browser) (done); Chapter 14, widgets vs. blocks, and the two meanings of "block"; Chapter 15, the six
   predefined roles vs. Drupal's own roles. Check each WordPress claim against wordpress.org when writing it.
 - **How this book was written, and how it's kept up to date** (the author, 2026-11-05). Probably a section in the Preface. Say openly that AI (Claude) assists, mostly with maintenance, and that the layout, the structure and the text were decided by people first. Explain what the build makes possible: `tools/build.py`, includes and `{{ number:... }}` placeholders let us replace parts of the book (a retaken screenshot when an example's screen changes, a version number, a support date) without rewriting it. Also how the book covers two versions at once (Drupal 11.5 and 12 now, core and Drupal CMS), and how it moves to one when a major release is stable (around 12.1): what gets dropped, what gets rewritten, and who checks it. Useful for future maintainers as much as for readers.
 - ~~**Trash**~~: in Chapter 6 (an "On Drupal CMS" box).

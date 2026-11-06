@@ -34,7 +34,7 @@ The blue drop at the top isn't a menu item: it takes you to the site's front pag
 
 ### Blocks
 
-**Blocks** lists the site's *content blocks*: small pieces of content, such as a box with the club's opening hours, that you can place in the sidebars, the footer and other places on the site's pages. There are none yet. Blocks are the subject of Chapter 13.
+**Blocks** lists the site's *content blocks*: small pieces of content, such as a box with the club's opening hours, that you can place in the sidebars, the footer and other places on the site's pages. There are none yet. Blocks are the subject of Chapter 14.
 
 ### Content
 
@@ -64,7 +64,7 @@ The blue drop at the top isn't a menu item: it takes you to the site's front pag
 
 ### Appearance
 
-**Appearance** (`/admin/appearance`) lists the site's themes, which decide what the site looks like. You were here in Chapter 4, to install Olivero. Themes are the subject of Chapter 15.
+**Appearance** (`/admin/appearance`) lists the site's themes, which decide what the site looks like. You were here in Chapter 4, to install Olivero. Themes are the subject of Chapter 16.
 
 ### Extend
 
@@ -76,14 +76,14 @@ The blue drop at the top isn't a menu item: it takes you to the site's front pag
 
 ### People
 
-**People** (`/admin/people`) lists the site's user accounts, and has tabs for their *roles* and *permissions*: who may do what. There's only one user so far: you. Users, roles and permissions are the subject of Chapter 14.
+**People** (`/admin/people`) lists the site's user accounts, and has tabs for their *roles* and *permissions*: who may do what. There's only one user so far: you. Users, roles and permissions are the subject of Chapter 15.
 
 ### Reports
 
 **Reports** is where Drupal tells you how it's doing:
 
 - **Status report**: everything Drupal knows about its own health, with errors and warnings at the top. You saw it in Chapter 4.
-- **Available updates**: new versions of Drupal and of your modules and themes. Chapter 19 is about updates.
+- **Available updates**: new versions of Drupal and of your modules and themes. Chapter 20 is about updates.
 - **Recent log messages**: everything the site has recorded, from logins to errors. When something goes wrong, look here first.
 - **Field list**, **Top 'access denied' errors**, **Top 'page not found' errors** and **Views plugins**: more specialized reports, which you'll rarely need.
 
@@ -102,7 +102,7 @@ The blue drop at the top isn't a menu item: it takes you to the site's front pag
 
 At the very bottom, the item with your username, **admin**, opens a submenu with **View profile**, **Edit profile** and **Log out**. **Edit profile** is where you change your own email address and password.
 
-You are user number 1, the account created during the installation. User 1 is special in Drupal: it can do everything, whatever the permissions say. That's what you need while you build the site, but it also means the account must be well protected on a live site, and that nobody should use it for day-to-day work. We come back to this in Chapter 14, when the club's members get accounts of their own.
+You are user number 1, the account created during the installation. User 1 is special in Drupal: it can do everything, whatever the permissions say. That's what you need while you build the site, but it also means the account must be well protected on a live site, and that nobody should use it for day-to-day work. We come back to this in Chapter 15, when the club's members get accounts of their own.
 
 > **On Drupal CMS:** the sidebar has the same parts, with more in it. You land on a **Dashboard** (`/admin/dashboard`) instead of the Welcome page, with recent pages and content, a list of **Top tasks** and the announcements. Under **Content** there are **Pages**, **Media** and **Trash** (deleted content can be restored), and a **Tools** menu has commands developers use, such as clearing caches. **Configuration** has many more settings, because Drupal CMS comes with more modules: SEO, email, workflows, and others. And the administration pages use the Gin theme, which looks a little different from Default Admin, though Gin and Default Admin are close relatives.
 >
@@ -135,7 +135,7 @@ Go to **Configuration** > **Region and language** > **Regional settings** (`/adm
 1. Set **Default country** to **United Kingdom**. The installer didn't ask for it, so it's empty. Modules that work with countries, such as address fields, use it as the default.
 2. Set **First day of week** to **Monday**. It's Sunday out of the box, as in the United States, but in the United Kingdom, and most of Europe, the week starts on a Monday. Calendars on the site use this setting, so when the club gets a hike calendar, its weeks will start on the right day.
 3. Check that **Default time zone** is **London**, as you set it in Chapter 4.
-4. Leave the settings under **Time zones** for users as they are. They decide whether members may choose their own time zone; we look at them in Chapter 14.
+4. Leave the settings under **Time zones** for users as they are. They decide whether members may choose their own time zone; we look at them in Chapter 15.
 5. Select **Save configuration**.
 
 ## The site, as you see it and as visitors see it

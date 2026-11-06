@@ -4,7 +4,7 @@ Enough history: let's get Drupal running on your own computer. By the end of thi
 
 There are many ways to install Drupal. In this book we use one of them, **DDEV**, for every site we build. DDEV runs a small web server, a database and PHP for you, each in its own container, so you don't have to install and configure any of them on your computer. It's free and open source, it works the same on macOS, Windows and Linux, and it's what most of the Drupal community uses for local development. If you want to know what containers are, and how DDEV compares to the alternatives, Appendix A, *Development Tools*, explains it. You don't need to read it first.
 
-> **Note:** "Local" means on your own computer, where only you can see the site. That's where you build and try things out. Putting a site on the internet, where everybody can see it, comes in Chapter 20.
+> **Note:** "Local" means on your own computer, where only you can see the site. That's where you build and try things out. Putting a site on the internet, where everybody can see it, comes in Chapter 21.
 
 ## What you need
 
@@ -99,7 +99,7 @@ ddev launch
 ![The first screen of the Drupal installer, Choose language, with English selected](images/04-drupal-initial-installation-screen.png)
 *Figure 4.1: The installer's first step, Choose language*
 
-The first step is **Choose language**. Pick **English** and select **Save and continue**. You can pick another language here, and Drupal downloads its translation; we keep the site in English for now, and add Spanish in Chapter 17, as a second language for the club's members.
+The first step is **Choose language**. Pick **English** and select **Save and continue**. You can pick another language here, and Drupal downloads its translation; we keep the site in English for now, and add Spanish in Chapter 18, as a second language for the club's members.
 
 Then the installer goes through three steps by itself, so you'll see them in the list on the left, but you won't have to do anything:
 
@@ -129,7 +129,7 @@ This is the first user, the site's administrator, who can do anything on the sit
 - **Password** and **Confirm password:** I use `12345` for sites on my own computer, and so does the book. Drupal shows you that it's a weak password, and it is.
 - **Email address:** `admin@lens-and-trail.ddev.site`. This is *your* address, as the administrator: the site sends you a password reset link to it, and security notifications (see below).
 
-> **Warning:** `12345` is fine for a local site that only you can reach. Never use it on a site that's on the internet: every attacker tries it first. Chapter 19 has more about keeping a live site safe.
+> **Warning:** `12345` is fine for a local site that only you can reach. Never use it on a site that's on the internet: every attacker tries it first. Chapter 20 has more about keeping a live site safe.
 
 **Regional settings**
 
@@ -165,7 +165,7 @@ Now let's see what we have. There are three things that may surprise you.
 ![The Content types page, with the message that there are no content types yet](images/04-no-content-types.png)
 *Figure 4.4: No content types yet*
 
-**There's no theme for visitors.** A *theme* decides what the site looks like (Chapter 15 is about themes). Go to **Appearance** (`/admin/appearance`): the only theme installed is **Default Admin**, the theme of the administration pages you're looking at. Drupal 12 core doesn't come with a theme for visitors: Olivero, the theme earlier versions installed, moved out of core, and is now a contributed project you download, like a module. We do that next.
+**There's no theme for visitors.** A *theme* decides what the site looks like (Chapter 16 is about themes). Go to **Appearance** (`/admin/appearance`): the only theme installed is **Default Admin**, the theme of the administration pages you're looking at. Drupal 12 core doesn't come with a theme for visitors: Olivero, the theme earlier versions installed, moved out of core, and is now a contributed project you download, like a module. We do that next.
 
 ![The Appearance page, with Default Admin as the only installed theme](images/04-appearance-before-olivero.png)
 *Figure 4.5: The Appearance page of a new site: Default Admin, and no theme for visitors*
@@ -174,7 +174,7 @@ Now let's see what we have. There are three things that may surprise you.
 
 ### Installing a theme for visitors
 
-We install **Olivero**, the theme that came with Drupal 9, 10 and 11. It's clean and accessible, and good enough for us until Chapter 15, where we look at themes properly.
+We install **Olivero**, the theme that came with Drupal 9, 10 and 11. It's clean and accessible, and good enough for us until Chapter 16, where we look at themes properly.
 
 1. In the terminal, in the project folder, download it:
 
@@ -304,7 +304,7 @@ You can now:
 ## Exercises
 
 1. Stop the Lens & Trail project with `ddev stop`, and then run `ddev describe`. What does it say? Start it again with `ddev launch`, and check that your site is still there.
-2. Open the **Status report** (`/admin/reports/status`). Find the versions of Drupal, PHP and the database. Are there any errors or warnings? For each one, write down in a sentence what you think it means; we'll come back to some of them in Chapter 19.
+2. Open the **Status report** (`/admin/reports/status`). Find the versions of Drupal, PHP and the database. Are there any errors or warnings? For each one, write down in a sentence what you think it means; we'll come back to some of them in Chapter 20.
 3. Log out, and log in again with `ddev drush uli` instead of your password.
 4. Make a throwaway site: a third project, called `sandbox`. Download Drupal and Drush as in "Creating the Lens & Trail project", and install it with `ddev drush site:install` instead of the browser. Log in, look around, then delete it with `ddev delete` (run it in the project's folder; it asks before it deletes the database). Then delete the folder. Throwaway sites are a good habit: you can try anything there, without breaking the club's site.
 5. *(challenge)* Install Drupal CMS again, in yet another project, but choose a different site template. What did that template give the site that Starter didn't: content types, a theme, example content? Delete the project when you're done.

@@ -105,16 +105,17 @@ So far it has the screenshots of Chapters 6 to 8; Chapters 4 and 5 are still to 
 | 9. Media and Image Styles | **Reviewed (2026-11-05).** Changes from the review: a skip box for responsive images, and the card photo keeps its credit. Why media and not plain image fields, credits as fields on the Image media type, form modes, a **Photo** field on Hike and News, image styles (Banner, AVIF/WebP), a media view mode, responsive images, Drupal Media in the text editor (with the author's caution), a **Gallery** content type, Try its for video and documents, On Drupal CMS (Focal Point) and Coming from WordPress? boxes, five exercises. Checked on the test sites; 27 screenshots from `tools/screenshots.py`. |
 | 10. Taxonomy | **Reviewed (2026-11-06).** Vocabularies and terms in plain words (a Drupalism box), a list / vocabulary / content type table, **Areas** with a hierarchy (adding terms, Relations, dragging), a Photo field on terms and the term page, an Area field on Hike (Select list) and Gallery (a Try it, with a Teaser), **Photo themes** with free tagging on the Image media type, Tags on News as a Try it, On Drupal CMS (Tagify) and Coming from WordPress? boxes, five exercises (Difficulty as a vocabulary). Checked on the test sites; 14 screenshots from `tools/screenshots.py`. |
 | 11. Extending Drupal: Modules, Recipes, and Composer | **Drafted (2026-11-05), waiting for review.** Core, contrib and custom modules (a Drupalism box on install and enable), how to choose a module (five questions), Composer as a shopping list and receipt, Diff (require, install, compare revisions), Project Browser and Module Filter, the Default comments recipe (read it, apply it with Drush, comments on albums), development modules (Devel Generate on Drupal CMS, WebProfiler explained), On Drupal CMS and Coming from WordPress? boxes, five exercises. Checked on the test sites; 13 screenshots from `tools/screenshots.py`. |
-| 12. Views | Not started. |
-| 13. Blocks, Regions, and Menus | Not started. |
-| 14. Users, Roles, and Permissions | Short draft (the user entity). |
-| 15. Appearance: Themes | Not started. Holds the theme file structure moved from Chapter 1. |
-| 16. Nice URLs and SEO | Not started. Pathauto, Metatag, Redirect. |
-| 17. Multilingual Sites | Not started. |
-| 18. AI in Drupal CMS | Not started. |
-| 19. Keeping Your Site Safe | Not started. Updates, security advisories, backups. |
-| 20. Configuration and Going Live | Not started. Configuration export and import, moving a site. |
-| 21. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
+| 12. Views: Lists of Content | Not started. Split from Views on 2026-11-06: the basics (filters, sorts, view modes, pages and blocks, exposed filters). |
+| 13. Going Deeper with Views | Not started. Split from Views on 2026-11-06: fields and tables, relationships, contextual filters (term pages with depth), the SQL. Optional in Drupal in a Day. |
+| 14. Blocks, Regions, and Menus | Not started. |
+| 15. Users, Roles, and Permissions | Short draft (the user entity). |
+| 16. Appearance: Themes | Not started. Holds the theme file structure moved from Chapter 1. |
+| 17. Nice URLs and SEO | Not started. Pathauto, Metatag, Redirect. |
+| 18. Multilingual Sites | Not started. |
+| 19. AI in Drupal CMS | Not started. |
+| 20. Keeping Your Site Safe | Not started. Updates, security advisories, backups. |
+| 21. Configuration and Going Live | Not started. Configuration export and import, moving a site. |
+| 22. Where Next? | Not started. Contributing, events, the Drupal Association, jobs. |
 | Appendix A. Development Tools | Draft (Docker, DDEV, Lando, editors, Git, Xdebug). |
 | Appendix B. How Drupal Is Built | Draft (moved from "Where do I begin?": Symfony, Twig, Composer). New section "Composer, in more detail" (2026-11-05, with Chapter 11: composer.json, version constraints, stability, install vs. update, why/why-not, autoloading, patches, audit). New section "How Drupal's code has changed" (2026-11-04), from Chapter 3's draft, waiting for the author's review. |
 

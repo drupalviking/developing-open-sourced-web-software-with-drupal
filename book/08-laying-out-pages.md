@@ -72,7 +72,7 @@ Here's something worth noticing. In Chapter 7 we set the Distance *field's* scal
 ![The Hike leader row opened, with Link label to the referenced entity switched off](images/08-display-hike-leader.png)
 *Figure 8.7: The hike leader's name without a link*
 
-Why? On our site, visitors aren't allowed to see user profiles (it's the **View user information** permission, which Chapter 14 is about). A link that leads to "Access denied" is worse than no link at all.
+Why? On our site, visitors aren't allowed to see user profiles (it's the **View user information** permission, which Chapter 15 is about). A link that leads to "Access denied" is worse than no link at all.
 
 Look at the other two fields while you're here. **Difficulty** has two formatters: **Default** shows the name of the choice ("Moderate"), and **Key** shows the machine name ("moderate"). **Description** has **Default**, the whole text, and **Trimmed**, which cuts it after a number of characters; we use that one soon.
 
@@ -230,7 +230,7 @@ Until you select **Save layout**, nothing changes for visitors: Layout Builder k
 ![How to join as a visitor sees it, in two columns](images/08-how-to-join.png)
 *Figure 8.24: How to join, laid out with Layout Builder*
 
-The *When and where* box is a block that belongs to this page only. Chapter 13 is about blocks you can reuse on many pages, such as a box in every page's footer.
+The *When and where* box is a block that belongs to this page only. Chapter 14 is about blocks you can reuse on many pages, such as a box in every page's footer.
 
 ## Drupal Canvas
 

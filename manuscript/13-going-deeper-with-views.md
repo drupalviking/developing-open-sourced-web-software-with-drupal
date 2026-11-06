@@ -14,6 +14,9 @@ A view answers the three questions from Chapter 12: what to list, in what order,
 
 There are six kinds of display. You add one with **Add**, at the top of the edit screen, next to the displays you already have.
 
+![The Displays bar of the Hikes view, with the displays Page, Block, Page 2, Page 3, Attachment and Feed, and the Add menu open: Attachment, Block, Embed, Entity Reference, Feed and Page](images/13-add-display.png)
+*Figure 13.1: The six kinds of display, under Add*
+
 - A **Page** has its own address, such as `/hikes`, and can have a menu link or a tab.
 - A **Block** has no address. You place it on other pages, with Layout Builder (Chapter 8), Canvas, or the block layout (Chapter 14).
 - A **Feed** is the list for programs instead of people, in the RSS format. We add one later in this chapter.
@@ -27,6 +30,9 @@ Behind the displays you see, every view has one more, hidden display: the **Defa
 
 So a display is mostly a list of exceptions. Our **Next hikes** block, from Chapter 12, shares the title, the filters, the sort and the no-results text with the Default display, and has its own format (Card), number of items and more link. If you want to see the Default display, turn on **Always show the default display** under **Structure** > **Views** > **Settings**. We prefer to leave it hidden, and to think about **For** in each dialog instead: it's harder to change every display by accident.
 
+![The Views settings page, Basic tab: Always show the default display and Allow embedded displays, both off, the label for Any in exposed filters, and the Live preview settings, among them Show the SQL query](images/13-views-settings.png)
+*Figure 13.2: Views settings, where the Default display can be shown*
+
 One thing can't be different between the displays of a view: *what kind* of thing it lists. The Hikes view lists content; a display of it can't list media or users. That's chosen once, in the wizard's **Show**. A list of something else is a new view.
 
 ### Keeping track of displays
@@ -34,7 +40,10 @@ One thing can't be different between the displays of a view: *what kind* of thin
 When a view has more than two displays, a few habits help:
 
 - **Give displays names.** The wizard names them **Page** and **Block**, and the next ones become **Page 2**, **Page 3**. Select **Display name**, below the displays, to call them something you'll recognize, such as *Member's hikes*. Only administrators see display names.
-- **Duplicate, disable and delete** are in the button at the right of the display name: **Duplicate Page** copies a display with all its settings, overridden or not; **Duplicate as Block** and the like make a display of another kind from it; **Disable Page** turns it off without throwing it away.
+- **Duplicate, disable and delete** are in the button at the right of the display name: **Duplicate Page** copies a display with all its settings, overridden or not; **Duplicate as Block** and the like make a display of another kind from it; **Disable Page** turns it off without throwing it away. A copy shares what the original shared: if the page uses the shared pager, so does its copy, and changing the copy's number of items changes it for every display that shares it. When in doubt, add a new display instead, or override the setting on the copy first.
+
+![The edit screen of the Hikes view with Page 2 selected, its display name Page 2, and the button at the right opened: Delete Page 2, Duplicate as Attachment, Duplicate as Block, Duplicate as Embed, Duplicate as Entity Reference, Duplicate as Feed and Disable Page 2](images/13-display-actions.png)
+*Figure 13.3: What you can do with a display*
 - **The machine name**, under **Other**, such as `page_2`, is how Drupal knows the display, for example in a placed block's settings. You can change it, but do it before you use the display anywhere, or leave it as it is.
 
 ## Fields: building the row yourself
@@ -58,7 +67,7 @@ The table has one column so far: **Media: Name**. Now we add the others.
 6. Turn on **Create a label**, and type `Photo` in **Label**. Set **Image style** to **Thumbnail (100×100)**, and select **Apply**.
 
 ![The Configure field dialog for Media: Thumbnail, with Create a label on, the label Photo, the Image formatter, and Image style Thumbnail](images/13-field-thumbnail.png)
-*Figure 13.1: Adding the thumbnail as a field*
+*Figure 13.4: Adding the thumbnail as a field*
 
 7. Add **Photographer**, **License** and **Source** the same way. Their labels are fine as they are: select **Apply** for each.
 
@@ -70,7 +79,7 @@ Now the table itself. Select **Settings** next to **Table**, under **Format**.
 9. Select **Apply**.
 
 ![The table's Style options: a row for each field, with its column, alignment, separator, a Sortable checkbox, the Default order and a Default sort radio button; Name, Photographer and License are sortable, and Name is the default sort](images/13-table-settings.png)
-*Figure 13.2: Which columns visitors can sort by*
+*Figure 13.5: Which columns visitors can sort by*
 
 A *sortable* column has a clickable heading: select **Photographer**, and the table sorts by photographer; select it again to reverse the order. The **Column** select lets you put two fields in one column, with a **Separator** between them.
 
@@ -97,14 +106,14 @@ Our reference goes from the album to the photo, and we're listing photos, so we 
 2. Type `field_photos`, and check **Content using field_photos** (in the **Media** category). Select **Apply (all displays)**.
 
 ![The Configure Relationship dialog for field_photos: Relate each Content with a field_photos set to the media item, an Administrative title, and Require this relationship, turned off](images/13-reverse-relationship.png)
-*Figure 13.3: A relationship from each photo to the album that uses it*
+*Figure 13.6: A relationship from each photo to the album that uses it*
 
 3. Leave **Require this relationship** off, and select **Apply**. (More about it in a moment.)
 4. Add a field: type `title`, check **Title** in the **Content** category, and select **Add and configure fields**.
 5. A new select has appeared at the top of the dialog: **Relationship**. It's set to **field_photos**, the only one there is: we want the album's title, not the photo's. Turn on **Create a label**, type `Album`, select **Apply**, and **Save** the view.
 
 ![The Photo credits page: a table with the columns Name, Photo, Photographer, License, Source and Album; six photos, each with a thumbnail, and in the Album column Pentlands, 21 November or Edinburgh, 24 October, except the last photo, which has no album](images/13-photo-credits.png)
-*Figure 13.4: The photo credits, with the album of each photo*
+*Figure 13.7: The photo credits, with the album of each photo*
 
 The last photo, *Turnhouse Hill across Glencorse Reservoir*, isn't in an album; it's on the hike's page, from Chapter 7. It's still in the list, with an empty **Album** column. That's what **Require this relationship** decides: off, rows without anything at the other end stay in the list; on, they're left out. Here we want every photo, so it stays off.
 
@@ -121,7 +130,7 @@ Distance and difficulty belong together ("9 km, easy"), so we put them in one co
 3. In **Text**, type `{{ field_distance }}, {{ field_difficulty }}`, and select **Apply**.
 
 ![The Configure field dialog for Content: Distance, scrolled down: Scale 1, Display prefix and suffix on, and under Rewrite results, Override the output of this field with custom text on, with the text: field_distance in double curly brackets, a comma, field_difficulty in double curly brackets](images/13-rewrite.png)
-*Figure 13.5: Rewriting a field with the values of others*
+*Figure 13.8: Rewriting a field with the values of others*
 
 The words in double curly brackets are *replacement patterns*: placeholders for the value of another field in the same row. Open **Replacement patterns**, below the text, to see the ones you can use. You can only use fields that come *before* this one in the list of fields, which is why we added **Difficulty** first, and why **Exclude from display** exists: a field you only need for a pattern.
 
@@ -133,13 +142,13 @@ Now the leader. **Hike leader** is a reference to a user (Chapter 7), so we need
 5. Add the field **Name** from the **User** category. **Relationship** is set to **field_hike_leader: User**. Turn on **Create a label**, type `Leader`, and select **Apply**.
 
 ![The Configure field dialog for User: Name, with Relationship set to field_hike_leader: User, the label Leader, the formatter User name and Link to the user turned on](images/13-leader-field.png)
-*Figure 13.6: The leader's name, through the relationship*
+*Figure 13.9: The leader's name, through the relationship*
 
 6. In the table's **Settings**, make **Date** sortable, set **Default sort** to **Date**, and its **Default order** to **Descending**: the newest hikes at the top.
 7. Set **Access** to **Access the Content overview page**, as we did for the credits, and **Save**.
 
 ![The Hikes page under Administration > Content: a table with Title, Date, Distance and difficulty, and Leader; five hikes from 2 January 2027 back to 24 October 2026, such as 16.0 km, Hard and 9.0 km, Easy, all led by admin](images/13-hike-admin.png)
-*Figure 13.7: The hike leaders' table*
+*Figure 13.10: The hike leaders' table*
 
 ### Albums with their first photo, sorted by their hike
 
@@ -150,7 +159,7 @@ Chapter 12 left two loose ends on the albums page: the albums showed no photo, a
 3. Open **Multiple field settings**, and in **Display 1 value(s) starting from 0**, type `1` in the first box. Select **Apply**.
 
 ![The Configure field dialog for Content: Photos: no label, the Rendered entity formatter with view mode Small, and under Multiple field settings, Display 1 value starting from 0](images/13-first-photo.png)
-*Figure 13.8: Only the first photo of each album*
+*Figure 13.11: Only the first photo of each album*
 
 **Multiple field settings** appear on every field that can hold more than one value. *Starting from 0* means from the first one: computers start counting at zero.
 
@@ -159,7 +168,7 @@ Now the album's hike. The album refers to the hike, so this is a relationship fo
 4. Add the relationship **Content referenced from field_hike**. Turn on **Require this relationship**, and select **Apply**.
 
 ![The Configure Relationship dialog for field_hike, with Require this relationship turned on](images/13-hike-relationship.png)
-*Figure 13.9: Every album must belong to a hike to be listed*
+*Figure 13.12: Every album must belong to a hike to be listed*
 
 This time we require it: an album that doesn't belong to a hike can't be sorted by the hike's date. (Is that what the club wants? An album from a photo walk in town, without a hike, would disappear from the page. Sometimes there's no clean answer; for now, every album belongs to a hike.)
 
@@ -169,7 +178,7 @@ This time we require it: an album that doesn't belong to a hike can't be sorted 
 8. Add the sort criterion **Date** (in **Content**), with **Relationship** **field_hike: Content**, **Sort descending**, and select **Apply**. **Save** the view.
 
 ![The Albums page as a visitor sees it: Pentlands, 21 November and Edinburgh, 24 October side by side, each with its first photo, its photographer, the hike it belongs to, and the hike's date](images/13-galleries.png)
-*Figure 13.10: Albums with their first photo, newest hike first*
+*Figure 13.13: Albums with their first photo, newest hike first*
 
 That's the answer to Chapter 12's exercise: the hike's date isn't among the sort criteria until there's a relationship to the hike. Every field, filter and sort of the item at the other end becomes available, in each dialog's **Relationship** select.
 
@@ -181,7 +190,7 @@ Relationships have one trap, and everybody falls into it once. Try this, without
 2. Add the field **Photographer**, through that relationship.
 
 ![The preview of the Albums view: Pentlands, 21 November appears four times, each with the same first photo and hike, and a different photographer below: Jaroslaw Musialkowski, Jim Barton, Bops92, Alan O'Dowd](images/13-duplicates.png)
-*Figure 13.11: One row per album and photo*
+*Figure 13.14: One row per album and photo*
 
 *Pentlands, 21 November* is in the list four times. A view has one row per *combination*: the album has four photos, so following the reference gives four rows, one for each photo. That's exactly right when you want to list photos with their album, as we did in the credits; it's the duplicates people complain about when you don't. Whenever rows repeat, look for a relationship to a field with more than one value. Select **Cancel** at the bottom of the view to throw these changes away.
 
@@ -193,19 +202,19 @@ How many photos has each photographer contributed? That's not a list of photos, 
 2. Under **Other**, in the column on the right, next to **Use aggregation**, select **No**, turn on **Aggregate**, and select **Apply**.
 
 ![The dialog Allow grouping and aggregation (calculation) of fields, with Aggregate turned on, and the explanation: all fields that are selected for grouping will be collapsed to one record per distinct value; other fields which are selected for aggregation will have the function run on them](images/13-use-aggregation.png)
-*Figure 13.12: Turning on aggregation*
+*Figure 13.15: Turning on aggregation*
 
 3. Remove the field **Media: Name**: every photo has its own name, so grouping by it would give one row per photo.
 4. Add the field **Photographer**, and select **Apply** twice.
 5. Add the field **ID** (in **Media**). Because aggregation is on, a dialog asks first how to aggregate it: set **Aggregation type** to **Count**, and select **Apply and continue**. Then, in the field's own dialog, turn on **Create a label**, type `Photos`, and select **Apply**.
 
 ![The dialog Configure aggregation settings for field Media: ID, with Aggregation type set to Count, Group column Value, and unchecked additional group columns](images/13-aggregation-count.png)
-*Figure 13.13: Count the photos, instead of listing them*
+*Figure 13.16: Count the photos, instead of listing them*
 
 6. Make **Photographer** sortable and the default sort, set **Access** as for the credits, and **Save**.
 
 ![The Photographers page: a table with Photographer and Photos; Alan O'Dowd, Bops92, dave souza and Jaroslaw Musialkowski with 1 photo each, and Jim Barton with 2](images/13-photographers.png)
-*Figure 13.14: Photographers, and how many photos each has given the club*
+*Figure 13.17: Photographers, and how many photos each has given the club*
 
 With aggregation on, every field is either *grouped* (**Group results together**, the default) or *aggregated* (**Count**, **Sum**, **Average**, **Minimum**, **Maximum**). Views makes one row for each different combination of the grouped fields, and runs the function on the others. That's why we removed the name: a grouped field that's different in every row means no grouping at all.
 
@@ -218,7 +227,7 @@ Every filter so far was fixed: hikes, published, from now on. Sometimes a list d
 You've seen one already. When you open an area, such as *Pentland Hills*, the page lists everything tagged with it. That page is the core view **Taxonomy term**, and its path is `/taxonomy/term/%`: the `%` stands for whatever is in the address at that place, the term's ID.
 
 ![The Pentland Hills term page as a visitor sees it: the term's photo, photographer, license, source and description, and below it only one hike, Pentland Hills ridge](images/13-term-before.png)
-*Figure 13.15: The Pentland Hills area lists only what's tagged with Pentland Hills itself*
+*Figure 13.18: The Pentland Hills area lists only what's tagged with Pentland Hills itself*
 
 In Chapter 10 we made areas a hierarchy: Turnhouse Hill and Glencorse Reservoir are *in* the Pentland Hills. But the Pentland Hills page lists only the one hike tagged *Pentland Hills* itself, not the hikes on Turnhouse Hill. Let's fix that.
 
@@ -227,7 +236,7 @@ In Chapter 10 we made areas a hierarchy: Turnhouse Hill and Glencorse Reservoir 
 1. Go to **Structure** > **Views**, and edit **Taxonomy term**.
 
 ![The Taxonomy term view's page display: path /taxonomy/term/%, the contextual filter Content: Has taxonomy term ID, a header that shows the term itself, and filters on the translation language and the publish status](images/13-term-view.png)
-*Figure 13.16: The view behind every term page*
+*Figure 13.19: The view behind every term page*
 
 2. Under **Contextual filters**, select **Content: Has taxonomy term ID**, and **Remove** it.
 3. Next to **Contextual filters**, select **Add**. Type `depth`, check **Has taxonomy term ID (with depth)**, and select **Apply (all displays)**.
@@ -235,7 +244,7 @@ In Chapter 10 we made areas a hierarchy: Turnhouse Hill and Glencorse Reservoir 
 5. Under **When the filter value is NOT in the URL**, choose **Show "Page not found"**: the page makes no sense without a term.
 
 ![The Configure contextual filter dialog for Content: Has taxonomy term ID (with depth): Depth 2, Allow multiple values off, and under When the filter value is NOT in the URL, Show Page not found selected](images/13-depth.png)
-*Figure 13.17: Include the terms below this one*
+*Figure 13.20: Include the terms below this one*
 
 6. Open **When the filter value IS in the URL**, turn on **Override title**, and type `{{ arguments.term_node_tid_depth }}`: the page's title becomes the term's name, instead of the term's ID.
 7. Turn on **Specify validation criteria**, and set **Validator** to **Taxonomy term**. Now `/taxonomy/term/banana` is a *Page not found* instead of an empty page.
@@ -246,12 +255,12 @@ In Chapter 10 we made areas a hierarchy: Turnhouse Hill and Glencorse Reservoir 
 One more change. The term's own photo and description at the top of the page come from a **Header** that shows the term, and it finds the term through the old contextual filter. Under **Header**, select **Global: Rendered entity - Taxonomy term**, and in **Taxonomy term ID**, change `tid` to `term_node_tid_depth`: `{{ raw_arguments.term_node_tid_depth }}`. Select **Apply**, and **Save**.
 
 ![The Configure Header dialog for Global: Rendered entity - Taxonomy term, with the replacement patterns for the new contextual filter, and Taxonomy term ID set to raw_arguments.term_node_tid_depth in double curly brackets](images/13-header-target.png)
-*Figure 13.18: The header follows the new contextual filter*
+*Figure 13.21: The header follows the new contextual filter*
 
 `arguments` is the filter's value as a title (*Pentland Hills*); `raw_arguments` is the value as it is in the address (the term's ID). *Argument* is the old name for a contextual filter, and it's still everywhere under the hood.
 
 ![The Pentland Hills term page as a visitor sees it: the term's photo and description, then four items: Glencorse Reservoir loop, Pentland Hills ridge, the album Pentlands, 21 November and Turnhouse Hill and Carnethy Hill](images/13-term-after.png)
-*Figure 13.19: Pentland Hills, with everything in the hills*
+*Figure 13.22: Pentland Hills, with everything in the hills*
 
 We changed a view that came with Drupal. That's fine, and it's what the core views are there for, but write down what you changed: Drupal has no button to put a core view back the way it was.
 
@@ -265,7 +274,7 @@ On a hike's page, visitors should see the albums from that hike. A block can't t
 4. Under **When the filter value is NOT available**, choose **Provide default value**, and set **Type** to **Content ID from URL**. Select **Apply (this display)**.
 
 ![The Configure contextual filter dialog for Content: Hike (field_hike), for This block (override): a note that the display has no source for contextual filters, and Provide default value selected with the type Content ID from URL](images/13-default-argument.png)
-*Figure 13.20: The block takes the hike from the page it's on*
+*Figure 13.23: The block takes the hike from the page it's on*
 
 The note in the dialog says the same thing as we did: a block has no address, so without a default there's no value. **Content ID from URL** reads the page's address, and if it's a piece of content, uses its ID: on the page of the hike *Turnhouse Hill and Carnethy Hill*, the block lists the albums whose **Hike** is that hike.
 
@@ -277,7 +286,7 @@ The block has to go on every hike's page. Chapter 14 is about blocks and their r
 7. Under **Visibility** > **Content type**, check **Hike**, and select **Save block**.
 
 ![The page of the hike Turnhouse Hill and Carnethy Hill, with its photo and details, and at the bottom, under Albums from this hike, the album Pentlands, 21 November with its first photo](images/13-hike-albums.png)
-*Figure 13.21: The hike's albums, on the hike's page*
+*Figure 13.24: The hike's albums, on the hike's page*
 
 ### The hikes a member leads
 
@@ -288,12 +297,12 @@ A member's profile can have a tab listing the hikes they lead. This one takes it
 3. Next to **Menu**, choose **Menu tab**, type `Hikes` in **Menu link title**, and select **Apply**.
 
 ![The Menu link entry dialog of Page 2: Type Menu tab selected, among No menu entry, Normal menu entry, Menu tab and Default menu tab, and the Menu link title Hikes](images/13-menu-tab.png)
-*Figure 13.22: A tab, next to View and Edit*
+*Figure 13.25: A tab, next to View and Edit*
 
 4. Add a contextual filter for **This page (override)**: **Hike leader (field_hike_leader)**. Open **When the filter value IS in the URL**, turn on **Override title**, and type `Hikes led by {{ arguments.field_hike_leader_target_id }}`. Select **Apply (this display)**, and **Save**.
 
 ![The profile of admin with the tabs View, Edit and Hikes; the Hikes tab is active, the title says Hikes led by admin, and the first hike, Turnhouse Hill and Carnethy Hill, is listed below](images/13-user-hikes.png)
-*Figure 13.23: The hikes admin leads, on their profile*
+*Figure 13.26: The hikes admin leads, on their profile*
 
 The filter's value is the user ID from the address, and Views compares it with each hike's **Hike leader**. We didn't choose anything under **When the filter value is NOT in the URL**: on this path, there's always a value.
 
@@ -310,10 +319,10 @@ The last kind of contextual filter answers a question with a list of possible an
 5. Under **When the filter value IS in the URL**, override the title with `Hikes in {{ arguments.field_date_value_year_month }}`. Select **Apply (this display)**, and **Save**.
 
 ![The Configure contextual filter dialog for Content: node.field_date (year_month), for This page (override): Date in the form of YYYYMM; Display a summary selected, Sort order Descending, Sort by Date, Format List, and an empty Base path](images/13-summary.png)
-*Figure 13.24: When there's no month, list the months*
+*Figure 13.27: When there's no month, list the months*
 
 ![The Hike archive page as a visitor sees it: a list of links, 202701 (1), 202612 (2), 202611 (1) and 202610 (1)](images/13-archive.png)
-*Figure 13.25: The archive: one link for each month with hikes, and how many*
+*Figure 13.28: The archive: one link for each month with hikes, and how many*
 
 A *summary* is a list of every value the filter could have, with the number of rows for each. Select **202612**, and you're at `/hikes/archive/202612`: the two hikes in December 2026.
 
@@ -336,14 +345,14 @@ On `/hikes/archive/202612`, the list of months is gone: there's a month in the a
 5. Add the same contextual filter as on the archive, **node.field_date (year_month)**, for this attachment, with **Display a summary**, **Descending**, as a **List**.
 
 ![The Attachment display of the Hikes view: Attachment settings with Attach to Page 3, Attachment position Before, Inherit contextual filters No, Inherit exposed filters No, and the contextual filter Content: node.field_date (year_month)](images/13-attachment.png)
-*Figure 13.26: An attachment, before the archive page*
+*Figure 13.29: An attachment, before the archive page*
 
 Now the attachment always shows the months, so the archive page doesn't have to. Otherwise `/hikes/archive` shows them twice:
 
 6. Go back to **Page 3**, open its contextual filter, choose **Display all results for the specified field** under **When the filter value is NOT in the URL**, and **Save**.
 
 ![The page Hikes in 202612 as a visitor sees it: the list of months at the top, and below it the two hikes in December, North Berwick Law and the harbour, and Glencorse Reservoir loop](images/13-archive-attachment.png)
-*Figure 13.27: The months stay at the top, whichever month you're in*
+*Figure 13.30: The months stay at the top, whichever month you're in*
 
 `/hikes/archive` now lists every hike, with the months above; each month's page lists that month's hikes, with the months above.
 
@@ -355,12 +364,12 @@ A *feed* is a list for programs instead of people: a feed reader, another websit
 2. Under **Feed settings**, set **Path** to `hikes/feed`, and **Attach to** to **Page**, the upcoming hikes. **Save**.
 
 ![The Feed display of the Hikes view: Format RSS Feed, Show Content as RSS, Feed settings with the path /hikes/feed and Attach to Page, and the filters Published, Content type Hike and Date (>= now)](images/13-feed.png)
-*Figure 13.28: A feed of the upcoming hikes*
+*Figure 13.31: A feed of the upcoming hikes*
 
 **Attach to** here means: show the feed's icon at the bottom of that page, so people can find it.
 
 ![The Upcoming hikes page as a visitor sees it, with a blue feed icon labeled Upcoming hikes at the bottom of the list](images/13-feed-icon.png)
-*Figure 13.29: The feed icon, on the page it belongs to*
+*Figure 13.32: The feed icon, on the page it belongs to*
 
 Open `/hikes/feed`, and your browser shows the feed as text: the same hikes, in a format programs read. The term pages have had a feed all along, and now you know where its icon comes from.
 
@@ -373,7 +382,7 @@ Every time someone opens `/hikes`, Views asks the database for the hikes. On a s
 Under **Other**, every view has a **Caching** setting.
 
 ![The Caching dialog of the Hikes page, for All displays: None, Tag based (selected), and Time-based](images/13-caching.png)
-*Figure 13.30: How long Views keeps its results*
+*Figure 13.33: How long Views keeps its results*
 
 - **Tag based** (the default) keeps the results until something they depend on changes. When a hike is saved, Drupal throws away everything that lists content, and the next visitor gets a fresh list. You never see an old list, and the database is asked only when it has to be.
 - **Time-based** keeps the results for a fixed time, such as an hour, whatever happens. Use it for a heavy view where a slightly old list is fine.
@@ -391,7 +400,7 @@ Some habits keep views fast, cached or not:
 > **Under the hood: SQL.** Everything a view does, it does by asking the database a question in *SQL*, the language databases speak. You can see that question. Go to **Structure** > **Views** > **Settings**, turn on **Show the SQL query** under **Live preview settings**, and save. Now the preview of every view shows its query. Here's the one for the Albums page:
 >
 > ![The SQL query of the Albums view in the preview: SELECT the hike's date and the album's ID FROM node_field_data, LEFT JOIN node__field_hike, INNER JOIN node_field_data for the hike, LEFT JOIN node__field_date for the hike's date, WHERE status is 1 AND type is gallery, ORDER BY the hike's date descending, LIMIT 13](images/13-sql.png)
-> *Figure 13.31: The question Views asks the database*
+> *Figure 13.34: The question Views asks the database*
 >
 > Read it from the top: *select* the hike's date and the album's ID *from* the content table, *join* the table where the album's Hike field is stored, then the content table *again*, for the hike itself, then the table where the hike's Date is stored; *where* the album is published and is a gallery; *ordered by* the hike's date, newest first; at most 13 of them. Each relationship is a *JOIN*, and the required one is an *INNER JOIN*: rows without a hike are left out. (Thirteen, not twelve: the mini pager asks for one more than it shows, to find out whether there's a next page.) You never need to write SQL in Drupal, but if you know a little, this is a good way to understand what a view does, and why it's slow when it is. Turn the setting off again when you're done.
 
@@ -420,7 +429,7 @@ You can now:
 3. Change the depth of the term pages to `0`, and look at *Pentland Hills* again. Then try `-1` on *Turnhouse Hill*: what does a negative depth do?
 4. Make the member's **Hikes** tab list *all* the hikes they lead, past and future, newest first. Which settings must you override for that page only?
 5. *(challenge)* Add a column to the **Photographers** table with the date of each photographer's most recent photo. Which field do you add, and which aggregation type does it need?
-6. *(advanced)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design?
+6. *(advanced)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design? (The answer is in Appendix C.)
 
 ## Want to know more?
 

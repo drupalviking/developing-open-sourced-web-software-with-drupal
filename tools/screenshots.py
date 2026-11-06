@@ -2537,7 +2537,89 @@ def views2_more_steps(page: Page, site: dict, snap) -> None:
         drush_php(site, "\\Drupal::configFactory()->getEditable('views.settings')->set('ui.show.sql_query.enabled', FALSE)->save();")
 
 
+def views2_displays_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13, Displays in depth: the Add menu, the display's actions, and the Views settings (after views2_more_steps)."""
+    url = site["url"]
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.locator("#views-display-menu-tabs li.add > a").first.evaluate("e => e.click()")
+    page.wait_for_timeout(800)
+    page.mouse.move(1200, 900)
+    snap("13-add-display")
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_2")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    page.locator(".views-display-columns, #edit-display-settings-top").first.scroll_into_view_if_needed()
+    page.locator("#edit-display-settings-top .dropbutton-toggle button, .views-ui-display-tab-actions .dropbutton-toggle button").first.evaluate("e => e.click()")
+    page.wait_for_timeout(800)
+    snap("13-display-actions")
+    page.goto(url + "/admin/structure/views/settings")
+    page.wait_for_load_state("networkidle")
+    snap("13-views-settings")
+
+
+def views2_answer_steps(page: Page, site: dict, snap) -> None:
+    """Appendix C, the answer to Exercise 13.6: the next hike in an attachment, the rest with an offset (after views2_more_steps; undone at the end)."""
+    url = site["url"]
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    # A new attachment. (Not Duplicate as Attachment: the copy would share the page's pager, and
+    # its Items to display would change every display that shares it.)
+    views_add_display(page, "Attachment")
+    display = page.url.rstrip("/").split("/")[-1]
+    views_dialog(page, f"display/hikes/{display}/display_title")
+    page.fill(".ui-dialog input[name='display_title']", "Next hike")
+    views_apply(page)
+    # The same exposed filter as the page, so that the attachment has something to inherit.
+    views_add(page, f"hikes/{display}/filter", "field_difficulty", "node__field_difficulty.field_difficulty_value", override=True)
+    page.check(".ui-dialog input[name='options[expose_button][checkbox][checkbox]']")
+    page.wait_for_timeout(1500)
+    page.fill(".ui-dialog input[name='options[expose][label]']", "Difficulty")
+    views_apply(page)
+    views_dialog(page, f"display/hikes/{display}/displays")
+    page.check(".ui-dialog input[name='displays[page_1]']")
+    views_apply(page)
+    views_dialog(page, f"display/hikes/{display}/inherit_exposed_filters")
+    page.check(".ui-dialog input[name='inherit_exposed_filters']")
+    views_apply(page)
+    # A new attachment's pager is its own.
+    views_dialog(page, f"display/hikes/{display}/pager_options")
+    page.fill(".ui-dialog input[name='pager_options[items_per_page]']", "1")
+    views_apply(page)
+    page.wait_for_timeout(1000)
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(500)
+    snap("appendix-c-next-hike-attachment")
+    # The page skips the hike the attachment shows.
+    page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
+    page.wait_for_load_state("networkidle")
+    views_dialog(page, "display/hikes/page_1/pager")
+    if page.locator(".ui-dialog select[name='override[dropdown]']").count():
+        page.select_option(".ui-dialog select[name='override[dropdown]']", index=1)
+        page.wait_for_timeout(1500)
+    page.check(".ui-dialog input[name='pager[type]'][value='mini']")
+    views_apply(page)
+    if not page.locator(".ui-dialog input[name='pager_options[offset]']").count():
+        views_dialog(page, "display/hikes/page_1/pager_options")
+    page.fill(".ui-dialog input[name='pager_options[offset]']", "1")
+    dialog_scroll_to(page, "input[name='pager_options[offset]']")
+    snap("appendix-c-offset", element=".ui-dialog")
+    views_apply(page)
+    views_save(page)
+    as_visitor(page, site, "/hikes?field_difficulty_value=easy", "appendix-c-easy")
+    # Undo, so the hikes view stays as Chapter 13 leaves it.
+    drush_php(site, """$v = \\Drupal\\views\\Entity\\View::load('hikes'); $d = $v->get('display');
+foreach ($d as $id => $x) { if ($x['display_plugin'] == 'attachment' && $id != 'attachment_1') unset($d[$id]); }
+unset($d['page_1']['display_options']['pager']); $d['page_1']['display_options']['defaults']['pager'] = TRUE;
+$d['default']['display_options']['pager']['options']['items_per_page'] = 10;
+$v->set('display', $d); $v->save();""")
+
+
 SEQUENCES = [
+    ("core", views2_answer_steps, 1280, ["appendix-c-next-hike-attachment", "appendix-c-offset", "appendix-c-easy"]),
+    ("core", views2_displays_steps, 1280, ["13-add-display", "13-display-actions", "13-views-settings"]),
     ("core", views2_more_steps, 1280, ["13-attachment", "13-archive-attachment", "13-feed", "13-feed-icon", "13-caching", "13-sql"]),
     ("core", views2_contextual_steps, 1280, ["13-term-before", "13-term-view", "13-depth", "13-header-target", "13-term-after", "13-default-argument", "13-hike-albums", "13-menu-tab", "13-user-hikes", "13-summary", "13-archive"]),
     ("core", views2_hike_admin_steps, 1280, ["13-rewrite", "13-leader-field", "13-hike-admin"]),

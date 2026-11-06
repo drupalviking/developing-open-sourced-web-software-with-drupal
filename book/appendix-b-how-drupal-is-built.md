@@ -149,3 +149,144 @@ Not every change can be automated, and many modules still need a developer's att
 ### Contributed modules and semantic versioning (2020)
 
 Until 2020, contributed modules had version numbers like `8.x-1.5`: the Drupal core version, then the module's own major and patch version. With Drupal 9, a module could work with more than one major version of core, so the core prefix no longer made sense. Contributed projects moved to semantic versioning, like core: `1.5.0`, with the compatible core versions in `core_version_requirement`. Chapter 3 shows how to read both styles.
+
+## Composer, in more detail
+
+Chapter 11 introduces Composer as a site builder needs it: `composer require` to add a module, `composer remove` to take it away, and the two files, `composer.json` and `composer.lock`, that describe the site's code. This section is for when you need more: when an update doesn't do what you expected, when two modules want different versions of the same library, or when you want to understand the file you've been adding lines to.
+
+### What's in composer.json
+
+Here's the `composer.json` of the Lens & Trail site at the end of Chapter 11. It started as a copy of the *recommended project* template, which `composer create-project drupal/recommended-project` made in Chapter 4, and Composer has added a line for every module since.
+
+`composer.json` ([source](../examples/composer/composer.json))
+
+```json
+"repositories": [
+    {
+        "type": "composer",
+        "url": "https://packages.drupal.org/8"
+    }
+],
+"require": {
+    "composer/installers": "^2.3",
+    "drupal/core-composer-scaffold": "^12",
+    "drupal/core-project-message": "^12",
+    "drupal/core-recipe-unpack": "^12",
+    "drupal/core-recommended": "^12",
+    "drupal/diff": "^2.1",
+    "drupal/module_filter": "^6.0",
+    "drupal/olivero": "^2.0",
+    "drupal/project_browser": "^2.1",
+    "drush/drush": "14.x-dev"
+},
+"conflict": {
+    "drupal/drupal": "*"
+},
+"minimum-stability": "dev",
+"prefer-stable": true,
+```
+
+- **`repositories`** tells Composer where to look for packages, besides Packagist, the main directory of PHP packages. `packages.drupal.org/8` is drupal.org's own directory, where every Drupal project is available as `drupal/` plus its machine name. (The `8` is historical: it serves Drupal 8 and every version since.)
+- **`require`** is the shopping list from Chapter 11. `drupal/core-recommended` is Drupal core, with the exact versions of its libraries that core was tested with. `drupal/core-composer-scaffold` copies files such as `index.php` and `.htaccess` into `web/`, and `composer/installers` puts each package in the right folder (see below).
+- **`require-dev`** isn't there yet: it appears the first time you run `composer require --dev`, as in Chapter 11. On a live server, `composer install --no-dev` leaves those packages out.
+- **`conflict`** stops anyone from installing the old `drupal/drupal` package on top of this project.
+- **`minimum-stability`** and **`prefer-stable`**: see "Stable and development versions" below.
+
+Further down, under `extra`, **`installer-paths`** decides where each type of package goes: modules in `web/modules/contrib/`, themes in `web/themes/contrib/`, recipes in `recipes/`. That's how Composer, which knows nothing about Drupal, puts a module where Drupal looks for it.
+
+`composer.json` ([source](../examples/composer/composer.json))
+
+```json
+"installer-paths": {
+    "web/core": [
+        "type:drupal-core"
+    ],
+    "web/libraries/{$name}": [
+        "type:drupal-library"
+    ],
+    "web/modules/contrib/{$name}": [
+        "type:drupal-module"
+    ],
+    "web/profiles/contrib/{$name}": [
+        "type:drupal-profile"
+    ],
+    "web/themes/contrib/{$name}": [
+        "type:drupal-theme"
+    ],
+    "drush/Commands/contrib/{$name}": [
+        "type:drupal-drush"
+    ],
+    "web/modules/custom/{$name}": [
+        "type:drupal-custom-module"
+    ],
+    "web/profiles/custom/{$name}": [
+        "type:drupal-custom-profile"
+    ],
+    "web/themes/custom/{$name}": [
+        "type:drupal-custom-theme"
+    ],
+    "recipes/{$name}": [
+        "type:drupal-recipe"
+    ]
+},
+```
+
+Under `config`, **`allow-plugins`** lists the Composer plugins the project trusts to run code while Composer works. One of them, `drupal/core-recipe-unpack`, is for recipes: when you `composer require` a recipe from drupal.org, the plugin moves the modules the recipe needs into your own `require` list, so they stay when the recipe's package is removed.
+
+### Version constraints
+
+The part after the package name says which versions you accept. The ones you'll meet in Drupal projects:
+
+| Constraint | Means | Example |
+|---|---|---|
+| `^2.1` | 2.1 or later, but below 3.0 | 2.1.0, 2.1.1, 2.4.0 |
+| `~2.1.0` | 2.1.0 or later, but below 2.2 | 2.1.0, 2.1.7 |
+| `2.1.1` | exactly this version | 2.1.1 |
+| `^10.5 \|\| ^11` | either | 10.5.0, 11.4.11 |
+| `*` | any version | |
+| `2.x-dev` | the newest code on the 2.x branch, unreleased | |
+
+The caret, `^`, is the default: `composer require` writes it for you. It trusts semantic versioning (Chapter 3): a new minor version adds features without breaking anything, and only a new major version may break things.
+
+### Stable and development versions
+
+By default, Composer only installs stable releases. `"minimum-stability": "dev"` lets it install development versions too, and `"prefer-stable": true` makes it still choose a stable release whenever there is one. Our Drupal 12 test site needs this because, while I write this, Drush has no stable release for Drupal 12: `"drush/drush": "14.x-dev"` is the newest code on Drush's development branch. When a stable Drush 14 comes out, change the line to `"^14"` and run `composer update drush/drush`.
+
+Use development versions only when there's no other way, and replace them when you can: they change from one day to the next, without release notes, and the security team doesn't cover them.
+
+### install and update
+
+The two commands are often confused, and the difference matters:
+
+- **`composer install`** reads `composer.lock`, and installs exactly what's in it. It never changes the lock file. That's what you run after you check out the project from Git, and what the live server runs.
+- **`composer update`** reads `composer.json`, looks for the newest versions its constraints allow, installs them, and rewrites `composer.lock`. That's how you update.
+
+Update one thing at a time, so that you know what changed when something breaks:
+
+```bash
+ddev composer outdated "drupal/*"              # which Drupal packages have newer versions
+ddev composer update drupal/diff --with-all-dependencies
+ddev drush updatedb                            # run the updates the new version needs
+ddev drush cache:rebuild
+```
+
+`--with-all-dependencies` (or `-W`) lets Composer update the libraries Diff needs too; without it, an update often stops with "Your requirements could not be resolved". Updating Drupal core is the same, with `drupal/core-*` as the package name; Chapter 19 goes through it step by step.
+
+When Composer refuses, two commands explain why:
+
+```bash
+ddev composer why symfony/var-dumper           # which packages need this one
+ddev composer why-not drupal/core 12.1.0       # what stops this version from being installed
+```
+
+### Autoloading
+
+Composer also writes `vendor/autoload.php`, which Drupal loads first on every page. It's a map from class names to files, so that PHP finds a class the first time it's used, without anyone writing `require` for every file. Drupal modules follow the *PSR-4* convention: the class `Drupal\diff\DiffEntityComparison` lives in `src/DiffEntityComparison.php` of the Diff module. When Composer adds or removes packages it rewrites the map, which is why Chapter 11 recommends `drush cache:rebuild` if the site shows an error afterwards: Drupal keeps its own list of classes in the cache.
+
+### Patches, and never editing vendor
+
+Sometimes a module has a bug, and someone has posted a fix in its issue queue, but there's no release with the fix yet. Don't change the module's files yourself: the next `composer install` or `update` overwrites them. Use the **composer-patches** plugin (`cweagans/composer-patches`) instead. You list the patch in `composer.json`, under `extra.patches`, with a link to the issue it comes from, and Composer applies it every time it installs the module. When a release includes the fix, the patch stops applying, and you remove it from the list.
+
+### Security advisories
+
+`composer audit` checks every package in `composer.lock` against public lists of security advisories, including Drupal's, and Composer runs it after every `require` and `update`. That's the "security vulnerability advisories" message you may have seen in Chapter 11. Chapter 19 is about what to do with it.

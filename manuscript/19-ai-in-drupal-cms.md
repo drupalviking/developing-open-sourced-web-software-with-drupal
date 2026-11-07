@@ -328,9 +328,9 @@ We asked Claude the same three things we asked amazee.ai at the start of this ch
 
 So the ampersand is Canvas's mistake, not the model's: with two providers, it's the same. And the invented details aren't one model's bad habit. Every model we tried writes what a page like this usually says, unless you give it the facts. Changing provider changes the wording, the speed and the bill. It doesn't change your job.
 
-**What it cost.** The three questions, with the setup tests, cost us about 50 cents of Anthropic credit. Canvas AI was the expensive part: its agents send the page back and forth many times. The Console's **Cost** page shows it per day and per model, a few hours later. For a club that builds a page now and then, that's small; for a site where every save calls the AI, add it up before you switch it on.
+**What it cost.** The three questions, with the setup tests, cost us 48 cents of Anthropic credit. Canvas AI was the expensive part: its agents send the page back and forth many times. The Console's **Cost** page shows it per day and per model, a few hours later. For a club that builds a page now and then, that's small; for a site where every save calls the AI, add it up before you switch it on.
 
-%% For the author: the cost is from the Console balance ($19.51 left after buying $20, if that's what you bought); the Cost page hadn't caught up yet. Check it there and correct the sentence. The run was on 2026-11-07, with ai_provider_anthropic 1.2.2 and Claude Sonnet 5.5. %%
+%% The run was on 2026-11-07, with ai_provider_anthropic 1.2.2 and Claude Sonnet 5.5; the cost from the Console's Cost page. %%
 
 ## What it can't do
 

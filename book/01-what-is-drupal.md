@@ -1,8 +1,8 @@
 # What Is a CMS, and What Is Drupal?
 
-I've been teaching Drupal for a long time. And every time we start, I start by thinking: "Where do I really start?" Because in order to explain "this", you really have to know about "that", and to really understand "that" you REALLY need to have basic knowledge of .... Hopefully you understand where I'm going with this.
+We've been teaching Drupal for a long time. And every time we start, we start by thinking: "Where do we really start?" Because in order to explain "this", you really have to know about "that", and to really understand "that" you REALLY need to have basic knowledge of .... Hopefully you understand where we're going with this.
 
-So I've decided that I will start at one logical place, and start explaining. I'll mention some terms on the fly. Sometimes I'll explain a side term in detail right away, and sometimes I'll come back to it later. I hope that when you're done reading this book, it will all come together.
+So we've decided to start at one logical place, and start explaining. We'll mention some terms on the fly. Sometimes we'll explain a side term in detail right away, and sometimes we'll come back to it later. We hope that when you're done reading this book, it will all come together.
 
 If Drupal feels a bit overwhelming at first, that's very understandable. Drupal is enterprise-level software, and if you aren't familiar with content management systems in general, it's quite a bite to take. But don't worry, we're here to guide you through the grapevine.
 
@@ -68,9 +68,9 @@ Even though they look very different out of the box, it's literally the same sys
 
 *Figure 1.2: Drupal CMS, right after installation*
 
-So which one should you use? People in the Drupal community disagree on this, and that's fine. Drupal CMS gets you further, faster, and it's a great starting point. I use it myself when I need to get a project off the ground quickly. But I strongly believe that you need to understand how Drupal works underneath, before you let a product set things up for you. Otherwise, the day something doesn't work the way you expect, you won't know where to look.
+So which one should you use? People in the Drupal community disagree on this, and that's fine. Drupal CMS gets you further, faster, and it's a great starting point. We use it ourselves when we need to get a project off the ground quickly. But we strongly believe that you need to understand how Drupal works underneath, before you let a product set things up for you. Otherwise, the day something doesn't work the way you expect, you won't know where to look.
 
-That's why we build our club site on **Drupal core** in this book, and set up every feature ourselves. Wherever Drupal CMS does something differently, or has already done it for you, I show you that too. You'll then be able to use either one, and know what's going on.
+That's why we build our club site on **Drupal core** in this book, and set up every feature ourselves. Wherever Drupal CMS does something differently, or has already done it for you, we show you that too. You'll then be able to use either one, and know what's going on.
 
 > **Drupalism: CMS, Drupal CMS, and "the CMS".** "CMS" is the general term: Drupal is a CMS, and so is WordPress. "Drupal CMS" is the product described above. Before 2025, "Drupal CMS" only ever meant "Drupal, the CMS", so when you read it in an older text, it means Drupal in general. In a recent text, check which one is meant.
 
@@ -120,7 +120,7 @@ Each chapter adds a piece of this, and starts where the previous one left off:
 
 Now let's look at the words you'll hear all the time when people talk about Drupal. Don't try to memorize them now. This is a map, so that you know roughly where everything is when we get there. Each building block gets a chapter (or a good part of one) later in the book.
 
-One thing before we start. Most of these building blocks have something in common: Drupal treats them all as *entities*. That's a technical term I'll explain properly in Chapter 7. For now, think of an entity as "a thing Drupal stores, that you can add your own fields to". Because they're all entities, they all work in a similar way, and once you've learned one, the next one comes much faster.
+One thing before we start. Most of these building blocks have something in common: Drupal treats them all as *entities*. That's a technical term we'll explain properly in Chapter 7. For now, think of an entity as "a thing Drupal stores, that you can add your own fields to". Because they're all entities, they all work in a similar way, and once you've learned one, the next one comes much faster.
 
 ### Content types and nodes
 

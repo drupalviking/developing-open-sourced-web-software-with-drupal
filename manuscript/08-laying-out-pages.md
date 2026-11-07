@@ -94,7 +94,7 @@ The date is the last fact to fix. Its **Default** formatter shows the date in on
 ![The Add date format form, with Day, date and time as the name, and the format string l, j F Y \a\t H:i displayed as today's date in the new format](images/08-date-format.png)
 *Figure 8.8: The new date format*
 
-The format string looks like a cat walked over the keyboard, I know. ;-) Each letter stands for a part of the date: `l` is the day of the week ("Saturday"), `j` the day of the month without a leading zero, `F` the month's name, `Y` the year with four digits, `H` the hour from 00 to 23, and `i` the minutes. Everything else is printed as it is, such as the comma and the spaces. A letter with a backslash in front of it is printed as itself too, so `\a\t` gives you the word "at". The letters come from PHP, the language Drupal is written in, and the **PHP manual** link under the field lists them all.
+The format string looks like a cat walked over the keyboard, we know. ;-) Each letter stands for a part of the date: `l` is the day of the week ("Saturday"), `j` the day of the month without a leading zero, `F` the month's name, `Y` the year with four digits, `H` the hour from 00 to 23, and `i` the minutes. Everything else is printed as it is, such as the comma and the spaces. A letter with a backslash in front of it is printed as itself too, so `\a\t` gives you the word "at". The letters come from PHP, the language Drupal is written in, and the **PHP manual** link under the field lists them all.
 
 5. Go back to Hike's **Manage display**, select the cog for **Date**, set **Date format** to **Day, date and time**, select **Update**, and then **Save**.
 

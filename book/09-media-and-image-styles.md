@@ -6,7 +6,7 @@ We start where Chapter 8 left us: the *Hike* and *News* content types with their
 
 ## Why media, and not an image field?
 
-When you add a photo to a hike, you could add an **Image** field to the content type, and upload the photo straight into it. Drupal has that field type, and many older Drupal sites use it. But on this site we won't, and I almost never do. Here's why.
+When you add a photo to a hike, you could add an **Image** field to the content type, and upload the photo straight into it. Drupal has that field type, and many older Drupal sites use it. But on this site we won't, and we almost never do. Here's why.
 
 An image field belongs to one piece of content. The photo you upload into a hike belongs to that hike, and nothing else can use it. Upload the same photo for a news item, and Drupal stores it twice. Change its description, and you have to change it twice. Delete the hike, and the photo goes with it.
 
@@ -82,7 +82,7 @@ There's one more thing to do, and it's one people often miss. Media has two form
 Now let's add a photo to the library: a view of Turnhouse Hill, for our hike.
 
 1. Go to **Content** > **Media**, select **Add media**, and choose **Image**.
-2. Under **Image**, choose the file. (I use `turnhouse-hill-glencorse.jpg` from the book's `examples/photos/` folder; any photo of yours will do.)
+2. Under **Image**, choose the file. (We use `turnhouse-hill-glencorse.jpg` from the book's `examples/photos/` folder; any photo of yours will do.)
 3. Drupal uploads the file at once, shows it, and asks for the **Alternative text**. Type `Turnhouse Hill seen across Glencorse Reservoir, with a rowing boat at the landing stage`.
 4. As the **Name**, type `Turnhouse Hill across Glencorse Reservoir`.
 5. Fill in the credits: **Photographer** `dave souza`, **License** **CC BY-SA 4.0**, and as the **Source**, the photo's page on Wikimedia Commons as the **URL**, and `Wikimedia Commons` as the **Link text**.
@@ -217,7 +217,7 @@ Now we tie them together in a *responsive image style*.
 ![The Add responsive image style form, with Banner as the label, the Responsive Image breakpoint group, the sizes attribute, and Banner, Banner large and Banner small checked](images/09-responsive-style.png)
 *Figure 9.18: The Banner responsive image style*
 
-The **Sizes** line is the only hard part, so let's read it. It tells the browser how wide the photo will be on screen, before the page is even laid out: "on a screen of at least 1130 pixels, the photo is 905 pixels wide; on anything smaller, it's as wide as the screen" (`100vw` is 100% of the viewport, the browser window). I measured this on Olivero: its content column is never wider than about 905 pixels, and on smaller screens it's a little narrower than the window. If your guess is a bit too large, no harm done: the browser picks a slightly larger copy than it needs. The browser then takes the width, multiplies it by the screen's sharpness (a phone often has 2 or 3 pixels for every point), and picks the smallest copy that's large enough.
+The **Sizes** line is the only hard part, so let's read it. It tells the browser how wide the photo will be on screen, before the page is even laid out: "on a screen of at least 1130 pixels, the photo is 905 pixels wide; on anything smaller, it's as wide as the screen" (`100vw` is 100% of the viewport, the browser window). We measured this on Olivero: its content column is never wider than about 905 pixels, and on smaller screens it's a little narrower than the window. If your guess is a bit too large, no harm done: the browser picks a slightly larger copy than it needs. The browser then takes the width, multiplies it by the screen's sharpness (a phone often has 2 or 3 pixels for every point), and picks the smallest copy that's large enough.
 
 Last, the media's Banner display has to use it.
 
@@ -244,7 +244,7 @@ Three copies to choose from, the sizes line, and the Banner copy for browsers th
 
 > **Breakpoints.** A *breakpoint* is a screen width at which a theme changes its layout: the menu becomes a button, columns stack. Themes declare theirs, in a *breakpoint group*: Olivero has one, and the Responsive Image module has a simple one of its own, **Responsive Image**, with no widths at all. With a theme's group, you can give each breakpoint its own image style, for example a square photo on phones and a wide one on computers (that's called *art direction*). For the same photo in different sizes, the **sizes** approach we used is simpler, and it doesn't depend on the theme: it keeps working whichever theme the site uses (Chapter 16).
 
-> **Try it:** Give News a photo too. On News's **Manage fields**, select **Re-use an existing field**, and re-use **Photo**. Then edit *The club has a website*, select **Add media**, and this time upload a new photo from inside the window: I use `edinburgh-skyline.jpg`, Edinburgh's Old Town from Calton Hill, by Jim Barton, CC BY-SA 2.0. Because we added the credits to the **Media library** form, you can fill them in right there. Then give News's display the same treatment as Hike's: Photo at the top, label hidden, **Banner** view mode.
+> **Try it:** Give News a photo too. On News's **Manage fields**, select **Re-use an existing field**, and re-use **Photo**. Then edit *The club has a website*, select **Add media**, and this time upload a new photo from inside the window: we use `edinburgh-skyline.jpg`, Edinburgh's Old Town from Calton Hill, by Jim Barton, CC BY-SA 2.0. Because we added the credits to the **Media library** form, you can fill them in right there. Then give News's display the same treatment as Hike's: Photo at the top, label hidden, **Banner** view mode.
 
 ![The Add or select media window with the Edinburgh photo uploaded, and its alternative text, name, photographer, license and source filled in](images/09-library-upload.png)
 *Figure 9.21: Uploading a photo from inside the library*
@@ -253,7 +253,7 @@ Three copies to choose from, the sizes line, and the Banner copy for browsers th
 
 Sometimes an editor wants a photo inside the text: in the middle of a trip report, say. The text editor can do that with media too.
 
-Before we do it, though, my own view, after many years of building Drupal sites: I hardly ever offer it. A photo inside a text box is part of that text. Its size and place are whatever the editor made them, it's hard to keep consistent across a site, and it breaks quietly when someone edits the text. A **Photo** field, shown by the display, or a page laid out with Layout Builder or Canvas, as in Chapter 8, keeps text and images apart, and the site looks the same everywhere. So think of this as a tool for the odd exception, not for every page. You may well decide to leave it off.
+Before we do it, though, our own view, after many years of building Drupal sites: we hardly ever offer it. A photo inside a text box is part of that text. Its size and place are whatever the editor made them, it's hard to keep consistent across a site, and it breaks quietly when someone edits the text. A **Photo** field, shown by the display, or a page laid out with Layout Builder or Canvas, as in Chapter 8, keeps text and images apart, and the site looks the same everywhere. So think of this as a tool for the odd exception, not for every page. You may well decide to leave it off.
 
 The text editor of **Basic HTML**, the text format our Body and Description fields use, has an **Upload image** button. Like a plain Image field, it uploads a picture that isn't media: no credits, no library, no reuse. So we swap it for media.
 

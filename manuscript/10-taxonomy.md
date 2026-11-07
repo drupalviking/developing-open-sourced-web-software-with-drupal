@@ -19,7 +19,7 @@ A hike gets its area through a field, in the same way it gets its hike leader. I
 
 ## A list, a vocabulary or a content type?
 
-Before we build anything, a question that comes up on every site: when should something be a vocabulary, and when something else? In Chapter 7, we made **Difficulty** a list field (Easy, Moderate, Hard), and a hike its own content type. Areas could have been either. Here's how I think about it.
+Before we build anything, a question that comes up on every site: when should something be a vocabulary, and when something else? In Chapter 7, we made **Difficulty** a list field (Easy, Moderate, Hard), and a hike its own content type. Areas could have been either. Here's how we think about it.
 
 | | List field | Vocabulary | Content type |
 |---|---|---|---|
@@ -100,7 +100,7 @@ An area's page is a page visitors will see, so it should look like one. Let's gi
 Why not **Re-use an existing field**? Hike and News already have a Photo field. But a field's storage belongs to one entity type (Chapter 7 explains field storage), and terms are a different entity type from content. So the term's Photo is a new field, with the same name, `field_photo`, and you can't re-use content fields on terms, or the other way round.
 
 4. On the **Manage display** tab, **Manage** the **Default** display. Drag **Photo** to the top, set its **Label** to **- Hidden -**, select its cog, set **View mode** to **Banner** (the media view mode from Chapter 9), select **Update**, and then **Save**.
-5. Back on the **List** tab, select **Edit** for **Pentland Hills**. Under **Photo**, select **Add media**, and choose a photo from the library: I use *The view from Carnethy Hill*, one of the album's photos from Chapter 9. Select **Insert selected**, and **Save**.
+5. Back on the **List** tab, select **Edit** for **Pentland Hills**. Under **Photo**, select **Add media**, and choose a photo from the library: we use *The view from Carnethy Hill*, one of the album's photos from Chapter 9. Select **Insert selected**, and **Save**.
 
 Now select the name **Pentland Hills** in the list to see the term's page.
 

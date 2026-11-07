@@ -32,8 +32,9 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
 
 - Conversational and warm. "We" for the authors' experience ("we've been teaching Drupal for a long
   time") and for doing things together, "you" for the reader. Never "I": the book will have more
-  than one author (the author's decision, 2026-11-06). Older chapters still say "I" in places; that
-  refactor is in the backlog in `PROJECT-LOG.md`.
+  than one author (the author's decision, 2026-11-06). The exceptions: a personal story, signed with the
+  author's name (Hilmar's story in Chapter 2), and a fact about one person, which names them ("When Hilmar
+  installed it, it said Reykjavik"). The reader's own questions ("Which one should I use?") stay as they are.
 - Reassure where it's hard: "don't worry", "it takes a while to wrap your head around this".
   Admit when there's no clean answer ("sometimes we have to follow our guts").
 - Light humor is welcome, and so are the author's emoticons (`;-)`, `:-)`): they make the tone personal.

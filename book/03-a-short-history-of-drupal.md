@@ -135,7 +135,7 @@ At DrupalCon Portland, in May 2024, Dries announced **Starshot**: a new product,
 - **Drupal CMS 1.0** was released on 15 January 2025, Drupal's 24th birthday. It's Drupal core with a carefully chosen set of contributed modules, put together with recipes, and set up with sensible defaults: an SEO setup, a blog, events, forms, a search, and optional AI tools. It also brought Project Browser, which lets you find and install modules from inside the site.
 - **Drupal CMS 2.0** followed on 28 January 2026, with **Drupal Canvas**, a visual page builder where you drag and drop components onto a page, as the default way to build pages, and the first *site templates*, complete starting points for a particular kind of site.
 
-As I write this, the newest version of Drupal CMS is 2.2.8. So today there are two ways to start: Drupal core, and Drupal CMS on top of it. Chapter 1 explains the difference, and this book shows both, in its "On Drupal CMS" boxes. Drupal CMS changes quickly: expect new versions, new site templates, and new features in Canvas more often than in core.
+As we write this, the newest version of Drupal CMS is 2.2.8. So today there are two ways to start: Drupal core, and Drupal CMS on top of it. Chapter 1 explains the difference, and this book shows both, in its "On Drupal CMS" boxes. Drupal CMS changes quickly: expect new versions, new site templates, and new features in Canvas more often than in core.
 
 ## Drupal 12, and what's next
 
@@ -168,7 +168,7 @@ And on top of core: **Drupal CMS 1.0** (15 January 2025) and **Drupal CMS 2.0** 
 
 You'll see version numbers everywhere: on your site's status report, on every module's page on drupal.org, and in the commands you type. Here's how to read them.
 
-**Drupal core** uses three numbers, *major.minor.patch*. As I write this, the newest stable version is **11.4.11**. Take 11.4.11 as an example:
+**Drupal core** uses three numbers, *major.minor.patch*. As we write this, the newest stable version is **11.4.11**. Take 11.4.11 as an example:
 
 - The **major** version (11) changes every two years or so, and removes deprecated code.
 - The **minor** version (4) changes every six months, and adds features without breaking anything.

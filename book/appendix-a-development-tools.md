@@ -136,13 +136,13 @@ var_dump($sum); die();
 
 This would print out the value of the $sum variable, **5**. But it would also kill the process of your program! In order to continue, you now have to remove the code and run the program again. Which is a very tedious and error-prone process.
 
-It's my opinion that developing without a debugger is a very daunt and unnecessary process. Configuring XDebug is rather easy, especially with a Docker setup. There is a separate chapter on how to install and configure XDebug later in this book.
+In our opinion, developing without a debugger is slow and error-prone, and it doesn't have to be. With DDEV or Lando, setting up Xdebug takes a few minutes: the next section shows how.
 
 ### Installing Xdebug
 
-Installing Xdebug used to be a daunting process. You would need to add extensions to PHP, configure all kinds of files and more **Rephrase this a bit! :-)** 
+Installing Xdebug used to take a while: you had to add an extension to PHP, and edit several configuration files by hand.
 
-But Xdebug is already bundled with DDEV and Lando! So it's just the matter of enabling it and configure your IDE to listen to it.
+Today, Xdebug comes with DDEV and Lando, so all that's left is to turn it on, and set up your IDE to listen to it.
 
 #### DDEV configuration
 In order to enable Xdebug in DDEV you have two options:

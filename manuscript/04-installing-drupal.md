@@ -37,7 +37,7 @@ Drupal is made of many smaller pieces of software, and **Composer** is the tool 
 
 ## Creating the Lens & Trail project
 
-Every site you build with DDEV lives in its own folder, and DDEV calls it a *project*. Ours is called `lens-and-trail`. I keep all my projects in a folder called `websites` in my home folder, but you can put yours wherever you want.
+Every site you build with DDEV lives in its own folder, and DDEV calls it a *project*. Ours is called `lens-and-trail`. We keep all our projects in a folder called `websites` in our home folders, but you can put yours wherever you want.
 
 1. Create a folder for the project, and go into it:
 
@@ -126,14 +126,14 @@ The last step is a form, **Configure site**. It's long, so let's go through it.
 This is the first user, the site's administrator, who can do anything on the site.
 
 - **Username:** `admin`.
-- **Password** and **Confirm password:** I use `12345` for sites on my own computer, and so does the book. Drupal shows you that it's a weak password, and it is.
+- **Password** and **Confirm password:** We use `12345` for sites on our own computers, and so does the book. Drupal shows you that it's a weak password, and it is.
 - **Email address:** `admin@lens-and-trail.ddev.site`. This is *your* address, as the administrator: the site sends you a password reset link to it, and security notifications (see below).
 
 > **Warning:** `12345` is fine for a local site that only you can reach. Never use it on a site that's on the internet: every attacker tries it first. Chapter 20 has more about keeping a live site safe.
 
 **Regional settings**
 
-- **Default time zone:** `London`. Drupal fills in the time zone of the computer you're installing from, so it shows your own. Mine said Reykjavik, because that's where I live. But the time zone is the *site's*, not yours: the club is in Edinburgh, so its hikes and meetings need UK time. And it makes a difference, even between two places that look alike. Reykjavik is on GMT all year, while the UK moves its clocks forward an hour in the summer, so a hike starting at 9:00 in July would show up an hour off.
+- **Default time zone:** `London`. Drupal fills in the time zone of the computer you're installing from, so it shows your own. When Hilmar installed it, it said Reykjavik: Hilmar lives in Iceland. But the time zone is the *site's*, not yours: the club is in Edinburgh, so its hikes and meetings need UK time. And it makes a difference, even between two places that look alike. Reykjavik is on GMT all year, while the UK moves its clocks forward an hour in the summer, so a hike starting at 9:00 in July would show up an hour off.
 
 **Update notifications**
 
@@ -227,7 +227,7 @@ ddev start
 
 ## Installing Drupal CMS
 
-Drupal CMS is installed the same way, with a different project. We build the club's site on Drupal core, as I explained in the Preface, but it's worth having a Drupal CMS site next to it: whenever this book says **On Drupal CMS**, you can try it there. You can do this section now or later.
+Drupal CMS is installed the same way, with a different project. We build the club's site on Drupal core, as we explained in the Preface, but it's worth having a Drupal CMS site next to it: whenever this book says **On Drupal CMS**, you can try it there. You can do this section now or later.
 
 1. Create a second project, next to the first one:
 
@@ -253,7 +253,7 @@ Drupal CMS is installed the same way, with a different project. We build the clu
 ![Drupal CMS installer, Choose a site template, with Starter selected](images/04-cms-choose-a-site-template.png)
 *Figure 4.7: Choosing a site template*
 
-**Choose a site template.** A *site template* is a ready-made starting point for a particular kind of site: modules, a theme, content types and settings, and sometimes example content, all chosen for that use. There are more than twenty, from **Blank** to templates for a portfolio, an event, a restaurant or a nonprofit, and a few premium (paid) ones from companies. New templates appear all the time, so your list will look different from mine. Site templates are built from recipes, which we look at in Chapter 11. Choose **Starter**, the plainest one that still has a theme, and select **Next**.
+**Choose a site template.** A *site template* is a ready-made starting point for a particular kind of site: modules, a theme, content types and settings, and sometimes example content, all chosen for that use. There are more than twenty, from **Blank** to templates for a portfolio, an event, a restaurant or a nonprofit, and a few premium (paid) ones from companies. New templates appear all the time, so your list will look different from ours. Site templates are built from recipes, which we look at in Chapter 11. Choose **Starter**, the plainest one that still has a theme, and select **Next**.
 
 ![Drupal CMS installer, Create your account, with email, password and time zone](images/04-cms-create-your-account.png)
 *Figure 4.8: Creating the administrator account*

@@ -2,7 +2,7 @@
 
 Now we bring out the big guns: **Views**.
 
-The club's site has hikes, news and albums, but a visitor can only find them if they know the address. There's no list of upcoming hikes, and the front page still says nothing about what the club is doing next. In Chapter 8 we gave hikes a *Teaser* and a *Card*, and I promised they'd appear somewhere; they haven't yet, because nothing on the site *lists* content. That's what Views does.
+The club's site has hikes, news and albums, but a visitor can only find them if they know the address. There's no list of upcoming hikes, and the front page still says nothing about what the club is doing next. In Chapter 8 we gave hikes a *Teaser* and a *Card*, and we promised they'd appear somewhere; they haven't yet, because nothing on the site *lists* content. That's what Views does.
 
 In this chapter we build the lists the club needs: a page of upcoming hikes, with a filter for visitors; the next three hikes and the newest photos on the front page; and a page of all the albums. Along the way you'll meet the ideas every view is built from. We start where Chapter 11 left us: hikes, news and albums, with areas, photo themes and comments.
 
@@ -23,11 +23,11 @@ You've been using views since Chapter 5 without knowing it. The **Content** page
 
 Each view can show its list in more than one place: as a page at its own address, as a block you can put on other pages, or as a feed. Those are the view's *displays*. The **Comments** view, for example, has two pages: one for published comments and one for comments waiting for approval. Scroll down, and you'll find a disabled view called **Promoted Content**: in older versions of Drupal, it was the front page, listing everything marked *Promoted* (Chapter 6). On a new Drupal 12 site it's switched off, and we build our own.
 
-> **Drupalism: view, display, view mode.** Three words that sound alike, and mean different things. A **view** is a list (Hikes). A view's **displays** are the places the list appears (a page at `/hikes`, a block on the front page). A **view mode** is how *one item* looks (Teaser, Card), which you set up on **Manage display** in Chapter 8. A view uses view modes: our page of hikes shows each hike in its Teaser view mode. And to make it more confusing, Chapter 8's **Manage display** is also called a "display". Don't worry if it takes a while to keep them apart; it took me a while too ;-)
+> **Drupalism: view, display, view mode.** Three words that sound alike, and mean different things. A **view** is a list (Hikes). A view's **displays** are the places the list appears (a page at `/hikes`, a block on the front page). A **view mode** is how *one item* looks (Teaser, Card), which you set up on **Manage display** in Chapter 8. A view uses view modes: our page of hikes shows each hike in its Teaser view mode. And to make it more confusing, Chapter 8's **Manage display** is also called a "display". Don't worry if it takes a while to keep them apart; it took us a while too ;-)
 
 ## Before we start: more hikes
 
-A list of one hike isn't much of a list. Add a few more, as you did in Chapter 7 (**Content** > **Add content** > **Hike**). Use dates around your own today: one that has already happened, and three in the coming weeks. Here are mine; the Turnhouse Hill hike from Chapter 7 is on 21 November.
+A list of one hike isn't much of a list. Add a few more, as you did in Chapter 7 (**Content** > **Add content** > **Hike**). Use dates around your own today: one that has already happened, and three in the coming weeks. Here are ours; the Turnhouse Hill hike from Chapter 7 is on 21 November.
 
 | Title | Date | Meeting place | Distance | Difficulty | Area |
 |---|---|---|---|---|---|
@@ -185,7 +185,7 @@ Go to `/hikes` as a visitor, choose **Easy**, and select **Apply**.
 
 The address is now `/hikes?field_difficulty_value=easy`, which means a member can share or bookmark the list of easy hikes.
 
-One thing to know about overriding filters: the page now has its *own* list of filters, a copy of the shared one. If you later add a filter for **All displays** on the block, it won't reach the page any more, because the page no longer uses the shared list. That's why I override as little as I can, and only when a display really needs to be different.
+One thing to know about overriding filters: the page now has its *own* list of filters, a copy of the shared one. If you later add a filter for **All displays** on the block, it won't reach the page any more, because the page no longer uses the shared list. That's why we override as little as we can, and only when a display really needs to be different.
 
 ## The newest photos
 
@@ -236,7 +236,7 @@ The front page now changes on its own. When a hike leader adds a hike, it appear
 
 ## A page of albums
 
-> **Try it:** Chapter 9 promised a page of all the albums, at `/galleries`. Add a second album first, so the list has more than one (I added *Edinburgh, 24 October*, with the Old Town photo, for the Arthur's Seat hike). Then add a view called `Albums`: **Show** **Content** **of type** **Gallery**, **Newest first**, with a page titled `Albums` at the path `galleries`, as a **Responsive Grid** of **teasers**, `12` items, with a pager and a menu link `Albums` in **<Main navigation>**. After **Save and edit**, set the grid's **Maximum number of columns** to `2`, and save.
+> **Try it:** Chapter 9 promised a page of all the albums, at `/galleries`. Add a second album first, so the list has more than one (we added *Edinburgh, 24 October*, with the Old Town photo, for the Arthur's Seat hike). Then add a view called `Albums`: **Show** **Content** **of type** **Gallery**, **Newest first**, with a page titled `Albums` at the path `galleries`, as a **Responsive Grid** of **teasers**, `12` items, with a pager and a menu link `Albums` in **<Main navigation>**. After **Save and edit**, set the grid's **Maximum number of columns** to `2`, and save.
 
 ![The Albums page as a visitor sees it: two albums side by side, Edinburgh, 24 October and Pentlands, 21 November, each with its area and the start of its description](images/12-galleries.png)
 *Figure 12.16: The club's albums*

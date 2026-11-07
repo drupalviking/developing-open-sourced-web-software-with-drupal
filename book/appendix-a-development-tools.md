@@ -136,7 +136,7 @@ var_dump($sum); die();
 
 This would print out the value of the $sum variable, **5**. But it would also kill the process of your program! In order to continue, you now have to remove the code and run the program again. Which is a very tedious and error-prone process.
 
-It's my opinion that developing without a debugger is a very daunt and unnecessary process. Configuring XDebug is rather easy, especially with a Docker setup. There is a separate chapter on how to install and configure XDebug later in this book.
+In our opinion, developing without a debugger is a very daunt and unnecessary process. Configuring XDebug is rather easy, especially with a Docker setup. There is a separate chapter on how to install and configure XDebug later in this book.
 
 ### Installing Xdebug
 

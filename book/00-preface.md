@@ -6,13 +6,13 @@ The book is also open source, meaning that you can freely download, reuse, modif
 
 ## Who is this book for?
 
-I've written this book with three kinds of readers in mind.
+We've written this book with three kinds of readers in mind.
 
 - **Students** in universities and colleges, taking a course on web development or content management. The book follows a semester well: one chapter a week, with exercises at the end of each one.
 - **Participants in a Drupal in a Day workshop**, held at DrupalCons, Drupal Camps, and other events. A workshop day covers a lot of ground quickly. This book is the place to read about it all again, more slowly and in more depth. The workshop covers roughly Chapters 4 to 20, without Chapter 13, which goes deeper into Views than a day allows.
 - **The curious**, who want to learn Drupal on their own, at their own pace. Read the book from the start, and do the exercises. That's how it sticks.
 
-You don't need to know how to program. You don't need to know PHP, the language Drupal is written in, and you won't write any code in this book. You do need to be comfortable with a computer, and not afraid of typing a few commands into a terminal (the text window where you type commands to your computer). We install Drupal on your own computer in Chapter 4, and I show you every command you need, and what it does.
+You don't need to know how to program. You don't need to know PHP, the language Drupal is written in, and you won't write any code in this book. You do need to be comfortable with a computer, and not afraid of typing a few commands into a terminal (the text window where you type commands to your computer). We install Drupal on your own computer in Chapter 4, and we show you every command you need, and what it does.
 
 If you already know Drupal and want to write your own modules, this book is a good refresher, but the book you're looking for is its companion, *Drupal Module Development for Drupal 11 and 12*, which picks up where this one ends.
 
@@ -55,7 +55,7 @@ Every chapter adds something to the site, and starts where the previous chapter 
 
 There are two ways to start with Drupal today. **Drupal core** is Drupal itself: the software that everything else is built on. **Drupal CMS** is a ready-made product built on top of Drupal core, with a selection of extra features already set up. Chapter 1 explains the difference in more detail.
 
-This book builds the Lens & Trail site on Drupal core. Drupal CMS is amazing, and it gets you further, faster. But I strongly believe that you should understand how Drupal works, before you let a product hide the details from you. So we build on core, and wherever Drupal CMS does something differently, we show that too, in a box like this one:
+This book builds the Lens & Trail site on Drupal core. Drupal CMS is amazing, and it gets you further, faster. But we strongly believe that you should understand how Drupal works, before you let a product hide the details from you. So we build on core, and wherever Drupal CMS does something differently, we show that too, in a box like this one:
 
 > **On Drupal CMS:** This is where you'll read how Drupal CMS does the same thing, or what it has already done for you.
 

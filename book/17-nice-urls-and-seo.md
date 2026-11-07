@@ -69,7 +69,7 @@ Where do you find the tokens? Select **Browse available tokens.** It opens a lis
 
 ### Patterns for everything else
 
-Add the other patterns the same way. Each needs a label; I used the names from the club's menu.
+Add the other patterns the same way. Each needs a label; we used the names from the club's menu.
 
 | Label | Pattern type | Path pattern | For |
 |---|---|---|---|

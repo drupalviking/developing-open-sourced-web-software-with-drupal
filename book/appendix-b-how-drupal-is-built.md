@@ -250,7 +250,7 @@ The caret, `^`, is the default: `composer require` writes it for you. It trusts 
 
 ### Stable and development versions
 
-By default, Composer only installs stable releases. `"minimum-stability": "dev"` lets it install development versions too, and `"prefer-stable": true` makes it still choose a stable release whenever there is one. Our Drupal 12 test site needs this because, while I write this, Drush has no stable release for Drupal 12: `"drush/drush": "14.x-dev"` is the newest code on Drush's development branch. When a stable Drush 14 comes out, change the line to `"^14"` and run `composer update drush/drush`.
+By default, Composer only installs stable releases. `"minimum-stability": "dev"` lets it install development versions too, and `"prefer-stable": true` makes it still choose a stable release whenever there is one. Our Drupal 12 test site needs this because, while we write this, Drush has no stable release for Drupal 12: `"drush/drush": "14.x-dev"` is the newest code on Drush's development branch. When a stable Drush 14 comes out, change the line to `"^14"` and run `composer update drush/drush`.
 
 Use development versions only when there's no other way, and replace them when you can: they change from one day to the next, without release notes, and the security team doesn't cover them.
 

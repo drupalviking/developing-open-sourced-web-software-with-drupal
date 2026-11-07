@@ -1,6 +1,6 @@
 # Extending Drupal: Modules, Recipes, and Composer
 
-Everything we've built so far came with Drupal core: content types, fields, media, taxonomy. Core goes a long way, but sooner or later every site needs something core doesn't do. In Chapter 6 I promised you a way to see exactly which words changed between two revisions of a page; core can't do that. And the club has asked for something new: members want to comment on each other's albums.
+Everything we've built so far came with Drupal core: content types, fields, media, taxonomy. Core goes a long way, but sooner or later every site needs something core doesn't do. In Chapter 6 we promised you a way to see exactly which words changed between two revisions of a page; core can't do that. And the club has asked for something new: members want to comment on each other's albums.
 
 In this chapter we add both, in the three ways Drupal grows: *modules* you download from drupal.org, with a tool called *Composer*; modules you find with *Project Browser*; and *recipes*, which set up a whole feature in one go. We'll also look at a few modules that are only for building the site, not for running it. We start where Chapter 10 left us: hikes, news and albums, with areas and photo themes.
 
@@ -18,9 +18,9 @@ That gives every contributed module two steps: first you *download* its code int
 
 ## Choosing a module
 
-Before you add a module, look it up on drupal.org. Every project has a page at `drupal.org/project/` followed by its machine name; Diff's is [drupal.org/project/diff](https://www.drupal.org/project/diff). I look at the same things every time:
+Before you add a module, look it up on drupal.org. Every project has a page at `drupal.org/project/` followed by its machine name; Diff's is [drupal.org/project/diff](https://www.drupal.org/project/diff). We look at the same things every time:
 
-1. **Does it work with my Drupal?** Under **Releases**, each release says which Drupal versions it works with, such as `^10.5 || ^11 || ^12`. Diff's newest release works with Drupal 12; Focal Point, the module Drupal CMS uses to keep the important spot of a photo when it's cropped (Chapter 9), doesn't have a release for Drupal 12 yet, while I write this.
+1. **Does it work with my Drupal?** Under **Releases**, each release says which Drupal versions it works with, such as `^10.5 || ^11 || ^12`. Diff's newest release works with Drupal 12; Focal Point, the module Drupal CMS uses to keep the important spot of a photo when it's cropped (Chapter 9), doesn't have a release for Drupal 12 yet, while we write this.
 2. **Is it covered by the security team?** A shield icon, and the words "Stable releases for this project are covered by the security advisory policy", mean that the Drupal Security Team handles security problems in it, and announces fixes (more in Chapter 20). A project without the shield may be fine, but you're on your own.
 3. **Is it maintained?** The **Maintenance status** ("Actively maintained", "Minimally maintained", "Seeking new maintainer") and the date of the last release tell you whether anyone is looking after it.
 4. **Do other sites use it?** The usage count shows how many sites report using it. A module used by tens of thousands of sites has had most of its problems found by someone else.
@@ -80,7 +80,7 @@ Diff is now in your site's code, so **Extend** lists it.
 ![The Extend page filtered on diff, with Diff checked and the description Shows changes between content revisions](images/11-extend-diff.png)
 *Figure 11.1: Installing Diff*
 
-Now let's see it work. Edit the hike *Turnhouse Hill and Carnethy Hill*, and add something to the description: I changed "and your camera." to "your camera, and a head torch: it gets dark before five in November." In **Revision log message**, type `Added a head torch to the list.`, set **Change to** to **Published**, and select **Save**.
+Now let's see it work. Edit the hike *Turnhouse Hill and Carnethy Hill*, and add something to the description: we changed "and your camera." to "your camera, and a head torch: it gets dark before five in November." In **Revision log message**, type `Added a head torch to the list.`, set **Change to** to **Published**, and select **Save**.
 
 Select the **Revisions** tab. It looks different from Chapter 6: every revision now has two radio buttons, **Source revision** and **Target revision**, and there's a **Compare selected revisions** button. Diff has chosen the newest revision and the one before it.
 
@@ -124,7 +124,7 @@ Copy the command, put `ddev` in front of it, and run it:
 ddev composer require drupal/module_filter
 ```
 
-Then install **Module Filter** on **Extend**, as you did with Diff. (Project Browser's card now shows an **Install** button too, because the module is downloaded. On our Drupal 12 test site it didn't respond, so I use **Extend**.)
+Then install **Module Filter** on **Extend**, as you did with Diff. (Project Browser's card now shows an **Install** button too, because the module is downloaded. On our Drupal 12 test site it didn't respond, so we use **Extend**.)
 
 ![The Extend page with Module Filter: checkboxes for Enabled, Disabled and Unavailable under the filter, and tabs on the left: All modules, Recently enabled, Newly available, Core, Administration and more](images/11-module-filter.png)
 *Figure 11.6: Extend, sorted by Module Filter*
@@ -220,7 +220,7 @@ When the site goes live (Chapter 21), the server installs everything except the 
 
 **Devel** is the classic one. It comes with a submodule, **Devel Generate**, which fills a site with test content: nodes, terms, users and media, with Latin-looking titles and text. It's useful when you need to see how a list of fifty hikes looks before the club has written five.
 
-Devel's Drupal 12 release is still on its way while I write this, so I tried it on the Drupal CMS site. After installing **Devel** and **Devel Generate** on **Extend**, go to **Configuration** > **Development** > **Generate content**, check a content type, choose how many items, and select **Generate**. (Or in the terminal: `ddev drush devel-generate:content 10`.)
+Devel's Drupal 12 release is still on its way while we write this, so we tried it on the Drupal CMS site. After installing **Devel** and **Devel Generate** on **Extend**, go to **Configuration** > **Development** > **Generate content**, check a content type, choose how many items, and select **Generate**. (Or in the terminal: `ddev drush devel-generate:content 10`.)
 
 ![The Generate content form on Drupal CMS: Utility page checked, Delete all content off, 10 nodes, dated up to 1 week ago, 4 words at most in titles](images/11-cms-devel-generate.png)
 *Figure 11.10: Devel Generate's form*
@@ -230,9 +230,9 @@ Devel's Drupal 12 release is still on its way while I write this, so I tried it 
 
 Generated content is for testing: delete it when you're done, with the same form's **Delete all content** switch, or from **Content**. Never generate content on a live site.
 
-**WebProfiler** is another one for developers, and for curious site builders. It adds a bar at the bottom of every page that shows how long the page took, how many database queries it needed, which blocks, views and caches were used, and much more; it's how you find out *why* a page is slow. I'd like to show it to you, but it doesn't run on either of our sites yet: it has no release for Drupal 12, and on Drupal CMS 2.2.8 it stopped the whole site with an error, because it clashes with Canvas. I uninstalled it at once. That's a good lesson in itself: try development modules on a copy of your site, never on the live one, and ask the five questions from "Choosing a module" before you do. And when something breaks, tell the people who can fix it: I couldn't find anyone who had reported the problem, so I opened an issue in WebProfiler's issue queue on drupal.org.  That's how open source gets better: a problem one person runs into becomes a fix for everyone. Chapter 22 shows how you can take part too.
+**WebProfiler** is another one for developers, and for curious site builders. It adds a bar at the bottom of every page that shows how long the page took, how many database queries it needed, which blocks, views and caches were used, and much more; it's how you find out *why* a page is slow. We'd like to show it to you, but it doesn't run on either of our sites yet: it has no release for Drupal 12, and on Drupal CMS 2.2.8 it stopped the whole site with an error, because it clashes with Canvas. We uninstalled it at once. That's a good lesson in itself: try development modules on a copy of your site, never on the live one, and ask the five questions from "Choosing a module" before you do. And when something breaks, tell the people who can fix it: we couldn't find anyone who had reported the problem, so we opened an issue in WebProfiler's issue queue on drupal.org.  That's how open source gets better: a problem one person runs into becomes a fix for everyone. Chapter 22 shows how you can take part too.
 
-> **On Drupal CMS:** Project Browser comes installed, and it can download modules itself: on a module's card, the button says **Install**, not **View Commands**. Select it, and Drupal CMS runs Composer for you, in the background: on my laptop, adding Module Filter took a little over a minute, and afterwards `composer.json` had the new line, just as if I'd typed the command. **Extend** also has a **Recommended add-ons** tab, a short list chosen by the Drupal CMS team, and an **Update** tab. And the site template you chose when you installed Drupal CMS (Chapter 4) is a recipe, applied by the installer.
+> **On Drupal CMS:** Project Browser comes installed, and it can download modules itself: on a module's card, the button says **Install**, not **View Commands**. Select it, and Drupal CMS runs Composer for you, in the background: on one of our laptops, adding Module Filter took a little over a minute, and afterwards `composer.json` had the new line, just as if we'd typed the command. **Extend** also has a **Recommended add-ons** tab, a short list chosen by the Drupal CMS team, and an **Update** tab. And the site template you chose when you installed Drupal CMS (Chapter 4) is a recipe, applied by the installer.
 
 ![Project Browser on Drupal CMS: the cards for Module Filter and Config Filter each have an Install button](images/11-cms-pb-install.png)
 *Figure 11.12: On Drupal CMS, the button says Install*

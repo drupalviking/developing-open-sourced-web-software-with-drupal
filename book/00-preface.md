@@ -40,7 +40,7 @@ We start with the big picture, and then build a site, one piece at a time.
 - **Chapter 18, Multilingual Sites**, translates the site, its content, and its interface.
 - **Chapter 19, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
 - **Chapter 20, Keeping Your Site Safe**, covers updates, security advisories, and backups.
-- **Chapter 21, Configuration and Going Live**, moves your work from your computer to a real server.
+- **Chapter 21, Configuration and Going Live**, moves your settings from one copy of the site to another, and goes through what to check when the site goes live on a real server.
 - **Chapter 22, Where Next?**, shows how to get involved in the community, and where to go from here.
 
 There are two appendices. **Appendix A, Development Tools**, explains the tools we use to run Drupal on our own computers (Docker, DDEV, Lando, editors, Git). **Appendix B, How Drupal Is Built**, looks under the hood, at the software Drupal is built from, for those who are curious.

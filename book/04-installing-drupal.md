@@ -4,7 +4,7 @@ Enough history: let's get Drupal running on your own computer. By the end of thi
 
 There are many ways to install Drupal. In this book we use one of them, **DDEV**, for every site we build. DDEV runs a small web server, a database and PHP for you, each in its own container, so you don't have to install and configure any of them on your computer. It's free and open source, it works the same on macOS, Windows and Linux, and it's what most of the Drupal community uses for local development. If you want to know what containers are, and how DDEV compares to the alternatives, Appendix A, *Development Tools*, explains it. You don't need to read it first.
 
-> **Note:** "Local" means on your own computer, where only you can see the site. That's where you build and try things out. Putting a site on the internet, where everybody can see it, comes in Chapter 21.
+> **Note:** "Local" means on your own computer, where only you can see the site. That's where you build and try things out. What to check when you put a site on the internet, where everybody can see it, comes in Chapter 21.
 
 ## What you need
 

@@ -60,6 +60,13 @@ SITES = {
         "user": "admin",
         "password": "12345",
     },
+    # Chapter 21's second copy of the club's core site, playing the live site: a clone of "core" (see config21_live).
+    "live": {
+        "url": os.environ.get("LIVE_URL", "https://lens-and-trail-live.ddev.site:8443"),
+        "dir": os.environ.get("LIVE_DIR", str(Path.home() / "websites/open-university/lens-and-trail-live")),
+        "user": "admin",
+        "password": "12345",
+    },
 }
 
 
@@ -4782,7 +4789,131 @@ def safe20_d11_steps(page: Page, site: dict, snap) -> None:
     snap("20-d11-upgrade-status")
 
 
+CONFIG21_SYNC = "$settings['config_sync_directory'] = '../config/sync';"
+
+
+def config21_settings(site: dict) -> None:
+    """Points the site's sync folder to ../config/sync, as Chapter 21 does by hand (settings.php isn't in the snapshots)."""
+    f = Path(site["dir"]) / "web/sites/default/settings.php"
+    text = f.read_text()
+    if CONFIG21_SYNC not in text:
+        text = text.replace("# $settings['config_sync_directory'] = '/directory/outside/webroot';", CONFIG21_SYNC)
+        f.write_text(text)
+
+
+def config21_live(core: dict, live: dict) -> None:
+    """Makes the live copy what Chapter 21 makes it: a clone of the club's site, with an empty sync folder.
+
+    The folder is copied once (the way the chapter does it); after that, only the database is copied again.
+    """
+    d = Path(live["dir"])
+    if not d.exists():
+        shutil.copytree(core["dir"], d, symlinks=True, ignore=shutil.ignore_patterns("db_snapshots"))
+        subprocess.run(["ddev", "config", "--project-name=" + d.name], cwd=d, check=True, capture_output=True)
+    subprocess.run(["ddev", "start"], cwd=d, check=True, capture_output=True)
+    dump = d.parent / "lens-and-trail-chapter21.sql.gz"
+    subprocess.run(["ddev", "export-db", "--file=" + str(dump)], cwd=core["dir"], check=True, capture_output=True)
+    subprocess.run(["ddev", "import-db", "--file=" + str(dump)], cwd=d, check=True, capture_output=True)
+    dump.unlink()
+    config21_settings(live)
+    shutil.rmtree(d / "config", ignore_errors=True)
+    (d / "config/sync").mkdir(parents=True)
+    drush(live, "cache:rebuild")
+
+
+def config21_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 21: the sync folder, single and full export on the club's site, full import on the live copy."""
+    url = site["url"]
+    live = SITES["live"]
+    d = Path(site["dir"])
+    subprocess.run(["ddev", "snapshot", "restore", "ch20-start"], cwd=d, check=True, capture_output=True)
+    config21_live(site, live)
+    log_in(page, site)
+
+    # The sync folder: settings.php points outside the web folder, which doesn't exist yet.
+    config21_settings(site)
+    shutil.rmtree(d / "config", ignore_errors=True)
+    drush(site, "cache:rebuild")
+    page.goto(url + "/admin/reports/status")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, ":text('Configuration sync directory')", 200)
+    snap("21-sync-missing")
+    (d / "config/sync").mkdir(parents=True)
+
+    # One item: the Hike content type.
+    page.goto(url + "/admin/config/development/configuration/single/export")
+    page.wait_for_load_state("networkidle")
+    page.select_option("select[name='config_type']", "node_type")
+    page.wait_for_timeout(1500)
+    page.select_option("select[name='config_name']", "hike")
+    page.wait_for_timeout(1500)
+    snap("21-single-export")
+
+    # The change: an Elevation gain field on Hike.
+    def elevation_settings(p: Page) -> None:
+        p.locator(".ui-dialog").get_by_label("Minimum").fill("0")
+        p.locator(".ui-dialog").get_by_label("Suffix").fill(" m")
+    create_field(page, url + "/admin/structure/types/manage/hike/fields", "Number", "Elevation gain", "Integer", elevation_settings)
+
+    # Full export.
+    page.goto(url + "/admin/config/development/configuration/full/export")
+    page.wait_for_load_state("networkidle")
+    snap("21-full-export")
+    with page.expect_download() as download:
+        page.locator("main input[type='submit']").first.click()
+    archive = Path(site["dir"]).parent / download.value.suggested_filename
+    download.value.save_as(str(archive))
+
+    # On the live copy: Morag made an image style there, then the upload.
+    drush_php(live, "\\Drupal\\image\\Entity\\ImageStyle::create(['name' => 'square', 'label' => 'Square'])->save();")
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    lp = context.new_page()
+    lp.set_default_timeout(300000)
+    log_in(lp, live)
+    lp.goto(live["url"] + "/admin/config/development/configuration/full/import")
+    lp.wait_for_load_state("networkidle")
+    lp.set_input_files("input[type='file']", str(archive))
+    save(lp, "21-full-import")
+    lp.locator("main input[type='submit']").first.click()
+    lp.wait_for_load_state("networkidle")
+    archive.unlink()
+    print("--- Synchronize\n" + lp.locator("main").first.inner_text()[:2000])
+    lp.set_viewport_size({"width": WIDTH, "height": 1450})
+    save(lp, "21-synchronize")
+    lp.set_viewport_size({"width": WIDTH, "height": 1000})
+    lp.locator("tr:has-text('field.storage.node.field_elevation_gain') a:has-text('View differences')").click()
+    lp.wait_for_selector(".ui-dialog")
+    lp.wait_for_timeout(1500)
+    save(lp, "21-differences")
+    lp.locator(".ui-dialog-titlebar-close").click()
+    lp.locator("tr:has-text('image.style.square') a:has-text('View differences')").click()
+    lp.wait_for_selector(".ui-dialog")
+    lp.wait_for_timeout(1500)
+    save(lp, "21-differences-deleted")
+    lp.locator(".ui-dialog-titlebar-close").click()
+    lp.locator("input[type='submit'][value='Import all']").click()
+    lp.wait_for_url("**/admin/config/development/configuration", timeout=300000)
+    lp.wait_for_load_state("networkidle")
+    save(lp, "21-imported")
+    lp.goto(live["url"] + "/admin/structure/types/manage/hike/fields")
+    lp.wait_for_load_state("networkidle")
+    save(lp, "21-live-fields")
+    context.close()
+
+    # The checklist.
+    page.goto(url + "/admin/config/system/cron")
+    page.wait_for_load_state("networkidle")
+    snap("21-cron")
+    page.goto(url + "/admin/config/development/performance")
+    page.wait_for_load_state("networkidle")
+    snap("21-performance")
+    drush(site, "config:export", "-y")
+    subprocess.run(["ddev", "snapshot", "--cleanup", "--name", "ch21-done", "-y"], cwd=d, capture_output=True)
+    subprocess.run(["ddev", "snapshot", "--name", "ch21-done"], cwd=d, check=True, capture_output=True)
+
+
 SEQUENCES = [
+    ("core", config21_steps, 1280, ["21-sync-missing", "21-single-export", "21-full-export", "21-full-import", "21-synchronize", "21-differences", "21-differences-deleted", "21-imported", "21-live-fields", "21-cron", "21-performance"]),
     ("core", safe20_core_steps, 1280, ["20-core-available-updates", "20-core-update-settings", "20-core-up-to-date", "20-core-security-update-required", "20-core-status-report-security", "20-core-maintenance"]),
     ("cms", safe20_cms_steps, 1440, ["20-cms-available-updates", "20-cms-update-form", "20-cms-downloading", "20-cms-ready", "20-cms-updated", "20-cms-unattended", "20-cms-backup-migrate"]),
     ("d11", safe20_d11_steps, 1280, ["20-d11-available-updates", "20-d11-upgrade-status"]),

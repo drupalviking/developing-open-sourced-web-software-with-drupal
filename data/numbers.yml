@@ -67,6 +67,31 @@ numbers:
     label: Drupal 12, end of life; from PSA-2026-11-02 (https://www.drupal.org/psa-2026-11-02) (Chapter 3, release table)
     source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
 
+  drupal12_php:
+    value: '8.5'
+    label: Drupal 12, lowest PHP version (Chapter 21, choosing a host)
+    source: https://www.drupal.org/docs/getting-started/system-requirements/php-requirements
+
+  drupal12_mariadb:
+    value: '10.11'
+    label: Drupal 12, lowest MariaDB version (Chapter 21, choosing a host)
+    source: https://www.drupal.org/docs/getting-started/system-requirements/database-server-requirements
+
+  drupal12_mysql:
+    value: '8.0'
+    label: Drupal 12, lowest MySQL version (Chapter 21, choosing a host)
+    source: https://www.drupal.org/docs/getting-started/system-requirements/database-server-requirements
+
+  drupal12_postgresql:
+    value: '18'
+    label: Drupal 12, lowest PostgreSQL version (Chapter 21, choosing a host)
+    source: https://www.drupal.org/docs/getting-started/system-requirements/database-server-requirements
+
+  drupal12_sqlite:
+    value: '3.45'
+    label: Drupal 12, lowest SQLite version (Chapter 21, choosing a host)
+    source: https://www.drupal.org/docs/getting-started/system-requirements/database-server-requirements
+
   canvas_version:
     value: '1.12.0'
     label: Drupal Canvas, newest version; 1.12.0 and 1.x-dev require Drupal ^11.3, so no Drupal 12 support yet (Chapter 6). When it supports Drupal 12, rewrite Chapter 6's Canvas section for the core site.

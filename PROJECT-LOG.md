@@ -199,6 +199,7 @@ Ideas that have no chapter yet, or are waiting for one.
 
 - **Name the Drupal in a Day co-presenters** (the author, 2026-11-07: later): in Chapter 22's Meeting people ("This book grew out of it", a `%%` note) and the Preface's acknowledgments. The Arthur's Seat joke in Chapter 22 stays (the author).
 - ~~**"I" becomes "we" everywhere** (the author, 2026-11-06).~~ Done (2026-11-07, on `chore/i-to-we`; see History).
+- **Appendix A in the book's voice** (the author, 2026-11-07: "another time"). The Xdebug introduction is rewritten; the rest is still the old draft style: about ten tone words ("very easy", "just", "easily"), "therefor", and the Conclusion's "Drupalviking … the tool he uses" (ask the author: "we", the name, or as it is). Rewrite it the way Chapter 1 was rewritten.
 
 - **Mark and answer advanced exercises in earlier chapters** (the author, 2026-11-06): go through Chapters 1 to 12 and mark the exercises that go beyond their chapter *(advanced)*, keeping *(challenge)* for harder ones, and answer each in Appendix C.
 - **Answers to every exercise?** (the author, 2026-11-06; not now): Appendix C answers only the *(advanced)* exercises. Answering every exercise, not only the advanced ones, would help readers working alone and teachers running courses. It's a much bigger appendix (or one per chapter); decide on the format when we get to it.

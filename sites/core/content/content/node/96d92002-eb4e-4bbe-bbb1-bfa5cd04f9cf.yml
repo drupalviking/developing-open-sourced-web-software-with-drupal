@@ -6,6 +6,7 @@ _meta:
   default_langcode: en
   depends:
     9d8db2e7-bf46-4313-b8fa-7d2f6449b633: taxonomy_term
+    e56ba44a-1418-4f02-b29b-c25b581832aa: user
     d878c7e3-533c-40b8-95ee-cb1e36674e1f: media
 default:
   nid:
@@ -17,6 +18,9 @@ default:
   revision_uid:
     -
       target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
   status:
     -
       value: true
@@ -31,13 +35,16 @@ default:
       value: 1793956990
   changed:
     -
-      value: 1793956990
+      value: 1794090427
   promote:
     -
       value: false
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   moderation_state:
     -
       value: published
@@ -70,7 +77,7 @@ default:
       value: '5.5'
   field_hike_leader:
     -
-      target_id: 1
+      entity: e56ba44a-1418-4f02-b29b-c25b581832aa
   field_meeting_place:
     -
       value: 'Holyrood Palace car park'
@@ -88,6 +95,9 @@ translations:
     revision_uid:
       -
         target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
     status:
       -
         value: true
@@ -109,9 +119,6 @@ translations:
     sticky:
       -
         value: false
-    revision_translation_affected:
-      -
-        value: true
     moderation_state:
       -
         value: published
@@ -144,7 +151,7 @@ translations:
         value: '5.5'
     field_hike_leader:
       -
-        target_id: 1
+        entity: e56ba44a-1418-4f02-b29b-c25b581832aa
     field_meeting_place:
       -
         value: 'Estacionamiento del palacio de Holyrood'

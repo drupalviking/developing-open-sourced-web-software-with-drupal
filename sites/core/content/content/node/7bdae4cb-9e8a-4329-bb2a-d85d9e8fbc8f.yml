@@ -6,6 +6,7 @@ _meta:
   default_langcode: en
   depends:
     f7181f72-284a-44c9-8383-c128184e4c58: taxonomy_term
+    e56ba44a-1418-4f02-b29b-c25b581832aa: user
 default:
   nid:
     -
@@ -16,6 +17,9 @@ default:
   revision_uid:
     -
       target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
   status:
     -
       value: true
@@ -30,13 +34,16 @@ default:
       value: 1793956990
   changed:
     -
-      value: 1793956990
+      value: 1794090427
   promote:
     -
       value: false
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   moderation_state:
     -
       value: published
@@ -69,7 +76,7 @@ default:
       value: '7.0'
   field_hike_leader:
     -
-      target_id: 1
+      entity: e56ba44a-1418-4f02-b29b-c25b581832aa
   field_meeting_place:
     -
       value: 'North Berwick railway station'
@@ -84,6 +91,9 @@ translations:
     revision_uid:
       -
         target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
     status:
       -
         value: true
@@ -105,9 +115,6 @@ translations:
     sticky:
       -
         value: false
-    revision_translation_affected:
-      -
-        value: true
     moderation_state:
       -
         value: published
@@ -140,7 +147,7 @@ translations:
         value: '7.0'
     field_hike_leader:
       -
-        target_id: 1
+        entity: e56ba44a-1418-4f02-b29b-c25b581832aa
     field_meeting_place:
       -
         value: 'Estación de tren de North Berwick'

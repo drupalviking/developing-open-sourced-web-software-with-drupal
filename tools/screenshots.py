@@ -3267,6 +3267,15 @@ $u->set('field_camera', 'Fujifilm X-T5, and a phone when it rains')->set('field_
     page.locator("input[value='Save settings'], button:has-text('Save settings')").first.click()
     page.wait_for_load_state("networkidle")
 
+    # The Try it: hikes with admin as their leader get Jordi (admin isn't a
+    # hike leader, so these references would fail the next time they're saved).
+    drush_php(site, """$jordi = current(\\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'jordi']));
+foreach (\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'hike', 'field_hike_leader' => 1]) as $hike) {
+  $hike->set('field_hike_leader', $jordi->id())->setNewRevision(TRUE);
+  $hike->setRevisionLogMessage('Jordi leads this hike.');
+  $hike->save();
+}""")
+
     # Jordi writes a hike: he can only save it as a draft.
     context, leader = as_user(page, site, "jordi")
     leader.goto(url + "/node/add/hike")

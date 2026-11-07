@@ -6,6 +6,7 @@ _meta:
   default_langcode: en
   depends:
     e3032dc7-b244-4604-b8e0-ba1b0f6ce88c: taxonomy_term
+    e56ba44a-1418-4f02-b29b-c25b581832aa: user
     8ddf1025-7a8e-4b6a-899e-b62878557005: media
 default:
   nid:
@@ -17,6 +18,9 @@ default:
   revision_uid:
     -
       target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
   status:
     -
       value: true
@@ -31,13 +35,16 @@ default:
       value: 1793956990
   changed:
     -
-      value: 1793956990
+      value: 1794090427
   promote:
     -
       value: false
   sticky:
     -
       value: false
+  revision_translation_affected:
+    -
+      value: true
   moderation_state:
     -
       value: published
@@ -70,7 +77,7 @@ default:
       value: '16.0'
   field_hike_leader:
     -
-      target_id: 1
+      entity: e56ba44a-1418-4f02-b29b-c25b581832aa
   field_meeting_place:
     -
       value: 'Flotterstone car park'
@@ -88,6 +95,9 @@ translations:
     revision_uid:
       -
         target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
     status:
       -
         value: true
@@ -109,9 +119,6 @@ translations:
     sticky:
       -
         value: false
-    revision_translation_affected:
-      -
-        value: true
     moderation_state:
       -
         value: published
@@ -144,7 +151,7 @@ translations:
         value: '16.0'
     field_hike_leader:
       -
-        target_id: 1
+        entity: e56ba44a-1418-4f02-b29b-c25b581832aa
     field_meeting_place:
       -
         value: 'Estacionamiento de Flotterstone'

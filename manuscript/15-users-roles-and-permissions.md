@@ -323,6 +323,10 @@ Two promises are left. In Chapter 7, the **Hike leader** field could choose from
 
 3. Select **Save settings**.
 
+That leaves the hikes we made before there were hike leaders: their **Hike leader** is **admin**, and admin doesn't have the Hike leader role. Drupal doesn't go back and check them, so nothing changes on the site today, but the next time someone saves one of those hikes, Drupal says the reference isn't allowed, and the hike won't save until it has a real leader. Let's give them one now.
+
+> **Try it:** Go to **Content**, open each hike with **admin** as its hike leader (*Arthur's Seat at sunrise*, *North Berwick Law and the harbour* and *Pentland Hills ridge*, and any other hike you gave admin), select **Edit**, choose **jordi** under **Hike leader**, and **Save**. The list offers only jordi now: he's the club's only hike leader so far.
+
 Now log in as Jordi, and add a hike: *Arthur's Seat by night*, on a Saturday in January at 17:30, from the St Margaret's Loch car park in Holyrood Park, 5 km, Moderate, with himself as **Hike leader**: the list now offers hike leaders only.
 
 ![The Create Hike form as Jordi sees it: Arthur's Seat by night, the date and time, the meeting place Holyrood Park, St Margaret's Loch car park, no Area, Distance 5 km and Difficulty Moderate; on the right, Save as with Draft; Jordi's sidebar has only Create and Content](images/15-leader-draft.png)

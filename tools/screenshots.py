@@ -4278,7 +4278,368 @@ def i18n18_cms_steps(page: Page, site: dict, snap) -> None:
     as_visitor(page, site, "/es/join", "18-cms-es-join", width=1440)
 
 
+# Chapter 19: the prompts, as the chapter prints them. The answers differ from run to run.
+AI19_TAGS = "Our site is for Lens & Trail, a small photography and hiking club in Edinburgh. Please add 25 common tags to the Tags vocabulary that we can use for news, pages and photos."
+AI19_FIELD = "Please add a Tags field to the Image media type, so we can tag photos with terms from the Tags vocabulary. A photo can have several tags."
+AI19_PAGE = "Create a landing page called First hike with Lens & Trail, for people who have never been on a hike with the club: what to bring, what to expect on the day, and how to join."
+AI19_FACTS = ("Create a landing page called First hike with Lens & Trail, for people who have never been on a hike with the club. "
+              "Use only these facts and do not invent any others: hikes are every other Saturday at 9:30; "
+              "we email the meeting point a week before to the people who are coming; you don't need to book, just come along; "
+              "bring boots, a waterproof jacket, a warm layer, food, your camera and a head torch; the path can be steep and muddy; "
+              "to become a member, talk to the club secretary on the day or email hello@lens-and-trail-cms.ddev.site; "
+              "membership is £20 a year (£10 for students). No testimonials, no prices other than these, and no images.")
+
+
+def ai19_chat_text(page: Page) -> str:
+    """The conversation in the AI chat (a deep-chat web component, in its own shadow DOM)."""
+    return page.evaluate("() => { const c = document.querySelector('deep-chat'); const m = c && c.shadowRoot && c.shadowRoot.querySelector('#messages'); return m ? m.innerText : ''; }")
+
+
+def ai19_ask(page: Page, prompt: str, at_least: int = 30, quiet: int = 20, shot=None, done=None) -> str:
+    """Types a prompt into the AI chat, sends it, and waits until the answer has stopped growing for `quiet` seconds."""
+    before = len(ai19_chat_text(page))
+    # Away from the navigation sidebar, which opens under the mouse and covers the chat.
+    page.mouse.move(900, 500)
+    page.locator("deep-chat #text-input").evaluate("e => e.focus()")
+    page.keyboard.type(prompt)
+    page.wait_for_timeout(500)
+    if shot:
+        shot()
+    page.keyboard.press("Enter")
+    waited, still, last = 0, 0, ""
+    while waited < 900:
+        page.wait_for_timeout(5000)
+        waited += 5
+        text = ai19_chat_text(page)
+        still = still + 5 if text == last else 0
+        last = text
+        # The assistant shows "Contacting agents..." while its agents work. Canvas AI shows "Thinking", but
+        # with Claude that stays on screen after the answer, so Canvas pages pass their own `done` instead.
+        if done:
+            finished = done(page)
+        else:
+            thinking = page.get_by_text("Thinking", exact=True)
+            finished = not any(thinking.nth(i).is_visible() for i in range(thinking.count()))
+        busy = "Contacting agents" in text or not finished
+        if waited >= at_least and len(text) > before + 100 and still >= quiet and not busy:
+            # Show the newest question and answer from their start.
+            page.evaluate("() => { const m = document.querySelector('deep-chat').shadowRoot.querySelector('#messages'); const users = m.querySelectorAll('.user-message'); if (users.length) users[users.length - 1].scrollIntoView(); }")
+            page.mouse.move(1100, 700)
+            page.wait_for_timeout(1000)
+            return text
+    raise RuntimeError("The AI didn't answer within fifteen minutes")
+
+
+def ai19_klaro_yes(page: Page, within: str = "body") -> None:
+    """Klaro's consent question: Yes (this time). Clicked with JavaScript: the toolbar can cover it.
+
+    `within` limits it to one part of the page: on a form, the chat's own question would open the chat too.
+    """
+    yes = page.locator(within).locator("text=Yes (this time)")
+    for i in range(yes.count()):
+        if yes.nth(i).is_visible():
+            yes.nth(i).evaluate("e => e.click()")
+            page.wait_for_timeout(2000)
+
+
+def ai19_tidy(page: Page) -> None:
+    """Closes the AI chat (it stays open from page to page) and moves the mouse off the navigation sidebar."""
+    close = page.locator("button[data-action='close-chat']")
+    for _ in range(3):
+        # The button toggles: clicked while the chat is closed, it opens it. The body class says which it is.
+        if not (close.count() and page.evaluate("() => document.body.classList.contains('ai-chatbot-opened')")):
+            break
+        close.first.evaluate("e => e.click()")
+        page.wait_for_timeout(1000)
+    page.mouse.move(1100, 700)
+    page.wait_for_timeout(1000)
+
+
+def ai19_canvas_page(page: Page, site: dict, prompt: str, shot_prompt=None) -> None:
+    """A new Canvas page, built by Canvas AI from the prompt."""
+    page.goto(site["url"] + "/admin/content/pages")
+    page.wait_for_load_state("networkidle")
+    page.click("a:has-text('Add Page')")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(6000)
+    page.get_by_label("Open AI Panel").click()
+    page.wait_for_timeout(2500)
+    # Done when Canvas AI has put its changes on the page: the Review button counts them.
+    ai19_ask(page, prompt, at_least=180, quiet=45, shot=(lambda: shot_prompt()) if shot_prompt else None,
+             done=lambda p: p.locator("button:has-text('Review')").filter(has_text="change").count() > 0)
+    page.wait_for_timeout(3000)
+
+
+def ai19_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 19 on Drupal CMS: the AI Assistant, the chatbot, alt text, Canvas AI and Canvas Translate AI.
+
+    Starts from the end of Chapter 18 (a DDEV snapshot). Installs with amazee.ai, as the chapter does, then
+    switches to Anthropic for the AI steps (needs the author's key), so it needs the internet, costs a little,
+    and the AI's answers (and so the screenshots) are different every time.
+    """
+    url = site["url"]
+    subprocess.run(["ddev", "snapshot", "restore", "ch18-done"], cwd=site["dir"], check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    log_in(page, site)
+
+    # Installing the AI Assistant from Recommended add-ons.
+    page.goto(url + "/admin/modules/browse/recommended")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    card = page.locator("li", has_text="Adds integration with AI services").first
+    card.scroll_into_view_if_needed()
+    page.evaluate("window.scrollBy(0, 150)")
+    page.wait_for_timeout(500)
+    snap("19-cms-recommended")
+    card.locator("button:text-is('Install')").first.click()
+    page.locator(".ui-dialog-buttonpane button:has-text('Continue')").first.wait_for(timeout=60000)
+    page.wait_for_timeout(1000)
+    snap("19-cms-provider", element=".ui-dialog")
+    page.locator(".ui-dialog-buttonpane button:has-text('Continue')").first.click()
+    for _ in range(80):
+        page.wait_for_timeout(5000)
+        if "Installed" in card.inner_text() or page.locator(".ui-dialog:has-text('Error')").count():
+            break
+    if "Installed" not in card.inner_text():
+        raise RuntimeError("Project Browser didn't install the AI Assistant")
+    drush(site, "cache:rebuild")
+    page.goto(url + "/admin/config/ai")
+    page.wait_for_load_state("networkidle")
+    # The dashboard's Filter box takes the focus, and scrolls the page down to it.
+    page.wait_for_timeout(1500)
+    page.evaluate("() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); }")
+    ai19_tidy(page)
+    snap("19-cms-ai-dashboard")
+    # The figures from here on are taken with Anthropic: amazee.ai's trial without an account runs out after
+    # a few runs (the chapter says so). Needs the key, see ai19_anthropic_key().
+    ai19_use_anthropic(page, site)
+
+    # The chatbot: tags, then a field.
+    tags = url + "/admin/structure/taxonomy/manage/tags/overview"
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    page.locator("button.button--ai-chatbot").evaluate("e => e.click()")
+    page.wait_for_timeout(2000)
+    snap("19-cms-chatbot-consent")
+    ai19_klaro_yes(page)
+    ai19_ask(page, AI19_TAGS)
+    snap("19-cms-chatbot-tags")
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    ai19_tidy(page)
+    snap("19-cms-tags")
+    page.locator("button.button--ai-chatbot").evaluate("e => e.click()")
+    page.wait_for_timeout(2000)
+    ai19_klaro_yes(page)
+    ai19_ask(page, AI19_FIELD)
+    snap("19-cms-chatbot-field")
+    page.goto(url + "/admin/structure/media/manage/image/fields")
+    page.wait_for_load_state("networkidle")
+    ai19_tidy(page)
+    snap("19-cms-media-fields")
+
+    # Alt text.
+    page.goto(url + "/admin/config/ai/ai_image_alt_text")
+    page.wait_for_load_state("networkidle")
+    ai19_tidy(page)
+    snap("19-cms-alt-settings")
+    page.goto(url + "/media/add/image")
+    page.wait_for_load_state("networkidle")
+    page.set_input_files("input[type='file']", str(PHOTOS / "portobello-beach.jpg"))
+    page.wait_for_timeout(5000)
+    ai19_tidy(page)
+    snap("19-cms-alt-consent")
+    ai19_klaro_yes(page, "form:has(input[name*='[alt]'])")
+    page.locator("input[value='Generate with AI']").first.evaluate("e => e.click()")
+    alt = page.locator("input[name*='[alt]']").first
+    for _ in range(24):
+        page.wait_for_timeout(2500)
+        if alt.input_value():
+            break
+    page.wait_for_timeout(1000)
+    scroll_to(page, "input[name*='[alt]']", offset=300)
+    ai19_tidy(page)
+    snap("19-cms-alt-generated")
+
+    # Canvas AI: a short prompt, then one with the club's facts.
+    ai19_canvas_page(page, site, AI19_PAGE, shot_prompt=lambda: snap("19-cms-canvas-ai-prompt"))
+    snap("19-cms-canvas-ai-page")
+    ai19_canvas_page(page, site, AI19_FACTS)
+    snap("19-cms-canvas-ai-facts")
+    # The review: the title and URL alias in Page data, then publish only this page.
+    page.get_by_text("Page data", exact=True).first.click()
+    page.wait_for_timeout(1000)
+    page.locator("#edit-title-0-value").fill("First hike with Lens & Trail")
+    page.locator("#edit-path-0-alias").fill("/first-hike")
+    page.wait_for_timeout(3000)
+    page.locator("button:has-text('Review')").filter(has_text="change").first.click()
+    page.wait_for_timeout(2000)
+    page.get_by_label("Select change First hike with Lens & Trail").click()
+    page.wait_for_timeout(1000)
+    snap("19-cms-review-changes")
+    page.locator("button:has-text('Publish 1 selected')").click()
+    page.wait_for_timeout(6000)
+    # What the reader corrects by hand in the components: the "&amp;" Canvas AI writes for "&" (see the chapter).
+    drush_php(site, r"""
+$pages = \Drupal::entityTypeManager()->getStorage('canvas_page')->loadByProperties(['title' => 'First hike with Lens & Trail']);
+$p = reset($pages);
+$items = $p->get('components')->getValue();
+foreach ($items as &$item) {
+  // The inputs are JSON, where "&" is stored as \u0026: decode them, fix the values, encode them again.
+  $inputs = is_string($item['inputs']) ? json_decode($item['inputs'], TRUE) : $item['inputs'];
+  array_walk_recursive($inputs, function (&$value) { if (is_string($value)) { $value = str_replace('&amp;', '&', $value); } });
+  $item['inputs'] = is_string($item['inputs']) ? json_encode($inputs) : $inputs;
+}
+$p->set('components', $items);
+$p->set('description', str_replace('&amp;', '&', (string) $p->get('description')->value));
+$p->save();
+""")
+
+    # Canvas Translate AI.
+    drush(site, "pm:enable", "-y", "canvas_translate_ai")
+    drush(site, "cache:rebuild")
+    page.goto(url + "/canvas/app/canvas_translate")
+    page.wait_for_load_state("networkidle")
+    frame = page.frame_locator("iframe").first
+    item = frame.locator("[title^='Translate “First hike with Lens & Trail”']")
+    item.wait_for(timeout=60000)
+    item.click()
+    targets = frame.locator("textarea[placeholder^='Add translation']")
+    targets.first.wait_for()
+    page.wait_for_timeout(1500)
+    frame.get_by_text("AI translate empty").click()
+    for _ in range(60):
+        page.wait_for_timeout(5000)
+        if frame.locator("textarea[placeholder^='Add translation']").count() == 0 or "100%" in frame.locator("body").inner_text():
+            break
+    page.wait_for_timeout(2000)
+    snap("19-cms-translate-ai")
+
+
+def ai19_anthropic_key() -> str:
+    """The Anthropic API key for the comparison: $ANTHROPIC_API_KEY, or the file ~/.config/lens-and-trail/anthropic-api-key.
+
+    Kept out of the repository. Never printed.
+    """
+    key = os.environ.get("ANTHROPIC_API_KEY", "")
+    path = Path.home() / ".config" / "lens-and-trail" / "anthropic-api-key"
+    if not key and path.exists():
+        key = path.read_text().strip()
+    return key
+
+
+def ai19_use_anthropic(page: Page, site: dict, snap=None) -> None:
+    """Connects Anthropic the way the chapter does: a key, the provider, and AI Settings.
+
+    The key comes from ai19_anthropic_key(). With `snap`, takes the provider page and AI Settings
+    (figures 19.17 and 19.18); without a key, takes only the provider page and returns.
+    """
+    url = site["url"]
+    key = ai19_anthropic_key()
+    if key:
+        page.goto(url + "/admin/config/system/keys/add")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        page.fill("#edit-label", "Anthropic API key")
+        # Wait for the machine name, which Drupal makes from the label.
+        for _ in range(20):
+            page.wait_for_timeout(500)
+            if page.input_value("#edit-id"):
+                break
+        page.fill("#edit-key-input-settings-key-value", key)
+        page.locator("#edit-submit").first.evaluate("e => e.click()")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        if "has been added" not in page.locator("body").inner_text():
+            raise RuntimeError("The Anthropic key wasn't saved")
+    page.goto(url + "/admin/config/ai/providers/anthropic")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    ai19_tidy(page)
+    if key:
+        page.select_option("select[name='api_key']", label="Anthropic API key")
+        page.wait_for_timeout(1000)
+    if snap:
+        snap("19-cms-anthropic")
+    if not key:
+        if snap:
+            print("No Anthropic API key: skipping the rest of the Anthropic sequence.")
+            return
+        raise RuntimeError("No Anthropic API key: see ai19_anthropic_key()")
+    page.locator("#edit-submit").first.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+
+    # AI Settings: Anthropic, Claude Sonnet 5.5, for the chat jobs, and no default for Translate Text, so
+    # Canvas Translate AI falls back to chat. Set with Drush (the page's selects load their models by AJAX,
+    # which is unreliable from a script), then shown on the page.
+    drush_php(site, r"""
+$config = \Drupal::configFactory()->getEditable('ai.settings');
+$defaults = $config->get('default_providers');
+// Not Chat with Complex JSON: ai_provider_anthropic 1.2.2 lists no Claude 5 models there (fixed in 1.3), so the chapter leaves it on amazee.ai.
+foreach (['chat', 'chat_with_image_vision', 'chat_with_structured_response', 'chat_with_tools'] as $op) {
+  $defaults[$op] = ['provider_id' => 'anthropic', 'model_id' => 'claude-sonnet-5-5'];
+}
+unset($defaults['translate_text']);
+$config->set('default_providers', $defaults)->save();
+""")
+    if snap:
+        page.goto(url + "/admin/config/ai/settings")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        ai19_tidy(page)
+        snap("19-cms-ai-settings")
+
+
+def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 19, the second provider: Anthropic's key and settings, then the same questions as with amazee.ai.
+
+    Starts right after the AI Assistant was installed (a DDEV snapshot). Without a key (see ai19_anthropic_key),
+    it only takes the provider page, with no key selected.
+    """
+    url = site["url"]
+    subprocess.run(["ddev", "snapshot", "restore", "ch19-ai-installed"], cwd=site["dir"], check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    log_in(page, site)
+    ai19_use_anthropic(page, site, snap)
+    if not ai19_anthropic_key():
+        return
+
+    # The same questions as with amazee.ai: tags, alt text, and the short Canvas AI prompt.
+    tags = url + "/admin/structure/taxonomy/manage/tags/overview"
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    page.locator("button.button--ai-chatbot").evaluate("e => e.click()")
+    page.wait_for_timeout(2000)
+    ai19_klaro_yes(page)
+    print("--- Tags\n" + ai19_ask(page, AI19_TAGS)[-4000:])
+    snap("19-cms-anthropic-chatbot-tags")
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    ai19_tidy(page)
+    print("--- Terms\n" + page.locator("table").first.inner_text())
+    page.goto(url + "/media/add/image")
+    page.wait_for_load_state("networkidle")
+    page.set_input_files("input[type='file']", str(PHOTOS / "portobello-beach.jpg"))
+    page.wait_for_timeout(5000)
+    ai19_tidy(page)
+    ai19_klaro_yes(page, "form:has(input[name*='[alt]'])")
+    page.locator("input[value='Generate with AI']").first.evaluate("e => e.click()")
+    alt = page.locator("input[name*='[alt]']").first
+    for _ in range(24):
+        page.wait_for_timeout(2500)
+        if alt.input_value():
+            break
+    print("--- Alt text\n" + alt.input_value())
+    ai19_tidy(page)
+    ai19_canvas_page(page, site, AI19_PAGE)
+    print("--- Canvas AI\n" + ai19_chat_text(page)[-4000:])
+    snap("19-cms-anthropic-page")
+
+
 SEQUENCES = [
+    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
+    ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
     ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),
     ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),
     ("core", i18n18_views_steps, 1280, ["18-es-hikes-twice", "18-views-default-translation", "18-views-rendering-language", "18-es-hikes"]),

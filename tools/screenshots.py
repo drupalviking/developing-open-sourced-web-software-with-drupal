@@ -4532,11 +4532,19 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     if key:
         page.goto(url + "/admin/config/system/keys/add")
         page.wait_for_load_state("networkidle")
-        page.fill("#edit-label", "Anthropic API key")
         page.wait_for_timeout(1500)
+        page.fill("#edit-label", "Anthropic API key")
+        # Wait for the machine name, which Drupal makes from the label.
+        for _ in range(20):
+            page.wait_for_timeout(500)
+            if page.input_value("#edit-id"):
+                break
         page.fill("#edit-key-input-settings-key-value", key)
-        page.click("#edit-submit")
+        page.locator("#edit-submit").first.evaluate("e => e.click()")
         page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        if "has been added" not in page.locator("body").inner_text():
+            raise RuntimeError("The Anthropic key wasn't saved")
     page.goto(url + "/admin/config/ai/providers/anthropic")
     page.wait_for_load_state("networkidle")
     page.wait_for_timeout(1500)
@@ -4548,24 +4556,24 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     if not key:
         print("No Anthropic API key: skipping the rest of the Anthropic sequence.")
         return
-    page.click("#edit-submit")
+    page.locator("#edit-submit").first.evaluate("e => e.click()")
     page.wait_for_load_state("networkidle")
 
-    # AI Settings: Anthropic for every chat operation type. The model list loads when the provider changes.
+    # AI Settings: Anthropic, Claude Sonnet 5.5, for every chat operation type. Set with Drush (the page's
+    # selects load their models by AJAX, which is unreliable from a script), then shown on the page.
+    drush_php(site, r"""
+$config = \Drupal::configFactory()->getEditable('ai.settings');
+$defaults = $config->get('default_providers');
+foreach (['chat', 'chat_with_complex_json', 'chat_with_image_vision', 'chat_with_structured_response', 'chat_with_tools'] as $op) {
+  $defaults[$op] = ['provider_id' => 'anthropic', 'model_id' => 'claude-sonnet-5-5'];
+}
+$config->set('default_providers', $defaults)->save();
+""")
     page.goto(url + "/admin/config/ai/settings")
     page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
     ai19_tidy(page)
-    for op in ["chat", "chat_with_complex_json", "chat_with_image_vision", "chat_with_structured_response", "chat_with_tools"]:
-        page.select_option(f"select[name='operation__{op}']", "anthropic")
-        page.wait_for_timeout(3000)
-        models = page.locator(f"select[name='model__{op}'] option").all_text_contents()
-        sonnet = [m for m in models if "sonnet" in m.lower()]
-        page.select_option(f"select[name='model__{op}']", label=sonnet[0] if sonnet else models[-1])
-        page.wait_for_timeout(1000)
-    print("Anthropic models:", page.locator("select[name='model__chat'] option").all_text_contents())
     snap("19-cms-ai-settings")
-    page.locator("input[type='submit'][value='Save configuration']").first.click()
-    page.wait_for_load_state("networkidle")
 
     # The same questions as with amazee.ai: tags, alt text, and the short Canvas AI prompt.
     tags = url + "/admin/structure/taxonomy/manage/tags/overview"

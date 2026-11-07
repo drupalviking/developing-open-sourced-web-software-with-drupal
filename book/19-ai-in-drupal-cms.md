@@ -254,7 +254,7 @@ A word on names first. Anthropic is the company, and Claude is the name of its m
 2. Add credit under **Billing**. Anthropic charges in advance, and stops answering when the credit is used up, which is a good limit for a small club.
 3. Under **API keys**, select **Create key**, give it a name such as `Lens & Trail`, and copy the key. The Console shows it only once.
 
-A Claude subscription, the kind you use to chat with Claude in a browser, doesn't pay for this. The API is billed separately, even with the same login, and extra usage bought for a subscription doesn't count either: buy the credit in the Console. We learned this the hard way, with a site that answered every question with "Your credit balance is too low to access the Anthropic API" while the account had money on it, in the wrong place. 
+A Claude subscription, the kind you use to chat with Claude in a browser, doesn't pay for this. The API is billed separately, even with the same login, and extra usage bought for a subscription doesn't count either: buy the credit in the Console. We learned this the hard way, with a site that answered every question with "Your credit balance is too low to access the Anthropic API" while the account had money on it, in the wrong place.
 
 ### Giving the key to Drupal
 

@@ -54,7 +54,7 @@ The community was growing too. The first **DrupalCon**, the Drupal conference, w
 - *installation profiles*, ready-made setups for a particular kind of site, the great-grandparents of today's recipes;
 - a reorganized administration section, and a new default theme, Garland, which a whole generation of Drupal sites looked like.
 
-**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (today's Update Manager), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 20.
+**Drupal 6** followed in February 2008. It rebuilt the menu system, and made multilingual sites possible in core, with support for right-to-left languages, such as Arabic and Hebrew. It also brought the **Update status** module (it still has that name today), which checks whether your site needs updates, and tells you about security releases. We use it in Chapter 20.
 
 Around Drupal, an ecosystem was forming. The **Drupal Association**, a non-profit, was founded in 2006 to look after drupal.org and to support DrupalCon. In 2007, Dries co-founded **Acquia**, a company that offers Drupal hosting and services. It was one of the first companies built around Drupal, and today there are thousands of them, from one-person agencies to companies with hundreds of employees. (Chapter 2 tells you more about who's who.)
 

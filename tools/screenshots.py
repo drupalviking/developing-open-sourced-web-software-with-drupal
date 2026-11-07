@@ -53,6 +53,13 @@ SITES = {
         "user": "admin@lens-and-trail-cms.ddev.site",
         "password": "12345",
     },
+    # Chapter 20's Drupal 11 site, for a patch update and preparing the upgrade to Drupal 12.
+    "d11": {
+        "url": os.environ.get("D11_URL", "https://lens-and-trail-d11.ddev.site:8443"),
+        "dir": os.environ.get("D11_DIR", str(Path.home() / "websites/open-university/lens-and-trail-d11")),
+        "user": "admin",
+        "password": "12345",
+    },
 }
 
 
@@ -4637,7 +4644,145 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     snap("19-cms-anthropic-page")
 
 
+def safe20_restore(site: dict) -> None:
+    """Back to the start of Chapter 20: the ch20-start snapshot, and the Composer files saved with it."""
+    d = Path(site["dir"])
+    subprocess.run(["ddev", "snapshot", "restore", "ch20-start"], cwd=d, check=True, capture_output=True)
+    for f in ["composer.json", "composer.lock"]:
+        shutil.copy(d / ".ddev" / f"ch20-start.{f}", d / f)
+    subprocess.run(["ddev", "composer", "install"], cwd=d, check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+
+
+def safe20_check(page: Page, url: str) -> None:
+    """Available updates, after asking drupal.org again (Check manually)."""
+    page.goto(url + "/admin/reports/updates", timeout=300000)
+    page.wait_for_load_state("networkidle")
+    page.locator("a:has-text('Check manually')").first.click()
+    page.wait_for_url("**/admin/reports/updates", timeout=300000)
+    page.wait_for_load_state("networkidle")
+
+
+def safe20_composer(site: dict, *args: str) -> str:
+    """Runs Composer and returns what it printed, for the text: blocked updates, audit."""
+    result = subprocess.run(["ddev", "composer", *args], cwd=site["dir"], capture_output=True, text=True)
+    return result.stdout + result.stderr
+
+
+def safe20_core_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 20 on core: Available updates, its settings, a module update, the update emergency, maintenance mode."""
+    url = site["url"]
+    safe20_restore(site)
+    log_in(page, site)
+    safe20_check(page, url)
+    page.get_by_label("Update available").first.check()
+    page.wait_for_timeout(800)
+    page.locator("body").click(position={"x": 5, "y": 5})
+    snap("20-core-available-updates")
+    page.goto(url + "/admin/reports/updates/settings")
+    page.wait_for_load_state("networkidle")
+    page.fill("textarea[name='update_notify_emails']", "webmaster@lensandtrail.example\nmorag@lensandtrail.example")
+    page.check("input[name='update_notification_threshold'][value='security']")
+    snap("20-core-update-settings")
+
+    # Update Project Browser.
+    print(safe20_composer(site, "outdated", "drupal/*"))
+    composer(site, "update", "drupal/project_browser", "--with-all-dependencies")
+    print(drush(site, "updatedb", "-y"))
+    drush(site, "cache:rebuild")
+    safe20_check(page, url)
+    snap("20-core-up-to-date")
+    print(safe20_composer(site, "audit"))
+
+    # The update emergency: back to 12.0.0-beta1, which Composer refuses without --no-blocking.
+    d = Path(site["dir"])
+    keep = (d / "composer.json").read_text(), (d / "composer.lock").read_text()
+    try:
+        (d / "composer.json").write_text(keep[0].replace('"drupal/core-recommended": "^12"', '"drupal/core-recommended": "12.0.0-beta1"'))
+        print(safe20_composer(site, "update", "drupal/core-*", "--with-all-dependencies")[-3000:])
+        print(safe20_composer(site, "update", "drupal/core-*", "--with-all-dependencies", "--no-blocking")[-1500:])
+        drush(site, "updatedb", "-y")
+        drush(site, "cache:rebuild")
+        safe20_check(page, url)
+        snap("20-core-security-update-required")
+        page.goto(url + "/admin/reports/status")
+        page.wait_for_load_state("networkidle")
+        scroll_to(page, ":text('Drupal core update status')", 200)
+        snap("20-core-status-report-security")
+    finally:
+        (d / "composer.json").write_text(keep[0])
+        (d / "composer.lock").write_text(keep[1])
+        subprocess.run(["ddev", "composer", "install"], cwd=d, check=True, capture_output=True)
+        drush(site, "updatedb", "-y")
+        drush(site, "cache:rebuild")
+
+    safe20_check(page, url)
+    page.goto(url + "/admin/config/development/maintenance")
+    page.wait_for_load_state("networkidle")
+    page.check("input[name='maintenance_mode']")
+    page.fill("textarea[name='maintenance_mode_message']", "Lens & Trail is being updated. Back in a few minutes.")
+    snap("20-core-maintenance")
+    safe20_restore(site)
+
+
+def safe20_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 20 on Drupal CMS: core 11.4.11 to 11.4.12 from the browser, unattended updates, Backup and Migrate."""
+    url = site["url"]
+    safe20_restore(site)
+    log_in(page, site)
+    page.set_default_timeout(300000)
+    safe20_check(page, url)
+    snap("20-cms-available-updates")
+    page.goto(url + "/admin/reports/updates/update")
+    page.wait_for_load_state("networkidle")
+    if page.locator("input[value='Delete existing update']").count():
+        page.locator("input[value='Delete existing update']").first.click()
+        page.wait_for_load_state("networkidle")
+        page.goto(url + "/admin/reports/updates/update")
+        page.wait_for_load_state("networkidle")
+    snap("20-cms-update-form")
+    page.click("#automatic-updates-updater-form #edit-submit")
+    page.wait_for_timeout(3000)
+    snap("20-cms-downloading")
+    page.get_by_text("Ready to update").first.wait_for(timeout=900000)
+    page.wait_for_load_state("networkidle")
+    snap("20-cms-ready")
+    page.locator("input[type='submit'][value='Continue'], button:has-text('Continue')").first.click()
+    for _ in range(180):
+        page.wait_for_timeout(5000)
+        if "/batch" not in page.url and not page.get_by_text("Ready to update").count():
+            break
+    page.wait_for_load_state("networkidle")
+    print("--- After the update: " + page.url + "\n" + page.locator("main").first.inner_text()[:1500])
+    snap("20-cms-updated")
+    page.goto(url + "/admin/reports/updates/settings")
+    page.wait_for_load_state("networkidle")
+    snap("20-cms-unattended")
+    composer(site, "require", "drupal/backup_migrate")
+    drush(site, "pm:install", "backup_migrate", "-y")
+    page.goto(url + "/admin/config/development/backup_migrate")
+    page.wait_for_load_state("networkidle")
+    snap("20-cms-backup-migrate")
+    safe20_restore(site)
+
+
+def safe20_d11_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 20 on the Drupal 11 site: Available updates, and Upgrade Status."""
+    url = site["url"]
+    safe20_restore(site)
+    log_in(page, site)
+    safe20_check(page, url)
+    snap("20-d11-available-updates")
+    page.goto(url + "/admin/reports/upgrade-status", timeout=300000)
+    page.wait_for_load_state("networkidle")
+    print("--- Upgrade Status\n" + page.locator("main").first.inner_text()[:4000])
+    snap("20-d11-upgrade-status")
+
+
 SEQUENCES = [
+    ("core", safe20_core_steps, 1280, ["20-core-available-updates", "20-core-update-settings", "20-core-up-to-date", "20-core-security-update-required", "20-core-status-report-security", "20-core-maintenance"]),
+    ("cms", safe20_cms_steps, 1440, ["20-cms-available-updates", "20-cms-update-form", "20-cms-downloading", "20-cms-ready", "20-cms-updated", "20-cms-unattended", "20-cms-backup-migrate"]),
+    ("d11", safe20_d11_steps, 1280, ["20-d11-available-updates", "20-d11-upgrade-status"]),
     ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
     ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
     ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),

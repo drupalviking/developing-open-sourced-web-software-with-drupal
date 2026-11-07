@@ -176,3 +176,35 @@ Only the page is protected, not the block. If someone places *Members' corner* i
 A menu link to the page is safe: give the view's page a **Normal menu entry** in **Main navigation**, and Drupal shows it only to the people who may open the page (Chapter 15's "Under the hood: access").
 
 And it's one page. If members-only content grows (news for members, albums only members see), a page per item gets clumsy, and that's the time for a contributed module that decides access for each piece of content, such as [Group](https://www.drupal.org/project/group). Check which version of Drupal it supports before you choose.
+
+## Chapter 20, Exercise 6: maintenance mode from the command line
+
+*Put the club's site in maintenance mode from the command line with Drush, check what an anonymous visitor sees, and take it out of maintenance mode again.*
+
+Drush has three commands for maintenance mode, `maint:set`, `maint:get` and `maint:status`. `ddev drush list` shows them, under `maint`, and `ddev drush help maint:set` explains each one.
+
+```bash
+ddev drush maint:set 1
+ddev drush cache:rebuild
+```
+
+`maint:set 1` switches maintenance mode on, and `maint:get` tells you whether it's on (`1`) or off (`0`).
+
+### Why the cache rebuild
+
+Try it without `cache:rebuild` first, and open the front page in a private window: you see the normal front page. Nothing's wrong with the command. Drupal keeps a ready-made copy of each page for visitors who aren't logged in (the Internal Page Cache module), and it hands that copy out before it even looks at whether the site is in maintenance mode. `cache:rebuild` throws the copies away, and the next visitor gets the message:
+
+> Lens & Trail is currently under maintenance. We should be back shortly. Thank you for your patience.
+
+(That's Drupal's own message; Chapter 20 shows where to change it.) The page comes with the HTTP status code 503, "Service Unavailable", which tells search engines that the site is away for a moment, and to come back later, rather than that the page is gone. While you're logged in as an administrator, you see the site as usual, with a reminder at the top that it's in maintenance mode.
+
+### Taking it out again
+
+```bash
+ddev drush maint:set 0
+ddev drush cache:rebuild
+```
+
+Clear the cache again, or visitors may get the stored maintenance page for a while.
+
+`maint:status` is for scripts: it does nothing when the site is up, and fails when it's in maintenance mode, so a script that deploys a site can check that it's really back up at the end.

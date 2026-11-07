@@ -3024,6 +3024,9 @@ foreach ($et->getStorage('user')->loadMultiple() as $u) { if ($u->id() > 1) { $u
 foreach (['member', 'hike_leader', 'secretary'] as $r) { \\Drupal\\user\\Entity\\Role::load($r)?->delete(); }
 \\Drupal\\user\\Entity\\Role::load('authenticated')->grantPermission('skip comment approval')->save();
 foreach (['field_camera', 'field_about_me'] as $f) { \\Drupal\\field\\Entity\\FieldStorageConfig::loadByName('user', $f)?->delete(); }
+// Purge the deleted fields now. If cron purges them after the chapter has made new fields with the same names, a core bug
+// deletes the new fields' schema records ("Mismatched entity and/or field definitions"; see PROJECT-LOG).
+field_purge_batch(1000);
 foreach ($et->getStorage('comment')->loadMultiple() as $c) { $c->delete(); }
 foreach ($et->getStorage('node')->loadByProperties(['title' => 'Arthur\\'s Seat by night']) as $n) { $n->delete(); }
 \\Drupal::configFactory()->getEditable('user.settings')->set('register', 'admin_only')->save();

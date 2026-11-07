@@ -307,8 +307,6 @@ Red, **Security update required!**, with the release to update to, and links to 
 ![The Status report with the Drupal core update status error at the top](images/20-core-status-report-security.png)
 *Figure 20.6: The Status report shows it too*
 
-%% For the author: the figure also shows "Mismatched entity and/or field definitions" for user.field_about_me and user.field_camera. That error is on the club's core site anyway (state ch20-start), not caused by the downgrade; see PROJECT-LOG open items. Retake the figure once it's sorted out. %%
-
 Now put it right. Change the line in `composer.json` back to `"^12"`, and update:
 
 ```bash

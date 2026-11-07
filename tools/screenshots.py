@@ -4315,7 +4315,9 @@ def ai19_ask(page: Page, prompt: str, at_least: int = 30, quiet: int = 20, shot=
         last = text
         # The assistant shows "Contacting agents..." while its agents work, and Canvas AI "Thinking":
         # either can last minutes without a change.
-        busy = "Contacting agents" in text or page.get_by_text("Thinking", exact=True).count() > 0
+        # Only a visible "Thinking" counts: Claude's answers leave a hidden one behind.
+        thinking = page.get_by_text("Thinking", exact=True)
+        busy = "Contacting agents" in text or any(thinking.nth(i).is_visible() for i in range(thinking.count()))
         if waited >= at_least and len(text) > before + 100 and still >= quiet and not busy:
             # Show the newest question and answer from their start.
             page.evaluate("() => { const m = document.querySelector('deep-chat').shadowRoot.querySelector('#messages'); const users = m.querySelectorAll('.user-message'); if (users.length) users[users.length - 1].scrollIntoView(); }")
@@ -4564,7 +4566,8 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     drush_php(site, r"""
 $config = \Drupal::configFactory()->getEditable('ai.settings');
 $defaults = $config->get('default_providers');
-foreach (['chat', 'chat_with_complex_json', 'chat_with_image_vision', 'chat_with_structured_response', 'chat_with_tools'] as $op) {
+// Not Chat with Complex JSON: ai_provider_anthropic 1.2.2 lists no Claude 5 models there (fixed in 1.3), so the chapter leaves it on amazee.ai.
+foreach (['chat', 'chat_with_image_vision', 'chat_with_structured_response', 'chat_with_tools'] as $op) {
   $defaults[$op] = ['provider_id' => 'anthropic', 'model_id' => 'claude-sonnet-5-5'];
 }
 $config->set('default_providers', $defaults)->save();
@@ -4601,16 +4604,14 @@ $config->set('default_providers', $defaults)->save();
         if alt.input_value():
             break
     print("--- Alt text\n" + alt.input_value())
-    scroll_to(page, "input[name*='[alt]']", offset=300)
     ai19_tidy(page)
-    snap("19-cms-anthropic-alt")
     ai19_canvas_page(page, site, AI19_PAGE)
     print("--- Canvas AI\n" + ai19_chat_text(page)[-4000:])
     snap("19-cms-anthropic-page")
 
 
 SEQUENCES = [
-    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-alt", "19-cms-anthropic-page"]),
+    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
     ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
     ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),
     ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),

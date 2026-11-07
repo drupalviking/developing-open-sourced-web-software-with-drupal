@@ -254,7 +254,7 @@ A word on names first. Anthropic is the company, and Claude is the name of its m
 2. Add credit under **Billing**. Anthropic charges in advance, and stops answering when the credit is used up, which is a good limit for a small club.
 3. Under **API keys**, select **Create key**, give it a name such as `Lens & Trail`, and copy the key. The Console shows it only once.
 
-A Claude subscription, the kind you use to chat with Claude in a browser, doesn't pay for this. The API is billed separately, even with the same login.
+A Claude subscription, the kind you use to chat with Claude in a browser, doesn't pay for this. The API is billed separately, even with the same login, and extra usage bought for a subscription doesn't count either: buy the credit in the Console. We learned this the hard way, with a site that answered every question with "Your credit balance is too low to access the Anthropic API" while the account had money on it, in the wrong place. 
 
 ### Giving the key to Drupal
 
@@ -282,12 +282,37 @@ That third step deserves a word, because its description shouts: "THAT WILL GET 
 The provider is connected, but nothing uses it yet. Remember the operation types from the dashboard: each AI feature asks for a kind of job, not a provider.
 
 1. Go to **Configuration** > **AI** > **AI Settings** (`/admin/config/ai/settings`).
-2. For **Chat**, choose **Anthropic** under **Provider**, and a model under **Model**.
-3. Do the same for the other chat rows, such as **Chat with Tools/Function Calling** and **Chat with Image Vision**, and select **Save configuration**.
+2. For **Chat**, choose **Anthropic** under **Provider**. The **Model** list fills with Claude models; choose one. We used **Claude Sonnet 5.5**, the middle of Anthropic's range: Haiku is faster and cheaper, Opus slower, cleverer and more expensive.
+3. Do the same for **Chat with Image Vision** (alternative text), **Chat with Structured Response** and **Chat with Tools/Function Calling** (the assistant and Canvas AI), and select **Save configuration**.
 
-Leave the rows Anthropic can't do on amazee.ai. To go back, choose amazee.ai again: nothing else on the site changes.
+![The AI Settings page: Chat, Chat with Image Vision, Chat with Structured Response and Chat with Tools/Function Calling set to Anthropic and Claude Sonnet 5.5, Chat with Complex JSON and Text To Image still on amazee.ai](images/19-cms-ai-settings.png)
+*Figure 19.18: Anthropic for the chat jobs*
+
+Leave the rest on amazee.ai. Anthropic's models write text and read images, but they don't make images, turn speech into text, or make *embeddings* (the numbers AI search uses), so **Anthropic** isn't on offer in those rows. It isn't under **Translate Text** either, but Canvas Translate AI falls back to the chat model, so it uses Claude too.
+
+One row is odd: under **Chat with Complex JSON**, the **Model** list is empty with Anthropic. That's a bug in the Anthropic provider when we wrote this: it recognized its models by their names, and the newest names didn't match. It's fixed in the next version, which was still a beta. Until then, leave that row on amazee.ai; none of this chapter's features use it.
+
+To go back, choose amazee.ai again: nothing else on the site changes.
 
 ### The same questions, another model
+
+We asked Claude the same three things we asked amazee.ai at the start of this chapter: the tags, the alternative text for the Portobello photo, and the beginners' page from one sentence. Here's what came back.
+
+**Tags.** Twenty-five terms, in groups much like amazee.ai's: Hiking, Landscape, Wildlife, Night Sky; Munros, Arthur's Seat, Pentland Hills, Coastal Walks; Club Events, Workshops, Beginners; Camera Gear, Safety; and the four seasons. Every point from our review still applies: Title Case, "Workshops" next to "Landscape", the places that belong in Areas. Two things were better. It owned up to a mistake: "The first pass created only 24 tags because of a counting slip, so I added Night Sky to make 25." And it pointed at the next job: it hadn't checked whether the club's content has a Tags field, and offered to.
+
+![The assistant's answer beside the Tags vocabulary: it added 25 tags after a counting slip, and lists them in groups](images/19-cms-anthropic-chatbot-tags.png)
+*Figure 19.19: The same question, answered by Claude*
+
+**Alternative text.** "Wide sandy beach curving along a seafront lined with buildings, with calm blue sea and a lone figure on the sand." As good as amazee.ai's, and with the same gap: it doesn't know it's Portobello.
+
+**The page from one sentence.** This is where the comparison teaches the most. Claude's page looked as finished as amazee.ai's, and invented as much: walks of **6 to 8 km**, a timetable from **8:30** at the car park to **2:30** back at the trailhead, "your first hike is free", **reserve your place** after you create a profile, dogs on a lead on selected routes, a hike leader who reschedules in bad weather and emails registered members, and three testimonials from members who don't exist. Two of them, Daniel Okafor and Priya Nair, had the same names as in one of amazee.ai's pages. And it wrote "Lens &amp; Trail" in the heading, the title, the URL alias and the meta description, the same as before.
+
+![The Canvas editor with Claude's page: a hero headed First hike with Lens &amp; Trail, and in Page data a title, URL alias and meta description with the same mistake](images/19-cms-anthropic-page.png)
+*Figure 19.20: A different model, the same invented details and the same ampersand*
+
+So the ampersand is Canvas's mistake, not the model's: with two providers, it's the same. And the invented details aren't one model's bad habit. Every model we tried writes what a page like this usually says, unless you give it the facts. Changing provider changes the wording, the speed and the bill. It doesn't change your job.
+
+**What it cost.** The three questions, with the setup tests, cost us about 50 cents of Anthropic credit. Canvas AI was the expensive part: its agents send the page back and forth many times. The Console's **Cost** page shows it per day and per model, a few hours later. For a club that builds a page now and then, that's small; for a site where every save calls the AI, add it up before you switch it on.
 
 ## What it can't do
 

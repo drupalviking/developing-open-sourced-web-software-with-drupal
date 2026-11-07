@@ -129,7 +129,15 @@ And the honest trade-offs:
 
 ## Who makes Drupal?
 
-%% Author: your own story goes here (agreed on 2026-11-04 to write it later): how you found Drupal, what made you stay, what you've done in the community, and the moment "come for the code, stay for the community" came true for you. About half a page to a page. %%
+> **Hilmar's story: how I came to Drupal**
+>
+> The first time I started working with Drupal I started to cry. Because I realized that I was never going to write login and authentication functionality again!
+>
+> I came to Drupal in 2012, when Drupal was in 7.11 if I remember correctly. I saw very quickly the strengths Drupal had, content types, taxonomies and user management, and I quickly decided that this is where I want to point my focus at for the coming years. I came for the code.
+>
+> In 2013 I went to Prague to my first DrupalCon, where I got to know many of the great people that were behind the code. And that's where I stayed for the community. I've been with the community ever since: I'm on the Organizing Board for DrupalCon Europe since 2020, been the scoring judge for Drupal Trivia night since 2018, and co-founder of the Drupal Open University Initiative, which is the unit behind this book, Drupal in a Day and teaching Drupal in universities.
+
+%% For the author: the story is your text with three small fixes ("ever since", a comma after "user management", "the" before Drupal Open University Initiative); the box keeps "I", as a signed aside in a "we" book. Co-authors can add their own stories next to it. %%
 
 Drupal isn't made by one company. It's made by thousands of people, all over the world, and most of them never meet. They work together in public, on drupal.org, and once or twice a year many of them do meet, at DrupalCon and at the many local Drupal Camps.
 

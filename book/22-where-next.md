@@ -106,7 +106,7 @@ The community is at its best in person, and there's an event for every size:
 - **DrupalCamps**: one to three days, run by volunteers in a city or a country, with talks, often a contribution day, and tickets that cost little.
 - **DrupalCon**: the big ones, run with the Drupal Association, with thousands of people. The next DrupalCon Europe is in Edinburgh, 25 to 28 October 2027, in the club's own city. Lens & Trail could lead a walk up Arthur's Seat for the attendees. :-)
 - **Contribution days**: a day of working on issues together, usually the last day of a DrupalCon or a camp, with **mentors** who help first-timers with everything from making an account to their first merge request. If you go to one event in your life, go to the contribution day.
-- **Drupal in a Day**: a free workshop for students and newcomers, at DrupalCons and camps, where you build a site in a day. This book grew out of it. 
+- **Drupal in a Day**: a free workshop for students and newcomers, at DrupalCons and camps, where you build a site in a day. It's run by the **Drupal Open University Initiative**, which is also behind this book and the teaching of Drupal at universities. 
 
 drupal.org's [events page](https://www.drupal.org/community/events) lists them all, and you can search it by place and type.
 

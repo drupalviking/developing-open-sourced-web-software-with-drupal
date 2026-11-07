@@ -92,7 +92,7 @@ And a new way of releasing. Drupal 8 introduced **semantic versioning**, with th
 
 The rewrite came at a cost, and it's fair to say so. Drupal 8 was much harder to learn, especially for programmers used to the old style, and many contributed modules took years to be ported. Upgrading a Drupal 7 site to Drupal 8 wasn't an upgrade at all: it was a new site, with the content *migrated* over, and for many site owners it was the most expensive rebuild yet. Some people disagreed with the whole direction strongly enough to fork Drupal 7, in 2013, as **Backdrop CMS**, which is still around. That's open source working as it should: when people disagree, they can take the code and go their own way.
 
-%% Author: your own memories here? Which version did you start on, and what was the move from 7 to 8 like for you, or your clients? %%
+%% Author: your own memories here? You started on Drupal 7.11 in 2012 (your story in Chapter 2); what was the move from 7 to 8 like for you, or your clients? %%
 
 ## Easy upgrades: Drupal 9, 10 and 11 (2020 to 2024)
 

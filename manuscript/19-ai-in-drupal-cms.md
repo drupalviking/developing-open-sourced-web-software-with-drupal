@@ -14,7 +14,7 @@ Three questions come before the first click: what does it cost, where does the d
 
 **What it costs.** The AI doesn't run on your site. Drupal sends your question to an *AI provider*, a company that runs large language models on its own computers, and the provider sends an answer back. Providers charge for this, by the amount of text that goes back and forth. Drupal CMS lets you start with amazee.ai, which gives you a free trial of {{ number:amazeeio_trial_days }} days without a credit card. After that, its plans start at {{ number:amazeeio_starter_price }}. OpenAI and Anthropic, the other two providers on offer, need an account and an *API key* (a long secret password that lets your site use your account) from the start, and charge for what you use. For a small club, the bill is small, but it's never zero, and a module that calls the AI on every save can surprise you.
 
-The trial without an account is small. Ours ran out during an afternoon of testing for this chapter, in the middle of building a page, with the message "Your anonymous free trial budget has been exceeded! To continue using amazee.ai, please upgrade to a free account". From then on, every AI feature on the site failed, until we registered. So register (it's free, with an email address) before you rely on it, and know what happens on your site when the AI stops answering: the site itself keeps working, and only the AI buttons fail.
+The trial without an account is small. Ours ran out during an afternoon of testing for this chapter, in the middle of building a page, with the message "Your anonymous free trial budget has been exceeded! To continue using amazee.ai, please upgrade to a free account". From then on, every AI feature on the site failed, until we connected a second provider, Anthropic, as we show later in this chapter. That's why most figures in this chapter, from Figure 19.4 on, were taken with Anthropic's Claude, while the examples in the text come from both. So register (it's free, with an email address) before you rely on it, and know what happens on your site when the AI stops answering: the site itself keeps working, and only the AI buttons fail.
 
 **Where the data goes.** Everything you send the AI leaves your site: your question, the page you're working on, and, for alternative text, the photo itself. For Lens & Trail, that means the members' photos, and sometimes the members in them. Read your provider's terms before you send anything personal: where they keep the data, for how long, and whether they train their models on it. amazee.ai lets you choose the country your data stays in (Germany, the United Kingdom, Switzerland, the United States or Australia, when we wrote this). In Europe, the GDPR applies to photos of people too, and the club should say in its privacy policy that it uses an AI service, and which one.
 
@@ -122,7 +122,7 @@ Its answer isn't always as good as its work. In one of our runs, it started with
 
 So go to **Structure** > **Media types** > **Image** > **Manage fields**, and open the new field. Everything from Chapter 7 still applies, and you're the one who knows the answers:
 
-- **Create referenced entities if they don't already exist** was on when we tried it. That means anyone who adds a photo can make a new tag by typing it, and a misspelling becomes a tag forever. For a curated list like the one we cleaned up, switch it off, or only allow it for the editors.
+- **Create referenced entities if they don't already exist** was on in some of our runs and off in another, so check it. When it's on, anyone who adds a photo can make a new tag by typing it, and a misspelling becomes a tag forever. For a curated list like the one we cleaned up, switch it off, or only allow it for the editors.
 - Is the field in the right place on the form, with a useful label and help text?
 - Who sees the tags on a photo, and do they link anywhere useful? A tag's page lists content, not media (Chapter 13), so a link from a photo's tag leads to pages, not to other photos.
 
@@ -140,8 +140,6 @@ Before the photo goes anywhere, Klaro asks whether it may **Transfer image and m
 *Figure 19.9: Klaro asks before the photo leaves the site*
 
 Select **Yes (this time)**, then **Generate with AI** under the **Alternative text** field. A few seconds later, the field has a description.
-
-%% For the author: figure to retake. The amazee.ai anonymous trial ran out during the last screenshot run (2026-11-06), so this figure shows a failed or unfinished run. Register the CMS test site with amazee.ai (Configuration > AI > Providers), then run `tools/screenshots.py 19`. %%
 
 ![The Alternative text field, filled in by the AI with a description of a sandy beach, calm blue water and seafront buildings](images/19-cms-alt-generated.png)
 *Figure 19.10: Alternative text, written by the AI*
@@ -172,8 +170,6 @@ The club needs a page for beginners: what to bring, what happens on the day, and
 ![The Canvas editor with the AI panel open on the left and the prompt typed into its Build me a box](images/19-cms-canvas-ai-prompt.png)
 *Figure 19.12: Describing a page to Canvas AI*
 
-%% For the author: figure to retake. The amazee.ai anonymous trial ran out during the last screenshot run (2026-11-06), so this figure shows a failed or unfinished run. Register the CMS test site with amazee.ai (Configuration > AI > Providers), then run `tools/screenshots.py 19`. %%
-
 ![The page Canvas AI built: a hero with the title and a button, the start of a What to bring section, and the AI's summary of what it did and what to check in the panel](images/19-cms-canvas-ai-page.png)
 *Figure 19.13: A whole page, a few minutes later*
 
@@ -196,9 +192,7 @@ A better prompt gets a better page. Make a second page, and this time give Canva
 >
 > *Create a landing page called First hike with Lens & Trail, for people who have never been on a hike with the club. Use only these facts and do not invent any others: hikes are every other Saturday at 9:30; we email the meeting point a week before to the people who are coming; you don't need to book, just come along; bring boots, a waterproof jacket, a warm layer, food, your camera and a head torch; the path can be steep and muddy; to become a member, talk to the club secretary on the day or email hello@lens-and-trail-cms.ddev.site; membership is £20 a year (£10 for students). No testimonials, no prices other than these, and no images.*
 
-%% For the author: figure to retake. The amazee.ai anonymous trial ran out during the last screenshot run (2026-11-06), so this figure shows a failed or unfinished run. Register the CMS test site with amazee.ai (Configuration > AI > Providers), then run `tools/screenshots.py 19`. %%
-
-![The second page Canvas AI built, from the prompt with the club's facts: a hero that says hikes are every other Saturday at 9:30 with no need to book](images/19-cms-canvas-ai-facts.png)
+![The second page Canvas AI built, from the prompt with the club's facts: a blue hero with What to bring and How to join buttons, and a section called The basics](images/19-cms-canvas-ai-facts.png)
 *Figure 19.14: The same page, with the facts in the prompt*
 
 When we tried it, nothing was invented. What was left to review was ordinary editing, such as, in one of our runs:
@@ -213,8 +207,6 @@ That's the lesson of this section. AI is good at layout and wording, and it'll i
 
 Both pages had one more mistake, and it's not the AI's fault alone. The club's name has an ampersand, "&", and Canvas AI wrote it as `&amp;`, the code HTML uses for an ampersand: `First hike with Lens &amp; Trail` in the heading, in the page title, in the meta description, and in the URL alias, `/first-hike-with-lens-amp-trail...`. When we tested it, the AI even warned us that this might happen. Somewhere between the AI and Canvas, the text is encoded twice.
 
-%% For the author: no issue for this in the Canvas issue queue (searched 6 Nov 2026: ampersand, &amp, escaped, decode). Leave it, write a patch and file an issue, or work around it? For now the chapter has readers fix it by hand. %%
-
 So, before you publish:
 
 1. Select the page's heading in the preview, and fix the text in the component's form on the right.
@@ -223,8 +215,6 @@ So, before you publish:
 4. Point the buttons at real pages: **Become a member** to How to join, and so on.
 
 Then publish. Select **Review changes** at the top right (the button counts them, such as **Review 2 changes**): Canvas lists every page with unpublished changes, including the first page Canvas AI made. Check only *First hike with Lens & Trail*, and publish it.
-
-%% For the author: figure to retake. The amazee.ai anonymous trial ran out during the last screenshot run (2026-11-06), so this figure shows a failed or unfinished run. Register the CMS test site with amazee.ai (Configuration > AI > Providers), then run `tools/screenshots.py 19`. %%
 
 ![The Unpublished changes list in Canvas, with only First hike with Lens & Trail checked](images/19-cms-review-changes.png)
 *Figure 19.15: Publish only the page you've reviewed*
@@ -239,8 +229,6 @@ In Chapter 18, we translated How to join into Spanish in Canvas Translate, field
 2. Go to the Canvas Translate dashboard (Chapter 18), and select *First hike with Lens & Trail*.
 3. Select **AI translate empty**.
 
-%% For the author: figure to retake. The amazee.ai anonymous trial ran out during the last screenshot run (2026-11-06), so this figure shows a failed or unfinished run. Register the CMS test site with amazee.ai (Configuration > AI > Providers), then run `tools/screenshots.py 19`. %%
-
 ![Canvas Translate with the English page on the left and the AI's Spanish suggestions filled in on the right](images/19-cms-translate-ai.png)
 *Figure 19.16: Spanish suggestions for every empty field*
 
@@ -253,8 +241,6 @@ The button fills every *empty* translation field. It never overwrites a translat
 - **Read it aloud.** A machine translation is often correct, word by word, and still not how anyone would say it.
 
 So the AI does the typing, and Lucía does the translating. On a page with fifty-odd fields, that saves most of the typing, and that's a fair description of what AI can do for a translator.
-
-%% For the author: the examples above are from a test run on 2026-11-06; figure 19.16 is from another run, so its Spanish may differ in the details. %%
 
 ## A second provider: Anthropic
 
@@ -302,7 +288,7 @@ The provider is connected, but nothing uses it yet. Remember the operation types
 ![The AI Settings page: Chat, Chat with Image Vision, Chat with Structured Response and Chat with Tools/Function Calling set to Anthropic and Claude Sonnet 5.5, Chat with Complex JSON and Text To Image still on amazee.ai](images/19-cms-ai-settings.png)
 *Figure 19.18: Anthropic for the chat jobs*
 
-Leave the rest on amazee.ai. Anthropic's models write text and read images, but they don't make images, turn speech into text, or make *embeddings* (the numbers AI search uses), so **Anthropic** isn't on offer in those rows. It isn't under **Translate Text** either, but Canvas Translate AI falls back to the chat model, so it uses Claude too.
+Leave the rest on amazee.ai. Anthropic's models write text and read images, but they don't make images, turn speech into text, or make *embeddings* (the numbers AI search uses), so **Anthropic** isn't on offer in those rows. It isn't under **Translate Text** either. Canvas Translate AI uses the **Translate Text** provider if there is one, and the chat model if there isn't. So to translate with Claude too, choose **No default** under **Translate Text**.
 
 One row is odd: under **Chat with Complex JSON**, the **Model** list is empty with Anthropic. That's a bug in the Anthropic provider when we wrote this: it recognized its models by their names, and the newest names didn't match. It's fixed in the next version, which was still a beta. Until then, leave that row on amazee.ai; none of this chapter's features use it.
 

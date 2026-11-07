@@ -4295,7 +4295,7 @@ def ai19_chat_text(page: Page) -> str:
     return page.evaluate("() => { const c = document.querySelector('deep-chat'); const m = c && c.shadowRoot && c.shadowRoot.querySelector('#messages'); return m ? m.innerText : ''; }")
 
 
-def ai19_ask(page: Page, prompt: str, at_least: int = 30, quiet: int = 20, shot=None) -> str:
+def ai19_ask(page: Page, prompt: str, at_least: int = 30, quiet: int = 20, shot=None, done=None) -> str:
     """Types a prompt into the AI chat, sends it, and waits until the answer has stopped growing for `quiet` seconds."""
     before = len(ai19_chat_text(page))
     # Away from the navigation sidebar, which opens under the mouse and covers the chat.
@@ -4307,24 +4307,27 @@ def ai19_ask(page: Page, prompt: str, at_least: int = 30, quiet: int = 20, shot=
         shot()
     page.keyboard.press("Enter")
     waited, still, last = 0, 0, ""
-    while waited < 600:
+    while waited < 900:
         page.wait_for_timeout(5000)
         waited += 5
         text = ai19_chat_text(page)
         still = still + 5 if text == last else 0
         last = text
-        # The assistant shows "Contacting agents..." while its agents work, and Canvas AI "Thinking":
-        # either can last minutes without a change.
-        # Only a visible "Thinking" counts: Claude's answers leave a hidden one behind.
-        thinking = page.get_by_text("Thinking", exact=True)
-        busy = "Contacting agents" in text or any(thinking.nth(i).is_visible() for i in range(thinking.count()))
+        # The assistant shows "Contacting agents..." while its agents work. Canvas AI shows "Thinking", but
+        # with Claude that stays on screen after the answer, so Canvas pages pass their own `done` instead.
+        if done:
+            finished = done(page)
+        else:
+            thinking = page.get_by_text("Thinking", exact=True)
+            finished = not any(thinking.nth(i).is_visible() for i in range(thinking.count()))
+        busy = "Contacting agents" in text or not finished
         if waited >= at_least and len(text) > before + 100 and still >= quiet and not busy:
             # Show the newest question and answer from their start.
             page.evaluate("() => { const m = document.querySelector('deep-chat').shadowRoot.querySelector('#messages'); const users = m.querySelectorAll('.user-message'); if (users.length) users[users.length - 1].scrollIntoView(); }")
             page.mouse.move(1100, 700)
             page.wait_for_timeout(1000)
             return text
-    raise RuntimeError("The AI didn't answer within ten minutes")
+    raise RuntimeError("The AI didn't answer within fifteen minutes")
 
 
 def ai19_klaro_yes(page: Page, within: str = "body") -> None:
@@ -4361,15 +4364,18 @@ def ai19_canvas_page(page: Page, site: dict, prompt: str, shot_prompt=None) -> N
     page.wait_for_timeout(6000)
     page.get_by_label("Open AI Panel").click()
     page.wait_for_timeout(2500)
-    ai19_ask(page, prompt, at_least=180, quiet=45, shot=(lambda: shot_prompt()) if shot_prompt else None)
+    # Done when Canvas AI has put its changes on the page: the Review button counts them.
+    ai19_ask(page, prompt, at_least=180, quiet=45, shot=(lambda: shot_prompt()) if shot_prompt else None,
+             done=lambda p: p.locator("button:has-text('Review')").filter(has_text="change").count() > 0)
     page.wait_for_timeout(3000)
 
 
 def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     """Chapter 19 on Drupal CMS: the AI Assistant, the chatbot, alt text, Canvas AI and Canvas Translate AI.
 
-    Starts from the end of Chapter 18 (a DDEV snapshot). Talks to amazee.ai's free trial, so it needs
-    the internet, and the AI's answers (and so the screenshots) are different every time.
+    Starts from the end of Chapter 18 (a DDEV snapshot). Installs with amazee.ai, as the chapter does, then
+    switches to Anthropic for the AI steps (needs the author's key), so it needs the internet, costs a little,
+    and the AI's answers (and so the screenshots) are different every time.
     """
     url = site["url"]
     subprocess.run(["ddev", "snapshot", "restore", "ch18-done"], cwd=site["dir"], check=True, capture_output=True)
@@ -4404,6 +4410,9 @@ def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     page.evaluate("() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); }")
     ai19_tidy(page)
     snap("19-cms-ai-dashboard")
+    # The figures from here on are taken with Anthropic: amazee.ai's trial without an account runs out after
+    # a few runs (the chapter says so). Needs the key, see ai19_anthropic_key().
+    ai19_use_anthropic(page, site)
 
     # The chatbot: tags, then a field.
     tags = url + "/admin/structure/taxonomy/manage/tags/overview"
@@ -4520,16 +4529,13 @@ def ai19_anthropic_key() -> str:
     return key
 
 
-def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 19, the second provider: Anthropic's key and settings, then the same questions as with amazee.ai.
+def ai19_use_anthropic(page: Page, site: dict, snap=None) -> None:
+    """Connects Anthropic the way the chapter does: a key, the provider, and AI Settings.
 
-    Starts right after the AI Assistant was installed (a DDEV snapshot). Without a key (see ai19_anthropic_key),
-    it only takes the provider page, with no key selected.
+    The key comes from ai19_anthropic_key(). With `snap`, takes the provider page and AI Settings
+    (figures 19.17 and 19.18); without a key, takes only the provider page and returns.
     """
     url = site["url"]
-    subprocess.run(["ddev", "snapshot", "restore", "ch19-ai-installed"], cwd=site["dir"], check=True, capture_output=True)
-    drush(site, "cache:rebuild")
-    log_in(page, site)
     key = ai19_anthropic_key()
     if key:
         page.goto(url + "/admin/config/system/keys/add")
@@ -4554,15 +4560,19 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     if key:
         page.select_option("select[name='api_key']", label="Anthropic API key")
         page.wait_for_timeout(1000)
-    snap("19-cms-anthropic")
+    if snap:
+        snap("19-cms-anthropic")
     if not key:
-        print("No Anthropic API key: skipping the rest of the Anthropic sequence.")
-        return
+        if snap:
+            print("No Anthropic API key: skipping the rest of the Anthropic sequence.")
+            return
+        raise RuntimeError("No Anthropic API key: see ai19_anthropic_key()")
     page.locator("#edit-submit").first.evaluate("e => e.click()")
     page.wait_for_load_state("networkidle")
 
-    # AI Settings: Anthropic, Claude Sonnet 5.5, for every chat operation type. Set with Drush (the page's
-    # selects load their models by AJAX, which is unreliable from a script), then shown on the page.
+    # AI Settings: Anthropic, Claude Sonnet 5.5, for the chat jobs, and no default for Translate Text, so
+    # Canvas Translate AI falls back to chat. Set with Drush (the page's selects load their models by AJAX,
+    # which is unreliable from a script), then shown on the page.
     drush_php(site, r"""
 $config = \Drupal::configFactory()->getEditable('ai.settings');
 $defaults = $config->get('default_providers');
@@ -4570,13 +4580,30 @@ $defaults = $config->get('default_providers');
 foreach (['chat', 'chat_with_image_vision', 'chat_with_structured_response', 'chat_with_tools'] as $op) {
   $defaults[$op] = ['provider_id' => 'anthropic', 'model_id' => 'claude-sonnet-5-5'];
 }
+unset($defaults['translate_text']);
 $config->set('default_providers', $defaults)->save();
 """)
-    page.goto(url + "/admin/config/ai/settings")
-    page.wait_for_load_state("networkidle")
-    page.wait_for_timeout(1500)
-    ai19_tidy(page)
-    snap("19-cms-ai-settings")
+    if snap:
+        page.goto(url + "/admin/config/ai/settings")
+        page.wait_for_load_state("networkidle")
+        page.wait_for_timeout(1500)
+        ai19_tidy(page)
+        snap("19-cms-ai-settings")
+
+
+def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 19, the second provider: Anthropic's key and settings, then the same questions as with amazee.ai.
+
+    Starts right after the AI Assistant was installed (a DDEV snapshot). Without a key (see ai19_anthropic_key),
+    it only takes the provider page, with no key selected.
+    """
+    url = site["url"]
+    subprocess.run(["ddev", "snapshot", "restore", "ch19-ai-installed"], cwd=site["dir"], check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    log_in(page, site)
+    ai19_use_anthropic(page, site, snap)
+    if not ai19_anthropic_key():
+        return
 
     # The same questions as with amazee.ai: tags, alt text, and the short Canvas AI prompt.
     tags = url + "/admin/structure/taxonomy/manage/tags/overview"

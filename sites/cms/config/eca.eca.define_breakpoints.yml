@@ -1,0 +1,91 @@
+uuid: be0bc931-3286-4eaa-b962-45094072e071
+langcode: en
+status: true
+dependencies:
+  module:
+    - eca_render
+    - modeler_api
+third_party_settings:
+  modeler_api:
+    modeler_id: modeler
+    label: 'Define custom breakpoints'
+    documentation: 'Defines custom breakpoints for responsive images.'
+    version: 1.0.0
+_core:
+  default_config_hash: CN5WAtxMgGZTJ7G8g60vu3t17LH0j2Qh3kgOLH0pPH4
+id: define_breakpoints
+weight: 0
+template: null
+events:
+  eca_render__breakpoints_alter_1ni95xs:
+    plugin: 'eca_render:breakpoints_alter'
+    label: 'Alter breakpoint'
+    configuration: {  }
+    successors:
+      -
+        id: eca_render_alter_breakpoint_1ic6gni
+        condition: ''
+conditions: {  }
+gateways: {  }
+actions:
+  eca_render_alter_breakpoint_1ic6gni:
+    label: 'Define small breakpoint'
+    plugin: eca_render_alter_breakpoint
+    configuration:
+      id: custom.sm
+      definition: |-
+        label: Small
+        mediaQuery: 'all and (min-width: 500px)'
+        weight: 0
+        multipliers:
+          - 1x
+        group: custom
+    successors:
+      -
+        id: eca_render_alter_breakpoint_176h4yu
+        condition: ''
+  eca_render_alter_breakpoint_176h4yu:
+    label: 'Define medium breakpoint'
+    plugin: eca_render_alter_breakpoint
+    configuration:
+      id: custom.md
+      definition: |-
+        label: Medium
+        mediaQuery: 'all and (min-width: 700px)'
+        weight: 1
+        multipliers:
+          - 1x
+        group: custom
+    successors:
+      -
+        id: eca_render_alter_breakpoint_1k0st1k
+        condition: ''
+  eca_render_alter_breakpoint_1k0st1k:
+    label: 'Define large breakpoint'
+    plugin: eca_render_alter_breakpoint
+    configuration:
+      id: custom.lg
+      definition: |-
+        label: Large
+        mediaQuery: 'all and (min-width: 1000px)'
+        weight: 2
+        multipliers:
+          - 1x
+        group: custom
+    successors:
+      -
+        id: eca_render_alter_breakpoint_1e7f6zt
+        condition: ''
+  eca_render_alter_breakpoint_1e7f6zt:
+    label: 'Define x-large breakpoint'
+    plugin: eca_render_alter_breakpoint
+    configuration:
+      id: custom.xl
+      definition: |-
+        label: X-Large
+        mediaQuery: 'all and (min-width: 1300px)'
+        weight: 3
+        multipliers:
+          - 1x
+        group: custom
+    successors: {  }

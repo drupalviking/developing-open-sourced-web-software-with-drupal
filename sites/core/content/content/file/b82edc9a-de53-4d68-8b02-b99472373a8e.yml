@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: b82edc9a-de53-4d68-8b02-b99472373a8e
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 17
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: pentland-hills-winter.jpg
+  uri:
+    -
+      value: 'public://2026-11/pentland-hills-winter_0.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 3817231
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793888082
+  changed:
+    -
+      value: 1793888084

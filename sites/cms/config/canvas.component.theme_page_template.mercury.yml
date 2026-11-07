@@ -1,0 +1,34 @@
+uuid: ffacec23-5edd-4361-a4bb-faa53610451b
+langcode: en
+status: true
+dependencies:
+  module:
+    - canvas_page_template_component
+_core:
+  default_config_hash: UgcIqiv7OwoCAawgBroSTaAn50x7Z-2H6FXM8CYKzSE
+active_version: 15fe1e06320b1035
+versioned_properties:
+  active:
+    settings: {  }
+    fallback_metadata:
+      slot_definitions:
+        content:
+          title: Content
+          description: 'The Content region.'
+          examples:
+            - ''
+        header:
+          title: Header
+          description: 'The Header region.'
+          examples:
+            - ''
+        footer:
+          title: Footer
+          description: 'The Footer region.'
+          examples:
+            - ''
+label: 'Mercury theme page template'
+id: theme_page_template.mercury
+provider: canvas_page_template_component
+source: theme_page_template
+source_local_id: mercury

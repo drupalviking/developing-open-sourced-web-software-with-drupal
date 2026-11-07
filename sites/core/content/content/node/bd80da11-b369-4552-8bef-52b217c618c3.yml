@@ -1,0 +1,252 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: bd80da11-b369-4552-8bef-52b217c618c3
+  bundle: page
+  default_langcode: en
+default:
+  nid:
+    -
+      value: 3
+  revision_timestamp:
+    -
+      value: 1793961130
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'The next hikes and the newest photos.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Welcome to Lens & Trail'
+  created:
+    -
+      value: 1793868072
+  changed:
+    -
+      value: 1793961130
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /welcome
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_body:
+    -
+      value: "<p>We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them.</p><p>Read more about the club, or find out how to join.</p>"
+      format: basic_html
+  layout_builder__layout:
+    -
+      section:
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          4489c78c-7370-4804-81c8-6528ddfac630:
+            uuid: 4489c78c-7370-4804-81c8-6528ddfac630
+            region: content
+            configuration:
+              id: 'extra_field_block:node:page:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {}
+          7f906ec0-eecd-40c3-896f-8364ae2bdb37:
+            uuid: 7f906ec0-eecd-40c3-896f-8364ae2bdb37
+            region: content
+            configuration:
+              id: 'field_block:node:page:field_body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {}
+                third_party_settings: {}
+            weight: 1
+            additional: {}
+          ae53fc23-6133-4a38-b634-5a55f4e182c8:
+            uuid: ae53fc23-6133-4a38-b634-5a55f4e182c8
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            weight: 2
+            additional: {}
+          ab3412de-ca73-4c90-b44a-ab7432152eb8:
+            uuid: ab3412de-ca73-4c90-b44a-ab7432152eb8
+            region: content
+            configuration:
+              id: 'views_block:hikes-block_1'
+              label: ''
+              label_display: visible
+              provider: views
+              views_label: ''
+              items_per_page: null
+              context_mapping: {}
+            weight: 3
+            additional: {}
+          4605a4b8-0542-4691-9c4a-998bfe7300b8:
+            uuid: 4605a4b8-0542-4691-9c4a-998bfe7300b8
+            region: content
+            configuration:
+              id: 'views_block:photos-block_1'
+              label: ''
+              label_display: visible
+              provider: views
+              views_label: ''
+              items_per_page: null
+              context_mapping: {}
+            weight: 4
+            additional: {}
+        third_party_settings: {}
+translations:
+  es:
+    nid:
+      -
+        value: 3
+    revision_timestamp:
+      -
+        value: 1793961130
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'The next hikes and the newest photos.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Te damos la bienvenida a Lens & Trail'
+    created:
+      -
+        value: 1793868072
+    changed:
+      -
+        value: 1793961130
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /bienvenida
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_body:
+      -
+        value: '<p>Somos un club de fotografía y senderismo en Edimburgo. Caminamos, tomamos fotos y las compartimos.</p><p>Lee más sobre el club o descubre cómo unirte.</p>'
+        format: basic_html
+    layout_builder__layout:
+      -
+        section:
+          layout_id: layout_onecol
+          layout_settings:
+            label: ''
+          components:
+            4489c78c-7370-4804-81c8-6528ddfac630:
+              uuid: 4489c78c-7370-4804-81c8-6528ddfac630
+              region: content
+              configuration:
+                id: 'extra_field_block:node:page:links'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+              weight: 0
+              additional: {}
+            7f906ec0-eecd-40c3-896f-8364ae2bdb37:
+              uuid: 7f906ec0-eecd-40c3-896f-8364ae2bdb37
+              region: content
+              configuration:
+                id: 'field_block:node:page:field_body'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: text_default
+                  label: hidden
+                  settings: {}
+                  third_party_settings: {}
+              weight: 1
+              additional: {}
+            ae53fc23-6133-4a38-b634-5a55f4e182c8:
+              uuid: ae53fc23-6133-4a38-b634-5a55f4e182c8
+              region: content
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'extra_field_block:node:page:content_moderation_control'
+              weight: 2
+              additional: {}
+            ab3412de-ca73-4c90-b44a-ab7432152eb8:
+              uuid: ab3412de-ca73-4c90-b44a-ab7432152eb8
+              region: content
+              configuration:
+                id: 'views_block:hikes-block_1'
+                label: ''
+                label_display: visible
+                provider: views
+                views_label: ''
+                items_per_page: null
+                context_mapping: {}
+              weight: 3
+              additional: {}
+            4605a4b8-0542-4691-9c4a-998bfe7300b8:
+              uuid: 4605a4b8-0542-4691-9c4a-998bfe7300b8
+              region: content
+              configuration:
+                id: 'views_block:photos-block_1'
+                label: ''
+                label_display: visible
+                provider: views
+                views_label: ''
+                items_per_page: null
+                context_mapping: {}
+              weight: 4
+              additional: {}
+          third_party_settings: {}

@@ -1,0 +1,29 @@
+uuid: b2a04365-4db9-488a-b353-0089c96f88e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.photos
+  module:
+    - system
+    - views
+  theme:
+    - olivero
+id: olivero_newest_photos
+theme: olivero
+region: footer_top
+weight: 0
+provider: null
+plugin: 'views_block:photos-block_1'
+settings:
+  id: 'views_block:photos-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '<front>'

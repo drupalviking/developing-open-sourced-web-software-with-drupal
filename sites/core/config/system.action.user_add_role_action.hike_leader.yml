@@ -1,0 +1,14 @@
+uuid: ee12ac78-94c4-46fc-8a79-5637025a747b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.hike_leader
+  module:
+    - user
+id: user_add_role_action.hike_leader
+label: 'Add the Hike leader role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: hike_leader

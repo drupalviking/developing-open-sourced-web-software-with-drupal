@@ -1,0 +1,5 @@
+_core:
+  default_config_hash: TCg8iYeGecZ1Wy8jVHZSBCdkpyDi1F44QBgsp0daMHE
+max_age: 86400
+cron_interval: 21600
+limit: 5

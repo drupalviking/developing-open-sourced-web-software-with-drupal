@@ -1,0 +1,55 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 0ff24d85-6c7a-4daf-afae-503494ea60c2
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 10
+  preferred_langcode:
+    -
+      value: en
+  preferred_admin_langcode:
+    -
+      value: en
+  name:
+    -
+      value: ailsa
+  pass:
+    -
+      value: '$argon2id$v=19$m=65536,t=4,p=1$d3ExR21JWlduQlEyV1MvMQ$VGafRiLYuZr0ZNkX2BZ2d7h9Iih+7dTA1Yl2bFAEiXs'
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: ailsa@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793972384
+  changed:
+    -
+      value: 1793972387
+  access:
+    -
+      value: 1793973657
+  login:
+    -
+      value: 1793973657
+  init:
+    -
+      value: ailsa@example.com
+  roles:
+    -
+      target_id: member
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0

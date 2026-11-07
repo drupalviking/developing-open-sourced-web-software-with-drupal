@@ -1,0 +1,11 @@
+settings:
+  allowed_values:
+    -
+      value: easy
+      label: Fácil
+    -
+      value: moderate
+      label: Moderada
+    -
+      value: hard
+      label: Difícil

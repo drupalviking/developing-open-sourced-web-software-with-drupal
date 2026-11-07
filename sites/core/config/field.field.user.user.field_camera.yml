@@ -1,0 +1,20 @@
+uuid: f2febf05-b35f-45fb-83fb-a04d1ce41181
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_camera
+  module:
+    - user
+id: user.user.field_camera
+field_name: field_camera
+entity_type: user
+bundle: user
+label: Camera
+description: ''
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: string

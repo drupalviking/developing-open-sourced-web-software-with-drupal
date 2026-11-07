@@ -1,0 +1,92 @@
+uuid: b9291979-27da-464f-9656-765d1fe5323c
+langcode: en
+status: true
+dependencies:
+  module:
+    - canvas
+    - canvas_ai
+  enforced:
+    module:
+      - canvas_ai
+_core:
+  default_config_hash: yaXCyeei2jqqswKdhxrNzAm8I1EvYEuhws0NtauLdSM
+id: canvas_title_generation_agent
+label: 'Drupal Canvas Title Generation Agent'
+description: 'This agent focuses solely on generating new title and editing existing title for Drupal Canvas. It ensures that the created or edited title matches user-provided guidelines and specifications.'
+system_prompt: |-
+  Infer the intent based on the information provided by the agent and then decide whether it is a content editing or content generation (content creation) task.
+  Super important:
+
+  * If it is a content editing task, absolutely never take the *layout* context into consideration. Completely ignore any value in the *layout* context when editing or refining content. Only fetch and use the entity field content that is to be edited.
+  * If it is a content generation task, then (and only then) consider the *layout* context . Use the *layout* context strictly for generating new content—never for editing.
+
+  Instructions for Content Creation (Content Generation):
+  If the user has asked for content creation or generation, generate and return content using only the ai_agent_create_field_content tool (when entity_type is 'Canvas Page').
+  Output the created content using the following JSON format only if the field exists.
+  Use the ai_agent_create_field_content tool to get the JSON.
+
+  Instructions for Content Editing:
+  If the user asks for refinement, correction, or editing of content in any specific field (such as "fix grammar for title"), always follow this process:
+  Step 1: Use the page title content for editing.
+  Absolutely never use or consider the *layout* context for editing or refining content.
+  Step 2: Edit the Retrieved Content:
+  Pass the page title to the ai_agent_edit_field_content tool along with the user's editing instructions (such as "fix grammar").
+  Carry out the required refinements.
+  Step 3: Output:
+
+  Return the refined content in plain text and do not reference backend tools in your answer.
+  Important clarifications:
+
+  Never ask the user for the current content or value of a field when they request an edit—always fetch it directly.
+  NEVER use, mention, or take into account the layout or its value for any editing task. Layout context is ONLY for new content generation.
+  Always preserve the original tone, structure, and meaning unless the user requests broader changes.
+  When generating the title, keep it in 5-15 words unless the user specifies the length for it.
+secured_system_prompt: '[ai_agent:agent_instructions]'
+tools:
+  'ai_agent:create_field_content': true
+  'ai_agent:edit_field_content': true
+tool_settings:
+  'ai_agent:create_field_content':
+    return_directly: 0
+    require_usage: 0
+    restrict_multiple_calls: 0
+    multiple_call_error_message: ''
+    description_override: ''
+    progress_message: ''
+    use_artifacts: 0
+  'ai_agent:edit_field_content':
+    return_directly: 0
+    require_usage: 0
+    restrict_multiple_calls: 0
+    multiple_call_error_message: ''
+    description_override: ''
+    progress_message: ''
+    use_artifacts: 0
+orchestration_agent: false
+triage_agent: false
+max_loops: 5
+max_loops_message: ''
+default_information_tools: |
+  get_entity_context:
+    label: 'Get entity context'
+    description: 'This context information is passed to all other tools used by this agent'
+    tool: 'ai_agent:get_entity_information'
+    parameters:
+      entity_type: '[canvas_ai:entity_type]'
+      entity_id: '[canvas_ai:entity_id]'
+      layout: '[canvas_ai:layout]'
+  get_page_data:
+    label: 'Get page data'
+    description: 'Page data'
+    tool: 'ai_agent:get_page_data'
+    parameters:
+      page_title: '[canvas_ai:page_title]'
+tool_usage_limits:
+  'ai_agent:create_field_content': {  }
+  'ai_agent:edit_field_content': {  }
+exclude_users_role: false
+masquerade_roles: {  }
+structured_output_enabled: false
+structured_output_schema: ''
+hostname_filter_disabled: false
+guardrail_set: ''

@@ -1,0 +1,95 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+  bundle: areas
+  default_langcode: en
+  depends:
+    340df1ea-778c-41c6-9b4f-d4175689833b: media
+default:
+  tid:
+    -
+      value: 55
+  revision_created:
+    -
+      value: 1793891689
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Pentland Hills'
+  description:
+    -
+      value: "<p>A range of hills south-west of Edinburgh, most of it a regional park. The club's favourite: a bus from the city centre takes you to the foot of the hills.</p>"
+      format: basic_html
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1793892172
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/pentland-hills
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_photo:
+    -
+      entity: 340df1ea-778c-41c6-9b4f-d4175689833b
+translations:
+  es:
+    tid:
+      -
+        value: 55
+    revision_created:
+      -
+        value: 1793891689
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'Pentland Hills'
+    description:
+      -
+        value: '<p>Una cadena de colinas al suroeste de Edimburgo, casi toda parque regional. La favorita del club: un autobús desde el centro te deja al pie de las colinas.</p>'
+        format: basic_html
+    weight:
+      -
+        value: 0
+    changed:
+      -
+        value: 1793892172
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/pentland-hills
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391
+    field_photo:
+      -
+        entity: 340df1ea-778c-41c6-9b4f-d4175689833b

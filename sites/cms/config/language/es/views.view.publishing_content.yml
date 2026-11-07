@@ -1,0 +1,104 @@
+display:
+  default:
+    display_options:
+      fields:
+        node_bulk_form:
+          action_title: Acción
+        title:
+          label: Título
+          separator: ', '
+        uid:
+          label: Autor
+          separator: ', '
+        created:
+          separator: ', '
+        changed:
+          label: 'Fecha de modificación'
+          separator: ', '
+        status:
+          label: Publicado
+          separator: ', '
+        operations:
+          label: Operaciones
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« Primero'
+            last: 'Último »'
+          expose:
+            items_per_page_label: 'Elementos por página'
+            items_per_page_options_all_label: '- Todo -'
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        moderation_state:
+          expose:
+            label: 'Estado de moderación'
+        uid:
+          expose:
+            label: 'Escrito por'
+        combine:
+          expose:
+            label: Contiene
+        type:
+          expose:
+            label: Tipo
+      use_more_text: más
+  block_drafts:
+    display_options:
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        changed:
+          label: 'Fecha de modificación'
+          separator: ', '
+        operations:
+          label: Operaciones
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      arguments:
+        uid:
+          exception:
+            title: Todo(s)
+      block_category: 'Panel de control'
+  block_scheduled:
+    display_options:
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        unpublish_on:
+          label: 'Quitar publicación en'
+          separator: ', '
+        publish_on:
+          separator: ', '
+        operations:
+          label: Operaciones
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        publish_on:
+          expose:
+            label: 'Publicar en'
+        unpublish_on:
+          expose:
+            label: 'Quitar publicación en'
+      block_category: 'Panel de control'

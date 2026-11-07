@@ -1,0 +1,108 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 2201686d-ee47-464f-95de-26d701f49ae9
+  bundle: page
+  default_langcode: en
+default:
+  nid:
+    -
+      value: 21
+  revision_timestamp:
+    -
+      value: 1793969914
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: Privacy
+  created:
+    -
+      value: 1793969912
+  changed:
+    -
+      value: 1793969914
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /privacy
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_body:
+    -
+      value: '<p>Lens &amp; Trail keeps only what it needs to run the club: your name and email address if you join, and the photos you choose to share. We never sell or pass on your details.</p>'
+      format: basic_html
+translations:
+  es:
+    nid:
+      -
+        value: 21
+    revision_timestamp:
+      -
+        value: 1793969914
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: Privacidad
+    created:
+      -
+        value: 1793969912
+    changed:
+      -
+        value: 1793969914
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /privacidad
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_body:
+      -
+        value: '<p>Lens &amp; Trail solo guarda lo que necesita para llevar el club: tu nombre y tu dirección de correo electrónico si te haces miembro, y las fotos que decides compartir. Nunca vendemos ni cedemos tus datos.</p>'
+        format: basic_html

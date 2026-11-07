@@ -1,0 +1,6 @@
+recipe: 'Content editor role'
+config:
+  -
+    name: user.role.content_editor
+    data:
+      label: 'Content editor'

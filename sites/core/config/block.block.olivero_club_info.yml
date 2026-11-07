@@ -1,0 +1,23 @@
+uuid: 532f387c-bf28-41de-a187-f6a8e95140dd
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:club_info:19f6c629-4f13-4a62-9800-aaaf8e48385d'
+  module:
+    - block_content
+  theme:
+    - olivero
+id: olivero_club_info
+theme: olivero
+region: footer_top
+weight: -10
+provider: null
+plugin: 'block_content:19f6c629-4f13-4a62-9800-aaaf8e48385d'
+settings:
+  id: 'block_content:19f6c629-4f13-4a62-9800-aaaf8e48385d'
+  label: 'Club info'
+  label_display: '0'
+  provider: block_content
+  view_mode: full
+visibility: {}

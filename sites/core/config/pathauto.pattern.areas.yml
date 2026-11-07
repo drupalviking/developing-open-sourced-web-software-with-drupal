@@ -1,0 +1,23 @@
+uuid: b5bbfe2c-283e-49d0-b851-e6de5b284601
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.areas
+  module:
+    - taxonomy
+id: areas
+label: Areas
+type: 'canonical_entities:taxonomy_term'
+pattern: '/areas/[term:parents:join-path]/[term:name]'
+selection_criteria:
+  6d27df8a-368b-4fae-9bba-d1e575003e18:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      areas: areas
+selection_logic: and
+weight: -5
+relationships: {}

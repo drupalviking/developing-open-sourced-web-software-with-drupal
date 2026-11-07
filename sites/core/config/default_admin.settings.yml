@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: oeIBkii0Q6H6mzZD2YTleLnFdK4bGITwm3E5rei7wpI
+preset_accent_color: blue
+preset_focus_color: default
+enable_dark_mode: auto
+high_contrast_mode: false
+accent_color: ''
+focus_color: ''
+layout_density: default
+show_description_toggle: false
+show_user_theme_settings: false

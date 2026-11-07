@@ -1,0 +1,93 @@
+diff --git a/core/modules/content_translation/src/Access/ContentTranslationManageAccessCheck.php b/core/modules/content_translation/src/Access/ContentTranslationManageAccessCheck.php
+index f8a2018416049058deee80b93c4f702e5c769f22..52f34822fddc92b709949639385f07f72a1d5ea7 100644
+--- a/core/modules/content_translation/src/Access/ContentTranslationManageAccessCheck.php
++++ b/core/modules/content_translation/src/Access/ContentTranslationManageAccessCheck.php
+@@ -88,8 +88,10 @@ public function access(Route $route, RouteMatchInterface $route_match, AccountIn
+           $handler = $this->entityTypeManager->getHandler($entity->getEntityTypeId(), 'translation');
+           $translations = $entity->getTranslationLanguages();
+           $languages = $this->languageManager->getLanguages();
+-          $source_language = $this->languageManager->getLanguage($source) ?: $entity->language();
+-          $target_language = $this->languageManager->getLanguage($target) ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
++          $source_language = $source !== NULL ? $this->languageManager->getLanguage($source) : NULL;
++          $source_language ??= $entity->language();
++          $target_language = $target !== NULL ? $this->languageManager->getLanguage($target) : NULL;
++          $target_language ??= $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+           $is_new_translation = ($source_language->getId() != $target_language->getId()
+             && isset($languages[$source_language->getId()])
+             && isset($languages[$target_language->getId()])
+diff --git a/core/modules/content_translation/tests/src/Kernel/ContentTranslationManageAccessCheckTest.php b/core/modules/content_translation/tests/src/Kernel/ContentTranslationManageAccessCheckTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..a07c64b653da30dc7832176fa2ba1f09cb66a42c
+--- /dev/null
++++ b/core/modules/content_translation/tests/src/Kernel/ContentTranslationManageAccessCheckTest.php
+@@ -0,0 +1,70 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\content_translation\Kernel;
++
++use Drupal\content_translation\Access\ContentTranslationManageAccessCheck;
++use Drupal\Core\Routing\RouteMatch;
++use Drupal\Core\Session\AnonymousUserSession;
++use Drupal\entity_test\Entity\EntityTestMul;
++use Drupal\KernelTests\KernelTestBase;
++use Drupal\language\Entity\ConfigurableLanguage;
++use PHPUnit\Framework\Attributes\CoversClass;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Kernel tests for ContentTranslationManageAccessCheck.
++ */
++#[CoversClass(ContentTranslationManageAccessCheck::class)]
++#[Group('content_translation')]
++#[RunTestsInSeparateProcesses]
++class ContentTranslationManageAccessCheckTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'content_translation',
++    'entity_test',
++    'language',
++    'user',
++    'system',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->installEntitySchema('entity_test_mul');
++    ConfigurableLanguage::createFromLangcode('fr')->save();
++    $this->container->get('content_translation.manager')->setEnabled('entity_test_mul', 'entity_test_mul', TRUE);
++    $this->container->get('entity_type.manager')->clearCachedDefinitions();
++    $this->container->get('router.builder')->rebuild();
++  }
++
++  /**
++   * Tests create translation access when source and/or target params are NULL.
++   *
++   * @legacy-covers ::access
++   */
++  public function testCreateAccessWithNullSourceOrTarget(): void {
++    $entity = EntityTestMul::create(['langcode' => 'en']);
++    $entity->save();
++
++    $route_name = 'entity.entity_test_mul.content_translation_add';
++    $route = $this->container->get('router.route_provider')->getRouteByName($route_name);
++    $route_match = new RouteMatch($route_name, $route, ['entity_test_mul' => $entity]);
++    $account = new AnonymousUserSession();
++    $check = $this->container->get('content_translation.manage_access');
++
++    // Source set, target absent (e.g. breadcrumb checking /translations/add/en).
++    $this->assertFalse($check->access($route, $route_match, $account, 'en', NULL, NULL, 'entity_test_mul')->isAllowed());
++    // Both absent (e.g. breadcrumb checking /translations/add).
++    $this->assertFalse($check->access($route, $route_match, $account, NULL, NULL, NULL, 'entity_test_mul')->isAllowed());
++  }
++
++}

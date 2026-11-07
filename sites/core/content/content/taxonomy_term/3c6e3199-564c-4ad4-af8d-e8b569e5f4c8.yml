@@ -1,0 +1,87 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 3c6e3199-564c-4ad4-af8d-e8b569e5f4c8
+  bundle: areas
+  default_langcode: en
+default:
+  tid:
+    -
+      value: 63
+  revision_created:
+    -
+      value: 1793891704
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'East Lothian'
+  description:
+    -
+      value: '<p>The coast and hills east of Edinburgh.</p>'
+      format: basic_html
+  weight:
+    -
+      value: 2
+  changed:
+    -
+      value: 1793891711
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/east-lothian
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 63
+    revision_created:
+      -
+        value: 1793891704
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'East Lothian'
+    description:
+      -
+        value: '<p>La costa y las colinas al este de Edimburgo.</p>'
+        format: basic_html
+    weight:
+      -
+        value: 2
+    changed:
+      -
+        value: 1793891711
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/east-lothian
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391

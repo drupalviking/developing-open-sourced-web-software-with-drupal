@@ -1,0 +1,7 @@
+recipe: 'User pictures'
+config:
+  -
+    name: field.field.user.user.user_picture
+    data:
+      label: Picture
+      description: 'Your virtual face or picture.'

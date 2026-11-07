@@ -1,0 +1,57 @@
+uuid: 9048a390-b3ef-4f19-8759-36daa18ae77b
+langcode: en
+status: true
+dependencies:
+  module:
+    - eca_config
+    - eca_user
+    - modeler_api
+third_party_settings:
+  modeler_api:
+    modeler_id: workflow_modeler
+    data: 'hash:e7519cb69ef98876d8797ead16184ff7'
+    label: 'Enable moderation for new content types'
+    documentation: 'Automatically opts new content types into the content moderation workflow.'
+    version: 1.0.0
+    annotations:
+      annotation_user_switch_current_account_13ov4pt9:
+        text: 'Necessary in order to run configuration actions.'
+        assigned_to:
+          association_user_switch_current_account_13ov4pt9: user_switch_current_account_13ov4pt9
+_core:
+  default_config_hash: 6LMBZVmRrJQDCVipMSR9ar2scrJvngMxQXhMdTtb_r8
+id: auto_enable_moderation
+weight: 0
+template: false
+events:
+  save_config_je4a3bni:
+    plugin: 'config:save'
+    label: 'Content type created'
+    configuration:
+      config_name: node.type.
+      sync_mode: 'no'
+      write_mode: new
+    successors:
+      -
+        id: user_switch_current_account_13ov4pt9
+        condition: ''
+conditions: {  }
+gateways: {  }
+actions:
+  user_switch_current_account_13ov4pt9:
+    label: 'Temporarily become administrator'
+    plugin: eca_switch_account
+    configuration:
+      user_id: '1'
+    successors:
+      -
+        id: config_action_p7g4eoa9
+        condition: ''
+  config_action_p7g4eoa9:
+    label: 'Add content type to workflow'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'add_moderation:addNodeTypes'
+      config_name: workflows.workflow.basic_editorial
+      data: "['[config:type]']"
+    successors: {  }

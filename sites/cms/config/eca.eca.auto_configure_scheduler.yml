@@ -1,0 +1,233 @@
+uuid: bd051080-529c-423c-9bd5-e999d5eeb68a
+langcode: en
+status: true
+dependencies:
+  module:
+    - eca_base
+    - eca_config
+    - eca_content
+    - eca_form
+    - eca_user
+    - modeler_api
+third_party_settings:
+  modeler_api:
+    modeler_id: workflow_modeler
+    data: 'hash:e84d5c92b3a3cf5bc295fb02b57541b2'
+    label: 'Pre-configure scheduled publication for new content types'
+    documentation: 'When creating a content type in the UI, automatically configures default options for scheduled publishing and unpublishing.'
+    version: 1.0.0
+    annotations:
+      annotation_user_switch_current_account_gc8n5im2:
+        text: |
+          Necessary in order to execute configuration actions.
+        assigned_to:
+          association_user_switch_current_account_gc8n5im2: user_switch_current_account_gc8n5im2
+_core:
+  default_config_hash: ay9IjS-tDxM80CO6PUOwxSqfTdqcDe5ZPe_DjXc7BnM
+id: auto_configure_scheduler
+weight: 0
+template: false
+events:
+  build_form_kzr4as3m:
+    plugin: 'form:form_build'
+    label: 'Content type being created'
+    configuration:
+      form_ids: node_type_add_form
+      entity_type_id: ''
+      bundle: ''
+      operation: ''
+    successors:
+      -
+        id: form_field_set_default_value_wxj50fmf
+        condition: ''
+  initialize_content_entity_bundle_ad3vi72w:
+    plugin: 'content_entity:bundlecreate'
+    label: 'Content type created'
+    configuration:
+      type: 'node _all'
+    successors:
+      -
+        id: token_set_value_j7uj4fd9
+        condition: ''
+conditions:
+  edge_dck4hif1_condition:
+    plugin: eca_scalar
+    label: 'Can publishing be scheduled?'
+    configuration:
+      negate: false
+      left: '[can_publish]'
+      right: '1'
+      operator: equal
+      type: value
+      case: false
+  edge_7n7qo8gq_condition:
+    plugin: eca_scalar
+    label: 'Can unpublishing be scheduled?'
+    configuration:
+      negate: false
+      left: '[can_unpublish]'
+      right: '1'
+      operator: equal
+      type: value
+      case: false
+gateways: {  }
+actions:
+  form_field_set_default_value_wxj50fmf:
+    label: 'Enable scheduled publishing'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: scheduler_publish_enable
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors:
+      -
+        id: form_field_set_default_value_nx0p00bt
+        condition: ''
+  form_field_set_default_value_nx0p00bt:
+    label: 'Change creation time when publishing'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: scheduler_publish_touch
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors:
+      -
+        id: form_field_set_default_value_eyo34ago
+        condition: ''
+  form_field_set_default_value_eyo34ago:
+    label: 'Create new revision on publish'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: scheduler_publish_revision
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors:
+      -
+        id: form_field_set_default_value_mfo0f4yo
+        condition: ''
+  form_field_set_default_value_mfo0f4yo:
+    label: 'Enable scheduled unpublishing'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: scheduler_unpublish_enable
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors:
+      -
+        id: form_field_set_default_value_h9k8rar0
+        condition: ''
+  form_field_set_default_value_h9k8rar0:
+    label: 'Create a new revision when unpublishing'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: scheduler_unpublish_revision
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors: {  }
+  token_set_value_j7uj4fd9:
+    label: 'Rename token'
+    plugin: eca_token_set_value
+    configuration:
+      token_name: content_type
+      token_value: '[event:bundle]'
+      use_yaml: false
+      validate_yaml: false
+    successors:
+      -
+        id: user_switch_current_account_gc8n5im2
+        condition: ''
+  user_switch_current_account_gc8n5im2:
+    label: 'Temporarily become administrator'
+    plugin: eca_switch_account
+    configuration:
+      user_id: '1'
+    successors:
+      -
+        id: config_action_4vf2n3in
+        condition: ''
+  config_action_4vf2n3in:
+    label: 'Create form display'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'entity_create:createIfNotExists'
+      config_name: 'core.entity_form_display.node.[content_type].default'
+      data: "{targetEntityType: node, bundle: '[content_type]', mode: default, status: true}"
+    successors:
+      -
+        id: config_read_bq08lf8r
+        condition: ''
+  config_action_rvu1njg1:
+    label: 'Show publish_on field on form'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'entity_method:core.entity_form_display:setComponent'
+      config_name: 'core.entity_form_display.node.[content_type].default'
+      data: '{name: publish_on, options: {type: datetime_timestamp_no_default, region: content, settings: {}, third_party_settings: {}, weight: 1}}'
+    successors:
+      -
+        id: config_action_728u23yu
+        condition: ''
+  config_action_18ype0ik:
+    label: 'Show unpublish_on field on form'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'entity_method:core.entity_form_display:setComponent'
+      config_name: 'core.entity_form_display.node.[content_type].default'
+      data: '{name: unpublish_on, options: {type: datetime_timestamp_no_default, region: content, settings: {}, third_party_settings: {}, weight: 3}}'
+    successors:
+      -
+        id: config_action_ga130kzg
+        condition: ''
+  config_action_728u23yu:
+    label: 'Show publish_state field on form'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'entity_method:core.entity_form_display:setComponent'
+      config_name: 'core.entity_form_display.node.[content_type].default'
+      data: '{name: publish_state, options: {region: content, type: options_select, settings: {}, third_party_settings: {}, weight: 2}}'
+    successors: {  }
+  config_action_ga130kzg:
+    label: 'Show unpublish_state field on form'
+    plugin: eca_config_action
+    configuration:
+      action_id: 'entity_method:core.entity_form_display:setComponent'
+      config_name: 'core.entity_form_display.node.[content_type].default'
+      data: '{name: unpublish_state, options: {region: content, type: options_select, settings: {}, third_party_settings: {}, weight: 4}}'
+    successors: {  }
+  config_read_bq08lf8r:
+    label: 'Find out if scheduled publishing is enabled'
+    plugin: eca_config_read
+    configuration:
+      token_name: can_publish
+      include_overridden: false
+      config_name: 'node.type.[content_type]'
+      config_key: third_party_settings.scheduler.publish_enable
+    successors:
+      -
+        id: config_read_bzy5lf8j
+        condition: ''
+      -
+        id: config_action_rvu1njg1
+        condition: edge_dck4hif1_condition
+  config_read_bzy5lf8j:
+    label: 'Find out if scheduled unpublishing is enabled'
+    plugin: eca_config_read
+    configuration:
+      token_name: can_unpublish
+      include_overridden: false
+      config_name: 'node.type.[content_type]'
+      config_key: third_party_settings.scheduler.unpublish_enable
+    successors:
+      -
+        id: config_action_18ype0ik
+        condition: edge_7n7qo8gq_condition

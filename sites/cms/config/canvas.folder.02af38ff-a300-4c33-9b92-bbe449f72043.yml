@@ -1,0 +1,21 @@
+uuid: 02af38ff-a300-4c33-9b92-bbe449f72043
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.block.language_block.language_interface
+    - canvas.component.block.system_branding_block
+    - canvas.component.block.system_breadcrumb_block
+    - canvas.component.block.system_clear_cache_block
+    - canvas.component.block.system_messages_block
+    - canvas.component.block.system_powered_by_block
+name: System
+configEntityTypeId: component
+weight: 0
+items:
+  - block.language_block.language_interface
+  - block.system_branding_block
+  - block.system_breadcrumb_block
+  - block.system_clear_cache_block
+  - block.system_messages_block
+  - block.system_powered_by_block

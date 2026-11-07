@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: path_alias
+  uuid: f7dfa155-c92c-44b3-b151-ab2e6199324b
+  default_langcode: es
+default:
+  path:
+    -
+      value: /galleries
+  alias:
+    -
+      value: /albumes
+  status:
+    -
+      value: true

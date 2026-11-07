@@ -1,0 +1,93 @@
+_meta:
+  version: '1.0'
+  entity_type: block_content
+  uuid: 19f6c629-4f13-4a62-9800-aaaf8e48385d
+  bundle: club_info
+  default_langcode: en
+default:
+  id:
+    -
+      value: 9
+  revision_created:
+    -
+      value: 1793969878
+  status:
+    -
+      value: true
+  info:
+    -
+      value: 'Club info'
+  changed:
+    -
+      value: 1793969878
+  reusable:
+    -
+      value: true
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_email:
+    -
+      value: hello@lens-and-trail.ddev.site
+  field_follow_us:
+    -
+      uri: 'https://www.flickr.com/groups/lens-and-trail/'
+      title: Flickr
+      options: {}
+  field_meeting_times:
+    -
+      value: '<p><strong>Hikes:</strong> every other Saturday at 9:30.<br><strong>Photo evenings:</strong> the first Thursday of the month at 19:00, in a café in Leith.</p>'
+      format: basic_html
+translations:
+  es:
+    id:
+      -
+        value: 9
+    revision_created:
+      -
+        value: 1793969878
+    status:
+      -
+        value: true
+    info:
+      -
+        value: 'Información del club'
+    changed:
+      -
+        value: 1793969878
+    reusable:
+      -
+        value: true
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391
+    field_email:
+      -
+        value: hello@lens-and-trail.ddev.site
+    field_follow_us:
+      -
+        uri: 'https://www.flickr.com/groups/lens-and-trail/'
+        title: Flickr
+        options: {}
+    field_meeting_times:
+      -
+        value: '<p><strong>Excursiones:</strong> un sábado sí y otro no, a las 9:30.<br><strong>Tardes de fotografía:</strong> el primer jueves de cada mes a las 19:00, en un café de Leith.</p>'
+        format: basic_html

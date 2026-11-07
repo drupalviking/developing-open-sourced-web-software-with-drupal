@@ -1,0 +1,3 @@
+name: 'Lens & Trail content (cms site)'
+description: 'The content of the photo club site at the end of the site-building book. Made by tools/export-sites.sh; do not edit by hand.'
+type: Site

@@ -1,0 +1,13 @@
+uuid: 609e65cd-ce11-4c54-80a3-99440117e86d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: xDfeiFFeEk7pSx4hiO6AeSyWaaVTX9_FgiQZ1x-jiVc
+id: node_promote_action
+label: 'Promote content'
+type: node
+plugin: node_promote_action
+configuration: {}

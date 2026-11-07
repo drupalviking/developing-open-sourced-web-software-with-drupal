@@ -1,0 +1,111 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 623cdb94-d764-4c9e-aebe-daabf3a5494e
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    2201686d-ee47-464f-95de-26d701f49ae9: node
+default:
+  id:
+    -
+      value: 20
+  revision_created:
+    -
+      value: 1793969915
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Privacy
+  menu_name:
+    -
+      value: footer
+  link:
+    -
+      title: ''
+      options: {}
+      target_uuid: 2201686d-ee47-464f-95de-26d701f49ae9
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1793969915
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_status:
+    -
+      value: true
+translations:
+  es:
+    id:
+      -
+        value: 20
+    revision_created:
+      -
+        value: 1793969915
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: Privacidad
+    menu_name:
+      -
+        value: footer
+    link:
+      -
+        title: ''
+        options: {}
+        target_uuid: 2201686d-ee47-464f-95de-26d701f49ae9
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: true
+    weight:
+      -
+        value: 0
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1793969915
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1793984391

@@ -1,0 +1,16 @@
+uuid: 2dd11ca4-e753-428f-842c-10f8e43c11ca
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: bcDKg5FvA9QXElBvRi4X60jXV9k9_MdiDu8nT2prisY
+id: menu_path
+label: 'Menu Path'
+type: 'canonical_entities:node'
+pattern: '/[node:menu-link:parents:join-path]/[node:title]'
+selection_criteria: {  }
+selection_logic: and
+weight: 10
+relationships: {  }

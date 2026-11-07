@@ -1,0 +1,49 @@
+uuid: 4c44fa32-dc3a-4759-99c6-7593dd48858a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.small
+    - field.field.media.image.field_license
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - field.field.media.image.field_source
+    - field.field.media.image.field_themes
+    - image.style.banner_small
+    - media.type.image
+  module:
+    - image
+id: media.image.small
+targetEntityType: media
+bundle: image
+mode: small
+content:
+  field_media_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: banner_small
+      image_loading:
+        attribute: lazy
+    third_party_settings: {}
+    weight: 0
+    region: content
+  field_photographer:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {}
+    weight: 1
+    region: content
+hidden:
+  created: true
+  field_license: true
+  field_source: true
+  field_themes: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

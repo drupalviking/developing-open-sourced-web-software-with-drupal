@@ -1,0 +1,11 @@
+versioned_properties:
+  active:
+    fallback_metadata:
+      slot_definitions:
+        header_slot:
+          title: Encabezado
+        main_slot:
+          title: Cuadrícula
+        footer_slot:
+          title: 'Pie de página'
+label: Sección

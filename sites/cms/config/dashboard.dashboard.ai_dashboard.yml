@@ -1,0 +1,102 @@
+uuid: 42835453-befd-491d-be2e-4cfc505ed023
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_dashboard
+    - layout_builder
+    - layout_discovery
+    - project_browser
+  enforced:
+    module:
+      - ai_dashboard
+_core:
+  default_config_hash: Yd5dyCNMASsD2o3DeCLXPG97aJrxOBxHlJCcE6FrvV0
+id: ai_dashboard
+label: 'AI Dashboard'
+description: 'Configure your AI environment, connect providers, and enable additional functionality.'
+layout:
+  -
+    layout_id: layout_onecol
+    layout_settings:
+      label: Main
+      context_mapping: {  }
+    components:
+      cf1f0dbb-11a0-45ed-8289-e0802c0cc29a:
+        uuid: cf1f0dbb-11a0-45ed-8289-e0802c0cc29a
+        region: content
+        configuration:
+          id: ai_setup_ai_provider
+          label: Setup
+          label_display: visible
+          provider: ai_dashboard
+          context_mapping: {  }
+        weight: 0
+        additional: {  }
+      ded99303-3ac6-403e-b03c-c46812914b0c:
+        uuid: ded99303-3ac6-403e-b03c-c46812914b0c
+        region: content
+        configuration:
+          id: admin_menu_links
+          label: Configuration
+          label_display: visible
+          provider: ai_dashboard
+          context_mapping: {  }
+        weight: 4
+        additional: {  }
+      8a25f9d9-da87-4395-b350-3b3d303759a7:
+        uuid: 8a25f9d9-da87-4395-b350-3b3d303759a7
+        region: content
+        configuration:
+          id: module_list_packages
+          label: Extensions
+          label_display: visible
+          provider: ai_dashboard
+          context_mapping: {  }
+          packages: "AI\r\nAI (Experimental)\r\nAI Providers\r\nAI Tools"
+        weight: 3
+        additional: {  }
+      69458115-683f-4417-8829-c194d2671ba3:
+        uuid: 69458115-683f-4417-8829-c194d2671ba3
+        region: content
+        configuration:
+          id: ai_operations_status
+          label: Status
+          label_display: visible
+          provider: ai_dashboard
+          context_mapping: {  }
+        weight: 2
+        additional: {  }
+      ee6d85d7-4723-40ba-9129-2114bc44966c:
+        uuid: ee6d85d7-4723-40ba-9129-2114bc44966c
+        region: content
+        configuration:
+          id: 'project_browser_block:ai_dashboard_recommended'
+          label: Features
+          label_display: visible
+          provider: project_browser
+          context_mapping: {  }
+          paginate: true
+          page_sizes: '8, 12, 16, 20'
+          sort_options:
+            - a_z
+            - z_a
+          default_sort: a_z
+          filters: {  }
+        weight: 1
+        additional: {  }
+      d611e7f6-9608-450a-9957-060da480a696:
+        uuid: d611e7f6-9608-450a-9957-060da480a696
+        region: content
+        configuration:
+          id: ai_documentation
+          label: Documentation
+          label_display: visible
+          provider: ai_dashboard
+          context_mapping: {  }
+          soft_limit: 4
+          hard_limit: 0
+        weight: 5
+        additional: {  }
+    third_party_settings: {  }
+weight: 100

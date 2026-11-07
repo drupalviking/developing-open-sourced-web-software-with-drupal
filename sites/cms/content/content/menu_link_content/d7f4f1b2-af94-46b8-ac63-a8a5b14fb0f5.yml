@@ -1,0 +1,47 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: d7f4f1b2-af94-46b8-ac63-a8a5b14fb0f5
+  bundle: menu_link_content
+  default_langcode: en
+default:
+  id:
+    -
+      value: 6
+  revision_created:
+    -
+      value: 1793818894
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'My privacy settings'
+  menu_name:
+    -
+      value: footer
+  link:
+    -
+      uri: 'internal:#'
+      title: ''
+      options:
+        attributes:
+          rel: open-consent-manager
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1794062702
+  revision_translation_affected:
+    -
+      value: true

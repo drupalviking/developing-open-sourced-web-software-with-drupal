@@ -1,0 +1,41 @@
+uuid: 1915d941-52b6-49e9-b49f-42fb2259a573
+langcode: en
+status: false
+dependencies:
+  module:
+    - project_browser
+active_version: 57090c7fc643c140
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'project_browser_block:recommended'
+        label: 'Recommended add-ons'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+  012b6eabb836cc07:
+    settings:
+      default_settings:
+        id: 'project_browser_block:recommended'
+        label: 'Recommended add-ons'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Recommended add-ons'
+id: block.project_browser_block.recommended
+provider: project_browser
+source: block
+source_local_id: 'project_browser_block:recommended'

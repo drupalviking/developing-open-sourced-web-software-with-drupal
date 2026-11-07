@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: A8kP39r7dzwKbIle_YHyuxJSjEDcYibc2BSBwT4VYME
+api_key: amazeeio_ai
+moderation: false
+amazee_host: 'https://api.amazee.ai'
+host: 'https://llm.de-eu101.amazee.ai'
+postgres_host: vectordb1.de-eu101.amazee.ai
+postgres_port: 5432
+postgres_default_database: db_724428ea
+postgres_username: user_73bc5ef1
+postgres_password: amazeeio_ai_database

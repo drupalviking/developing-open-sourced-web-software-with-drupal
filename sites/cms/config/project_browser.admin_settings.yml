@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: kIuS7aUq1-kn8i65F9XIjvyCZYWoRu8rJpTNmU8ODXc
+default_source: recommended
+enabled_sources:
+  recommended:
+    uri: 'https://git.drupalcode.org/api/v4/projects/167158/repository/files/recommended.yml/raw?ref=HEAD'
+    ttl: 86400
+  drupalorg_jsonapi: {  }
+  recipes: {  }
+  ai_dashboard_recommended:
+    uri: 'https://git.drupalcode.org/api/v4/projects/196945/repository/files/ai_dashboard_recommended_recipes.yml/raw?ref=HEAD'
+    ttl: 1
+allow_ui_install: true
+max_selections: 1

@@ -1,0 +1,25 @@
+uuid: e1aad581-0e9f-4886-8fd6-6adb5b49b5d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hike
+    - workflows.workflow.editorial
+  module:
+    - content_moderation
+    - navigation
+    - node
+    - system
+id: hike_leader
+label: 'Hike leader'
+weight: 3
+is_admin: false
+permissions:
+  - 'access content overview'
+  - 'access navigation'
+  - 'create hike content'
+  - 'edit own hike content'
+  - 'use editorial transition create_new_draft'
+  - 'view latest version'
+  - 'view own unpublished content'
+  - 'view the administration theme'

@@ -1,0 +1,31 @@
+uuid: 78cbdf30-a44b-41dd-a8bf-fa4fea381006
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+active_version: 212ffd475dd83684
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: system_messages_block
+        label: Messages
+        label_display: '0'
+        provider: system
+    fallback_metadata:
+      slot_definitions: null
+  1609d44df6c8b26a:
+    settings:
+      default_settings:
+        id: system_messages_block
+        label: Messages
+        label_display: '0'
+        provider: system
+    fallback_metadata:
+      slot_definitions: null
+label: Messages
+id: block.system_messages_block
+provider: system
+source: block
+source_local_id: system_messages_block

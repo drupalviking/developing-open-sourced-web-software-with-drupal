@@ -1,0 +1,10 @@
+versioned_properties:
+  active:
+    fallback_metadata:
+      slot_definitions:
+        content:
+          title: Contenido
+        header:
+          title: Encabezado
+        footer:
+          title: 'Pie de página'

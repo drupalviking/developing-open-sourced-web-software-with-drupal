@@ -1,0 +1,11 @@
+recipe: 'Local video media'
+config:
+  -
+    name: field.field.media.video.field_media_video_file
+    data:
+      label: 'Video file'
+  -
+    name: media.type.video
+    data:
+      label: Video
+      description: 'A locally hosted video file.'

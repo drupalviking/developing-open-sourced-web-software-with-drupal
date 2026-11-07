@@ -1,0 +1,8 @@
+_core:
+  default_config_hash: _ik70e_LzrVEcrKPGMWXrjxXJ3PHIC5kAlVGxmYL6IE
+score_rules:
+  0: 'Not available'
+  8: Good
+  1: Bad
+  5: Okay
+auto_refresh_seo_result: false

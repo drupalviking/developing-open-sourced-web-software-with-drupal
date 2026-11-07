@@ -1,0 +1,25 @@
+uuid: 4c5b7fa7-9feb-4fb2-9df9-0e7223534ede
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+  module:
+    - comment
+    - file
+    - filter
+    - media
+    - system
+_core:
+  default_config_hash: wkW7P5A53YhGmsgamrmTbfwpZrqdnPYiJdoAZQtdmJg
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'delete own files'
+  - 'post comments'
+  - 'use text format basic_html'
+  - 'view media'

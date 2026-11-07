@@ -1,0 +1,14 @@
+display:
+  default:
+    display_options:
+      title: Álbumes
+      fields:
+        title_1:
+          label: Excursión
+  block_1:
+    display_options:
+      title: 'Álbumes de esta excursión'
+  page_1:
+    display_options:
+      menu:
+        title: Álbumes

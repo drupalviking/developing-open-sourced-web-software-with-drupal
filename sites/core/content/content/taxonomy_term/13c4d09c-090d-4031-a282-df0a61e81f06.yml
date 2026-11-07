@@ -1,0 +1,87 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 13c4d09c-090d-4031-a282-df0a61e81f06
+  bundle: areas
+  default_langcode: en
+  depends:
+    e3032dc7-b244-4604-b8e0-ba1b0f6ce88c: taxonomy_term
+default:
+  tid:
+    -
+      value: 57
+  revision_created:
+    -
+      value: 1793891693
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Carnethy Hill'
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+  changed:
+    -
+      value: 1793891693
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/pentland-hills/carnethy-hill
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 57
+    revision_created:
+      -
+        value: 1793891693
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'Carnethy Hill'
+    weight:
+      -
+        value: 0
+    parent:
+      -
+        entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+    changed:
+      -
+        value: 1793891693
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/pentland-hills/carnethy-hill
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391

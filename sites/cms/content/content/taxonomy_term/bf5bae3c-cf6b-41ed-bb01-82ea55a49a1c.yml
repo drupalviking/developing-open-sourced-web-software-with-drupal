@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: bf5bae3c-cf6b-41ed-bb01-82ea55a49a1c
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 18
+  revision_created:
+    -
+      value: 1794062747
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Water of Leith'
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794062747
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1

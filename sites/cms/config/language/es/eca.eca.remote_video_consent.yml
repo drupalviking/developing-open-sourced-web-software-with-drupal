@@ -1,0 +1,7 @@
+actions:
+  eca_void_and_condition_1:
+    label: 'Y'
+  eca_void_and_condition_2:
+    label: 'Y'
+  eca_switch_account__1:
+    label: 'Cambiar de usuario'

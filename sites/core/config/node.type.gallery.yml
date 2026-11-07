@@ -1,0 +1,17 @@
+uuid: 836a9d6b-9579-4788-a609-0c5f6713f10b
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {}
+    parent: ''
+name: Gallery
+type: gallery
+description: "A photo album from one of the club's hikes or photo evenings."
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

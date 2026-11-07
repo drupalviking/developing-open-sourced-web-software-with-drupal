@@ -1,0 +1,89 @@
+recipe: Starter
+config:
+  -
+    name: canvas.component.sdc.mercury.button
+    data:
+      versioned_properties:
+        active:
+          settings:
+            prop_field_definitions:
+              label:
+                default_value:
+                  -
+                    value: 'Button label'
+      label: Button
+  -
+    name: canvas.component.sdc.mercury.cta
+    data:
+      versioned_properties:
+        active:
+          settings:
+            prop_field_definitions:
+              heading_text:
+                default_value:
+                  -
+                    value: 'Your heading goes here'
+              text:
+                default_value:
+                  -
+                    value: 'Lorem ipsum dolor sit amet.'
+          fallback_metadata:
+            slot_definitions:
+              actions:
+                title: Buttons
+      label: 'Hero CTA'
+  -
+    name: canvas.component.sdc.mercury.heading
+    data:
+      versioned_properties:
+        active:
+          settings:
+            prop_field_definitions:
+              heading_text:
+                default_value:
+                  -
+                    value: 'Your heading goes here'
+      label: Heading
+  -
+    name: canvas.component.sdc.mercury.section
+    data:
+      versioned_properties:
+        active:
+          fallback_metadata:
+            slot_definitions:
+              header_slot:
+                title: Header
+              main_slot:
+                title: Grid
+              footer_slot:
+                title: Footer
+      label: Section
+  -
+    name: canvas.component.sdc.mercury.text
+    data:
+      versioned_properties:
+        active:
+          settings:
+            prop_field_definitions:
+              text:
+                default_value:
+                  -
+                    value: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique pretium pellentesque semper enim aliquam.</p>'
+      label: Text
+  -
+    name: canvas.component.theme_page_template.mercury
+    data:
+      versioned_properties:
+        active:
+          fallback_metadata:
+            slot_definitions:
+              content:
+                title: Content
+                description: 'The Content region.'
+              header:
+                title: Header
+                description: 'The Header region.'
+              footer:
+                title: Footer
+                description: 'The Footer region.'
+      label: 'Mercury theme page template'

@@ -1,0 +1,15 @@
+uuid: 353afa09-2953-48f8-84bb-fead847d5df8
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.block.admin_menu_links
+    - canvas.component.block.ai_operations_status
+    - canvas.component.block.ai_setup_ai_provider
+name: 'AI Dashboard'
+configEntityTypeId: component
+weight: 0
+items:
+  - block.admin_menu_links
+  - block.ai_operations_status
+  - block.ai_setup_ai_provider

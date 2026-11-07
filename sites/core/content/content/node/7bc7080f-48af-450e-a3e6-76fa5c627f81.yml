@@ -1,0 +1,200 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7bc7080f-48af-450e-a3e6-76fa5c627f81
+  bundle: page
+  default_langcode: en
+default:
+  nid:
+    -
+      value: 2
+  revision_timestamp:
+    -
+      value: 1793868429
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Two columns, with the meeting times on the right.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'How to join'
+  created:
+    -
+      value: 1793868069
+  changed:
+    -
+      value: 1793868429
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /join
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_body:
+    -
+      value: "<p>Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance.</p><p>If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail.ddev.site.</p><p>Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes.</p>"
+      format: basic_html
+  layout_builder__layout:
+    -
+      section:
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          column_widths: 67-33
+          context_mapping: {}
+        components:
+          702c6489-fbe7-40be-9b86-1f92ccb1ba40:
+            uuid: 702c6489-fbe7-40be-9b86-1f92ccb1ba40
+            region: second
+            configuration:
+              id: 'inline_block:basic'
+              label: 'When and where'
+              label_display: visible
+              provider: layout_builder
+              view_mode: full
+              block_id: '1'
+              block_revision_id: '1'
+              block_serialized: null
+              context_mapping: {}
+            weight: 0
+            additional: {}
+          2b2a5b76-dc50-419f-92d2-fc2817e12397:
+            uuid: 2b2a5b76-dc50-419f-92d2-fc2817e12397
+            region: first
+            configuration:
+              id: 'field_block:node:page:field_body'
+              label: Body
+              label_display: 0
+              provider: layout_builder
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {}
+                third_party_settings: {}
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            weight: 0
+            additional: {}
+        third_party_settings: {}
+translations:
+  es:
+    nid:
+      -
+        value: 2
+    revision_timestamp:
+      -
+        value: 1793868429
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Two columns, with the meeting times on the right.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Cómo unirse'
+    created:
+      -
+        value: 1793868069
+    changed:
+      -
+        value: 1793868429
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /unete
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_body:
+      -
+        value: '<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p><p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail.ddev.site.</p><p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>'
+        format: basic_html
+    layout_builder__layout:
+      -
+        section:
+          layout_id: layout_twocol_section
+          layout_settings:
+            label: ''
+            column_widths: 67-33
+            context_mapping: {}
+          components:
+            702c6489-fbe7-40be-9b86-1f92ccb1ba40:
+              uuid: 702c6489-fbe7-40be-9b86-1f92ccb1ba40
+              region: second
+              configuration:
+                id: 'inline_block:basic'
+                label: 'When and where'
+                label_display: visible
+                provider: layout_builder
+                view_mode: full
+                block_id: '1'
+                block_revision_id: '1'
+                block_serialized: null
+                context_mapping: {}
+              weight: 0
+              additional: {}
+            2b2a5b76-dc50-419f-92d2-fc2817e12397:
+              uuid: 2b2a5b76-dc50-419f-92d2-fc2817e12397
+              region: first
+              configuration:
+                id: 'field_block:node:page:field_body'
+                label: Body
+                label_display: 0
+                provider: layout_builder
+                formatter:
+                  label: hidden
+                  type: text_default
+                  settings: {}
+                  third_party_settings: {}
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              weight: 0
+              additional: {}
+          third_party_settings: {}

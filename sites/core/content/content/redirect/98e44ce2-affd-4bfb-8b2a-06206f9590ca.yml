@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 98e44ce2-affd-4bfb-8b2a-06206f9590ca
+  bundle: redirect
+  default_langcode: en
+  depends:
+    afe7d2c7-31b3-4bb6-aa11-c88e279aec06: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 1
+  hash:
+    -
+      value: KpFJ1XHqMJ_x_qLyhtXy294EshqtchiEegDMjZJK0ZA
+  uid:
+    -
+      target_id: 1
+  redirect_source:
+    -
+      path: hikes/glencorse-reservoir-loop
+      query: {}
+  redirect_redirect:
+    -
+      title: null
+      options: {}
+      target_uuid: afe7d2c7-31b3-4bb6-aa11-c88e279aec06
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1793979961

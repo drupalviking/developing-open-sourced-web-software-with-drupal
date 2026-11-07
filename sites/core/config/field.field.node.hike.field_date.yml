@@ -1,0 +1,21 @@
+uuid: 94ec1779-e651-4322-a896-3cf391dcd4d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date
+    - node.type.hike
+  module:
+    - datetime
+id: node.hike.field_date
+field_name: field_date
+entity_type: node
+bundle: hike
+label: Date
+description: 'The day and time we meet.'
+required: true
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: datetime

@@ -1,0 +1,11 @@
+uuid: 7357540e-d36a-49a8-ade5-db55781c34c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.album
+label: Album
+description: null
+targetEntityType: media
+cache: true

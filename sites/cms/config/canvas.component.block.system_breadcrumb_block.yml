@@ -1,0 +1,31 @@
+uuid: 36a4f2a9-5d47-40ec-b216-2dc1fbb1c011
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+active_version: 86a25cdac9ce0ae8
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: system_breadcrumb_block
+        label: Breadcrumbs
+        label_display: '0'
+        provider: system
+    fallback_metadata:
+      slot_definitions: null
+  0d7e961dd03aa710:
+    settings:
+      default_settings:
+        id: system_breadcrumb_block
+        label: Breadcrumbs
+        label_display: '0'
+        provider: system
+    fallback_metadata:
+      slot_definitions: null
+label: Breadcrumbs
+id: block.system_breadcrumb_block
+provider: system
+source: block
+source_local_id: system_breadcrumb_block

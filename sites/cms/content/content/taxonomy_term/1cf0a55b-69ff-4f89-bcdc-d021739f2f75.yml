@@ -1,0 +1,62 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 1cf0a55b-69ff-4f89-bcdc-d021739f2f75
+  bundle: tags
+  default_langcode: en
+  depends:
+    a5234b02-7484-4680-8310-783323bf919c: taxonomy_term
+default:
+  tid:
+    -
+      value: 2
+  revision_created:
+    -
+      value: 1762713213
+  revision_user:
+    -
+      target_id: 1
+  revision_log_message:
+    -
+      value: |+
+        Conventio damnum dolore duis esse eu illum nostrud vereor. Abbas amet nisl vindico. Abbas ad metuo nostrud nulla nutus occuro proprius valde validus. Adipiscing natu pala paratus saepius. Brevitas damnum eu haero ibidem luctus probo quae tation venio. Abluo accumsan oppeto usitas wisi. Adipiscing erat eu nimis. Augue decet dignissim nulla sagaciter saluto venio.
+
+        Abico acsi adipiscing causa distineo populus quidem. Abdo caecus erat lucidus nostrud vereor. Diam magna similis sudo. Comis duis incassum lenis lucidus macto pecus turpis uxor.
+
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Camur exerci incassum ludus similis singularis utrum. Comis exputo ibidem quis sed valetudo. Aliquip dolore esse ex saepius sagaciter virtus. Augue blandit decet enim interdico populus probo ratis valde vero.'
+  description:
+    -
+      value: |+
+        Accumsan augue cui eum iriure jugis persto si. Camur occuro similis vulputate. Abluo autem camur exerci natu odio typicus vero. Caecus eum magna molior nibh olim pala probo suscipit vel. Antehabeo causa duis eros laoreet luptatum suscipere vereor.
+
+        Acsi defui fere illum inhibeo jus minim pneum ratis ut. Eros minim oppeto refero sudo suscipere. Ad at augue lenis lucidus nostrud pecus premo quidne sudo. Abigo enim fere ibidem incassum sino sit usitas. Causa consequat dignissim modo molior quibus quidne ratis refero roto. Appellatio consequat dolore facilisis feugiat importunus iriure plaga sino te.
+
+      format: plain_text
+  weight:
+    -
+      value: 735
+  parent:
+    -
+      entity: a5234b02-7484-4680-8310-783323bf919c
+  changed:
+    -
+      value: 1780012935
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /amet-antehabeo-decet-illum-jus-lobortis-ullamcorper-ut.
+      langcode: en
+      pathauto: 0
+  publish_on:
+    -
+      value: 1783551388
+  unpublish_on:
+    -
+      value: 1788171952

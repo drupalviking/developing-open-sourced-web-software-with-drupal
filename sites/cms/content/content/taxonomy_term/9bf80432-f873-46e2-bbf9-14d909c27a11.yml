@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 9bf80432-f873-46e2-bbf9-14d909c27a11
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 13
+  revision_created:
+    -
+      value: 1794062747
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Club News'
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794062747
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1

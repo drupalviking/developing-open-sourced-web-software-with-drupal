@@ -1,0 +1,19 @@
+uuid: 89f9f31f-340b-44c6-87f8-96127f67c5f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_photographer
+    - media.type.image
+id: media.image.field_photographer
+field_name: field_photographer
+entity_type: media
+bundle: image
+label: Photographer
+description: "The photographer's name, as they want to be credited."
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: string

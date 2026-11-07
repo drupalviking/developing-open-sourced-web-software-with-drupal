@@ -1,0 +1,28 @@
+uuid: bd6d232b-3989-47a8-a1c6-6a0203277860
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - default_admin
+_core:
+  default_config_hash: xFixX0wiR3VpkcoqJjQQUyPROllV9BdRJ8AEUHcpY7Q
+id: default_admin_login
+theme: default_admin
+region: content
+weight: 10
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  label_display: '0'
+  provider: user
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {}
+    pages: "/user\r\n/user/*"

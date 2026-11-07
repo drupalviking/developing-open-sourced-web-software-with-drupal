@@ -1,0 +1,22 @@
+uuid: 2fb6aee0-44b3-4a92-8b96-84cfd33fda1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.club_info
+    - field.storage.block_content.field_meeting_times
+  module:
+    - text
+id: block_content.club_info.field_meeting_times
+field_name: field_meeting_times
+entity_type: block_content
+bundle: club_info
+label: 'Meeting times'
+description: ''
+required: false
+translatable: true
+default_value: {}
+default_value_callback: ''
+settings:
+  allowed_formats: {}
+field_type: text_long

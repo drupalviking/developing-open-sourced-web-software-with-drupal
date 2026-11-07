@@ -1,0 +1,1369 @@
+recipe: 'Drupal CMS Basics'
+config:
+  -
+    name: core.entity_form_display.node.page.default
+    data:
+      third_party_settings:
+        field_group:
+          group_seo:
+            label: 'Search Engine Optimization (SEO) Information'
+  -
+    name: core.entity_view_mode.media.16_9_large
+    data:
+      label: '16:9 Large'
+  -
+    name: core.entity_view_mode.media.16_9_medium
+    data:
+      label: '16:9 Medium'
+  -
+    name: core.entity_view_mode.media.16_9_small
+    data:
+      label: '16:9 Small'
+  -
+    name: core.entity_view_mode.media.16_9_wide
+    data:
+      label: '16:9 Wide'
+  -
+    name: core.entity_view_mode.media.1_1_square_large
+    data:
+      label: '1:1 (Square) Large'
+  -
+    name: core.entity_view_mode.media.1_1_square_medium
+    data:
+      label: '1:1 (Square) Medium'
+  -
+    name: core.entity_view_mode.media.1_1_square_small
+    data:
+      label: '1:1 (Square) Small'
+  -
+    name: core.entity_view_mode.media.2_3_large
+    data:
+      label: '2:3 Large'
+  -
+    name: core.entity_view_mode.media.2_3_medium
+    data:
+      label: '2:3 Medium'
+  -
+    name: core.entity_view_mode.media.2_3_small
+    data:
+      label: '2:3 Small'
+  -
+    name: core.entity_view_mode.media.3_2_large
+    data:
+      label: '3:2 Large'
+  -
+    name: core.entity_view_mode.media.3_2_medium
+    data:
+      label: '3:2 Medium'
+  -
+    name: core.entity_view_mode.media.3_2_small
+    data:
+      label: '3:2 Small'
+  -
+    name: core.entity_view_mode.media.3_2_wide
+    data:
+      label: '3:2 Wide'
+  -
+    name: core.entity_view_mode.media.3_4_large
+    data:
+      label: '3:4 Large'
+  -
+    name: core.entity_view_mode.media.3_4_medium
+    data:
+      label: '3:4 Medium'
+  -
+    name: core.entity_view_mode.media.3_4_small
+    data:
+      label: '3:4 Small'
+  -
+    name: core.entity_view_mode.media.4_3_large
+    data:
+      label: '4:3 Large'
+  -
+    name: core.entity_view_mode.media.4_3_medium
+    data:
+      label: '4:3 Medium'
+  -
+    name: core.entity_view_mode.media.4_3_small
+    data:
+      label: '4:3 Small'
+  -
+    name: core.entity_view_mode.media.4_3_wide
+    data:
+      label: '4:3 Wide'
+  -
+    name: core.entity_view_mode.media.9_16_large
+    data:
+      label: '9:16 Large'
+  -
+    name: core.entity_view_mode.media.9_16_medium
+    data:
+      label: '9:16 Medium'
+  -
+    name: core.entity_view_mode.media.9_16_small
+    data:
+      label: '9:16 Small'
+  -
+    name: core.entity_view_mode.media.hero
+    data:
+      label: Hero
+  -
+    name: core.entity_view_mode.media.hero_wide
+    data:
+      label: 'Hero Wide'
+  -
+    name: core.entity_view_mode.media.large
+    data:
+      label: Large
+  -
+    name: core.entity_view_mode.media.medium
+    data:
+      label: Medium
+  -
+    name: core.entity_view_mode.media.small
+    data:
+      label: Small
+  -
+    name: core.entity_view_mode.node.card
+    data:
+      label: Card
+  -
+    name: dashboard.dashboard.welcome
+    data:
+      label: 'Welcome to your site'
+      layout:
+        -
+          layout_settings:
+            label: 'Content and tasks'
+          components:
+            cb457c1c-83c2-4a79-a09e-2c64a8bf8fb8:
+              configuration:
+                label: 'Top tasks'
+        -
+          layout_settings:
+            label: 'Announcements and Events'
+          components:
+            237ad3cf-cb2b-4991-a107-efafbef5f846:
+              configuration:
+                label: Announcements
+            f7bdc8cb-8be7-4cff-8124-ff0b45aefd36:
+              configuration:
+                label: 'Drupal Events and User Groups'
+  -
+    name: eca.eca.auth_redirects
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Authentication redirects'
+      events:
+        user__logout:
+          label: 'User logout'
+      actions:
+        action_goto_action_login:
+          label: 'Back to login after logout'
+  -
+    name: eca.eca.auto_configure_scheduler
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Pre-configure scheduled publication for new content types'
+          documentation: 'When creating a content type in the UI, automatically configures default options for scheduled publishing and unpublishing.'
+          annotations:
+            annotation_user_switch_current_account_gc8n5im2:
+              text: |
+                Necessary in order to execute configuration actions.
+      events:
+        build_form_kzr4as3m:
+          label: 'Content type being created'
+        initialize_content_entity_bundle_ad3vi72w:
+          label: 'Content type created'
+      conditions:
+        edge_dck4hif1_condition:
+          configuration:
+            left: '[can_publish]'
+            right: '1'
+        edge_7n7qo8gq_condition:
+          configuration:
+            left: '[can_unpublish]'
+            right: '1'
+      actions:
+        form_field_set_default_value_wxj50fmf:
+          label: 'Enable scheduled publishing'
+        form_field_set_default_value_nx0p00bt:
+          label: 'Change creation time when publishing'
+        form_field_set_default_value_eyo34ago:
+          label: 'Create new revision on publish'
+        form_field_set_default_value_mfo0f4yo:
+          label: 'Enable scheduled unpublishing'
+        form_field_set_default_value_h9k8rar0:
+          label: 'Create a new revision when unpublishing'
+        token_set_value_j7uj4fd9:
+          label: 'Rename token'
+          configuration:
+            token_value: '[event:bundle]'
+        user_switch_current_account_gc8n5im2:
+          label: 'Temporarily become administrator'
+        config_action_4vf2n3in:
+          label: 'Create form display'
+          configuration:
+            data: "{targetEntityType: node, bundle: '[content_type]', mode: default, status: true}"
+        config_action_rvu1njg1:
+          label: 'Show publish_on field on form'
+          configuration:
+            data: '{name: publish_on, options: {type: datetime_timestamp_no_default, region: content, settings: {}, third_party_settings: {}, weight: 1}}'
+        config_action_18ype0ik:
+          label: 'Show unpublish_on field on form'
+          configuration:
+            data: '{name: unpublish_on, options: {type: datetime_timestamp_no_default, region: content, settings: {}, third_party_settings: {}, weight: 3}}'
+        config_action_728u23yu:
+          label: 'Show publish_state field on form'
+          configuration:
+            data: '{name: publish_state, options: {region: content, type: options_select, settings: {}, third_party_settings: {}, weight: 2}}'
+        config_action_ga130kzg:
+          label: 'Show unpublish_state field on form'
+          configuration:
+            data: '{name: unpublish_state, options: {region: content, type: options_select, settings: {}, third_party_settings: {}, weight: 4}}'
+        config_read_bq08lf8r:
+          label: 'Find out if scheduled publishing is enabled'
+        config_read_bzy5lf8j:
+          label: 'Find out if scheduled unpublishing is enabled'
+  -
+    name: eca.eca.auto_enable_moderation
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Enable moderation for new content types'
+          documentation: 'Automatically opts new content types into the content moderation workflow.'
+          annotations:
+            annotation_user_switch_current_account_13ov4pt9:
+              text: 'Necessary in order to run configuration actions.'
+      events:
+        save_config_je4a3bni:
+          label: 'Content type created'
+      actions:
+        user_switch_current_account_13ov4pt9:
+          label: 'Temporarily become administrator'
+        config_action_p7g4eoa9:
+          label: 'Add content type to workflow'
+          configuration:
+            data: "['[config:type]']"
+  -
+    name: eca.eca.content_duplicate
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Duplicate content'
+      events:
+        eca_render__entity_operations_link:
+          label: 'Operation links'
+        content_entity__prepareform_entity:
+          label: 'Prepare entity form'
+        eca_render__local_tasks_tasks:
+          label: 'Alter local task'
+      actions:
+        eca_render_build_link:
+          label: Link
+          configuration:
+            value: |-
+              "#type": link
+              "#url": /[entity:entity_type]/add/[entity:bundle_id]?duplicate=[entity:id]
+              "#title": Duplicate
+        eca_token_load_entity_entity:
+          label: 'Load original entity'
+        action_message_action_message:
+          label: 'Show duplicate message'
+          configuration:
+            message: 'You are duplicating "[original:label]"'
+        eca_clone_entity_duplicate:
+          label: 'Duplicate content'
+        eca_clone_entity_link:
+          label: Duplicate
+        eca_token_load_route_param_parameter:
+          label: 'Load route parameter'
+        eca_token_load_query_arg_query:
+          label: 'Load entity ID'
+  -
+    name: eca.eca.content_template_disable_preview
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Disable preview when Canvas is enabled'
+          documentation: "Disables Drupal's built-in preview functionality when a Canvas content template is created for a content type."
+      events:
+        config__save_1_1:
+          label: 'Content template created'
+      conditions:
+        eca_scalar_1svh3le:
+          configuration:
+            left: '[config:status]'
+            right: '1'
+        eca_scalar_1cm1pw9:
+          configuration:
+            left: '[config:content_entity_type_view_mode]'
+            right: full
+      actions:
+        eca_config_action_1jfk10b:
+          label: 'Disable preview for content type'
+          configuration:
+            data: '0'
+        eca_void_and_condition_0mr4y0c:
+          label: and
+        eca_switch_account_1q56yux:
+          label: 'Temporarily become administrator'
+  -
+    name: eca.eca.define_breakpoints
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Define custom breakpoints'
+          documentation: 'Defines custom breakpoints for responsive images.'
+      events:
+        eca_render__breakpoints_alter_1ni95xs:
+          label: 'Alter breakpoint'
+      actions:
+        eca_render_alter_breakpoint_1ic6gni:
+          label: 'Define small breakpoint'
+          configuration:
+            definition: |-
+              label: Small
+              mediaQuery: 'all and (min-width: 500px)'
+              weight: 0
+              multipliers:
+                - 1x
+              group: custom
+        eca_render_alter_breakpoint_176h4yu:
+          label: 'Define medium breakpoint'
+          configuration:
+            definition: |-
+              label: Medium
+              mediaQuery: 'all and (min-width: 700px)'
+              weight: 1
+              multipliers:
+                - 1x
+              group: custom
+        eca_render_alter_breakpoint_1k0st1k:
+          label: 'Define large breakpoint'
+          configuration:
+            definition: |-
+              label: Large
+              mediaQuery: 'all and (min-width: 1000px)'
+              weight: 2
+              multipliers:
+                - 1x
+              group: custom
+        eca_render_alter_breakpoint_1e7f6zt:
+          label: 'Define x-large breakpoint'
+          configuration:
+            definition: |-
+              label: X-Large
+              mediaQuery: 'all and (min-width: 1300px)'
+              weight: 3
+              multipliers:
+                - 1x
+              group: custom
+  -
+    name: eca.eca.grant_media_type_permissions
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Grant media type permissions'
+          documentation: 'When a new media type is created, permissions to work with it are automatically granted to content editors.'
+      events:
+        config__save_1_1:
+          label: 'Media type created'
+      actions:
+        eca_config_action_1p0y8jk:
+          label: 'Grant permissions'
+          configuration:
+            data: '["create [config:id] media", "delete any [config:id] media", "edit any [config:id] media", "use media [config:id] bulk upload form"]'
+        eca_switch_account_0d5hb6m:
+          label: 'Temporarily become administrator'
+  -
+    name: eca.eca.node_sitemap_settings
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Automatically configure sitemap settings for content types'
+      events:
+        config__save_config:
+          label: 'Create node bundle'
+      conditions:
+        eca_scalar_bundle:
+          configuration:
+            left: '[current-page:url:path]'
+            right: /admin/structure/types/add
+        eca_scalar_empty:
+          configuration:
+            left: '[priority]'
+            right: priority
+      actions:
+        eca_switch_account_user:
+          label: 'Switch user'
+        eca_token_set_value_token:
+          label: 'Remember bundle id'
+          configuration:
+            token_value: '[config:type]'
+        eca_config_read_bundle_1:
+          label: 'Read sitemap setting'
+        eca_config_write_index:
+          label: 'Set index'
+          configuration:
+            config_value: '1'
+        eca_config_write_priority:
+          label: 'Set priority'
+          configuration:
+            config_value: '0.9'
+        eca_config_write_changefreq:
+          label: 'Set changefreq'
+          configuration:
+            config_value: daily
+        eca_config_write_images:
+          label: 'Set include_images'
+          configuration:
+            config_value: '0'
+  -
+    name: eca.eca.privacy_setting_link
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Show link to privacy settings'
+      events:
+        config__save_config:
+          label: 'Save config'
+      conditions:
+        eca_scalar_app:
+          configuration:
+            left: '[config_name]'
+            right: klaro.klaro_app.
+        eca_scalar_enabled:
+          configuration:
+            left: '[config:status]'
+            right: '1'
+        eca_scalar_disabled:
+          configuration:
+            left: '[config_original:status]'
+            right: '1'
+        eca_scalar_required_1:
+          configuration:
+            left: '[config:required]'
+            right: '1'
+      actions:
+        eca_void_and_condition_1:
+          label: AND
+        eca_void_and_condition_2:
+          label: AND
+        eca_switch_account_3:
+          label: 'Switch to user 1'
+        eca_token_load_entity_link:
+          label: 'Load menu link'
+          configuration:
+            properties: 'uuid: d7f4f1b2-af94-46b8-ac63-a8a5b14fb0f5'
+        eca_set_field_value_link_1:
+          label: 'Enable menu link'
+          configuration:
+            field_value: '1'
+  -
+    name: eca.eca.remote_video_consent
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Enable consent management for remote video'
+      events:
+        content_entity__insert_video:
+          label: 'Insert remote video'
+        config__save_config:
+          label: 'Save config'
+      conditions:
+        eca_scalar_is_2:
+          configuration:
+            left: '[config_name]'
+            right: klaro.klaro_app.youtube
+        eca_scalar_is_1:
+          configuration:
+            left: '[config_name]'
+            right: klaro.klaro_app.vimeo
+        eca_scalar_vimeo_1:
+          configuration:
+            left: '[media:field_media_oembed_video]'
+            right: vimeo.com
+        eca_scalar_disabled:
+          configuration:
+            left: '[status]'
+            right: '1'
+        eca_scalar_1:
+          configuration:
+            left: '[config:status]'
+            right: '1'
+        eca_scalar_enabled:
+          configuration:
+            left: '[config_original:status]'
+            right: '1'
+      actions:
+        eca_token_set_value_1:
+          label: 'Set default provider to YouTube'
+          configuration:
+            token_value: youtube
+        eca_token_set_value_provider_1:
+          label: 'Set provider to Vimeo'
+          configuration:
+            token_value: vimeo
+        eca_config_read_1:
+          label: 'Read current setting'
+        eca_config_write_1:
+          label: 'Enable provider'
+          configuration:
+            config_value: '1'
+        eca_switch_account_1:
+          label: 'Switch user account'
+        eca_void_and_condition_1:
+          label: AND
+        eca_void_and_condition_2:
+          label: AND
+        eca_config_write_provider:
+          label: 'Re-enable provider'
+          configuration:
+            config_value: '1'
+        eca_switch_account__1:
+          label: 'Switch user'
+        eca_token_load_entity_0rno7mm_1:
+          label: 'Load a remote video'
+          configuration:
+            properties: 'bundle: remote_video'
+  -
+    name: eca.eca.setup_seo_fields
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Set up SEO fields'
+          documentation: 'Initializes SEO fields on new and existing content types.'
+      events:
+        content_entity__bundlecreate_1_1:
+          label: 'Content type created'
+      actions:
+        eca_token_set_value_18gj2sf:
+          label: 'Rename token'
+          configuration:
+            token_value: '[event:bundle]'
+        eca_config_action_0yj4bqb:
+          label: 'Create field_seo_analysis'
+          configuration:
+            data: |-
+              label: 'SEO analysis'
+              description: 'Pick the main keyword this page is about.'
+        eca_config_action_1v4877e:
+          label: 'Create field_seo_image'
+          configuration:
+            data: |-
+              label: 'SEO image'
+              description: 'Upload an image to be used when the page is shared on social media sites.'
+        eca_config_action_0r92fy7:
+          label: 'Configure field_seo_image'
+          configuration:
+            data: |-
+              handler: 'default:media'
+              handler_settings:
+                target_bundles:
+                  image: image
+        eca_config_action_1x3vm8l:
+          label: 'Create field_seo_description'
+          configuration:
+            data: |-
+              label: 'SEO description'
+              description: 'Write a description for search engines and social media sites.'
+        eca_config_action_11mm08n:
+          label: 'Create field_seo_title'
+          configuration:
+            data: |-
+              label: 'SEO title'
+              description: 'Use this field to overwrite the default HTML page title for SEO.'
+        eca_config_action_1jcz6wj:
+          label: 'Create form display'
+          configuration:
+            data: |-
+              targetEntityType: node
+              bundle: '[content_type]'
+              mode: default
+              status: true
+        eca_config_action_0sr2qee:
+          label: 'Show field_seo_analysis on form'
+          configuration:
+            data: |-
+              name: field_seo_analysis
+              options:
+                type: yoast_seo_widget
+                weight: 18
+                region: content
+                settings:
+                  render_theme: NULL
+                  render_view_mode: default
+                  edit_title: 0
+                  edit_description: 0
+        eca_config_action_1wxj5ei:
+          label: 'Show field_seo_description on form'
+          configuration:
+            data: |-
+              name: field_seo_description
+              options:
+                type: string_textarea
+                weight: 16
+                region: content
+                settings:
+                  rows: 5
+                  placeholder: ''
+        eca_config_action_0x21fxa:
+          label: 'Show field_seo_image on form'
+          configuration:
+            data: |-
+              name: field_seo_image
+              options:
+                type: media_library_widget
+                weight: 17
+                region: content
+                settings:
+                  media_types: {  }
+        eca_config_action_1wh8d86:
+          label: 'Show field_seo_title on form'
+          configuration:
+            data: |-
+              name: field_seo_title
+              options:
+                type: string_textfield
+                weight: 15
+                region: content
+                settings:
+                  size: 60
+                  placeholder: ''
+        eca_config_action_06zp4qh:
+          label: 'Group SEO fields on form'
+          configuration:
+            data: |-
+              module: field_group
+              key: group_seo
+              value:
+                children:
+                  - field_seo_title
+                  - field_seo_description
+                  - field_seo_image
+                  - field_seo_analysis
+                label: 'Search Engine Optimization (SEO) Information'
+                region: content
+                parent_name: ''
+                weight: 50
+                format_type: details
+                format_settings:
+                  classes: ''
+                  show_empty_fields: false
+                  id: group_seo
+                  label_as_html: false
+                  open: false
+                  description: ''
+                  required_fields: false
+  -
+    name: eca.eca.unpublished_404
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Unpublished 404'
+      events:
+        kernel__exception_status_code_exception:
+          label: 'Uncaught Exception'
+      conditions:
+        eca_scalar_403:
+          configuration:
+            left: '[event:code]'
+            right: '403'
+      actions:
+        eca_void_and_condition_and:
+          label: AND
+        eca_switch_account_1:
+          label: 'Switch to user 1'
+        eca_token_load_route_param_route:
+          label: 'Load node from route'
+        eca_throw_exception_exception:
+          label: 'Not found exception'
+  -
+    name: field.field.media.svg_image.field_media_svg_image
+    data:
+      label: Image
+  -
+    name: field.field.node.page.field_content
+    data:
+      label: Content
+      description: 'The content of this page.'
+  -
+    name: field.field.node.page.field_description
+    data:
+      label: Description
+      description: 'Describe the page content. This appears as the description in search engine results.'
+  -
+    name: field.field.node.page.field_featured_image
+    data:
+      label: 'Featured image'
+      description: 'Include an image. This appears as the image in search engine results.'
+  -
+    name: field.field.node.page.field_seo_analysis
+    data:
+      label: 'SEO analysis'
+      description: 'Pick the main keyword this page is about.'
+  -
+    name: field.field.node.page.field_seo_description
+    data:
+      label: 'SEO description'
+      description: 'Write a description for search engines and social media sites.'
+  -
+    name: field.field.node.page.field_seo_image
+    data:
+      label: 'SEO image'
+      description: 'Upload an image to be used when the page is shared on social media sites.'
+  -
+    name: field.field.node.page.field_seo_title
+    data:
+      label: 'SEO title'
+      description: 'Use this field to overwrite the default HTML page title for SEO.'
+  -
+    name: field.field.node.page.field_tags
+    data:
+      label: Tags
+      description: 'Include tags for relevant topics.'
+  -
+    name: filter.format.content_format
+    data:
+      name: Content
+  -
+    name: image.style.16_9_1008x567_focal_point_webp
+    data:
+      label: '16:9 | 1008x567 | Focal Point | WebP'
+  -
+    name: image.style.16_9_1312x738_focal_point_webp
+    data:
+      label: '16:9 | 1312x738 | Focal Point | WebP'
+  -
+    name: image.style.16_9_1800x1080_focal_point_webp
+    data:
+      label: '16:9 | 1800x1080 | Focal Point | WebP'
+  -
+    name: image.style.16_9_304x171_focal_point_webp
+    data:
+      label: '16:9 | 304x171 | Focal Point | WebP'
+  -
+    name: image.style.16_9_512x288_focal_point_webp
+    data:
+      label: '16:9 | 512x288 | Focal Point | WebP'
+  -
+    name: image.style.16_9_608x342_focal_point_webp
+    data:
+      label: '16:9 | 608x342 | Focal Point | WebP'
+  -
+    name: image.style.16_9_704x396_focal_point_webp
+    data:
+      label: '16:9 | 704x396 | Focal Point | WebP'
+  -
+    name: image.style.16_9_720x405_focal_point_webp
+    data:
+      label: '16:9 | 720x405 | Focal Point | WebP'
+  -
+    name: image.style.16_9_960x540_focal_point_webp
+    data:
+      label: '16:9 | 960x540 | Focal Point | WebP'
+  -
+    name: image.style.1_1_300x300_focal_point_webp
+    data:
+      label: '1:1 | 300x300 | Focal Point | WebP'
+  -
+    name: image.style.1_1_500x500_focal_point_webp
+    data:
+      label: '1:1 | 500x500 | Focal Point | WebP'
+  -
+    name: image.style.1_1_600x600_focal_point_webp
+    data:
+      label: '1:1 | 600x600 | Focal Point | WebP'
+  -
+    name: image.style.1_1_720x720_focal_point_webp
+    data:
+      label: '1:1 | 720x720 | Focal Point | WebP'
+  -
+    name: image.style.1_1_960x960_focal_point_webp
+    data:
+      label: '1:1 | 960x960 | Focal Point | WebP'
+  -
+    name: image.style.2_3_200x300_focal_point_webp
+    data:
+      label: '2:3 | 200x300 | Focal Point | WebP'
+  -
+    name: image.style.2_3_400x600_focal_point_webp
+    data:
+      label: '2:3 | 400x600 | Focal Point | WebP'
+  -
+    name: image.style.2_3_500x750_focal_point_webp
+    data:
+      label: '2:3 | 500x750 | Focal Point | WebP'
+  -
+    name: image.style.2_3_640x960_focal_point_webp
+    data:
+      label: '2:3 | 640x960 | Focal Point | WebP'
+  -
+    name: image.style.3_2_1002x668_focal_point_webp
+    data:
+      label: '3:2 | 1002x668 | Focal Point | WebP'
+  -
+    name: image.style.3_2_1302x868_focal_point_webp
+    data:
+      label: '3:2 | 1302x868 | Focal Point | WebP'
+  -
+    name: image.style.3_2_1800x1200_focal_point_webp
+    data:
+      label: '3:2 | 1800x1200 | Focal Point | WebP'
+  -
+    name: image.style.3_2_300x200_focal_point_webp
+    data:
+      label: '3:2 | 300x200 | Focal Point | WebP'
+  -
+    name: image.style.3_2_504x336_focal_point_webp
+    data:
+      label: '3:2 | 504x336 | Focal Point | WebP'
+  -
+    name: image.style.3_2_600x400_focal_point_webp
+    data:
+      label: '3:2 | 600x400 | Focal Point | WebP'
+  -
+    name: image.style.3_2_702x468_focal_point_webp
+    data:
+      label: '3:2 | 702x468 | Focal Point | WebP'
+  -
+    name: image.style.3_2_720x480_focal_point_webp
+    data:
+      label: '3:2 | 720x480 | Focal Point | WebP'
+  -
+    name: image.style.3_2_960x640_focal_point_webp
+    data:
+      label: '3:2 | 960x640 | Focal Point | WebP'
+  -
+    name: image.style.3_4_225x300_focal_point_webp
+    data:
+      label: '3:4 | 225x300 | Focal Point | WebP'
+  -
+    name: image.style.3_4_450x600_focal_point_webp
+    data:
+      label: '3:4 | 450x600 | Focal Point | WebP'
+  -
+    name: image.style.3_4_504x672_focal_point_webp
+    data:
+      label: '3:4 | 504x672 | Focal Point | WebP'
+  -
+    name: image.style.3_4_708x944_focal_point_webp
+    data:
+      label: '3:4 | 708x944 | Focal Point | WebP'
+  -
+    name: image.style.3_4_720x960_focal_point_webp
+    data:
+      label: '3:4 | 720x960 | Focal Point | WebP'
+  -
+    name: image.style.4_3_1000x750_focal_point_webp
+    data:
+      label: '4:3 | 1000x750 | Focal Point | WebP'
+  -
+    name: image.style.4_3_1300x975_focal_point_webp
+    data:
+      label: '4:3 | 1300x975 | Focal Point | WebP'
+  -
+    name: image.style.4_3_1800x1350_focal_point_webp
+    data:
+      label: '4:3 | 1800x1350 | Focal Point | WebP'
+  -
+    name: image.style.4_3_300x225_focal_point_webp
+    data:
+      label: '4:3 | 300x225 | Focal Point | WebP'
+  -
+    name: image.style.4_3_500x375_focal_point_webp
+    data:
+      label: '4:3 | 500x375 | Focal Point | WebP'
+  -
+    name: image.style.4_3_600x450_focal_point_webp
+    data:
+      label: '4:3 | 600x450 | Focal Point | WebP'
+  -
+    name: image.style.4_3_700x525_focal_point_webp
+    data:
+      label: '4:3 | 700x525 | Focal Point | WebP'
+  -
+    name: image.style.4_3_720x540_focal_point_webp
+    data:
+      label: '4:3 | 720x540 | Focal Point | WebP'
+  -
+    name: image.style.4_3_960x720_focal_point_webp
+    data:
+      label: '4:3 | 960x720 | Focal Point | WebP'
+  -
+    name: image.style.5_2_1000x400_focal_point_webp
+    data:
+      label: '5:2 | 1000x400 | Focal Point | WebP'
+  -
+    name: image.style.5_2_1300x520_focal_point_webp
+    data:
+      label: '5:2 | 1300x520 | Focal Point | WebP'
+  -
+    name: image.style.5_2_1800x720_focal_point_webp
+    data:
+      label: '5:2 | 1800x720 | Focal Point | WebP'
+  -
+    name: image.style.9_16_171x304_focal_point_webp
+    data:
+      label: '9:16 | 171x304 | Focal Point | WebP'
+  -
+    name: image.style.9_16_342x608_focal_point_webp
+    data:
+      label: '9:16 | 342x608 | Focal Point | WebP'
+  -
+    name: image.style.9_16_504x896_focal_point_webp
+    data:
+      label: '9:16 | 504x896 | Focal Point | WebP'
+  -
+    name: image.style.9_16_540x960_focal_point_webp
+    data:
+      label: '9:16 | 540x960 | Focal Point | WebP'
+  -
+    name: image.style.media_library_square_thumbnail
+    data:
+      label: 'Media Library Square Thumbnail'
+  -
+    name: image.style.social_media_facebook
+    data:
+      label: 'Social media - Facebook'
+  -
+    name: image.style.social_media_x
+    data:
+      label: 'Social media - X (Twitter)'
+  -
+    name: image.style.uncropped_300w_webp
+    data:
+      label: 'Uncropped | 300w | WebP'
+  -
+    name: image.style.uncropped_500w_webp
+    data:
+      label: 'Uncropped | 500w | WebP'
+  -
+    name: image.style.uncropped_600w_webp
+    data:
+      label: 'Uncropped | 600w | WebP'
+  -
+    name: image.style.uncropped_700w_webp
+    data:
+      label: 'Uncropped | 700w | WebP'
+  -
+    name: image.style.uncropped_720w_webp
+    data:
+      label: 'Uncropped | 720w | WebP'
+  -
+    name: image.style.uncropped_960w_webp
+    data:
+      label: 'Uncropped | 960w | WebP'
+  -
+    name: media.type.svg_image
+    data:
+      label: 'SVG Image'
+      description: 'A locally hosted SVG file that can be displayed as an image.'
+  -
+    name: metatag.metatag_defaults.canvas_page
+    data:
+      label: Page
+      tags:
+        description: '[canvas_page:description]'
+        image_src: '[canvas_page:image:entity:field_media_image:social_media_facebook]'
+        og_description: '[canvas_page:description]'
+        og_image: '[canvas_page:image:entity:field_media_image:social_media_facebook]'
+        og_image_alt: '[canvas_page:image:entity:field_media_image:alt]'
+        og_image_height: '[canvas_page:image:entity:field_media_image:social_media_facebook:height]'
+        og_image_type: '[canvas_page:image:entity:field_media_image:social_media_facebook:mimetype]'
+        og_image_width: '[canvas_page:image:entity:field_media_image:social_media_facebook:width]'
+        og_site_name: '[site:name]'
+        og_title: '[canvas_page:title]'
+        og_type: website
+        og_updated_time: '[node:changed:custom:c]'
+        og_url: '[current-page:url:absolute]'
+        referrer: unsafe-url
+        title: '[canvas_page:title] | [site:name]'
+        twitter_cards_description: '[canvas_page:description]'
+        twitter_cards_image: '[canvas_page:image:entity:field_media_image:social_media_x]'
+        twitter_cards_image_alt: '[canvas_page:image:entity:field_media_image:alt]'
+        twitter_cards_title: '[canvas_page:title]'
+        twitter_cards_type: summary_large_image
+  -
+    name: node.type.page
+    data:
+      name: 'Utility page'
+      description: "Use <em>utility page</em> for your static content, such as a 'Privacy policy' page."
+  -
+    name: pathauto.pattern.menu_path
+    data:
+      label: 'Menu Path'
+      pattern: '/[node:menu-link:parents:join-path]/[node:title]'
+  -
+    name: pathauto.pattern.page_content
+    data:
+      label: 'Page content'
+      pattern: '/[node:title]'
+  -
+    name: responsive_image.styles.16_9_large
+    data:
+      label: '16:9 Large'
+  -
+    name: responsive_image.styles.16_9_medium
+    data:
+      label: '16:9 Medium'
+  -
+    name: responsive_image.styles.16_9_small
+    data:
+      label: '16:9 Small'
+  -
+    name: responsive_image.styles.16_9_wide
+    data:
+      label: '16:9 Wide'
+  -
+    name: responsive_image.styles.1_1_large
+    data:
+      label: '1:1 (Square) Large'
+  -
+    name: responsive_image.styles.1_1_medium
+    data:
+      label: '1:1 (Square) Medium'
+  -
+    name: responsive_image.styles.1_1_square_small
+    data:
+      label: '1:1 (Square) Small'
+  -
+    name: responsive_image.styles.2_3_large
+    data:
+      label: '2:3 Large'
+  -
+    name: responsive_image.styles.2_3_medium
+    data:
+      label: '2:3 Medium'
+  -
+    name: responsive_image.styles.2_3_small
+    data:
+      label: '2:3 Small'
+  -
+    name: responsive_image.styles.3_2_large
+    data:
+      label: '3:2 Large'
+  -
+    name: responsive_image.styles.3_2_medium
+    data:
+      label: '3:2 Medium'
+  -
+    name: responsive_image.styles.3_2_small
+    data:
+      label: '3:2 Small'
+  -
+    name: responsive_image.styles.3_2_wide
+    data:
+      label: '3:2 Wide'
+  -
+    name: responsive_image.styles.3_4_large
+    data:
+      label: '3:4 Large'
+  -
+    name: responsive_image.styles.3_4_medium
+    data:
+      label: '3:4 Medium'
+  -
+    name: responsive_image.styles.3_4_small
+    data:
+      label: '3:4 Small'
+  -
+    name: responsive_image.styles.4_3_large
+    data:
+      label: '4:3 Large'
+  -
+    name: responsive_image.styles.4_3_medium
+    data:
+      label: '4:3 Medium'
+  -
+    name: responsive_image.styles.4_3_small
+    data:
+      label: '4:3 Small'
+  -
+    name: responsive_image.styles.4_3_wide
+    data:
+      label: '4:3 Wide'
+  -
+    name: responsive_image.styles.9_16_large
+    data:
+      label: '9:16 Large'
+  -
+    name: responsive_image.styles.9_16_medium
+    data:
+      label: '9:16 Medium'
+  -
+    name: responsive_image.styles.9_16_small
+    data:
+      label: '9:16 Small'
+  -
+    name: responsive_image.styles.hero_large
+    data:
+      label: 'Hero Large'
+  -
+    name: responsive_image.styles.hero_wide
+    data:
+      label: 'Hero Wide'
+  -
+    name: responsive_image.styles.uncropped_large
+    data:
+      label: 'Uncropped Large'
+  -
+    name: responsive_image.styles.uncropped_medium
+    data:
+      label: 'Uncropped Medium'
+  -
+    name: responsive_image.styles.uncropped_small
+    data:
+      label: 'Uncropped Small'
+  -
+    name: system.menu.top-tasks
+    data:
+      label: 'Top tasks'
+      description: 'Things users can do when they start using Drupal CMS.'
+  -
+    name: taxonomy.vocabulary.tags
+    data:
+      name: Tags
+      description: 'Use tags to group articles on similar topics into categories.'
+  -
+    name: views.view.publishing_content
+    data:
+      label: 'Publishing content'
+      description: 'Shows a list of publishing-managed content on the site.'
+      display:
+        default:
+          display_title: Master
+          display_options:
+            title: 'Publishing content'
+            fields:
+              node_bulk_form:
+                action_title: Action
+              title:
+                label: Title
+                separator: ', '
+              uid:
+                label: Author
+                separator: ', '
+              created:
+                label: 'Create date'
+                separator: ', '
+              changed:
+                label: 'Updated date'
+                separator: ', '
+              status:
+                label: Published
+                separator: ', '
+              operations:
+                label: Operations
+            pager:
+              options:
+                tags:
+                  next: ››
+                  previous: ‹‹
+                  first: '« First'
+                  last: 'Last »'
+                expose:
+                  items_per_page_label: 'Items per page'
+                  items_per_page_options_all_label: '- All -'
+                  offset_label: Offset
+            exposed_form:
+              options:
+                submit_button: Apply
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+            filters:
+              moderation_state:
+                expose:
+                  label: 'Moderation state'
+              uid:
+                expose:
+                  label: 'Authored by'
+              combine:
+                expose:
+                  label: Contains
+              type:
+                expose:
+                  label: Type
+            use_more_text: more
+        block_drafts:
+          display_title: 'My drafts Block'
+          display_options:
+            title: 'My Drafts'
+            fields:
+              title:
+                label: Title
+                separator: ', '
+              changed:
+                label: 'Updated date'
+                separator: ', '
+              operations:
+                label: Operations
+            exposed_form:
+              options:
+                submit_button: Apply
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+            empty:
+              area_text_custom:
+                content: 'No draft content authored by you. Only your drafts are listed here.'
+            arguments:
+              uid:
+                exception:
+                  title: All
+            display_description: 'Shows a list of all draft content for the currently logged-in user.'
+            use_more_text: 'See all drafts'
+            link_url: /admin/content/moderated
+            display_comment: 'Shows a list of all draft content for the currently logged-in user.'
+            block_description: 'My drafts'
+            block_category: Dashboard
+        block_scheduled:
+          display_title: 'Scheduled Block'
+          display_options:
+            title: Scheduled
+            fields:
+              title:
+                label: Title
+                separator: ', '
+              unpublish_on:
+                label: 'Unpublish on'
+                separator: ', '
+              publish_on:
+                label: 'Scheduled On | Unpublished On'
+                alter:
+                  text: "{% if publish_on %}\r\n{{ publish_on }} |\r\n{% endif %}\r\n{% if unpublish_on %}\r\n {{ unpublish_on }}\r\n{% endif %}"
+                separator: ', '
+              operations:
+                label: Operations
+            exposed_form:
+              options:
+                submit_button: Apply
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+            empty:
+              area_text_custom:
+                content: 'No scheduled content available. Only scheduled content is listed here.'
+            filters:
+              publish_on:
+                expose:
+                  label: 'Publish on'
+              unpublish_on:
+                expose:
+                  label: 'Unpublish on'
+            display_description: 'Shows a list of all content scheduled for future publication on the site.'
+            use_more_text: 'See all scheduled'
+            link_url: /admin/content/scheduled
+            block_description: Scheduled
+            block_category: Dashboard
+  -
+    name: views.view.recent_content
+    data:
+      label: 'Recent content'
+      description: 'Find and manage content.'
+      display:
+        default:
+          display_title: Default
+          display_options:
+            title: 'Recent content'
+            fields:
+              title:
+                label: Title
+                separator: ', '
+              type:
+                label: Type
+                separator: ', '
+              status:
+                label: Status
+                settings:
+                  format_custom_false: Unpublished
+                  format_custom_true: Published
+                separator: ', '
+              changed:
+                label: Updated
+                separator: ', '
+              langcode:
+                label: Language
+                separator: ', '
+            exposed_form:
+              options:
+                submit_button: Filter
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+            empty:
+              area_text_custom:
+                content: "<p>You have not created any content yet.</p>\r\n<a href=\"/node/add\">Add content</a>"
+            use_more_text: 'See all content'
+            link_url: /admin/content
+        block_recent_content:
+          display_title: Block
+          display_options:
+            display_comment: 'Recent content block for the Welcome dashboard'
+            block_category: Dashboard
+  -
+    name: views.view.recent_pages
+    data:
+      label: 'Recent pages'
+      display:
+        default:
+          display_title: Default
+          display_options:
+            title: 'Recent pages'
+            fields:
+              title:
+                label: Title
+                separator: ', '
+              status:
+                label: Status
+                settings:
+                  format_custom_false: Unpublished
+                  format_custom_true: Published
+                separator: ', '
+              changed:
+                label: Updated
+                separator: ', '
+              langcode:
+                label: Language
+                separator: ', '
+            exposed_form:
+              options:
+                submit_button: Apply
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+            empty:
+              area_text_custom:
+                content: "<p>You have not created any pages yet.</p>\r\n<a href=\"/canvas\">Add a page</a>"
+            use_more_text: 'See all pages'
+            link_url: /admin/content/pages
+        block_recent_pages:
+          display_title: Block
+  -
+    name: workflows.workflow.basic_editorial
+    data:
+      label: Basic
+      type_settings:
+        states:
+          draft:
+            label: Draft
+          published:
+            label: Published
+          unpublished:
+            label: Unpublished
+        transitions:
+          create_new_draft:
+            label: 'Create new draft'
+          publish:
+            label: Publish
+          unpublish:
+            label: Unpublish

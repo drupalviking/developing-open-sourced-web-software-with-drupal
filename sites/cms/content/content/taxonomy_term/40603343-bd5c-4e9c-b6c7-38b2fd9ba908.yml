@@ -1,0 +1,62 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 40603343-bd5c-4e9c-b6c7-38b2fd9ba908
+  bundle: tags
+  default_langcode: zxx
+  depends:
+    d8f7e5af-788e-469e-8261-68c7c206a6f4: taxonomy_term
+default:
+  tid:
+    -
+      value: 6
+  revision_created:
+    -
+      value: 1766082093
+  revision_user:
+    -
+      target_id: 1
+  revision_log_message:
+    -
+      value: |+
+        Consectetuer elit ibidem iriure modo typicus. Aptent autem gilvus ibidem praemitto wisi. Appellatio at eu mauris nulla occuro qui. Appellatio autem esca jugis nimis. Adipiscing exputo lenis sudo vulputate.
+
+        At dolor feugiat gemino premo quidne similis sino suscipere velit. Ad comis facilisi gravis metuo nunc quis scisco sino. Eros letalis ut.
+
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Autem causa dolor nibh quidne refoveo utinam'
+  description:
+    -
+      value: |+
+        Humo iusto jugis neo obruo quidne refero saepius valde. Fere lenis ulciscor voco wisi. Abluo et genitus ille macto qui si sit suscipit vulpes. Laoreet mauris quis refoveo tation tego ulciscor ullamcorper velit. Inhibeo letalis minim praesent quibus quidem. Acsi comis in obruo olim virtus volutpat.
+
+        Ea gravis laoreet luptatum quia torqueo wisi. Abico acsi bene dignissim minim nimis patria plaga similis uxor. Amet aptent hendrerit populus refoveo usitas utinam voco. Aptent gemino jus mauris obruo pagus quidem si te. Decet euismod incassum loquor neo oppeto refoveo turpis ullamcorper. Aptent gemino jumentum lucidus modo odio pala quidem similis singularis.
+
+      format: plain_text
+  weight:
+    -
+      value: 34
+  parent:
+    -
+      entity: d8f7e5af-788e-469e-8261-68c7c206a6f4
+  changed:
+    -
+      value: 1780785497
+  revision_translation_affected:
+    -
+      value: false
+  path:
+    -
+      alias: /abluo-causa-gravis-pertineo-praemitto-refero-saluto-verto.
+      langcode: zxx
+      pathauto: 0
+  publish_on:
+    -
+      value: 1776944623
+  unpublish_on:
+    -
+      value: 1780524938

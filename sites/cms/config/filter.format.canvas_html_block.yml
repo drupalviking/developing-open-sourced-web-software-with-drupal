@@ -1,0 +1,32 @@
+uuid: f6fc8024-9cf0-441d-a393-012aca0a6475
+langcode: en
+status: true
+dependencies:
+  module:
+    - linkit
+  enforced:
+    module:
+      - canvas
+_core:
+  default_config_hash: VdO7XWH7_YdZQmiZH4dlHpVr17qaNWMgpMAh8EUfQn8
+name: 'Drupal Canvas — Block HTML (locked)'
+format: canvas_html_block
+weight: 1000
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      allowed_html: '<a href data-entity-type data-entity-uuid data-entity-substitution> <br> <em> <li> <ol> <p class="text-align-left text-align-center text-align-right text-align-justify"> <strong> <u> <ul>'
+      filter_html_help: false
+      filter_html_nofollow: false
+  linkit:
+    id: linkit
+    provider: linkit
+    status: true
+    weight: 0
+    settings:
+      title: false
+      media_substitution: metadata

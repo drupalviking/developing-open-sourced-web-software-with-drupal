@@ -1,0 +1,21 @@
+type: drupal11
+docroot: web
+ddev_version_constraint: '>= 1.25.0'
+hooks:
+  post-start:
+    # If dependencies have not been installed yet, ensure the document root used by
+    # Composer, AGENTS.md, and `.gitignore` matches DDEV's configuration.
+    - exec: |
+        if [ ! -f composer.lock ]; then
+          FLAGS=(--in-place --regexp-extended)
+
+          sed "${FLAGS[@]}" "s|([^[:alnum:]])web/|\1$DDEV_DOCROOT/|g" AGENTS.md composer.json
+
+          if [ "$DDEV_DOCROOT" = "." ]; then
+            sed "${FLAGS[@]}" "s|^/web/|/|g" .gitignore
+          else
+            sed "${FLAGS[@]}" "s|^/web/|/$DDEV_DOCROOT/|g" .gitignore
+          fi
+        fi
+    - composer: install
+    - composer: drupal:recipe-unpack

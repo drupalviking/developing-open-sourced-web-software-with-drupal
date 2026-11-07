@@ -1,0 +1,23 @@
+uuid: 6e5ea896-eb88-41f1-b032-70535755a60d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hike
+  module:
+    - node
+id: hikes
+label: Hikes
+type: 'canonical_entities:node'
+pattern: '/hikes/[node:title]'
+selection_criteria:
+  f221e975-7747-4b6a-aec9-4c24b7456f9c:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      hike: hike
+selection_logic: and
+weight: -5
+relationships: {}

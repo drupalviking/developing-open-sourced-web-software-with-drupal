@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 2431260a-09be-452d-befd-e68828ef3566
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 12
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: portobello-beach_12.jpg
+  uri:
+    -
+      value: 'public://2026-11/portobello-beach_12.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 132799
+  status:
+    -
+      value: false
+  created:
+    -
+      value: 1794062877
+  changed:
+    -
+      value: 1794062877

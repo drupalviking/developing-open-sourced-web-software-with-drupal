@@ -1,0 +1,64 @@
+uuid: 97916809-a332-431d-a12c-81128b823d65
+langcode: en
+status: true
+dependencies:
+  module:
+    - navigation
+    - options
+active_version: f7072e7d10fc2cb1
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        modifiers:
+          required: false
+          field_type: list_string
+          cardinality: -1
+          field_storage_settings:
+            allowed_values_function: canvas_load_allowed_values_for_component_prop
+          field_instance_settings: {  }
+          field_widget: options_select
+          default_value: null
+          expression: ℹ︎list_string␟value
+          derived_schema_metadata: {  }
+        extra_classes:
+          required: false
+          field_type: string
+          cardinality: -1
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value: null
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        html_tag:
+          required: false
+          field_type: list_string
+          field_storage_settings:
+            allowed_values_function: canvas_load_allowed_values_for_component_prop
+          field_instance_settings: {  }
+          field_widget: options_select
+          default_value: null
+          expression: ℹ︎list_string␟value
+          derived_schema_metadata: {  }
+        icon:
+          required: false
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value: null
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+    fallback_metadata:
+      slot_definitions:
+        content:
+          title: Content
+          description: 'Content of title.'
+label: Title
+id: sdc.navigation.title
+provider: navigation
+source: sdc
+source_local_id: 'navigation:title'

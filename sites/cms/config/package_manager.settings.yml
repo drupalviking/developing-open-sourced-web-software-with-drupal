@@ -1,0 +1,6 @@
+_core:
+  default_config_hash: foxfXtmtNX5ZrOHRXlCW3jm0jy03ZSXFSiI_cfFkbpw
+additional_trusted_composer_plugins:
+  - tbachert/spi
+  - drupal/site_template_helper
+include_unknown_files_in_project_root: false

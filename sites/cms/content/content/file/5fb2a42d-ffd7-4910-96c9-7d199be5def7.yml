@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 5fb2a42d-ffd7-4910-96c9-7d199be5def7
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 5
+  uid:
+    -
+      target_id: 0
+  filename:
+    -
+      value: generateImage_v299bd18fmlb7YXjfUm.jpeg
+  uri:
+    -
+      value: 'public://2026-11/generateImage_v299bd18fmlb7YXjfUm.jpeg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 9078
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793920449
+  changed:
+    -
+      value: 1793920449

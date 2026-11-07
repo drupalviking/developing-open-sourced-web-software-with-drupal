@@ -1,0 +1,79 @@
+label: Páginas
+display:
+  default:
+    display_title: 'Por defecto'
+    display_options:
+      title: Páginas
+      fields:
+        edit_canvas_page:
+          label: Acciones
+          text: editar
+        title:
+          label: Título
+          separator: ', '
+        status:
+          label: Estado
+          settings:
+            format_custom_false: 'Sin publicar'
+            format_custom_true: Publicado
+          separator: ', '
+        owner:
+          label: Autor
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        title:
+          expose:
+            label: Título
+        status:
+          expose:
+            label: Publicado
+          group_info:
+            label: Publicado
+            group_items:
+              1:
+                title: Publicado
+              2:
+                title: 'Sin publicar'
+  page_1:
+    display_title: Página
+    display_options:
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        status:
+          label: Estado
+          settings:
+            format_custom_false: 'Sin publicar'
+            format_custom_true: Publicado
+          separator: ', '
+        owner:
+          label: Autor
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        operations:
+          label: Operaciones
+      pager:
+        options:
+          tags:
+            next: 'Siguiente >'
+            previous: '‹ Anterior'
+            first: '« Primero'
+            last: 'Último »'
+          expose:
+            items_per_page_label: 'Elementos por página'
+            items_per_page_options_all_label: '- Todo -'
+      menu:
+        title: Páginas

@@ -1,0 +1,5 @@
+actions:
+  form_field_set_default_value_wxj50fmf:
+    label: 'Activar la publicación programada'
+  form_field_set_default_value_mfo0f4yo:
+    label: 'Habilitar la despublicación planificada'

@@ -1,0 +1,29 @@
+uuid: 912bd602-10ab-448f-bca0-6057d1ce112a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area
+    - node.type.gallery
+    - taxonomy.vocabulary.areas
+id: node.gallery.field_area
+field_name: field_area
+entity_type: node
+bundle: gallery
+label: Area
+description: 'Where the photos were taken.'
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      areas: areas
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,23 @@
+uuid: 1bfdac8d-7abb-42ea-a619-a9f913ca1669
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.club_info
+    - field.storage.block_content.field_follow_us
+  module:
+    - link
+id: block_content.club_info.field_follow_us
+field_name: field_follow_us
+entity_type: block_content
+bundle: club_info
+label: 'Follow us'
+description: ''
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings:
+  title: 2
+  link_type: 16
+field_type: link

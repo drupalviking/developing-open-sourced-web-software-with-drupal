@@ -1,0 +1,32 @@
+uuid: 4156418f-3482-49bd-9892-934032504f87
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.albums
+  module:
+    - node
+    - views
+  theme:
+    - olivero
+id: olivero_albums_from_this_hike
+theme: olivero
+region: content
+weight: 100
+provider: null
+plugin: 'views_block:albums-block_1'
+settings:
+  id: 'views_block:albums-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      hike: hike

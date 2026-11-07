@@ -1,0 +1,30 @@
+uuid: b62ac251-2ed5-4e0c-a00c-4ae84d2d5ced
+langcode: en
+status: true
+dependencies:
+  module:
+    - coffee
+    - contextual
+    - file
+    - klaro
+    - media
+    - navigation
+    - node
+    - system
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access coffee'
+  - 'access content'
+  - 'access contextual links'
+  - 'access navigation'
+  - 'delete own files'
+  - 'use klaro'
+  - 'view media'
+  - 'view own unpublished content'
+  - 'view the administration theme'

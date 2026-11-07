@@ -1,0 +1,15 @@
+uuid: 04da775c-69d2-408d-917e-c289a3e56d87
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.sdc.mercury.cta
+    - canvas.component.sdc.mercury.hero-billboard
+    - canvas.component.sdc.mercury.hero-side-by-side
+name: Hero
+configEntityTypeId: component
+weight: 0
+items:
+  - sdc.mercury.cta
+  - sdc.mercury.hero-billboard
+  - sdc.mercury.hero-side-by-side

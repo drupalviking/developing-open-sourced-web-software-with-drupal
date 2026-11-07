@@ -1,0 +1,51 @@
+uuid: 3a427ccd-6383-4235-b0b2-28f1d7f94dab
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.gallery.comment
+    - field.field.node.gallery.field_area
+    - field.field.node.gallery.field_body
+    - field.field.node.gallery.field_hike
+    - field.field.node.gallery.field_photos
+    - node.type.gallery
+  module:
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.gallery.teaser
+targetEntityType: node
+bundle: gallery
+mode: teaser
+content:
+  field_area:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {}
+    weight: 1
+    region: content
+  field_body:
+    type: text_trimmed
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings: {}
+    weight: 2
+    region: content
+  links:
+    settings: {}
+    third_party_settings: {}
+    weight: 100
+    region: content
+hidden:
+  comment: true
+  field_hike: true
+  field_photos: true
+  langcode: true

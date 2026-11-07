@@ -1,0 +1,35 @@
+description: 'Encontrar y administrar contenido.'
+display:
+  default:
+    display_title: 'Por defecto'
+    display_options:
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        type:
+          label: Tipo
+          separator: ', '
+        status:
+          label: Estado
+          settings:
+            format_custom_false: 'Sin publicar'
+            format_custom_true: Publicado
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        langcode:
+          label: Idioma
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Filtro
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+  block_recent_content:
+    display_title: Bloque
+    display_options:
+      block_category: 'Panel de control'

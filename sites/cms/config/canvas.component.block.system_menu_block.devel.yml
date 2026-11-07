@@ -1,0 +1,39 @@
+uuid: 57f0c40f-7283-4986-b5ec-4a8313bcff1d
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.devel
+  module:
+    - system
+active_version: 80fb385c8352df32
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'system_menu_block:devel'
+        label: Development
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+  675c4396dcb6d8f1:
+    settings:
+      default_settings:
+        id: 'system_menu_block:devel'
+        label: Development
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+label: Development
+id: block.system_menu_block.devel
+provider: system
+source: block
+source_local_id: 'system_menu_block:devel'

@@ -1,0 +1,6 @@
+actions:
+  eca_switch_account_user:
+    label: 'Cambiar de usuario'
+  eca_config_write_changefreq:
+    configuration:
+      config_value: diariamente

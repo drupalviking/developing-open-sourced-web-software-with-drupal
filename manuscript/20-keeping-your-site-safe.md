@@ -125,7 +125,7 @@ The report only helps if someone looks at it. Let the site send an email instead
 - **Email addresses to notify when updates are available**: one address per line. Use an address that a person reads, and more than one if more than one person looks after the site. The club uses the webmaster's address, and Morag's.
 - **Email notification threshold**: **All newer versions**, or **Only security updates**. With **All newer versions** you get an email every day until you've updated everything. That's useful for a site you look after closely; for a site you only check on now and then, **Only security updates** makes sure the emails that come are the ones that matter.
 
-> **Note:** Your site can only check if it can reach drupal.org, and it can only send email if it's set up to send it. On your own computer, DDEV catches every email the site sends (run `ddev mailpit` to see them), so nothing reaches a real inbox. On a live site, check that the emails arrive. Chapter 21 covers the live server.
+> **Note:** Your site can only check if it can reach drupal.org, and it can only send email if it's set up to send it. On your own computer, DDEV catches every email the site sends (run `ddev mailpit` to see them), so nothing reaches a real inbox. On a live site, check that the emails arrive. Chapter 21's going-live checklist covers it.
 
 > **Drupalism:** "Update" means three different things in Drupal. A **software update** is a new release of core or a module, the subject of this chapter. A **database update** is a small program in the new release that changes your database to fit the new code: `update.php`, or `drush updatedb`, which we meet below. And on the Available updates screen, an **update** is the release itself. When someone says "run the updates", ask which ones. Usually they mean the database updates, after the software updates.
 
@@ -243,7 +243,7 @@ Without Drush, the same is on a page: go to `/update.php` and follow the steps. 
 
 Finally, look at the site. Click through the pages that matter, and the ones built with the module you updated. If something's wrong, you have the snapshot and the two Composer files: restore them, run `ddev composer install`, and you're back where you started.
 
-> **Note:** On a live site, don't update on the live server first. Update on your own computer (or a copy of the site, often called a **staging** site), test it there, commit `composer.json` and `composer.lock` to Git, and then run `composer install` and `drush updatedb` on the live server. `composer install` installs exactly what the lock file says, the versions you tested, and nothing newer. Chapter 21 goes through it.
+> **Note:** On a live site, don't update on the live server first. Update on your own computer (or a copy of the site, often called a **staging** site), test it there, commit `composer.json` and `composer.lock` to Git, and then run `composer install` and `drush updatedb` on the live server. `composer install` installs exactly what the lock file says, the versions you tested, and nothing newer. Chapter 21 shows the commands.
 
 ### Updating Drupal core
 

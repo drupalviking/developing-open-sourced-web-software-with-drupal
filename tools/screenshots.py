@@ -4341,7 +4341,8 @@ def ai19_tidy(page: Page) -> None:
     """Closes the AI chat (it stays open from page to page) and moves the mouse off the navigation sidebar."""
     close = page.locator("button[data-action='close-chat']")
     for _ in range(3):
-        if not (close.count() and close.first.is_visible()):
+        # The button toggles: clicked while the chat is closed, it opens it. The body class says which it is.
+        if not (close.count() and page.evaluate("() => document.body.classList.contains('ai-chatbot-opened')")):
             break
         close.first.evaluate("e => e.click()")
         page.wait_for_timeout(1000)
@@ -4396,6 +4397,10 @@ def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     drush(site, "cache:rebuild")
     page.goto(url + "/admin/config/ai")
     page.wait_for_load_state("networkidle")
+    # The dashboard's Filter box takes the focus, and scrolls the page down to it.
+    page.wait_for_timeout(1500)
+    page.evaluate("() => { document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); }")
+    ai19_tidy(page)
     snap("19-cms-ai-dashboard")
 
     # The chatbot: tags, then a field.
@@ -4501,7 +4506,103 @@ $p->save();
     snap("19-cms-translate-ai")
 
 
+def ai19_anthropic_key() -> str:
+    """The Anthropic API key for the comparison: $ANTHROPIC_API_KEY, or the file ~/.config/lens-and-trail/anthropic-api-key.
+
+    Kept out of the repository. Never printed.
+    """
+    key = os.environ.get("ANTHROPIC_API_KEY", "")
+    path = Path.home() / ".config" / "lens-and-trail" / "anthropic-api-key"
+    if not key and path.exists():
+        key = path.read_text().strip()
+    return key
+
+
+def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 19, the second provider: Anthropic's key and settings, then the same questions as with amazee.ai.
+
+    Starts right after the AI Assistant was installed (a DDEV snapshot). Without a key (see ai19_anthropic_key),
+    it only takes the provider page, with no key selected.
+    """
+    url = site["url"]
+    subprocess.run(["ddev", "snapshot", "restore", "ch19-ai-installed"], cwd=site["dir"], check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    log_in(page, site)
+    key = ai19_anthropic_key()
+    if key:
+        page.goto(url + "/admin/config/system/keys/add")
+        page.wait_for_load_state("networkidle")
+        page.fill("#edit-label", "Anthropic API key")
+        page.wait_for_timeout(1500)
+        page.fill("#edit-key-input-settings-key-value", key)
+        page.click("#edit-submit")
+        page.wait_for_load_state("networkidle")
+    page.goto(url + "/admin/config/ai/providers/anthropic")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    ai19_tidy(page)
+    if key:
+        page.select_option("select[name='api_key']", label="Anthropic API key")
+        page.wait_for_timeout(1000)
+    snap("19-cms-anthropic")
+    if not key:
+        print("No Anthropic API key: skipping the rest of the Anthropic sequence.")
+        return
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+
+    # AI Settings: Anthropic for every chat operation type. The model list loads when the provider changes.
+    page.goto(url + "/admin/config/ai/settings")
+    page.wait_for_load_state("networkidle")
+    ai19_tidy(page)
+    for op in ["chat", "chat_with_complex_json", "chat_with_image_vision", "chat_with_structured_response", "chat_with_tools"]:
+        page.select_option(f"select[name='operation__{op}']", "anthropic")
+        page.wait_for_timeout(3000)
+        models = page.locator(f"select[name='model__{op}'] option").all_text_contents()
+        sonnet = [m for m in models if "sonnet" in m.lower()]
+        page.select_option(f"select[name='model__{op}']", label=sonnet[0] if sonnet else models[-1])
+        page.wait_for_timeout(1000)
+    print("Anthropic models:", page.locator("select[name='model__chat'] option").all_text_contents())
+    snap("19-cms-ai-settings")
+    page.locator("input[type='submit'][value='Save configuration']").first.click()
+    page.wait_for_load_state("networkidle")
+
+    # The same questions as with amazee.ai: tags, alt text, and the short Canvas AI prompt.
+    tags = url + "/admin/structure/taxonomy/manage/tags/overview"
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    page.locator("button.button--ai-chatbot").evaluate("e => e.click()")
+    page.wait_for_timeout(2000)
+    ai19_klaro_yes(page)
+    print("--- Tags\n" + ai19_ask(page, AI19_TAGS)[-4000:])
+    snap("19-cms-anthropic-chatbot-tags")
+    page.goto(tags)
+    page.wait_for_load_state("networkidle")
+    ai19_tidy(page)
+    print("--- Terms\n" + page.locator("table").first.inner_text())
+    page.goto(url + "/media/add/image")
+    page.wait_for_load_state("networkidle")
+    page.set_input_files("input[type='file']", str(PHOTOS / "portobello-beach.jpg"))
+    page.wait_for_timeout(5000)
+    ai19_tidy(page)
+    ai19_klaro_yes(page, "form:has(input[name*='[alt]'])")
+    page.locator("input[value='Generate with AI']").first.evaluate("e => e.click()")
+    alt = page.locator("input[name*='[alt]']").first
+    for _ in range(24):
+        page.wait_for_timeout(2500)
+        if alt.input_value():
+            break
+    print("--- Alt text\n" + alt.input_value())
+    scroll_to(page, "input[name*='[alt]']", offset=300)
+    ai19_tidy(page)
+    snap("19-cms-anthropic-alt")
+    ai19_canvas_page(page, site, AI19_PAGE)
+    print("--- Canvas AI\n" + ai19_chat_text(page)[-4000:])
+    snap("19-cms-anthropic-page")
+
+
 SEQUENCES = [
+    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-alt", "19-cms-anthropic-page"]),
     ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
     ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),
     ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),

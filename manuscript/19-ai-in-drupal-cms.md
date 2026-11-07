@@ -4,7 +4,7 @@ Everyone is talking about AI, and Drupal CMS has some built in. In this chapter 
 
 All four work, and all four make mistakes. That's what this chapter is really about. AI is quick, it's tireless, and it's confident whether it's right or wrong. So we look closely at everything it gives us, and we find out where it helps a site builder, where it wastes our time, and what it can't do at all. You are still the site builder. The AI is a fast assistant that has never met the club.
 
-AI in Drupal CMS is an add-on, the **AI Assistant**, and this chapter is the first one that's mostly about Drupal CMS. On Drupal core, the same modules are there to install with Composer; we look at that in a box below.
+AI in Drupal CMS is an add-on, the **AI Assistant**, and this chapter is the first one that's mostly about Drupal CMS. The AI Assistant is a recipe, though, and on a Drupal 11 core site you can fetch and apply it with Composer and Drush; a box below shows how.
 
 We start where Chapter 18 left the club's Drupal CMS site: Mercury, the How to join page in English and Spanish, and Canvas Translate.
 
@@ -41,7 +41,7 @@ The AI Assistant is a recipe, one of the add-ons Drupal CMS recommends:
 
 Project Browser downloads the modules and applies the recipe, which takes a minute or two. When the card says **Installed**, the site has an AI assistant, alternative text for images, AI in Canvas, and a dashboard to keep an eye on all of it.
 
-> **Note:** With OpenAI or Anthropic, you give Drupal your API key in the provider's settings, under **Configuration** > **AI**. Drupal keeps keys with the **Key** module (**Configuration** > **System** > **Keys**), not in the site's configuration, so a key doesn't end up in exported configuration, or in Git.
+> **Note:** With OpenAI or Anthropic, you give Drupal an API key. We connect Anthropic step by step later in this chapter.
 
 The recipe installs more than a dozen modules. The ones to know are:
 
@@ -56,7 +56,14 @@ The recipe installs more than a dozen modules. The ones to know are:
 
 The dashboard shows which providers are set up, and which model is used for each kind of job, which the AI module calls an *operation type*: chat, translating text, describing an image, and so on. Each AI feature asks for an operation type, not a provider, so you can switch the whole site to another provider in one place.
 
-> **On Drupal core:** The AI modules aren't part of Drupal core, but they're ordinary contributed modules, and Drupal CMS has nothing core can't have. On a core site, you'd install them with Composer (Chapter 11), such as `composer require drupal/ai drupal/ai_provider_amazeeio`, and switch on what you need. But not on Drupal 12, yet: when we wrote this, the AI module ({{ number:ai_version }}) supported Drupal 10 and 11 only, so Composer refused to install it on our core site. That's why this chapter is on Drupal CMS. When the AI module supports Drupal 12, the rest of this chapter works on core too, except the Canvas parts (Canvas doesn't support Drupal 12 yet either, as Chapter 6 says).
+> **On Drupal core:** Drupal CMS has nothing core can't have. The AI Assistant is a recipe, `drupal/drupal_cms_ai`, and recipes from drupal.org are fetched with Composer, the same way as modules (Chapter 11). On a Drupal 11 core site, two commands do what Project Browser did above:
+>
+> ```bash
+> ddev composer require drupal/drupal_cms_ai
+> ddev drush recipe ../recipes/drupal_cms_ai
+> ```
+>
+> The first downloads the recipe and every module it needs. Composer puts recipes in a `recipes/` folder next to `web/`, not inside it, which is why the second command starts with `../`. Composer also *unpacks* the recipe: it copies the recipe's own list of modules into your site's `composer.json`, so they stay when you no longer need the recipe. The second command applies it, as we applied core's *Default comments* recipe in Chapter 11. Drush asks for an OpenAI or Anthropic API key; press **Enter** twice to skip both and start with amazee.ai. We tried this on a new Drupal 11.4 core site: the same modules, the assistant in the toolbar of the Default Admin theme, and the same dashboard. On Drupal 12, not yet: when we wrote this, the recipe needed Drupal 11.4 or newer, and the AI module ({{ number:ai_version }}) supported Drupal 10 and 11 only, so Composer refused to install it on our Drupal 12 core site. If you followed this book on Drupal 11.5, the rest of this chapter works on your site too. Canvas AI needs Canvas, and the recipe installs that for you too, so the Canvas parts work on Drupal 11 core as well (Chapter 8 explains why our own core site can't have Canvas yet).
 
 ## Asking the assistant
 
@@ -248,6 +255,61 @@ The button fills every *empty* translation field. It never overwrites a translat
 So the AI does the typing, and Lucía does the translating. On a page with fifty-odd fields, that saves most of the typing, and that's a fair description of what AI can do for a translator.
 
 %% For the author: the examples above are from a test run on 2026-11-06; figure 19.16 is from another run, so its Spanish may differ in the details. %%
+
+## A second provider: Anthropic
+
+So far, everything went to amazee.ai. Now we connect a second provider, Anthropic, and ask it the same questions. There are three good reasons to know how. Your trial runs out, or your club already pays for another provider. You want to keep the data with a company whose terms you've read. And, the reason for this section, it shows that a different model gives different answers, with different mistakes, and that the review stays the same.
+
+A word on names first. Anthropic is the company, and Claude is the name of its models. amazee.ai's list of models has Claude models in it too, next to models from other companies: amazee.ai is a provider that runs other companies' models for you, in the country you choose. Connecting Anthropic directly means one account and one bill less in between, and one company more to read the terms of.
+
+### Getting an API key
+
+1. Make an account in the Claude Console, Anthropic's site for developers, at <https://platform.claude.com>.
+2. Add credit under **Billing**. Anthropic charges in advance, and stops answering when the credit is used up, which is a good limit for a small club.
+3. Under **API keys**, select **Create key**, give it a name such as `Lens & Trail`, and copy the key. The Console shows it only once.
+
+A Claude subscription, the kind you use to chat with Claude in a browser, doesn't pay for this. The API is billed separately, even with the same login.
+
+%% For the author: check steps 1–3 against the Console when you make the key (menu names, and whether to mention spend limits under Limits). %%
+
+### Giving the key to Drupal
+
+Drupal keeps API keys with the **Key** module, which the recipe installed. A key is kept apart from the settings that use it, so that you can change the key, or keep it somewhere else, without touching the provider.
+
+1. Go to **Configuration** > **System** > **Keys** (`/admin/config/system/keys`), and select **Add key**.
+2. **Key name**: `Anthropic API key`. Leave **Key type** at **Authentication**, and **Key provider** at **Easy Encrypted**.
+3. Paste the key into **Key value**, and select **Save**.
+
+**Easy Encrypted** stores the key in the site's configuration, but encrypted: what lands in configuration, and in exported configuration in Git (Chapter 21), is unreadable without a second, private key, which Drupal made when the recipe installed *Easy Encryption*. That private key is a file in the folder `.easy_encryption/`, next to `web/`, outside the website. Never commit that folder to Git. The other **Key provider** choices keep the key in a file, or in an *environment variable*, a setting of the server itself, which is how many hosting companies want secrets kept; we come back to that in Chapter 21.
+
+Now tell the provider which key to use:
+
+1. Go to **Configuration** > **AI** > **Providers**, and select **Anthropic** (`/admin/config/ai/providers/anthropic`).
+2. Under **Anthropic API Key**, select **Anthropic API key**.
+3. Leave **No Moderation Needed** on, and select **Save configuration**.
+
+![The Setup Anthropic Authentication page: a list of keys, Enable OpenAI Moderation switched off and greyed out, and No Moderation Needed switched on, with its warning](images/19-cms-anthropic.png)
+*Figure 19.17: Connecting Anthropic*
+
+%% For the author: taken without a key, so the list says - Select a key -. `tools/screenshots.py 19-cms-anthropic` retakes it with the key selected once the key is in place. %%
+
+That third step deserves a word, because its description shouts: "THAT WILL GET ME BANNED". *Moderation* means checking every question with a separate service before it goes to the AI, to stop questions that break the provider's rules. Anthropic can close an account that sends those, and it doesn't care that it was a visitor who typed it. The AI module can check questions with OpenAI's moderation service, but only with an OpenAI key, and the **AI External Moderation** module. On Lens & Trail, only the club's editors use the AI, and we know them, so no moderation is a fair choice. On a site where visitors type into a chatbot, think again.
+
+### Choosing Anthropic for each job
+
+The provider is connected, but nothing uses it yet. Remember the operation types from the dashboard: each AI feature asks for a kind of job, not a provider.
+
+1. Go to **Configuration** > **AI** > **AI Settings** (`/admin/config/ai/settings`).
+2. For **Chat**, choose **Anthropic** under **Provider**, and a model under **Model**.
+3. Do the same for the other chat rows, such as **Chat with Tools/Function Calling** and **Chat with Image Vision**, and select **Save configuration**.
+
+%% For the author: to verify with the key: the exact row names, which rows Anthropic offers (it makes no images and no embeddings, so those stay on amazee.ai), whether Translate Text can use Anthropic, and which model to recommend. Add a figure 19.18 of this page. %%
+
+Leave the rows Anthropic can't do on amazee.ai. To go back, choose amazee.ai again: nothing else on the site changes.
+
+### The same questions, another model
+
+%% For the author: to write after a run with your Anthropic key: the Tags prompt, alt text for the Portobello photo, and the short Canvas AI prompt, on Anthropic, compared with the amazee.ai results above (what it invented, what it asked, how long it took, and what it cost on the Console's usage page). %%
 
 ## What it can't do
 

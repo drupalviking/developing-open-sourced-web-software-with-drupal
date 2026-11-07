@@ -1,0 +1,30 @@
+uuid: e3cfac92-57ef-4d5b-bffc-373c52348b3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.uncropped_500w_webp
+    - image.style.uncropped_700w_webp
+    - image.style.uncropped_960w_webp
+  module:
+    - eca_render
+  enforced:
+    config:
+      - eca.eca.define_breakpoints
+_core:
+  default_config_hash: ZWxDU3FZ2clfnf9E6eWNVTOGk-OCR5ROvkL3sqiUcqs
+id: uncropped_large
+label: 'Uncropped Large'
+image_style_mappings:
+  -
+    image_mapping_type: sizes
+    image_mapping:
+      sizes: 100vw
+      sizes_image_styles:
+        - uncropped_500w_webp
+        - uncropped_700w_webp
+        - uncropped_960w_webp
+    breakpoint_id: custom.sm
+    multiplier: 1x
+breakpoint_group: custom
+fallback_image_style: uncropped_500w_webp

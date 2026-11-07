@@ -1,0 +1,33 @@
+uuid: d35c89b4-c219-4b83-ac36-b50ee39ecfd6
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.photo_themes
+  module:
+    - language
+    - taxonomy
+id: photo_themes_es
+label: 'Temas fotográficos'
+type: 'canonical_entities:taxonomy_term'
+pattern: '/temas-fotograficos/[term:name]'
+selection_criteria:
+  f9b7747d-6e77-4609-ab14-161548c19265:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      photo_themes: photo_themes
+  64425e1e-ac31-4871-84dd-032324b50746:
+    id: language
+    negate: false
+    context_mapping:
+      language: 'taxonomy_term:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'taxonomy_term:langcode:language':
+    label: Language

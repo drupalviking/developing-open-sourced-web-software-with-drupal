@@ -1,0 +1,83 @@
+uuid: 510f3a74-4bbe-4d99-bd58-f142cf045c1d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.hike.field_area
+    - field.field.node.hike.field_body
+    - field.field.node.hike.field_date
+    - field.field.node.hike.field_difficulty
+    - field.field.node.hike.field_distance
+    - field.field.node.hike.field_elevation_gain
+    - field.field.node.hike.field_hike_leader
+    - field.field.node.hike.field_meeting_place
+    - field.field.node.hike.field_photo
+    - node.type.hike
+  module:
+    - datetime
+    - layout_builder
+    - options
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.hike.teaser
+targetEntityType: node
+bundle: hike
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {}
+    third_party_settings: {}
+    weight: 0
+    region: content
+  field_body:
+    type: text_trimmed
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings: {}
+    weight: 7
+    region: content
+  field_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: day_date_and_time
+    third_party_settings: {}
+    weight: 2
+    region: content
+  field_difficulty:
+    type: list_default
+    label: inline
+    settings: {}
+    third_party_settings: {}
+    weight: 5
+    region: content
+  field_distance:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 1
+      prefix_suffix: true
+    third_party_settings: {}
+    weight: 4
+    region: content
+  links:
+    settings: {}
+    third_party_settings: {}
+    weight: 1
+    region: content
+hidden:
+  field_area: true
+  field_elevation_gain: true
+  field_hike_leader: true
+  field_meeting_place: true
+  field_photo: true
+  langcode: true

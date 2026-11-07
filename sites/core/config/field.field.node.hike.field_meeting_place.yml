@@ -1,0 +1,19 @@
+uuid: 58c87893-8f7a-4587-9b99-46dbb930e5ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_place
+    - node.type.hike
+id: node.hike.field_meeting_place
+field_name: field_meeting_place
+entity_type: node
+bundle: hike
+label: 'Meeting place'
+description: 'Where we meet, for example: Flotterstone car park.'
+required: true
+translatable: true
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: string

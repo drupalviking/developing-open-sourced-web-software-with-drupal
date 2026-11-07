@@ -1,0 +1,69 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 5b02be46-0a31-4f8e-9c6f-5b1fd47a76ee
+  bundle: page
+  default_langcode: en
+  depends:
+    5f16403c-e0bd-444f-841b-6d227d5f19d5: media
+default:
+  nid:
+    -
+      value: 16
+  revision_timestamp:
+    -
+      value: 1793980523
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Taking photos on a hike'
+  created:
+    -
+      value: 1793980511
+  changed:
+    -
+      value: 1793980523
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /taking-photos-hike
+      langcode: en
+      pathauto: 1
+  field_content:
+    -
+      value: '<p>Hiking photography is about travelling light and stopping often. Here are the tips we share with new members before their first hike with the club.</p><h2>Pack light</h2><p>One camera body and one zoom lens are enough for a day in the Pentland Hills. A phone is a fine second camera.</p><h2>Shoot the light</h2><p>Early starts give the best light on Glencorse Reservoir. On a grey day, look for details: frost on a gate, a burn in the snow.</p><h2>Keep up with the group</h2><p>Tell the hike leader when you stop for a photo, and catch up at the next gate.</p>'
+      format: content_format
+  field_description:
+    -
+      value: 'How the club takes photos on a hike: what to pack, when the light is best, and how to keep up with the group.'
+  field_featured_image:
+    -
+      entity: 5f16403c-e0bd-444f-841b-6d227d5f19d5
+  field_seo_analysis:
+    -
+      status: '7.9'
+      focus_keyword: 'hiking photography'
+      title: ''
+      description: ''
+  field_seo_description:
+    -
+      value: 'Tips from the Lens & Trail photo club for hiking photography in the hills around Edinburgh: what to pack, when the light is best, and how to keep up with the group.'

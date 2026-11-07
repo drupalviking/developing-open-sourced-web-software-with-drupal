@@ -1,0 +1,173 @@
+_meta:
+  version: '1.0'
+  entity_type: canvas_page
+  uuid: e96165cb-19b4-4083-8581-7329713edeca
+  default_langcode: en
+default:
+  id:
+    -
+      value: 2
+  revision_created:
+    -
+      value: 1793868572
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  owner:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'How to join'
+  components:
+    -
+      uuid: 0e5966c2-65fe-4a0b-ac06-48e43586b1a5
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'How to join'
+        level: 1
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: left
+    -
+      uuid: 336b5e76-5471-4964-a7de-6780d228e491
+      component_id: sdc.mercury.grid
+      inputs:
+        width: 100%
+        columns: '2 columns 67%-33%'
+        mobile_columns: '1'
+    -
+      parent_uuid: 336b5e76-5471-4964-a7de-6780d228e491
+      slot: main_slot
+      uuid: c7456efe-f48c-40f7-89a0-83d44c3269c5
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: "<p>Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance.</p><p>If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail-cms.ddev.site.</p><p>Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes.</p>"
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 336b5e76-5471-4964-a7de-6780d228e491
+      slot: main_slot
+      uuid: 1e9d4716-3cca-479c-b5b8-ebbf5cf143f8
+      component_id: sdc.mercury.card-icon
+      inputs:
+        border_radius: medium
+        icon: calendar-dots
+        icon_size: large
+        icon_align: center
+        text: 'When and where'
+        description:
+          value: '<p>Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.</p><p>Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.</p>'
+          format: canvas_html_block
+        text_align: left
+  path:
+    -
+      alias: /join
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1793868572
+  changed:
+    -
+      value: 1793869107
+  metatags:
+    -
+      value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    id:
+      -
+        value: 2
+    revision_created:
+      -
+        value: 1793868572
+    revision_user:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    owner:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Cómo unirse'
+    components:
+      -
+        uuid: 0e5966c2-65fe-4a0b-ac06-48e43586b1a5
+        component_id: sdc.mercury.heading
+        inputs:
+          heading_text: 'Cómo unirse'
+          level: 1
+          text_size: heading-responsive-4xl
+          text_color: default
+          align: left
+      -
+        uuid: 336b5e76-5471-4964-a7de-6780d228e491
+        component_id: sdc.mercury.grid
+        inputs:
+          width: 100%
+          columns: '2 columns 67%-33%'
+          mobile_columns: '1'
+      -
+        parent_uuid: 336b5e76-5471-4964-a7de-6780d228e491
+        slot: main_slot
+        uuid: c7456efe-f48c-40f7-89a0-83d44c3269c5
+        component_id: sdc.mercury.text
+        inputs:
+          text:
+            value: '<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p><p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail-cms.ddev.site.</p><p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>'
+            format: canvas_html_block
+          text_size: normal
+          text_color: default
+      -
+        parent_uuid: 336b5e76-5471-4964-a7de-6780d228e491
+        slot: main_slot
+        uuid: 1e9d4716-3cca-479c-b5b8-ebbf5cf143f8
+        component_id: sdc.mercury.card-icon
+        inputs:
+          border_radius: medium
+          icon: calendar-dots
+          icon_size: large
+          icon_align: center
+          text: 'Cuándo y dónde'
+          description:
+            value: '<p>Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen.</p><p>Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith.</p>'
+            format: canvas_html_block
+          text_align: left
+    path:
+      -
+        alias: /join
+        langcode: es
+        pathauto: 0
+    created:
+      -
+        value: 1793868572
+    changed:
+      -
+        value: 1793869107
+    revision_translation_affected:
+      -
+        value: true
+    metatags:
+      -
+        value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false

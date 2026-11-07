@@ -1,0 +1,37 @@
+uuid: 371347d8-55aa-4e73-b371-edbcc6238b47
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mercury
+active_version: d696cea1796b650e
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        align:
+          required: false
+          field_type: boolean
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: boolean_checkbox
+          default_value:
+            -
+              value: true
+          expression: ℹ︎boolean␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions:
+        footer_first:
+          title: 'Branding & Social'
+        footer_last:
+          title: 'Call to action'
+        footer_utility_first:
+          title: 'Utility links'
+        footer_utility_last:
+          title: 'Copyright text'
+label: Footer
+id: sdc.mercury.footer
+provider: mercury
+source: sdc
+source_local_id: 'mercury:footer'

@@ -1,0 +1,7 @@
+actions:
+  eca_void_and_condition_1:
+    label: 'Y'
+  eca_void_and_condition_2:
+    label: 'Y'
+  eca_set_field_value_link_1:
+    label: 'Activar enlace de menú'

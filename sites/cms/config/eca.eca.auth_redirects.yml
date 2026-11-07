@@ -1,0 +1,34 @@
+uuid: cb2acdd1-1e99-404c-8faf-41b3b5759f94
+langcode: en
+status: true
+dependencies:
+  module:
+    - eca_user
+    - modeler_api
+third_party_settings:
+  modeler_api:
+    modeler_id: modeler
+    label: 'Authentication redirects'
+_core:
+  default_config_hash: JtrynAZ5Tk2G9xMMzdO3kzxWo24qqbjn1dmYmrKQ-n8
+id: auth_redirects
+weight: 0
+template: null
+events:
+  user__logout:
+    plugin: 'user:logout'
+    label: 'User logout'
+    configuration: {  }
+    successors:
+      -
+        id: action_goto_action_login
+        condition: ''
+conditions: {  }
+gateways: {  }
+actions:
+  action_goto_action_login:
+    label: 'Back to login after logout'
+    plugin: action_goto_action
+    configuration:
+      url: /user/login
+    successors: {  }

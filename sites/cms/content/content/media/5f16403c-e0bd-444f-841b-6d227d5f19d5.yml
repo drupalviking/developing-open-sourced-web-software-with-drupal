@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 5f16403c-e0bd-444f-841b-6d227d5f19d5
+  bundle: image
+  default_langcode: en
+  depends:
+    6e6aa075-ecf2-42c6-97c6-fcb6842984cf: file
+default:
+  mid:
+    -
+      value: 6
+  revision_created:
+    -
+      value: 1793980511
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 0
+  name:
+    -
+      value: 'Glencorse Reservoir from the hillside'
+  created:
+    -
+      value: 1793980511
+  changed:
+    -
+      value: 1793980511
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  field_media_image:
+    -
+      alt: 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees'
+      title: ''
+      width: 1728
+      height: 3072
+      entity: 6e6aa075-ecf2-42c6-97c6-fcb6842984cf

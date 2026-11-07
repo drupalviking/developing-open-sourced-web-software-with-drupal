@@ -1,0 +1,61 @@
+uuid: 96b76ddf-e93f-4348-afb6-eb0ed4be7bac
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.hike.field_area
+    - field.field.node.hike.field_body
+    - field.field.node.hike.field_date
+    - field.field.node.hike.field_difficulty
+    - field.field.node.hike.field_distance
+    - field.field.node.hike.field_elevation_gain
+    - field.field.node.hike.field_hike_leader
+    - field.field.node.hike.field_meeting_place
+    - field.field.node.hike.field_photo
+    - node.type.hike
+  module:
+    - datetime
+    - layout_builder
+    - options
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.hike.card
+targetEntityType: node
+bundle: hike
+mode: card
+content:
+  content_moderation_control:
+    settings: {}
+    third_party_settings: {}
+    weight: 0
+    region: content
+  field_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: day_date_and_time
+    third_party_settings: {}
+    weight: 2
+    region: content
+  field_difficulty:
+    type: list_default
+    label: hidden
+    settings: {}
+    third_party_settings: {}
+    weight: 5
+    region: content
+hidden:
+  field_area: true
+  field_body: true
+  field_distance: true
+  field_elevation_gain: true
+  field_hike_leader: true
+  field_meeting_place: true
+  field_photo: true
+  langcode: true
+  links: true

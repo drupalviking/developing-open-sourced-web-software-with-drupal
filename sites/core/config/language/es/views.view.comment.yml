@@ -1,0 +1,91 @@
+label: Comentarios
+display:
+  default:
+    display_title: 'Por defecto'
+    display_options:
+      title: Comentarios
+      fields:
+        comment_bulk_form:
+          action_title: Acción
+        subject:
+          label: Asunto
+          separator: ', '
+        uid:
+          separator: ', '
+        name:
+          label: Autor
+          separator: ', '
+        entity_id:
+          label: 'Enviado en'
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        operations:
+          label: Operaciones
+        name_1:
+          separator: ', '
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Elementos por página'
+            offset_label: Desplazamiento
+      exposed_form:
+        options:
+          submit_button: Filtro
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      empty:
+        area_text_custom:
+          content: 'No hay comentarios disponibles.'
+      filters:
+        subject:
+          expose:
+            label: Asunto
+        combine:
+          expose:
+            label: 'Nombre del autor'
+        langcode:
+          expose:
+            label: Idioma
+      use_more_text: más
+  page_published:
+    display_title: 'Comentarios publicados'
+    display_options:
+      menu:
+        title: Comentarios
+  page_unapproved:
+    display_title: 'Comentarios sin aprobar'
+    display_options:
+      fields:
+        comment_bulk_form:
+          action_title: Acción
+        subject:
+          label: Asunto
+          separator: ', '
+        uid:
+          separator: ', '
+        name:
+          label: Autor
+          separator: ', '
+        entity_id:
+          label: 'Enviado en'
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        operations:
+          label: Operaciones
+        name_1:
+          separator: ', '
+      filters:
+        subject:
+          expose:
+            label: Asunto
+        langcode:
+          expose:
+            label: Idioma
+      menu:
+        title: 'Comentarios sin aprobar'

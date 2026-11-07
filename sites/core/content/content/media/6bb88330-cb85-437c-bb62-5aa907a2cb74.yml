@@ -1,0 +1,140 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 6bb88330-cb85-437c-bb62-5aa907a2cb74
+  bundle: image
+  default_langcode: en
+  depends:
+    2bac8580-0175-4881-a755-d5854e222a38: file
+    0f27673a-6631-4cc7-ad2b-fe0b6770dd63: taxonomy_term
+    a880b832-9f11-4804-8e57-5cebefd8660e: taxonomy_term
+    55c7aaac-b3b9-4b8e-aeb5-aa7b5ad9e23f: taxonomy_term
+default:
+  mid:
+    -
+      value: 1
+  revision_created:
+    -
+      value: 1793891942
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'Turnhouse Hill across Glencorse Reservoir'
+  created:
+    -
+      value: 1793887500
+  changed:
+    -
+      value: 1793891942
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'Turnhouse Hill seen across Glencorse Reservoir, with a rowing boat at the landing stage'
+      title: ''
+      width: 3840
+      height: 2880
+      entity: 2bac8580-0175-4881-a755-d5854e222a38
+  field_photographer:
+    -
+      value: 'dave souza'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Glencorse_Reservoir,_Turnhouse_Hill.jpg'
+      title: 'Wikimedia Commons'
+      options: {}
+  field_themes:
+    -
+      entity: 0f27673a-6631-4cc7-ad2b-fe0b6770dd63
+    -
+      entity: a880b832-9f11-4804-8e57-5cebefd8660e
+    -
+      entity: 55c7aaac-b3b9-4b8e-aeb5-aa7b5ad9e23f
+translations:
+  es:
+    mid:
+      -
+        value: 1
+    revision_created:
+      -
+        value: 1793891942
+    revision_user:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    name:
+      -
+        value: 'Turnhouse Hill al otro lado del embalse de Glencorse'
+    created:
+      -
+        value: 1793887500
+    changed:
+      -
+        value: 1793891942
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: null
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_license:
+      -
+        value: cc_by_sa_4_0
+    field_media_image:
+      -
+        alt: 'Turnhouse Hill visto al otro lado del embalse de Glencorse, con una barca de remos en el embarcadero'
+        title: ''
+        width: 3840
+        height: 2880
+        entity: 2bac8580-0175-4881-a755-d5854e222a38
+    field_photographer:
+      -
+        value: 'dave souza'
+    field_source:
+      -
+        uri: 'https://commons.wikimedia.org/wiki/File:Glencorse_Reservoir,_Turnhouse_Hill.jpg'
+        title: 'Wikimedia Commons'
+        options: {}
+    field_themes:
+      -
+        entity: 0f27673a-6631-4cc7-ad2b-fe0b6770dd63
+      -
+        entity: a880b832-9f11-4804-8e57-5cebefd8660e
+      -
+        entity: 55c7aaac-b3b9-4b8e-aeb5-aa7b5ad9e23f

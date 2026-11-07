@@ -1,0 +1,11 @@
+uuid: ae546b8d-c758-41ff-8762-dd30d2625dc4
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.banner
+label: Banner
+description: 'A wide photo with its credits, at the top of a page.'
+targetEntityType: media
+cache: true

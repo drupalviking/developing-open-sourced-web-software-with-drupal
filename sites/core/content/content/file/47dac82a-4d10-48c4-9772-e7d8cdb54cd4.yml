@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 47dac82a-4d10-48c4-9772-e7d8cdb54cd4
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 18
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: carnethy-from-turnhouse.jpg
+  uri:
+    -
+      value: 'public://2026-11/carnethy-from-turnhouse_1.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 590750
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793888247
+  changed:
+    -
+      value: 1793888249

@@ -1,0 +1,21 @@
+uuid: 1d5f6cd8-f506-4cb1-95de-eb0bbfeccbbc
+langcode: en
+status: true
+dependencies: {}
+name: banner_small
+label: 'Banner small'
+effects:
+  6587face-fcfc-4b8a-9ddc-96f27bab0e3e:
+    uuid: 6587face-fcfc-4b8a-9ddc-96f27bab0e3e
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 640
+      height: 360
+      anchor: center-center
+  1585e690-da49-4797-87ed-5e0c67cbabc2:
+    uuid: 1585e690-da49-4797-87ed-5e0c67cbabc2
+    id: image_convert_avif
+    weight: 2
+    data:
+      extension: webp

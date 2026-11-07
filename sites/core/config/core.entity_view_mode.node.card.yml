@@ -1,0 +1,11 @@
+uuid: 43fe5827-f16f-4bb7-b465-4abebb29a3c6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.card
+label: Card
+description: 'A small box with the date and the difficulty, for the front page.'
+targetEntityType: node
+cache: true

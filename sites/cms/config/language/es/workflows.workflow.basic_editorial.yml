@@ -1,0 +1,10 @@
+label: Básico
+type_settings:
+  states:
+    draft:
+      label: Borrador
+    published:
+      label: Publicado
+  transitions:
+    publish:
+      label: Publicar

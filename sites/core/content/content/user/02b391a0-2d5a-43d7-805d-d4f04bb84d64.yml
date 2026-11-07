@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 02b391a0-2d5a-43d7-805d-d4f04bb84d64
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 8
+  preferred_langcode:
+    -
+      value: en
+  preferred_admin_langcode:
+    -
+      value: en
+  name:
+    -
+      value: morag
+  pass:
+    -
+      value: '$argon2id$v=19$m=65536,t=4,p=1$RkFnS0g0WlRwQTc2OVVYZw$wZtOFpR1FcS/nu9uXYleE5L35L5pv8oFEWDagqhaT00'
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: morag@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793972381
+  changed:
+    -
+      value: 1793972385
+  access:
+    -
+      value: 1793972404
+  login:
+    -
+      value: 1793972463
+  init:
+    -
+      value: morag@example.com
+  roles:
+    -
+      target_id: member
+    -
+      target_id: secretary
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0

@@ -1,0 +1,29 @@
+uuid: cdf1db6b-7558-4f53-82d4-06e7d5817a75
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_photo
+    - media.type.image
+    - node.type.hike
+id: node.hike.field_photo
+field_name: field_photo
+entity_type: node
+bundle: hike
+label: Photo
+description: "A photo of the hike's area, shown at the top of the hike."
+required: false
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

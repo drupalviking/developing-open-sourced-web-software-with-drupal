@@ -1,0 +1,17 @@
+uuid: 9c1f9a47-680c-4e4f-8616-a4439fb7a720
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {}
+    parent: ''
+name: News
+type: news
+description: 'News from the club: trip reports, competition results, and announcements.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

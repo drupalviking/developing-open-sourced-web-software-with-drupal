@@ -1,0 +1,9 @@
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        label:
+          default_value:
+            -
+              value: 'Etiqueta del botón'
+label: Botón

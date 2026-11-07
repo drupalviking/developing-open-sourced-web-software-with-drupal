@@ -1,0 +1,33 @@
+uuid: d443b72f-a7c3-4351-b689-2efca0248683
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.areas
+  module:
+    - language
+    - taxonomy
+id: areas_es
+label: Zonas
+type: 'canonical_entities:taxonomy_term'
+pattern: '/zonas/[term:parents:join-path]/[term:name]'
+selection_criteria:
+  f6d3fbea-c51c-468a-8b2c-6a60090ec5b7:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      areas: areas
+  761e8735-376a-4af8-8070-3991007e60a1:
+    id: language
+    negate: false
+    context_mapping:
+      language: 'taxonomy_term:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'taxonomy_term:langcode:language':
+    label: Language

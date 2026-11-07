@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 007c6bb3-b7a1-42bf-8194-f1225007c296
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 19
+  revision_created:
+    -
+      value: 1794062747
+  status:
+    -
+      value: true
+  name:
+    -
+      value: Spring
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794062747
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1

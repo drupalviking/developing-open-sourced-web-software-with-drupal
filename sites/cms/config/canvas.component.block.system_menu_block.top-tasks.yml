@@ -1,0 +1,39 @@
+uuid: 6eaa2985-f1bc-437a-9240-8a329d1595d8
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.top-tasks
+  module:
+    - system
+active_version: c000dd48de2eacd3
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'system_menu_block:top-tasks'
+        label: 'Top tasks'
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+  075a4459e81a9a3b:
+    settings:
+      default_settings:
+        id: 'system_menu_block:top-tasks'
+        label: 'Top tasks'
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+label: 'Top tasks'
+id: block.system_menu_block.top-tasks
+provider: system
+source: block
+source_local_id: 'system_menu_block:top-tasks'

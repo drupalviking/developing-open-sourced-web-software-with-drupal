@@ -1,0 +1,29 @@
+display:
+  default:
+    display_title: 'Por defecto'
+    display_options:
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        status:
+          label: Estado
+          settings:
+            format_custom_false: 'Sin publicar'
+            format_custom_true: Publicado
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        langcode:
+          label: Idioma
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+  block_recent_pages:
+    display_title: Bloque

@@ -1,0 +1,10 @@
+recipe: 'AI Assistant'
+config:
+  -
+    name: ai_agents.ai_agent.drupal_cms_assistant
+    data:
+      label: 'Drupal CMS Assistant'
+  -
+    name: ai_assistant_api.ai_assistant.drupal_cms_assistant
+    data:
+      label: 'Drupal CMS Assistant'

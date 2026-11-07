@@ -1,0 +1,17 @@
+uuid: 867f5bf1-83c9-41a9-9fee-2d65c8e262b2
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.marker.page_content
+    - canvas.component.sdc.navigation.message
+    - canvas.component.sdc.navigation.title
+    - canvas.component.theme_page_template.mercury
+name: Other
+configEntityTypeId: component
+weight: 0
+items:
+  - marker.page_content
+  - sdc.navigation.message
+  - sdc.navigation.title
+  - theme_page_template.mercury

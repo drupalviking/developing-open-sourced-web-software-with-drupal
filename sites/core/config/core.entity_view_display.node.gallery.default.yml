@@ -1,0 +1,69 @@
+uuid: ed5361d3-ca1f-4d2f-af8a-5a9d50261fa9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment.default
+    - field.field.node.gallery.comment
+    - field.field.node.gallery.field_area
+    - field.field.node.gallery.field_body
+    - field.field.node.gallery.field_hike
+    - field.field.node.gallery.field_photos
+    - node.type.gallery
+  module:
+    - comment
+    - text
+    - user
+id: node.gallery.default
+targetEntityType: node
+bundle: gallery
+mode: default
+content:
+  comment:
+    type: comment_default
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {}
+    weight: 101
+    region: content
+  field_area:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {}
+    weight: 1
+    region: content
+  field_body:
+    type: text_default
+    label: hidden
+    settings: {}
+    third_party_settings: {}
+    weight: 1
+    region: content
+  field_hike:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {}
+    weight: 0
+    region: content
+  field_photos:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: album
+      link: false
+    third_party_settings: {}
+    weight: 2
+    region: content
+  links:
+    settings: {}
+    third_party_settings: {}
+    weight: 100
+    region: content
+hidden:
+  langcode: true

@@ -1,0 +1,45 @@
+uuid: 64f23762-3d75-498e-97f2-a657285e2ad3
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.club_info
+    - field.field.block_content.club_info.field_email
+    - field.field.block_content.club_info.field_follow_us
+    - field.field.block_content.club_info.field_meeting_times
+  module:
+    - link
+    - text
+id: block_content.club_info.default
+targetEntityType: block_content
+bundle: club_info
+mode: default
+content:
+  field_email:
+    type: basic_string
+    label: above
+    settings: {}
+    third_party_settings: {}
+    weight: 1
+    region: content
+  field_follow_us:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {}
+    weight: 2
+    region: content
+  field_meeting_times:
+    type: text_default
+    label: above
+    settings: {}
+    third_party_settings: {}
+    weight: 0
+    region: content
+hidden:
+  langcode: true

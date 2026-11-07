@@ -1,0 +1,47 @@
+_meta:
+  version: '1.0'
+  entity_type: canvas_page
+  uuid: 7c9208fc-40f4-4082-b80c-bff608413006
+  default_langcode: en
+default:
+  id:
+    -
+      value: 12
+  revision_created:
+    -
+      value: 1794062891
+  status:
+    -
+      value: false
+  owner:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Untitled page'
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1794062891
+  changed:
+    -
+      value: 1794062891
+  revision_translation_affected:
+    -
+      value: true
+  metatags:
+    -
+      value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1

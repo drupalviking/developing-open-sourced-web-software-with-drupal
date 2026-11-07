@@ -1,0 +1,39 @@
+uuid: 13a3a807-b505-4997-aa62-ffe5e904a8d8
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.content
+  module:
+    - system
+active_version: 45df126492a2370e
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'system_menu_block:content'
+        label: Content
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+  ee4bc7d55cd804f0:
+    settings:
+      default_settings:
+        id: 'system_menu_block:content'
+        label: Content
+        label_display: '0'
+        provider: system
+        level: 1
+        depth: null
+        expand_all_items: false
+    fallback_metadata:
+      slot_definitions: null
+label: Content
+id: block.system_menu_block.content
+provider: system
+source: block
+source_local_id: 'system_menu_block:content'

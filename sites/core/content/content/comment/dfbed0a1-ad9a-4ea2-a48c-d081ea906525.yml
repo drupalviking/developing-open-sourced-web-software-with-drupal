@@ -1,0 +1,44 @@
+_meta:
+  version: '1.0'
+  entity_type: comment
+  uuid: dfbed0a1-ad9a-4ea2-a48c-d081ea906525
+  bundle: comment
+  default_langcode: en
+  depends:
+    5b3d77a2-aa73-4247-a5e4-bdfc3e09fa39: user
+    696cd0e8-3838-45a7-90c1-8ea68d4e6128: node
+default:
+  cid:
+    -
+      value: 3
+  status:
+    -
+      value: false
+  uid:
+    -
+      entity: 5b3d77a2-aa73-4247-a5e4-bdfc3e09fa39
+  entity_id:
+    -
+      entity: 696cd0e8-3838-45a7-90c1-8ea68d4e6128
+  subject:
+    -
+      value: 'Lovely light on the…'
+  created:
+    -
+      value: 1793972410
+  changed:
+    -
+      value: 1793972410
+  thread:
+    -
+      value: 01/
+  entity_type:
+    -
+      value: node
+  field_name:
+    -
+      value: comment
+  comment_body:
+    -
+      value: '<p>Lovely light on the Turnhouse photo! Which lens was that?</p>'
+      format: basic_html

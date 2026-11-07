@@ -1,0 +1,6 @@
+recipe: 'Easy Email: Text Format'
+config:
+  -
+    name: filter.format.easy_email
+    data:
+      name: Email

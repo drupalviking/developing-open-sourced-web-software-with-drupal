@@ -1,0 +1,17 @@
+uuid: 451ec519-c7e8-4617-8357-5ba098e1074e
+langcode: en
+status: true
+dependencies:
+  module:
+    - canvas
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: canvas_page.canvas_page
+target_entity_type_id: canvas_page
+target_bundle: canvas_page
+default_langcode: site_default
+language_alterable: false

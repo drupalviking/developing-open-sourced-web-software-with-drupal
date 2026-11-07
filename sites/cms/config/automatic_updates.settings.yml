@@ -1,0 +1,7 @@
+_core:
+  default_config_hash: JPz1WOlIJ2Ppav3xf-o3Oex9r2Nz786jYz8dScDsz5s
+unattended:
+  method: web
+  level: disable
+allow_core_minor_updates: true
+status_check_mail: errors_only

@@ -1,0 +1,38 @@
+_meta:
+  version: '1.0'
+  entity_type: block_content
+  uuid: 59a4a2c5-29d2-400e-b3d3-260a7e3524d5
+  bundle: basic
+  default_langcode: en
+default:
+  id:
+    -
+      value: 1
+  revision_created:
+    -
+      value: 1793868409
+  status:
+    -
+      value: true
+  info:
+    -
+      value: 'When and where'
+  changed:
+    -
+      value: 1793868409
+  reusable:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  body:
+    -
+      value: '<p>Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.</p><p>Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.</p>'
+      format: basic_html

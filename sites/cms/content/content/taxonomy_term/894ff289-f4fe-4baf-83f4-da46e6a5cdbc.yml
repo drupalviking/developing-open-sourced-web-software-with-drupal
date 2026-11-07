@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 894ff289-f4fe-4baf-83f4-da46e6a5cdbc
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 20
+  revision_created:
+    -
+      value: 1794062747
+  status:
+    -
+      value: true
+  name:
+    -
+      value: Summer
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794062747
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1

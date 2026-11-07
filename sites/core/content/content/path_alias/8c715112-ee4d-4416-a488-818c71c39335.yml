@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: path_alias
+  uuid: 8c715112-ee4d-4416-a488-818c71c39335
+  default_langcode: es
+default:
+  path:
+    -
+      value: /hikes
+  alias:
+    -
+      value: /excursiones
+  status:
+    -
+      value: true

@@ -1,0 +1,17 @@
+{
+    "_hash": "75336a44d9248aa330af9f1551f88c9b509a62aed3dc3c0b4cc55ffba8890af6",
+    "patches": {
+        "drupal/core": [
+            {
+                "package": "drupal/core",
+                "description": "PHP 8.5: ContentTranslationManageAccessCheck passes NULL to getLanguage() https://www.drupal.org/project/drupal/issues/3590967 (MR !15820)",
+                "url": "patches/drupal-3590967-content-translation-access-null.patch",
+                "sha256": "daf6fbc4a76787165f71eb0526f264a7dbd1bc445985319f6a1cfd22c1e0d3ed",
+                "depth": 2,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}

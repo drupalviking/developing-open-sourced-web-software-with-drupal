@@ -1,0 +1,38 @@
+uuid: 53bd53c4-4b9b-4130-9e65-d5b27edfadd2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.medium
+    - field.field.media.svg_image.field_media_svg_image
+    - media.type.svg_image
+  module:
+    - svg_image
+_core:
+  default_config_hash: N5TTx2k2BPM5T-8fBhE6USQiYhk1TrGMz5ffx33WiaY
+id: media.svg_image.medium
+targetEntityType: media
+bundle: svg_image
+mode: medium
+content:
+  field_media_svg_image:
+    type: image
+    label: visually_hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+      svg_attributes:
+        width: 720
+        height: null
+      svg_render_as_image: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

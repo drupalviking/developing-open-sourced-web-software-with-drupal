@@ -1,0 +1,160 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 58a48ce8-593c-4e98-914c-fc094ee5a30f
+  bundle: hike
+  default_langcode: en
+  depends:
+    e3032dc7-b244-4604-b8e0-ba1b0f6ce88c: taxonomy_term
+    e56ba44a-1418-4f02-b29b-c25b581832aa: user
+    8ddf1025-7a8e-4b6a-899e-b62878557005: media
+default:
+  nid:
+    -
+      value: 15
+  revision_timestamp:
+    -
+      value: 1793956990
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Pentland Hills ridge'
+  created:
+    -
+      value: 1793956990
+  changed:
+    -
+      value: 1794090427
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/pentland-hills-ridge
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+  field_body:
+    -
+      value: '<p>The whole ridge, from Turnhouse Hill over Carnethy, Scald Law and the Kips, and back through the glen. A long day, with a lot of climbing: bring plenty of food and water.</p>'
+      format: basic_html
+  field_date:
+    -
+      value: '2027-01-02T09:00:00'
+  field_difficulty:
+    -
+      value: hard
+  field_distance:
+    -
+      value: '16.0'
+  field_hike_leader:
+    -
+      entity: e56ba44a-1418-4f02-b29b-c25b581832aa
+  field_meeting_place:
+    -
+      value: 'Flotterstone car park'
+  field_photo:
+    -
+      entity: 8ddf1025-7a8e-4b6a-899e-b62878557005
+translations:
+  es:
+    nid:
+      -
+        value: 15
+    revision_timestamp:
+      -
+        value: 1793956990
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'La cresta de las Pentland Hills'
+    created:
+      -
+        value: 1793956990
+    changed:
+      -
+        value: 1793956990
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/la-cresta-de-las-pentland-hills
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+    field_body:
+      -
+        value: '<p>La cresta entera, de Turnhouse Hill a Carnethy, Scald Law y los Kips, con vuelta por el valle. Un día largo y con mucho desnivel: trae comida y agua de sobra.</p>'
+        format: basic_html
+    field_date:
+      -
+        value: '2027-01-02T09:00:00'
+    field_difficulty:
+      -
+        value: hard
+    field_distance:
+      -
+        value: '16.0'
+    field_hike_leader:
+      -
+        entity: e56ba44a-1418-4f02-b29b-c25b581832aa
+    field_meeting_place:
+      -
+        value: 'Estacionamiento de Flotterstone'
+    field_photo:
+      -
+        entity: 8ddf1025-7a8e-4b6a-899e-b62878557005

@@ -1,0 +1,20 @@
+uuid: 2712f527-3d26-4b65-b387-f5cc7fd52c2e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - default_admin
+_core:
+  default_config_hash: CaTkocqIGci5JCxUVHC6mwT3he3MSfhVvucVivgebdI
+id: default_admin_page_title
+theme: default_admin
+region: header
+weight: -30
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {}

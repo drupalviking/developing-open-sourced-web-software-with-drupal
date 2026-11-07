@@ -31,7 +31,8 @@ covered by the same license.
 | `slides/` | The teachers' kit (to come): a deck and teaching notes per chapter. |
 | `examples/` | Files the book shows the reader, such as the photo club's recipe (to come). Pulled into chapters with `<!-- include: ... -->`. |
 | `archive/` | Drafts that are out of the book's scope, kept until we decide where they go. |
-| `tools/` | `build.py`, `update_numbers.py`, and `screenshots.py` (retakes the screenshots from the test sites). |
+| `sites/` | The test sites as they are at the end of the book, exported by `tools/export-sites.sh`: `core/` and `cms/`, each with its codebase (Composer files, patches), its configuration, its content (as a recipe, from core's `content:export`), and `after-import.php`. The companion book, *Theming Drupal*, rebuilds its test sites from them. |
+| `tools/` | `build.py`, `update_numbers.py`, `screenshots.py` (retakes the screenshots from the test sites), and `export-sites.sh` with `export-content.php` and `after-import.php` (exports the test sites into `sites/`). |
 | `PROJECT-LOG.md` | Decisions, history, open items, and the backlog. |
 
 ## Writing
@@ -75,6 +76,16 @@ python3 tools/build.py
 ```
 
 Numbers without an automatic source (support dates that haven't been announced, say) are listed at the end, with a link to check them by hand. The comment at the top of `data/numbers.yml` explains how to add one.
+
+### Exporting the sites for the companion book
+
+*Theming Drupal* (`../themeing-drupal`, to be renamed `theming-drupal`) builds its test sites from this book's finished sites. After a chapter changes a site, export it again and commit `sites/` with the chapter:
+
+```bash
+tools/export-sites.sh          # both sites; or: tools/export-sites.sh core|cms
+```
+
+The sites must be running, in the state the last chapter leaves them in. What's exported, what's left out (users 0 and 1, API keys, Focal Point's crops, which `after-import.php` puts back), and why, is at the top of `tools/export-sites.sh`. *Theming Drupal* pins the commit it builds on, so a new export changes nothing there until it's picked up on purpose.
 
 ### Screenshots
 

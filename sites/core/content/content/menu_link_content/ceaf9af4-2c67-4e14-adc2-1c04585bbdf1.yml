@@ -1,0 +1,111 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: ceaf9af4-2c67-4e14-adc2-1c04585bbdf1
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    7bc7080f-48af-450e-a3e6-76fa5c627f81: node
+default:
+  id:
+    -
+      value: 2
+  revision_created:
+    -
+      value: 1793868071
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Join us'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      title: null
+      options: {}
+      target_uuid: 7bc7080f-48af-450e-a3e6-76fa5c627f81
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 4
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1793969900
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_status:
+    -
+      value: true
+translations:
+  es:
+    id:
+      -
+        value: 2
+    revision_created:
+      -
+        value: 1793868071
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: Únete
+    menu_name:
+      -
+        value: main
+    link:
+      -
+        title: null
+        options: {}
+        target_uuid: 7bc7080f-48af-450e-a3e6-76fa5c627f81
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: false
+    weight:
+      -
+        value: 4
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1793969900
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1793984391

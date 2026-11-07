@@ -1,0 +1,20 @@
+_core:
+  default_config_hash: evyc1mFEXZWzW2FNnhCU6wF7kPPNhPx3XZ0Jl6rjpnE
+langcode: en
+attributes:
+  container_class:
+    label: 'Container class(es)'
+    description: 'CSS class for the menu list item (<code>&lt;li&gt;</code>). Separate multiple classes by space.'
+  class:
+    label: 'Link class(es)'
+    description: 'CSS class for the link (<code>&lt;a href&gt;</code>). Separate multiple classes by space.'
+  target:
+    label: 'Link target'
+    description: ''
+    options:
+      _blank: 'New window (_blank)'
+      _self: 'Same window (_self)'
+    default_value: ''
+  rel:
+    label: Relationship
+    description: 'The "rel" attribute specifies the relationship between the current document and the linked document.'

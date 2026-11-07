@@ -1,0 +1,8 @@
+uuid: 2db005aa-f78e-4047-9679-a0ef0d96bfb5
+langcode: en
+status: true
+dependencies: {}
+id: club_info
+label: 'Club info'
+revision: false
+description: "The club's contact details and meeting times, for the footer."

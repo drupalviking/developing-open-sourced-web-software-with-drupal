@@ -1,0 +1,23 @@
+uuid: 80a9bafe-d9eb-4b79-88d9-64b770238ea5
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.gallery
+  module:
+    - node
+id: albums
+label: Albums
+type: 'canonical_entities:node'
+pattern: '/galleries/[node:title]'
+selection_criteria:
+  f6a2ea0f-efe3-4768-96d4-920b55f1a127:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      gallery: gallery
+selection_logic: and
+weight: -5
+relationships: {}

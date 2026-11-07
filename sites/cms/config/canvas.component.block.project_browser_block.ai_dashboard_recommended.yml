@@ -1,0 +1,27 @@
+uuid: 868e25b6-b18a-47d7-be75-0388ea8d39dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - project_browser
+active_version: 5e2edcde72ce93e7
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'project_browser_block:ai_dashboard_recommended'
+        label: 'Recommended AI Recipes'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Recommended AI Recipes'
+id: block.project_browser_block.ai_dashboard_recommended
+provider: project_browser
+source: block
+source_local_id: 'project_browser_block:ai_dashboard_recommended'

@@ -1,0 +1,32 @@
+uuid: bc7da1cc-c4f4-4650-8c0a-f38a503b7b85
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.hikes
+  module:
+    - node
+    - views
+  theme:
+    - olivero
+id: olivero_next_hikes
+theme: olivero
+region: sidebar
+weight: 0
+provider: null
+plugin: 'views_block:hikes-block_1'
+settings:
+  id: 'views_block:hikes-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      hike: hike

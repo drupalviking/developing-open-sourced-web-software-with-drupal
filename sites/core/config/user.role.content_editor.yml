@@ -1,0 +1,30 @@
+uuid: 964faacb-55ea-4537-af5d-56b1a82a14fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - contextual
+    - file
+    - navigation
+    - node
+    - path
+    - system
+_core:
+  default_config_hash: uxipD1lJlegfp7danqbu2GDmZ7JNY5-HlXc3RfIdd2I
+id: content_editor
+label: 'Content editor'
+weight: 5
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access contextual links'
+  - 'access files overview'
+  - 'access navigation'
+  - 'administer url aliases'
+  - 'create url aliases'
+  - 'delete own files'
+  - 'revert all revisions'
+  - 'view all revisions'
+  - 'view own unpublished content'
+  - 'view the administration theme'

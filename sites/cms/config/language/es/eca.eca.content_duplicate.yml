@@ -1,0 +1,5 @@
+actions:
+  eca_render_build_link:
+    label: Enlace
+  eca_clone_entity_link:
+    label: Duplicado

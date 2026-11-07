@@ -1,0 +1,50 @@
+uuid: 093cd6e7-e2ac-4b14-846e-d95a52c333b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.page.field_content
+    - field.field.node.page.field_description
+    - field.field.node.page.field_featured_image
+    - field.field.node.page.field_seo_analysis
+    - field.field.node.page.field_seo_description
+    - field.field.node.page.field_seo_image
+    - field.field.node.page.field_seo_title
+    - field.field.node.page.field_tags
+    - node.type.page
+  module:
+    - user
+_core:
+  default_config_hash: bvUOhlRVdOltpHDX2Gylpdc_BXbiRHmIbSz1iTOlsmY
+id: node.page.card
+targetEntityType: node
+bundle: page
+mode: card
+content:
+  field_description:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_featured_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: 16_9_medium
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  content_moderation_control: true
+  field_content: true
+  field_seo_analysis: true
+  field_seo_description: true
+  field_seo_image: true
+  field_seo_title: true
+  field_tags: true
+  langcode: true
+  links: true

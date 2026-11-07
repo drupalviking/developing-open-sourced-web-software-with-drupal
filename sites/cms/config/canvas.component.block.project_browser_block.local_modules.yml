@@ -1,0 +1,41 @@
+uuid: 08499530-b95a-4ba0-a931-7c8e4c3f77d7
+langcode: en
+status: false
+dependencies:
+  module:
+    - project_browser
+active_version: a021db7b91c873b5
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'project_browser_block:local_modules'
+        label: 'Local modules'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+  9eba06ccb21f6648:
+    settings:
+      default_settings:
+        id: 'project_browser_block:local_modules'
+        label: 'Local modules'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Local modules'
+id: block.project_browser_block.local_modules
+provider: project_browser
+source: block
+source_local_id: 'project_browser_block:local_modules'

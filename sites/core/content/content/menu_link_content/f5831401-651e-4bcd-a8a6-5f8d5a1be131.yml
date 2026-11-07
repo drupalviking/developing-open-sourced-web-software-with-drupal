@@ -1,0 +1,102 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: f5831401-651e-4bcd-a8a6-5f8d5a1be131
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    d11a3b70-97d8-497c-aca1-1c9c21f14219: node
+default:
+  id:
+    -
+      value: 1
+  revision_created:
+    -
+      value: 1793868068
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: About
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      title: null
+      options: {}
+      target_uuid: d11a3b70-97d8-497c-aca1-1c9c21f14219
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 3
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1793868148
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_status:
+    -
+      value: true
+translations:
+  es:
+    id:
+      -
+        value: 1
+    revision_created:
+      -
+        value: 1793868068
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: Nosotros
+    menu_name:
+      -
+        value: main
+    link:
+      -
+        title: null
+        options: {}
+        target_uuid: d11a3b70-97d8-497c-aca1-1c9c21f14219
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: false
+    weight:
+      -
+        value: 3
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1793984391
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: und
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_status:
+      -
+        value: true

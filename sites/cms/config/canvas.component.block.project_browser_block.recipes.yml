@@ -1,0 +1,41 @@
+uuid: 00ad6ca3-048e-4b92-bdd5-20c1f796b53f
+langcode: en
+status: false
+dependencies:
+  module:
+    - project_browser
+active_version: 31b9da7a5754aa15
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'project_browser_block:recipes'
+        label: Recipes
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+  f7ae68d8b945a397:
+    settings:
+      default_settings:
+        id: 'project_browser_block:recipes'
+        label: Recipes
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+label: Recipes
+id: block.project_browser_block.recipes
+provider: project_browser
+source: block
+source_local_id: 'project_browser_block:recipes'

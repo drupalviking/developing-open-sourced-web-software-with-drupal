@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: 8Dt5RwcCjBWPI26uQwNdylRsMslnf_lXx8DlHKso6BQ
+langcode: en
+uuid: e4448e80-5500-48b8-adf1-8247ad347e03
+name: 'Lens & Trail'
+mail: hello@lens-and-trail.ddev.site
+slogan: 'Photos and hikes around Edinburgh'
+page:
+  403: ''
+  404: ''
+  front: /node/3
+weight_select_max: 100
+default_langcode: en
+mail_notification: ''

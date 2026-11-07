@@ -1,0 +1,11 @@
+recipe: 'Remote video media'
+config:
+  -
+    name: field.field.media.remote_video.field_media_oembed_video
+    data:
+      label: 'Video URL'
+  -
+    name: media.type.remote_video
+    data:
+      label: 'Remote video'
+      description: 'A video hosted on an external site (for example, YouTube or Vimeo).'

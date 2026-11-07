@@ -1,0 +1,19 @@
+uuid: 67e9bbe8-ae64-43b2-a392-2edd6ea5c9dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.sdc.mercury.card
+    - canvas.component.sdc.mercury.card-icon
+    - canvas.component.sdc.mercury.card-logo
+    - canvas.component.sdc.mercury.card-pricing
+    - canvas.component.sdc.mercury.card-testimonial
+name: Card
+configEntityTypeId: component
+weight: 0
+items:
+  - sdc.mercury.card
+  - sdc.mercury.card-icon
+  - sdc.mercury.card-logo
+  - sdc.mercury.card-pricing
+  - sdc.mercury.card-testimonial

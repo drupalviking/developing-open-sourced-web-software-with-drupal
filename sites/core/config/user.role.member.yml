@@ -1,0 +1,23 @@
+uuid: 16de6301-fb1b-4ca6-ae27-3b6d14fbd49b
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.image
+    - node.type.gallery
+  module:
+    - comment
+    - media
+    - node
+id: member
+label: Member
+weight: 2
+is_admin: false
+permissions:
+  - 'access user profiles'
+  - 'create gallery content'
+  - 'create image media'
+  - 'delete own gallery content'
+  - 'edit own gallery content'
+  - 'edit own image media'
+  - 'skip comment approval'

@@ -1,0 +1,35 @@
+_core:
+  default_config_hash: 2W033glcHluYLhGVciWJYSbzffzYPv3vlRaLuu2BpS8
+recipes:
+  easy_email_standard:
+    package: drupal/easy_email_standard
+    version: ''
+    label: 'Easy Email: Standard Mail'
+  easy_email_text_format:
+    package: drupal/easy_email_text_format
+    version: ''
+    label: 'Easy Email: Text Format'
+  easy_email_types_core:
+    package: drupal/easy_email_types_core
+    version: ''
+    label: 'Easy Email: Core Templates'
+  easy_email_types_default:
+    package: drupal/easy_email_types_default
+    version: ''
+    label: 'Easy Email: Default Template'
+  easy_email_express:
+    package: drupal/easy_email_express
+    version: ''
+    label: 'Easy Email: Express Mail'
+  drupal_cms_site_template_base:
+    package: drupal/drupal_cms_site_template_base
+    version: 2.2.8
+    label: 'Drupal CMS Basics'
+  drupal_cms_starter:
+    package: drupal/drupal_cms_starter
+    version: 2.2.8
+    label: Starter
+  drupal_cms_ai:
+    package: drupal/drupal_cms_ai
+    version: 2.2.8
+    label: 'AI Assistant'

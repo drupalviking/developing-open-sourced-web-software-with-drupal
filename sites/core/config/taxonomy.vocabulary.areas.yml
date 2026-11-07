@@ -1,0 +1,9 @@
+uuid: ebb5b98b-b34b-4c74-9558-34d00029667a
+langcode: en
+status: true
+dependencies: {}
+name: Areas
+vid: areas
+description: 'Regions, and the hills and places in them.'
+weight: 0
+new_revision: false

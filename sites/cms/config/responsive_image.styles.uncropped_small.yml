@@ -1,0 +1,23 @@
+uuid: 85443f83-d42b-4d11-ae7b-61c43e062e8b
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.uncropped_300w_webp
+  module:
+    - eca_render
+  enforced:
+    config:
+      - eca.eca.define_breakpoints
+_core:
+  default_config_hash: xuh6merC4tB1uuoDKqnjeZNz-Uqr_jyyDi8hvpwrI2g
+id: uncropped_small
+label: 'Uncropped Small'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: uncropped_300w_webp
+    breakpoint_id: custom.sm
+    multiplier: 1x
+breakpoint_group: custom
+fallback_image_style: uncropped_300w_webp

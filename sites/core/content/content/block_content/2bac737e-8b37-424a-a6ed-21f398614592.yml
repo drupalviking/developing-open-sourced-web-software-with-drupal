@@ -1,0 +1,77 @@
+_meta:
+  version: '1.0'
+  entity_type: block_content
+  uuid: 2bac737e-8b37-424a-a6ed-21f398614592
+  bundle: basic
+  default_langcode: en
+default:
+  id:
+    -
+      value: 10
+  revision_created:
+    -
+      value: 1793969884
+  status:
+    -
+      value: true
+  info:
+    -
+      value: 'Join the club'
+  changed:
+    -
+      value: 1793969884
+  reusable:
+    -
+      value: true
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  body:
+    -
+      value: '<p>New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students.</p><p><a href="/join">How to join</a></p>'
+      format: basic_html
+translations:
+  es:
+    id:
+      -
+        value: 10
+    revision_created:
+      -
+        value: 1793969884
+    status:
+      -
+        value: true
+    info:
+      -
+        value: 'Únete al club'
+    changed:
+      -
+        value: 1793969884
+    reusable:
+      -
+        value: true
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391
+    body:
+      -
+        value: '<p>Siempre hay sitio para gente nueva, traigas cámara, botas o las dos cosas. La cuota es de 20 £ al año, 10 £ para estudiantes.</p><p><a href="/es/unete">Cómo unirse</a></p>'
+        format: basic_html

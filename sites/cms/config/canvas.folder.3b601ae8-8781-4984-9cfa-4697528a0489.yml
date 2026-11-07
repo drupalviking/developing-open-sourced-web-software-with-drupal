@@ -1,0 +1,27 @@
+uuid: 3b601ae8-8781-4984-9cfa-4697528a0489
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.sdc.mercury.anchor
+    - canvas.component.sdc.mercury.badge
+    - canvas.component.sdc.mercury.blockquote
+    - canvas.component.sdc.mercury.button
+    - canvas.component.sdc.mercury.heading
+    - canvas.component.sdc.mercury.icon
+    - canvas.component.sdc.mercury.image
+    - canvas.component.sdc.mercury.text
+    - canvas.component.sdc.mercury.video
+name: Base
+configEntityTypeId: component
+weight: 0
+items:
+  - sdc.mercury.anchor
+  - sdc.mercury.badge
+  - sdc.mercury.blockquote
+  - sdc.mercury.button
+  - sdc.mercury.heading
+  - sdc.mercury.icon
+  - sdc.mercury.image
+  - sdc.mercury.text
+  - sdc.mercury.video

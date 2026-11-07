@@ -1,0 +1,21 @@
+uuid: 34dcb7a8-b089-44fd-b888-9d642e7b36d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_license
+    - media.type.image
+  module:
+    - options
+id: media.image.field_license
+field_name: field_license
+entity_type: media
+bundle: image
+label: License
+description: "The license the photo is published under. Use only photos you're allowed to publish."
+required: true
+translatable: false
+default_value: {}
+default_value_callback: ''
+settings: {}
+field_type: list_string

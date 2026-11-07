@@ -1,0 +1,10 @@
+recipe: 'Easy Email: Default Template'
+config:
+  -
+    name: easy_email.easy_email_type.default
+    data:
+      label: Default
+  -
+    name: easy_email_override.easy_email_override.default
+    data:
+      label: Default

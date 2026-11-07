@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: af4b8ab1-a1a8-4241-a6aa-a051a42fb1a5
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 12
+  revision_created:
+    -
+      value: 1794062747
+  status:
+    -
+      value: true
+  name:
+    -
+      value: Wildlife
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794062747
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1

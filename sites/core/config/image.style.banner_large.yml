@@ -1,0 +1,21 @@
+uuid: eb00bd99-a954-4395-be1c-7e18bb2aa14c
+langcode: en
+status: true
+dependencies: {}
+name: banner_large
+label: 'Banner large'
+effects:
+  74badc5a-0ebe-42e0-b506-97a942c5a374:
+    uuid: 74badc5a-0ebe-42e0-b506-97a942c5a374
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1920
+      height: 1080
+      anchor: center-center
+  2e54a662-e119-4ccb-a38f-39261aa37a47:
+    uuid: 2e54a662-e119-4ccb-a38f-39261aa37a47
+    id: image_convert_avif
+    weight: 2
+    data:
+      extension: webp

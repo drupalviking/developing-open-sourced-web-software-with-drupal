@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 27998eac-6698-429b-86e6-8bc071f1c5ac
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 7
+  uid:
+    -
+      target_id: 0
+  filename:
+    -
+      value: generateImage_miro6k69hi1j7CIhqPD.gif
+  uri:
+    -
+      value: 'public://2026-11/generateImage_miro6k69hi1j7CIhqPD.gif'
+  filemime:
+    -
+      value: image/gif
+  filesize:
+    -
+      value: 2661
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793920449
+  changed:
+    -
+      value: 1793920449

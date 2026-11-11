@@ -65,7 +65,7 @@ Now the values themselves. We start with the distance.
 ![The Distance row opened, with Scale set to 1 and Display prefix and suffix switched on](images/08-display-distance.png)
 *Figure 8.6: One decimal for the distance*
 
-Here's something worth noticing. In Chapter 7 we set the Distance *field's* scale to 1, and the formatter still showed two decimals. The field's scale is about what is *stored*: how many decimals Drupal keeps in the database. The formatter's scale is about what is *shown*. They're two separate settings, in two separate places, and that's Drupal's way all over: the field stores, the widget edits, the formatter shows. **Display prefix and suffix** is what puts " km" after the number; switch it off, and the hike says "11.5".
+Here's something worth noticing. In Chapter 7 we set the Distance *field's* scale to 1, and the formatter still showed two decimals. The field's scale is about what is *stored*: how many decimals Drupal keeps in the database. The formatter's scale is about what is *shown*. They're two separate settings, in two separate places, and that's Drupal's way all over: the field stores, the widget edits, the formatter shows (there's a table of the three below). **Display prefix and suffix** is what puts " km" after the number; switch it off, and the hike says "11.5".
 
 4. Select the cog for **Hike leader**. The **Label** formatter shows the user's name, and **Link label to the referenced entity** makes the name a link to the user's profile. Switch it off, and select **Update**.
 
@@ -79,6 +79,14 @@ Look at the other two fields while you're here. **Difficulty** has two formatter
 5. Select **Save**.
 
 > **Drupalism: formatter.** A formatter is a way of showing a field's value. The field decides what is stored, and the formatter only decides how it looks. You can change the formatter at any time, and nothing happens to the content: change it back, and the hike looks as before.
+
+So every field has three places, one for each of its jobs. It's worth learning by heart, because it answers the question "where do I change that?" for any field on any site:
+
+| Tab | Decides | Settings of | Example on our hikes |
+|---|---|---|---|
+| **Manage fields** | what is stored | the field | Distance keeps one decimal in the database |
+| **Manage form display** | how the value is entered | the *widget* (Chapter 7) | Difficulty is a row of radio buttons |
+| **Manage display** | how the value is shown | the *formatter* | " km" after the distance |
 
 > **One reference, three formatters.** The Hike leader field doesn't store a name. It stores a number: the ID of the user, 1 for our admin account. Every formatter starts from that number. **Label** looks up the user and shows their name. **Entity ID** shows the number itself, "1", which is of no use to a visitor, but it shows you what is really stored. **Rendered entity** shows the whole user, the way one of the *user's* view modes displays it (with their picture, for example). Same data, three ways of showing it. Once you see a reference like this, you understand most of Drupal's displays.
 

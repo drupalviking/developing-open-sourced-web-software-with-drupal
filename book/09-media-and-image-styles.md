@@ -124,12 +124,37 @@ Now edit the hike *Turnhouse Hill and Carnethy Hill*. At the bottom of the form,
 ![The hike's edit form, with the photo in the Photo field](images/09-hike-form-photo.png)
 *Figure 9.11: The hike, with its photo*
 
-Last, the photo should be the first thing on the hike page. On Hike's **Manage display**, **Manage** the **Default** display, drag **Photo** to the top, set its **Label** to **- Hidden -**, and select **Save**. (Drupal added the new field at the bottom of the display, with its label above, as it does with every new field.)
+### Widgets for media
+
+The **Add media** button, and the window it opens, are the Photo field's *widget*, the part of the form for one field (see the box in Chapter 7). It's called **Media library**, and Drupal chooses it for every new Media field. On Hike's **Manage form display**, you find it in the **Photo** row.
+
+![Hike's Manage form display, with the Media library widget in the Photo row](images/09-photo-widget.png)
+*Figure 9.12: The Media library widget*
+
+Open the widget list and you see the others. **Autocomplete** is the widget Hike leader started with in Chapter 7: you type part of a media item's name, and Drupal suggests the ones that match. No window, no thumbnails, and no uploading a new photo from the hike's form. That suits a site with tens of thousands of media items, and editors who know them by name. In a photo club, people choose a photo by looking at it, so the Media library is the right widget. (**Select list** and **Check boxes/radio buttons** are in the list too, because a Media field is a reference like any other. With a few hundred photos, neither is a good idea.)
+
+The Media library widget has no settings on our site. Its cog only appears when a field allows more than one media type, and then it sets the order of the tabs in the window: **Image** first, say, and **Remote video** second.
+
+The upload itself is a widget too, on the *media item's* form. At **Structure** > **Media types**, select **Manage form display** for **Image**: the **Image** row uses the **Image** widget. Its cog has two settings. **Preview image style** is the size of the copy the form shows after you upload (ours is **Thumbnail (100×100)**). **Progress indicator** is either a spinning **Throbber** or a **Bar with progress meter**; the bar is kinder to someone uploading a large photo on a slow connection.
+
+What the widget doesn't decide is what may be uploaded. That's the job of the *field's* settings, as the Drupalism box in Chapter 7 says. Select **Manage fields** for **Image**, and **Edit** the **Image** field:
+
+- **Allowed file extensions**: ours are `png gif jpg jpeg webp`.
+- **Maximum upload size**: empty means the largest file the server accepts.
+- **Minimum image dimensions**: a smaller photo is refused, with a message that says why.
+- **Maximum image dimensions**: a larger photo is scaled down as it's uploaded. That sounds useful, but it throws away the original, and with it the photo's *EXIF* data: the camera, the lens, the exposure. Image styles already make small copies for the pages, so on a photography club's site we leave this empty.
+- **Alt field required**: on, and it should stay on (see the box on alternative text above).
+
+> **Try it:** Set **Minimum image dimensions** to `1280` by `720`, the size of the Banner style you make later in this chapter, and **Save**. Then go to **Content** > **Media** > **Add media** > **Image**, and try to upload `portobello-beach.jpg`, which is 1024 by 683 pixels. Drupal refuses it, and says why. Would you keep that rule on the club's site? (We don't: Exercise 1 needs that photo, so clear both numbers again and **Save**.)
+
+### The photo on the hike page
+
+Back to the hike. The photo should be the first thing on the hike page. On Hike's **Manage display**, **Manage** the **Default** display, drag **Photo** to the top, set its **Label** to **- Hidden -**, and select **Save**. (Drupal added the new field at the bottom of the display, with its label above, as it does with every new field.)
 
 ![The hike page with the photo at the top, quite small, and Photographer, License and Source below it, each with its label above](images/09-hike-photo-large.png)
-*Figure 9.12: The hike with its photo*
+*Figure 9.13: The hike with its photo*
 
-The photo is there, but it's small, and the credits below it take up a lot of room. Both come from the *media item's* display, not the hike's: the hike's Photo field uses the formatter **Rendered entity**, which shows the media item the way its own **Default** display does. You'll remember this from Chapter 8: one reference, shown through the other entity's view mode. The media item's display uses an *image style* called **Large**. Let's see what that is.
+The photo is there, but it's small, and the credits below it take up a lot of room. Both come from the *media item's* display, not the hike's: the hike's Photo field uses the formatter **Rendered entity**, which shows the media item the way its own **Default** display does. You'll remember this from Chapter 8: one reference, shown through the other entity's view mode. (It's not the only formatter for a Media field; we compare them after Responsive images.) The media item's display uses an *image style* called **Large**. Let's see what that is.
 
 ## Image styles
 
@@ -140,7 +165,7 @@ That's an *image style* at work. An image style is a recipe for a copy of a phot
 Go to **Configuration** > **Media** > **Image styles**. Drupal comes with five.
 
 ![The Image styles page, with Large (480×480), Media Library thumbnail (220×220), Medium (220×220), Thumbnail (100×100) and Wide (1090)](images/09-image-styles.png)
-*Figure 9.13: Drupal's image styles*
+*Figure 9.14: Drupal's image styles*
 
 Select **Edit** for **Wide (1090)** to see how one is made. It has two *effects*, applied in order: **Scale** to 1090 pixels wide, and **Convert to AVIF**, with WebP as the fallback. AVIF and WebP are image formats made for the web: a photo in AVIF is often less than half the size of the same photo as a JPEG, and looks the same. Drupal uses AVIF when the server can make it, and WebP when it can't.
 
@@ -162,7 +187,7 @@ For the hike page, we want the photo wide, across the whole column, and always t
 4. Select **Save**.
 
 ![The Edit style Banner page, with a preview of the source image and the derivative, and the effects Scale and crop 1280×720 and Convert to AVIF WEBP](images/09-image-style-banner.png)
-*Figure 9.14: The Banner image style*
+*Figure 9.15: The Banner image style*
 
 At the top, Drupal shows what the style does to a sample image: the original on the left, the copy on the right. If you ever change a style, Drupal throws away the copies it made with the old recipe, and makes new ones as pages ask for them. Nothing to do for you.
 
@@ -177,15 +202,15 @@ We could tell the media item's Default display to use the Banner style. But the 
 5. Set the **Label** of **Photographer**, **License** and **Source** to **Inline**, and select **Save**.
 
 ![The Banner display of the Image media type, with the image in the Banner style and the credits inline](images/09-media-banner-display.png)
-*Figure 9.15: The Banner display of an image*
+*Figure 9.16: The Banner display of an image*
 
 6. Back on Hike's **Default** display, select the cog for **Photo**, set **View mode** to **Banner**, select **Update**, and then **Save**.
 
 ![The Photo row on Hike's display opened, with View mode set to Banner](images/09-hike-photo-view-mode.png)
-*Figure 9.16: The hike shows its photo as a banner*
+*Figure 9.17: The hike shows its photo as a banner*
 
 ![The hike page with a wide photo across the column, credits inline below it, then the facts and the description](images/09-hike-banner.png)
-*Figure 9.17: The hike with its banner*
+*Figure 9.18: The hike with its banner*
 
 That's a hike page. And because the credits are part of the media item's Banner display, every hike's photo is credited, in the same way, without anyone remembering to do it.
 
@@ -215,7 +240,7 @@ Now we tie them together in a *responsive image style*.
 7. Set **Fallback image style** to **Banner**, and select **Save**.
 
 ![The Add responsive image style form, with Banner as the label, the Responsive Image breakpoint group, the sizes attribute, and Banner, Banner large and Banner small checked](images/09-responsive-style.png)
-*Figure 9.18: The Banner responsive image style*
+*Figure 9.19: The Banner responsive image style*
 
 The **Sizes** line is the only hard part, so let's read it. It tells the browser how wide the photo will be on screen, before the page is even laid out: "on a screen of at least 1130 pixels, the photo is 905 pixels wide; on anything smaller, it's as wide as the screen" (`100vw` is 100% of the viewport, the browser window). We measured this on Olivero: its content column is never wider than about 905 pixels, and on smaller screens it's a little narrower than the window. If your guess is a bit too large, no harm done: the browser picks a slightly larger copy than it needs. The browser then takes the width, multiplies it by the screen's sharpness (a phone often has 2 or 3 pixels for every point), and picks the smallest copy that's large enough.
 
@@ -224,7 +249,7 @@ Last, the media's Banner display has to use it.
 8. On the **Banner** display of **Image**, set the **Format** of **Image** to **Responsive image**. Select the cog, set **Responsive image style** to **Banner**, select **Update**, and then **Save**.
 
 ![The Image row of the Banner display opened, with the Responsive image formatter and the Banner responsive image style](images/09-media-banner-responsive.png)
-*Figure 9.19: The banner, responsive*
+*Figure 9.20: The banner, responsive*
 
 The hike looks the same as before on your screen. The difference is in the page's HTML. If you look at the page's source, the photo is now:
 
@@ -240,14 +265,86 @@ The hike looks the same as before on your screen. The difference is in the page'
 Three copies to choose from, the sizes line, and the Banner copy for browsers that don't understand any of it.
 
 ![The hike page on a phone, with the banner across the screen and the credits below it](images/09-hike-phone.png)
-*Figure 9.20: The hike on a phone*
+*Figure 9.21: The hike on a phone*
 
 > **Breakpoints.** A *breakpoint* is a screen width at which a theme changes its layout: the menu becomes a button, columns stack. Themes declare theirs, in a *breakpoint group*: Olivero has one, and the Responsive Image module has a simple one of its own, **Responsive Image**, with no widths at all. With a theme's group, you can give each breakpoint its own image style, for example a square photo on phones and a wide one on computers (that's called *art direction*). For the same photo in different sizes, the **sizes** approach we used is simpler, and it doesn't depend on the theme: it keeps working whichever theme the site uses (Chapter 16).
 
 > **Try it:** Give News a photo too. On News's **Manage fields**, select **Re-use an existing field**, and re-use **Photo**. Then edit *The club has a website*, select **Add media**, and this time upload a new photo from inside the window: we use `edinburgh-skyline.jpg`, Edinburgh's Old Town from Calton Hill, by Jim Barton, CC BY-SA 2.0. Because we added the credits to the **Media library** form, you can fill them in right there. Then give News's display the same treatment as Hike's: Photo at the top, label hidden, **Banner** view mode.
 
 ![The Add or select media window with the Edinburgh photo uploaded, and its alternative text, name, photographer, license and source filled in](images/09-library-upload.png)
-*Figure 9.21: Uploading a photo from inside the library*
+*Figure 9.22: Uploading a photo from inside the library*
+
+## Which formatter, when?
+
+The hike shows its photo with the **Rendered entity** formatter, but it's not the only choice. A Media field has four formatters, and the Image field *inside* the media item has formatters of its own. Choosing between them confuses most people who are new to Drupal media (and a few who aren't), so let's take them in order.
+
+### Two levels of formatter
+
+A photo on a hike page goes through two displays, one inside the other, and each has its own formatter:
+
+1. On Hike's display, **Photo** is a reference to a media item. Its formatter decides *what of the media item* is shown: **Rendered entity**, **Thumbnail**, **Label** or **Entity ID**.
+2. With **Rendered entity**, the media item is shown by one of its *own* view modes, such as **Banner**. There, the **Image** field has its own formatter, which decides how the picture itself is shown: **Image**, **Responsive image** or **URL to image**.
+
+That's Chapter 8's "One reference, three formatters" again, with one more: **Thumbnail**.
+
+![The Photo row of Hike's Default display, with the Format list open, showing its four formatters](images/09-photo-formatters.png)
+*Figure 9.23: The four formatters of a Media field*
+
+> **Drupalism: thumbnail.** In Drupal media, "thumbnail" doesn't mean small. Every media item has a field called **Thumbnail**: the one picture that stands for the item, whatever its type. For an Image, Drupal puts the uploaded photo itself there, at full size: our Turnhouse Hill photo is 3840 by 2880 pixels in its Thumbnail field too, with the same alternative text. For a Remote video, it's the poster picture Drupal fetches from YouTube or Vimeo, and for a Document, an icon. How large a thumbnail is on a page depends only on the image style you show it in. And to make it more confusing, Drupal also has an image *style* called **Thumbnail (100×100)**. The two have nothing in common but the name. ;-)
+
+### Rendered entity or Thumbnail?
+
+These two are the real choice, so here they are side by side:
+
+| | Rendered entity | Thumbnail |
+|---|---|---|
+| Shows | the media item, through one of its view modes: the image and any fields, such as the credits | only the picture in the media item's Thumbnail field, with its alternative text |
+| Size | whatever that view mode does | one image style, chosen in the formatter |
+| Credits | yes, if the view mode shows them | no |
+| Responsive images | yes, if the view mode uses **Responsive image** | no |
+| Link | no setting; the view mode decides | **Nothing**, **Content** or **Media item** |
+| Other media types | each in its own way: a video plays, a document is a link to the file | a picture for every type: a video's poster, a document's icon |
+| Setting up | a media view mode for each shape you need | nothing: choose an image style |
+
+**Use Rendered entity** whenever a visitor sees the photo as part of the content: the hike's banner, the photos in an album, a card on a public page. There are two reasons, and on our site the first one decides it. The first is the credits. The club's photos are under Creative Commons licenses, and CC BY and CC BY-SA *require* you to credit the photographer where you use the photo. The credits are fields of the media item, so only Rendered entity can bring them along. The second is responsive images: Thumbnail sends the same copy to every screen. The price is a media view mode for each shape you need. You've seen that it's a few minutes' work, and once it's made, the photo looks the same everywhere it's used.
+
+**Use Thumbnail** where the photo points to something, and isn't the content itself:
+
+- a table on an administration page (the Photo credits view in Chapter 13 shows its photos this way);
+- a small picture next to each item in a list, linked to the page where the photo is shown with its credits;
+- a list that mixes photos, videos and documents, where you want one picture for each, whatever its type;
+- a first version of a page, before you've made the view mode it really needs.
+
+Before you use Thumbnail on a public page, ask yourself whether the photo needs its credits there. If it does, Thumbnail is the wrong formatter.
+
+**Label and Entity ID** are rarely what you want for photos. **Label** shows the media item's name, as a link if you like: right for a list of documents ("Membership form"), not for pictures. **Entity ID** shows the number that is stored, which is only useful for checking, as in Chapter 8.
+
+Let's see the difference on the hike.
+
+1. On Hike's **Manage display**, **Manage** the **Default** display, and set the **Format** of **Photo** to **Thumbnail**.
+2. Select its cog. Set **Image style** to **Large (480×480)**, leave **Link image to** at **Nothing**, and select **Update**, and then **Save**.
+
+![The Photo row opened, with the Thumbnail formatter, Image style Large and Link image to Nothing](images/09-photo-thumbnail-settings.png)
+*Figure 9.24: The Thumbnail formatter's settings*
+
+3. Look at the hike. The photo is there, in its own shape, but the credits have gone, and if you look at the page's source, so has the `srcset`.
+
+![The hike page with the photo in its own 4:3 shape at the top, and no credits below it](images/09-hike-thumbnail.png)
+*Figure 9.25: The hike, with Thumbnail*
+
+4. Put it back: set the **Format** of **Photo** to **Rendered entity**, with the **Banner** view mode, and **Save**.
+
+### Image or Responsive image?
+
+Inside the media item's view mode, the **Image** field has three formatters of its own:
+
+- **Image**: one copy, in one image style. Right when the photo is the same size on every screen: a 100-pixel square next to a name, a small photo in a card that's always the same width.
+- **Responsive image**: several copies, and the browser picks one (see Responsive images above). Right when the photo's width changes with the screen: banners, and photos as wide as the column.
+- **URL to image**: only the address of the file, as text. It's not for visitors to look at, but for something else that needs the address, such as a theme that uses the photo as a background.
+
+And whichever you choose, the image style decides the shape: **Scale and crop** when every photo should be the same shape (the banner, a row of cards), **Scale** or one of the **Max** styles when each photo keeps its own shape (the album).
+
+> **Try it:** Look back at the club's site so far, and at the pages to come in this book: the list of upcoming hikes, the albums, the administration pages. For each place a photo appears, which formatter would you choose, and why?
 
 ## Media in the text editor
 
@@ -265,12 +362,12 @@ The text editor of **Basic HTML**, the text format our Body and Description fiel
 6. Select **Save configuration**.
 
 ![The Basic HTML text format, with the Drupal Media button in the active toolbar](images/09-text-format-media.png)
-*Figure 9.22: The Drupal Media button in the toolbar*
+*Figure 9.26: The Drupal Media button in the toolbar*
 
 Editors now have a media button in the editor. It opens the same **Add or select media** window, and puts the photo into the text, shown in the **Banner** view mode, with its credits.
 
 ![The news item's text in the editor, with the photo of Turnhouse Hill and its credits after the text](images/09-editor-media.png)
-*Figure 9.23: A photo inside the text*
+*Figure 9.27: A photo inside the text*
 
 ## Galleries: albums of the club's outings
 
@@ -284,7 +381,7 @@ After every hike, the members have photos to share. The club wants an album per 
 6. **Create a new field**: **Reference**, labeled `Hike`, and choose **Content**. Under **Content type**, check **Hike**, type `The hike the photos are from, if they're from one.` as the **Help text**, and select **Save**.
 
 ![The Manage fields page of Gallery, with Description, Hike and Photos](images/09-gallery-fields.png)
-*Figure 9.24: The Gallery content type*
+*Figure 9.28: The Gallery content type*
 
 An album shows its photos whole: a tall photo should stay tall, so no **Scale and crop** here.
 
@@ -297,21 +394,21 @@ Now the first album.
 10. Under **Photos**, select **Add media**. In the window, choose several files at once in the file dialog (with Ctrl or ⌘ held down). Drupal uploads them all, and shows a form for each. Fill in each photo's alternative text, name and credits, and select **Save**.
 
 ![The Add or select media window with several uploaded photos, each with its own alternative text, name and credits](images/09-gallery-upload.png)
-*Figure 9.25: Uploading the album's photos at once*
+*Figure 9.29: Uploading the album's photos at once*
 
 11. The new photos are selected for you. Select **Insert selected**, and **Save** the album.
 
 ![The album Pentlands, 21 November: a link to the hike, the description, and four photos one under the other, each with its credits](images/09-gallery-page.png)
-*Figure 9.26: The first album*
+*Figure 9.30: The first album*
 
 The photos come one under the other, each with its credits; the tall photo of Glencorse Reservoir stays tall. A grid of thumbnails, where you select a photo to see it large, is something a view can do (Chapter 12), or a theme of your own (the subject of our companion book, *Theming Drupal*), and that's also where the list of all albums, at `/galleries`, will come from. Every photo in the album is in the library too, so a hike leader can use one of them as the photo of next year's hike.
 
 > **Try it: video and documents.** Media isn't only photos. Add a **Remote video**: at **Content** > **Media** > **Add media** > **Remote video**, paste the address of a YouTube video, such as `https://www.youtube.com/watch?v=zHgHQD-mL5s` (the Drupal Association's keynote from DrupalCon Atlanta 2025). Drupal fetches the title and a thumbnail from YouTube, and shows the video from there. Then add a **Document**: the club's membership form, `membership-form.pdf` from the book's `examples/` folder. Where would you put the form on the site?
 
-> **On Drupal CMS:** Drupal CMS has media set up from the start: Image, Document, Remote video, Video, and **SVG Image** for logos and icons. Its text editor has the media button, and no Upload image button, for the reasons above. Two things go further than what we built. First, the **Focal Point** module: when you upload a photo, you click the most important spot in it (the crosshair in Figure 9.27), and every **Scale and crop** keeps that spot in the picture, so a banner never cuts off the hiker's head. Second, Drupal CMS comes with more than 60 image styles, named after their shape and size, such as "16:9 | 1312x738 | Focal Point | WebP", and responsive image styles that use them. Its Featured image field shows a photo through media view modes, as we did with **Banner**. You can add Focal Point to a core site too, as a contributed module (Chapter 11).
+> **On Drupal CMS:** Drupal CMS has media set up from the start: Image, Document, Remote video, Video, and **SVG Image** for logos and icons. Its text editor has the media button, and no Upload image button, for the reasons above. Two things go further than what we built. First, the **Focal Point** module: when you upload a photo, you click the most important spot in it (the crosshair in Figure 9.31), and every **Scale and crop** keeps that spot in the picture, so a banner never cuts off the hiker's head. Second, Drupal CMS comes with more than 60 image styles, named after their shape and size, such as "16:9 | 1312x738 | Focal Point | WebP", and responsive image styles that use them. Its Featured image field shows a photo through media view modes, as we did with **Banner**, in cards and teasers; on the full blog post, it uses **Thumbnail** without an image style, which shows the original photo. If you give Drupal CMS's photos credits, switch that display to **Rendered entity** too. You can add Focal Point to a core site too, as a contributed module (Chapter 11).
 
 ![The Add Image form on Drupal CMS, with an uploaded photo and the Focal Point crosshair in the middle of it](images/09-cms-focal-point.png)
-*Figure 9.27: Focal Point on Drupal CMS*
+*Figure 9.31: Focal Point on Drupal CMS*
 
 > **Coming from WordPress?** The Media Library will feel familiar: in WordPress, every upload is an *attachment* in the Media Library, and a post's *featured image* is a reference to one. Drupal's media items are the same idea, with fields of your own, such as our credits. Two differences are worth knowing. WordPress makes its image sizes (thumbnail, medium, medium_large and large) at the moment you upload, so when you change a size, only new uploads get it, and the old ones need a plugin such as Regenerate Thumbnails. Drupal makes an image style's copy the first time a page asks for it, and remakes them when you change the style. And WordPress adds `srcset` to images by itself (since version 4.4); in Drupal, you decide which copies to offer, with a responsive image style, as we did.
 
@@ -323,15 +420,17 @@ You can now:
 - install Media and Media Library, and add fields, such as credits, to a media type;
 - use form modes to decide which fields the Media Library's upload form shows;
 - add a Media field to a content type, and choose or upload photos in the Media Library;
+- choose a widget for a Media field, and tell field settings from widget settings;
 - make image styles with effects, and use them through a media view mode;
 - set up a responsive image style, so browsers get the size of photo they need;
+- choose between Rendered entity and Thumbnail for a Media field, and between Image and Responsive image inside a media view mode;
 - put the media button in the text editor, and decide whether to offer it;
 - build a content type for photo albums.
 
 ## Exercises
 
 1. Add the photo of Portobello beach (`portobello-beach.jpg` in `examples/photos/`) to the library, with its credits from `examples/photos/CREDITS.md`. Then use it as the photo of one of the Portobello hikes from Chapter 7's exercises.
-2. Give the Hike's **Card** view mode from Chapter 8 a photo: a square one. Make an image style `Square` (**Scale and crop** to `400` by `400`), and a media view mode `Square` that shows the image in that style. A card is small, so three lines of credits would crowd it: show only the **Photographer**, with its label hidden, below the photo. Then show the Photo in the Card display with that view mode. Why is the photographer's name worth keeping even on a small card, on a photography club's site?
+2. Give the Hike's **Card** view mode from Chapter 8 a photo: a square one. Make an image style `Square` (**Scale and crop** to `400` by `400`), and a media view mode `Square` that shows the image in that style. A card is small, so three lines of credits would crowd it: show only the **Photographer**, with its label hidden, below the photo. Then show the Photo in the Card display with that view mode (with **Rendered entity**, not **Thumbnail**: why?). Why is the photographer's name worth keeping even on a small card, on a photography club's site?
 3. Edit the photo of Turnhouse Hill in the library (at **Content** > **Media**), and correct its name to `Turnhouse Hill from Glencorse`. Where does the change show up? What would have happened if the hike had a plain Image field instead?
 4. Delete the Video media type from **Structure** > **Media types**. Why might the club not want members to upload videos to the site itself?
 5. *(challenge)* Add a second album, for a photo evening, without a hike. Which of the club's photos would you reuse, and which fields would you want to add to Gallery for photo evenings? (Think about Chapter 10, where categories come in.)

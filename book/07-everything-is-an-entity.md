@@ -173,6 +173,8 @@ A *widget* is the part of the form for one field: a text box, a date picker, a l
 
 The cog at the end of a row opens the widget's own settings, such as the size of a text box or a placeholder text shown in an empty field. The summary next to the widget tells you what's set. Fields in the **Disabled** part at the bottom aren't on the form at all; on Drupal 12, **Promoted** and **Sticky at top of lists** start there, as we saw in Chapter 6. And Drupal puts some base fields, such as **Authored by** and **URL alias**, in the form's sidebar, whatever their place in the list.
 
+> **Drupalism: widget.** A widget is a way of *entering* a field's value. It decides what the form looks like, and nothing else: change Difficulty back to a drop-down list, and every hike keeps its difficulty. So a field has two kinds of settings, in two places. The *field's* settings, on **Manage fields**, decide what may be stored: the allowed values of a list, the number of decimals, the largest file you may upload. The *widget's* settings, behind the cog on **Manage form display**, only decide how the form looks. When you look for a setting and can't find it, ask yourself which of the two it is about. In Chapter 8, you meet the widget's twin, the *formatter*, which decides how a value is *shown*.
+
 ### Drafts for hikes too
 
 In Chapter 6, we applied the Editorial workflow to Basic page. Hikes need it even more: in Chapter 15, hike leaders will write their hikes as drafts, and the secretary will publish them. Go to **Configuration** > **Workflow** > **Workflows**, **Edit** the Editorial workflow, select **Select** next to **Content types**, check **Hike**, select **Save**, and then **Save** at the bottom of the page.

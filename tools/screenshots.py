@@ -567,12 +567,14 @@ foreach (['node.hike.teaser', 'node.hike.card', 'node.news.teaser', 'node.news.c
     subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
 
 
-def as_visitor(page: Page, site: dict, path: str, name: str, width: int = WIDTH) -> None:
-    """A full-page screenshot of path, logged out, in a window of its own."""
+def as_visitor(page: Page, site: dict, path: str, name: str, width: int = WIDTH, prepare=None) -> None:
+    """A full-page screenshot of path, logged out, in a window of its own. prepare(page) runs before it's taken."""
     context = page.context.browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
     visit = context.new_page()
     visit.goto(site["url"] + path)
     visit.wait_for_load_state("networkidle")
+    if prepare:
+        prepare(visit)
     save(visit, name, full_page=True)
     context.close()
 
@@ -1130,6 +1132,84 @@ $c = $d->getComponent('field_photo'); $c['settings']['view_mode'] = 'default'; $
     subprocess.run(["sips", "--resampleWidth", "780", str(target)], check=True, capture_output=True)
     print(target.relative_to(ROOT), phone.evaluate("document.querySelector('.field--name-field-photo img').currentSrc"))
     context.close()
+
+
+# What later chapters add to Hike's form and display: Area (10), Simple XML Sitemap and URL redirects (17),
+# Language (18), Elevation gain (21).
+LATER_ROWS = ["field-area", "simple-sitemap", "url-redirects", "langcode", "field-elevation-gain"]
+# What later chapters add to the hike page: the logo and green colour (16), the Hikes and Albums menu links,
+# the breadcrumb's Upcoming hikes, the sidebar and the footer's blocks (14), Albums from this hike (13),
+# the language switcher (18), and Area (10).
+LATER_PAGE = [
+    ".site-branding__logo", "#block-olivero-languageswitcher", ".region--sidebar", ".region--footer-top",
+    "#block-olivero-footer", "#block-olivero-albums-from-this-hike", ".field--name-field-area",
+]
+
+
+def hide_later(page: Page, rows: list[str] = (), elements: list[str] = ()) -> None:
+    """Takes out of the page what later chapters add, so a screenshot taken now looks like an earlier chapter's.
+
+    rows are table row ids (Manage form display, Manage display); elements are CSS selectors on a visitor page.
+    """
+    page.evaluate("""([rows, elements]) => {
+        rows.forEach(id => document.getElementById(id)?.remove());
+        elements.forEach(s => document.querySelectorAll(s).forEach(e => e.remove()));
+        if (elements.length) {
+            document.documentElement.removeAttribute('style');
+            document.querySelectorAll('.primary-nav__menu-item--level-1').forEach(li => {
+                if (!['Home', 'About', 'Join us'].includes(li.querySelector('a, button')?.innerText.trim())) li.remove();
+            });
+            document.querySelectorAll('.breadcrumb__item').forEach((li, i) => { if (i > 0) li.remove(); });
+        }
+    }""", [list(rows), list(elements)])
+    page.wait_for_timeout(300)
+
+
+def widgets_formatters_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9: the Media library widget, and Thumbnail compared with Rendered entity.
+
+    Only looks at the site as it is (any chapter from 9 on), taking out what later chapters add
+    (hide_later): the Thumbnail steps save Hike's display, and the display is put back as it was afterwards.
+    """
+    url = site["url"]
+    page.goto(url + "/admin/structure/types/manage/hike/form-display")
+    page.wait_for_load_state("networkidle")
+    hide_later(page, LATER_ROWS)
+    scroll_to(page, "tr:has-text('field_photo')", 250)
+    snap("09-photo-widget")
+
+    backup = drush_php(site, "echo json_encode(\\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.default')->getComponent('field_photo'));")
+    component = json.loads(backup.strip().splitlines()[-1])
+    try:
+        display = url + "/admin/structure/types/manage/hike/display/default"
+        page.goto(display)
+        page.wait_for_load_state("networkidle")
+        select = "select[name='fields[field_photo][type]']"
+        # A screenshot can't show a native drop-down open, so show the select as a list.
+        page.evaluate(f"""() => {{ const s = document.querySelector("{select}"); s.size = s.options.length; s.style.height = 'auto'; }}""")
+        hide_later(page, LATER_ROWS)
+        scroll_to(page, "tr:has-text('field_photo')", 250)
+        page.wait_for_timeout(500)
+        snap("09-photo-formatters")
+        page.reload()
+        page.wait_for_load_state("networkidle")
+
+        page.select_option(select, "media_thumbnail")
+        page.wait_for_selector("input[name='field_photo_settings_edit']")
+        page.wait_for_timeout(1500)
+        prefix = field_settings(page, "field_photo")
+        page.select_option(f"select[name='{prefix}[image_style]']", "large")
+        page.select_option(f"select[name='{prefix}[image_link]']", "")
+        hide_later(page, LATER_ROWS)
+        scroll_to(page, "tr:has-text('field_photo')", 150)
+        snap("09-photo-thumbnail-settings")
+        field_settings_update(page, "field_photo")
+        save_display(page)
+        as_visitor(page, site, "/hikes/turnhouse-hill", "09-hike-thumbnail", prepare=lambda p: hide_later(p, elements=LATER_PAGE))
+    finally:
+        drush_php(site, f"""$d = \\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.default');
+$d->setComponent('field_photo', json_decode('{json.dumps(component)}', TRUE))->save();""")
+        subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
 
 
 # The gallery's photos, from examples/photos/CREDITS.md: file, name, alternative text, photographer, license, source.
@@ -4965,6 +5045,7 @@ SEQUENCES = [
     ("core", photo_field_steps, 1280, ["09-photo-field-type", "09-photo-field-settings", "09-media-library", "09-hike-form-photo", "09-hike-photo-large"]),
     ("core", image_styles_steps, 1280, ["09-image-styles", "09-image-style-banner", "09-media-banner-display", "09-hike-photo-view-mode", "09-hike-banner", "09-responsive-style", "09-media-banner-responsive", "09-hike-phone"]),
     ("core", media_editor_steps, 1280, ["09-library-upload", "09-text-format-media", "09-editor-media"]),
+    ("core", widgets_formatters_steps, 1280, ["09-photo-widget", "09-photo-formatters", "09-photo-thumbnail-settings", "09-hike-thumbnail"]),
     ("core", gallery_steps, 1280, ["09-gallery-fields", "09-gallery-upload", "09-gallery-page"]),
     ("core", taxonomy_areas_steps, 1280, ["10-add-vocabulary", "10-add-term", "10-areas-drag", "10-areas-overview"]),
     ("core", taxonomy_fields_steps, 1280, ["10-area-fields", "10-term-pentland-hills", "10-area-field-settings", "10-hike-form-area", "10-hike-area", "10-term-turnhouse-hill"]),

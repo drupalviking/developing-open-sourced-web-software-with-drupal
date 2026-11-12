@@ -37,6 +37,7 @@ Match the author's own chapters (the best examples: Chapter 1, the history, the 
   installed it, it said Reykjavik"). The reader's own questions ("Which one should I use?") stay as they are.
 - Reassure where it's hard: "don't worry", "it takes a while to wrap your head around this".
   Admit when there's no clean answer ("sometimes we have to follow our guts").
+- **Introduce every new tool, module or product properly** (the author's rule, 2026-11-12): when something new comes in (SDC Styleguide, Storybook, a contributed module, an outside service), give it a paragraph or two before using it: what it is, where it lives, what it does for the club's sites, and why we picked it over the alternatives. Never brush it off in a clause ("So we tried X, a module with no build step:") and go straight to the install command. The same goes for alternatives we turn down: say what they are before saying why not.
 - Light humor is welcome, and so are the author's emoticons (`;-)`, `:-)`): they make the tone personal.
 - Deeper than the slides: explain *why* every setting exists and what happens if you change it,
   not only where to click. Every new term is explained the first time it appears, in plain words,

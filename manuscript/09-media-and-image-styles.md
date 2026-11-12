@@ -145,6 +145,8 @@ What the widget doesn't decide is what may be uploaded. That's the job of the *f
 - **Maximum image dimensions**: a larger photo is scaled down as it's uploaded. That sounds useful, but it throws away the original, and with it the photo's *EXIF* data: the camera, the lens, the exposure. Image styles already make small copies for the pages, so on a photography club's site we leave this empty.
 - **Alt field required**: on, and it should stay on (see the box on alternative text above).
 
+> **A default photo?** Further down the same page is **Default image**: "If no image is uploaded, this image will be shown on display." Every Image field has it, but it doesn't help a hike without a photo. An image media item always has its file, so the default is never needed there, and Hike's Photo is a Media field, which has no Default image. Its settings only have **Set default value**, which stores a media item you choose in every *new* hike. Hikes that already exist stay without one, and your "no photo" picture becomes one of the club's photos, in the Media Library and in every list of photos. So we leave the field empty when there's no photo. What a hike without one looks like is a question for the theme, and in *Theming Drupal* the hike cards get a default photo of their own.
+
 > **Try it:** Set **Minimum image dimensions** to `1280` by `720`, the size of the Banner style you make later in this chapter, and **Save**. Then go to **Content** > **Media** > **Add media** > **Image**, and try to upload `portobello-beach.jpg`, which is 1024 by 683 pixels. Drupal refuses it, and says why. Would you keep that rule on the club's site? (We don't: Exercise 1 needs that photo, so clear both numbers again and **Save**.)
 
 ### The photo on the hike page

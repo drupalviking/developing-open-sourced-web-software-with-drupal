@@ -567,12 +567,14 @@ foreach (['node.hike.teaser', 'node.hike.card', 'node.news.teaser', 'node.news.c
     subprocess.run(["ddev", "drush", "cache:rebuild"], cwd=site["dir"], check=True, capture_output=True)
 
 
-def as_visitor(page: Page, site: dict, path: str, name: str, width: int = WIDTH) -> None:
-    """A full-page screenshot of path, logged out, in a window of its own."""
+def as_visitor(page: Page, site: dict, path: str, name: str, width: int = WIDTH, prepare=None) -> None:
+    """A full-page screenshot of path, logged out, in a window of its own. prepare(page) runs before it's taken."""
     context = page.context.browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
     visit = context.new_page()
     visit.goto(site["url"] + path)
     visit.wait_for_load_state("networkidle")
+    if prepare:
+        prepare(visit)
     save(visit, name, full_page=True)
     context.close()
 
@@ -1132,15 +1134,47 @@ $c = $d->getComponent('field_photo'); $c['settings']['view_mode'] = 'default'; $
     context.close()
 
 
+# What later chapters add to Hike's form and display: Area (10), Simple XML Sitemap and URL redirects (17),
+# Language (18), Elevation gain (21).
+LATER_ROWS = ["field-area", "simple-sitemap", "url-redirects", "langcode", "field-elevation-gain"]
+# What later chapters add to the hike page: the logo and green colour (16), the Hikes and Albums menu links,
+# the breadcrumb's Upcoming hikes, the sidebar and the footer's blocks (14), Albums from this hike (13),
+# the language switcher (18), and Area (10).
+LATER_PAGE = [
+    ".site-branding__logo", "#block-olivero-languageswitcher", ".region--sidebar", ".region--footer-top",
+    "#block-olivero-footer", "#block-olivero-albums-from-this-hike", ".field--name-field-area",
+]
+
+
+def hide_later(page: Page, rows: list[str] = (), elements: list[str] = ()) -> None:
+    """Takes out of the page what later chapters add, so a screenshot taken now looks like an earlier chapter's.
+
+    rows are table row ids (Manage form display, Manage display); elements are CSS selectors on a visitor page.
+    """
+    page.evaluate("""([rows, elements]) => {
+        rows.forEach(id => document.getElementById(id)?.remove());
+        elements.forEach(s => document.querySelectorAll(s).forEach(e => e.remove()));
+        if (elements.length) {
+            document.documentElement.removeAttribute('style');
+            document.querySelectorAll('.primary-nav__menu-item--level-1').forEach(li => {
+                if (!['Home', 'About', 'Join us'].includes(li.querySelector('a, button')?.innerText.trim())) li.remove();
+            });
+            document.querySelectorAll('.breadcrumb__item').forEach((li, i) => { if (i > 0) li.remove(); });
+        }
+    }""", [list(rows), list(elements)])
+    page.wait_for_timeout(300)
+
+
 def widgets_formatters_steps(page: Page, site: dict, snap) -> None:
     """Chapter 9: the Media library widget, and Thumbnail compared with Rendered entity.
 
-    Only looks at the site as it is (any chapter from 9 on): the Thumbnail steps save Hike's
-    display, and the display is put back as it was afterwards.
+    Only looks at the site as it is (any chapter from 9 on), taking out what later chapters add
+    (hide_later): the Thumbnail steps save Hike's display, and the display is put back as it was afterwards.
     """
     url = site["url"]
     page.goto(url + "/admin/structure/types/manage/hike/form-display")
     page.wait_for_load_state("networkidle")
+    hide_later(page, LATER_ROWS)
     scroll_to(page, "tr:has-text('field_photo')", 250)
     snap("09-photo-widget")
 
@@ -1153,6 +1187,7 @@ def widgets_formatters_steps(page: Page, site: dict, snap) -> None:
         select = "select[name='fields[field_photo][type]']"
         # A screenshot can't show a native drop-down open, so show the select as a list.
         page.evaluate(f"""() => {{ const s = document.querySelector("{select}"); s.size = s.options.length; s.style.height = 'auto'; }}""")
+        hide_later(page, LATER_ROWS)
         scroll_to(page, "tr:has-text('field_photo')", 250)
         page.wait_for_timeout(500)
         snap("09-photo-formatters")
@@ -1165,11 +1200,12 @@ def widgets_formatters_steps(page: Page, site: dict, snap) -> None:
         prefix = field_settings(page, "field_photo")
         page.select_option(f"select[name='{prefix}[image_style]']", "large")
         page.select_option(f"select[name='{prefix}[image_link]']", "")
+        hide_later(page, LATER_ROWS)
         scroll_to(page, "tr:has-text('field_photo')", 150)
         snap("09-photo-thumbnail-settings")
         field_settings_update(page, "field_photo")
         save_display(page)
-        as_visitor(page, site, "/hikes/turnhouse-hill", "09-hike-thumbnail")
+        as_visitor(page, site, "/hikes/turnhouse-hill", "09-hike-thumbnail", prepare=lambda p: hide_later(p, elements=LATER_PAGE))
     finally:
         drush_php(site, f"""$d = \\Drupal::entityTypeManager()->getStorage('entity_view_display')->load('node.hike.default');
 $d->setComponent('field_photo', json_decode('{json.dumps(component)}', TRUE))->save();""")

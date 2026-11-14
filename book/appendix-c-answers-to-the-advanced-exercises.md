@@ -208,3 +208,30 @@ ddev drush cache:rebuild
 Clear the cache again, or visitors may get the stored maintenance page for a while.
 
 `maint:status` is for scripts: it does nothing when the site is up, and fails when it's in maintenance mode, so a script that deploys a site can check that it's really back up at the end.
+
+## Chapter 22 (Search), Exercise 5: upcoming hikes first
+
+*Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it?*
+
+### Why boosting by date doesn't work
+
+Search API has a processor that sounds right: **Number field-based boosting**, on the index's **Processors** tab. It multiplies each item's score by the value of a number field, times a factor you choose. A date is stored as a number, the seconds since 1 January 1970, so you can pick the **Date** field. But look at the numbers. *Arthur's Seat at sunrise*, on 24 October 2026, is about 1,792,800,000 seconds; *Arthur's Seat by night*, on 16 January 2027, about 1,800,100,000. The second is bigger by less than half a percent. Both scores get multiplied by almost the same huge number, and the order doesn't change. And even if it did, the boost would favor the *later* hike, not the *upcoming* one: a hike next year beats one next week, and the index can't tell either from a hike that's over, because it doesn't know today's date (Chapter 22's box "Leaving out past hikes"). A boost is fixed when the item is indexed; "upcoming" changes every day.
+
+### An attachment for what's coming up
+
+So decide it in the view, when someone searches, as with leaving past hikes out. Chapter 13 used an attachment to show something before a page's list; here it shows the upcoming matches before all the matches:
+
+1. On the Search view, select **Add** > **Attachment**. Name it `Coming up`.
+2. Under **Attachment settings**, set **Attach to** to **Page**, **Attachment position** to **Before**, and **Inherit exposed filters** to **Yes**: the attachment then searches for the same words, with the same Type, Area and Difficulty, as the page.
+3. Under **Pager**, choose **Display a specified number of items**, `3`.
+4. Under **Filter criteria**, select **For: This attachment (override)**, and add **Content datasource: Date**, with **Is greater than or equal to**, **An offset from the current time…**, and the value `now`. That leaves out the past hikes, and everything without a date: albums, news and pages.
+5. Under **Header**, for this attachment only, add **Global: Text area** with a heading, `<h2>Coming up</h2>`, and leave **Display even if view has no result** unchecked, so the heading disappears when nothing upcoming matches. Remove the attachment's **No results behavior**, so "Nothing found" doesn't show twice.
+6. Save the view.
+
+Search for `arthur`. Under **Coming up**, only *Arthur's Seat by night*; below it, the full list, with both hikes and the album. Search for `reservoir`: **Coming up** has the Glencorse loop, in December. Search for something with no upcoming hike, and **Coming up** disappears.
+
+### What it costs
+
+The upcoming hike now shows twice: in **Coming up**, and in the full list. We think that's fine: the first answers "what can I join?", the second "what does the club have?". If it bothers you, you could give the page the opposite filter (dates before `now`), but that leaves out albums and pages too, so it only suits a search for hikes. As in Chapter 13's exercise about the next hike, an attachment and a page are two separate lists, and keeping them apart is up to you.
+
+We tested this on the club's core site (Drupal 12.0.0-beta2, Search API 1.43) on 14 November 2026.

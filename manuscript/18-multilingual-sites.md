@@ -375,11 +375,17 @@ Select **Not translated** in the row of *Welcome to Lens & Trail*. The editor sh
 | Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before. | Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen. |
 | Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith. | Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith. |
 
-Three boxes need a moment's thought:
+Most of the boxes are words, and you translate them as you'd expect. Three boxes are different, and they're worth slowing down for.
 
-- **The button's URL.** It's a box to translate, too, because addresses change with the language. The English points to `/join`, which is an English alias: in Spanish, it doesn't exist. Type the Spanish alias of *How to join*, `/unete`, with the same `internal:` in front, and the Spanish button goes to the Spanish page.
-- **The links in the text.** The same goes for the links in "Read more about the club, or find out how to join". Select a link in the Spanish editor, and give it the Spanish address with the language in front: `/es/sobre-el-club` and `/es/unete`.
-- **The icon's name**, `calendar-dots`, isn't for visitors to read. Copy it as it is.
+**The button's URL.** It may seem odd that an address has a translation box at all, but think back to *Spanish addresses*, earlier in this chapter: each translation has an address of its own. *How to join* is `/join` in English and `/unete` in Spanish. The English button points to `/join`, and Spanish visitors who followed it would land on "Page not found", because there's no Spanish page called `/join`. So the button needs the Spanish address.
+
+The `internal:` in front of it is Canvas's way of saying "a page on this site", as opposed to a link to another website. Keep it, and change only what comes after it: `internal:/unete`. You don't need to type the `/es`: Drupal adds the language to the address by itself when it shows the Spanish button. If you're not sure what a page's Spanish address is, open it in Spanish with the language switcher, and look at the address bar (without the `/es`).
+
+**The links in the text.** The text next to the card has two links, "about the club" and "how to join". They come over into the Spanish editor with the words, but they still point to the English pages. Select the Spanish words for each link, select the link button in the editor's toolbar, and give it the Spanish address: `/es/sobre-el-club` and `/es/unete`. This time, type the `/es` too. A link in a text is used exactly as you write it, so Drupal doesn't add the language here, the way it does for the button.
+
+> **Tip:** links are the part of a translation people miss most often, because the text around them looks right. When you've published a translation, click each link on the Spanish page once, and check that you stay in Spanish.
+
+**The icon's name**, `calendar-dots`, tells Mercury which picture to show on the card. Visitors never read it, and a translated name would leave the card without its icon, so copy it into the Spanish box exactly as it is.
 
 The **Description** of the two blocks, *Next hikes* and *Newest photos*, is a label that only editors see, and their **Title** is empty, because the blocks take their titles from their views, which we've translated already. Leave them.
 

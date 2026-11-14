@@ -6,7 +6,7 @@ All four work, and all four make mistakes. That's what this chapter is really ab
 
 AI in Drupal CMS is an add-on, the **AI Assistant**, and this chapter is the first one that's mostly about Drupal CMS. The AI Assistant is a recipe, though, and on a Drupal 11 core site you can fetch and apply it with Composer and Drush; a box below shows how.
 
-We start where Chapter 18 left the club's Drupal CMS site: Mercury, the How to join page in English and Spanish, and Canvas Translate.
+We start where Chapter 18 left the club's Drupal CMS site: Mercury, with the club's pages, hikes and albums in English and Spanish, and the Welcome page and the page template translated in Canvas Translate.
 
 ## Before you switch it on
 
@@ -223,7 +223,7 @@ The first page, with the invented times and people, is still a draft. Delete it 
 
 ## A first draft in Spanish: Canvas Translate AI
 
-In Chapter 18, we translated How to join into Spanish in Canvas Translate, field by field. Canvas Translate has an AI submodule, **Canvas Translate AI**, which suggests the translations, and the new beginners' page is a good place to try it.
+In Chapter 18, we translated the Welcome page and the page template into Spanish in Canvas Translate, field by field. Canvas Translate has an AI submodule, **Canvas Translate AI**, which suggests the translations, and the new beginners' page is a good place to try it.
 
 1. Go to **Extend**, find **Canvas Translate AI**, check it, and select **Install**. It uses the AI module's provider for translations, or, if there isn't one, the chat model, so amazee.ai works with nothing more to set up.
 2. Go to the Canvas Translate dashboard (Chapter 18), and select *First hike with Lens & Trail*.
@@ -237,7 +237,7 @@ The button fills every *empty* translation field. It never overwrites a translat
 - **Tone.** In Chapter 18 we chose "tú", a neutral, friendly Spanish. The AI translates each field on its own, and on our page it switched between the two: "Únete a una caminata" and "ven" in one place, "simplemente venga", "lleve su cámara" and "hable con el secretario" in another. Make every field "tú".
 - **Names.** "Lens & Trail" stays in English; so do the names of hills. Check that the AI didn't translate them. And check the ampersand: even with "&" fixed in the English, our Spanish came back as `Lens &amp; Trail` in the title, the meta description and the heading, the same mistake as in Canvas AI.
 - **Club words.** The AI picks a word for each field, and not always the same one. Our page had "caminata" in one place and "excursión" in the next, and membership was "membresía", "afiliación" and "hacerse socio". Chapter 18 chose "excursión" for a hike. Consistency is the translator's job.
-- **Things that aren't text.** Canvas Translate shows every text a component has, including some that visitors never read, and the AI translates those too. Ours turned the icon names `calendar-blank` and `envelope-simple` into `calendario-vacío` and `sobre-simple`, which would leave the Spanish page without icons. Put the English back in fields like these, and in links and email addresses.
+- **Things that aren't text.** Canvas Translate shows every text a component has, including some that visitors never read, and the AI translates those too. Ours turned the icon names `calendar-blank` and `envelope-simple` into `calendario-vacío` and `sobre-simple`, which would leave the Spanish page without icons. Put the English back in fields like these, and in email addresses. And check where each link goes: as in Chapter 18, a Spanish link needs the Spanish address.
 - **Read it aloud.** A machine translation is often correct, word by word, and still not how anyone would say it.
 
 So the AI does the typing, and Lucía does the translating. On a page with fifty-odd fields, that saves most of the typing, and that's a fair description of what AI can do for a translator.

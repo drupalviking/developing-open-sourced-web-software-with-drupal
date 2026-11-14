@@ -1,4 +1,4 @@
-uuid: 27355e16-a16e-44ec-848c-60e67221db7d
+uuid: b08b6757-a7ae-4cc2-a034-b0a079a21de7
 langcode: en
 status: true
 dependencies:
@@ -7,21 +7,19 @@ dependencies:
   module:
     - language
     - taxonomy
-_core:
-  default_config_hash: 5ne8BtR_XCtgQV5t-hViN2z3SBwYVPJVK6eG1H8QFSQ
 id: areas_es
 label: Zonas
 type: 'canonical_entities:taxonomy_term'
 pattern: '/zonas/[term:parents:join-path]/[term:name]'
 selection_criteria:
-  f6d3fbea-c51c-468a-8b2c-6a60090ec5b7:
+  b5bc9f9c-1ea1-478c-bafc-8d0d6e2edf62:
     id: 'entity_bundle:taxonomy_term'
     negate: false
     context_mapping:
       taxonomy_term: taxonomy_term
     bundles:
       areas: areas
-  761e8735-376a-4af8-8070-3991007e60a1:
+  76171561-1188-44c4-bad1-ce98f5892def:
     id: language
     negate: false
     context_mapping:
@@ -29,7 +27,7 @@ selection_criteria:
     langcodes:
       es: es
 selection_logic: and
-weight: -10
+weight: -20
 relationships:
   'taxonomy_term:langcode:language':
     label: Language

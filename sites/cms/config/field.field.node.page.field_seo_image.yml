@@ -1,4 +1,4 @@
-uuid: 67ed5387-7fd8-4bcd-b7eb-4b0534906fa1
+uuid: cc4bfdec-8434-44c4-b1bc-ee6d8088fdeb
 langcode: en
 status: true
 dependencies:
@@ -15,7 +15,7 @@ bundle: page
 label: 'SEO image'
 description: 'Upload an image to be used when the page is shared on social media sites.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

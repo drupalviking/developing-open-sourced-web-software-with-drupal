@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 70802dda-9f42-4b79-8be3-39ac67bf9fbd
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 33
+  revision_created:
+    -
+      value: 1794682381
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Summit Views'
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794682381
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_created:
+    -
+      value: 1794682381

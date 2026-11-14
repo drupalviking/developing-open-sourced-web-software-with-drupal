@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: c02eab48-06c0-4ee2-9263-14217a0c61f7
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 4
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: edinburgh-skyline.jpg
+  uri:
+    -
+      value: 'public://2026-11/edinburgh-skyline.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 488657
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794665211
+  changed:
+    -
+      value: 1794665211

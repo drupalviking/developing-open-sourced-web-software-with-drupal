@@ -1,4 +1,4 @@
-uuid: ed54d7a1-a514-4ae1-aa42-27ecd2b56864
+uuid: 0f627b45-9fba-405c-b969-41bc585153e5
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,6 @@ third_party_settings:
     enabled: true
     bundle_settings:
       untranslatable_fields_hide: '1'
-_core:
-  default_config_hash: 1LJrTdbLdqjT1LvxqxkH-98NHVsgK2TP3FRBBsNfeHE
 id: node.gallery
 target_entity_type_id: node
 target_bundle: gallery

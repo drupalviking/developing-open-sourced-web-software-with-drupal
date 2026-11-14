@@ -1,0 +1,160 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: bd5a6489-c779-42d3-8b2a-f77763472bd6
+  bundle: hike
+  default_langcode: en
+  depends:
+    bfea7e2f-120b-471b-ab3a-9854167ab570: taxonomy_term
+    5b7dfcdc-c004-4a57-8d98-9e2997c903ac: user
+    007b8ba0-f9b9-4e37-b1c1-9d08413563f8: media
+default:
+  nid:
+    -
+      value: 20
+  revision_timestamp:
+    -
+      value: 1794672759
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Renamed: the winter route.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Glencorse Reservoir winter loop'
+  created:
+    -
+      value: 1794672759
+  changed:
+    -
+      value: 1794679477
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/glencorse-reservoir-winter-loop
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: bfea7e2f-120b-471b-ab3a-9854167ab570
+  field_content:
+    -
+      value: '<p>A gentle walk along the reservoir and back over the lower slopes, good for winter light on the water. A good first hike with the club.</p>'
+      format: content_format
+  field_date:
+    -
+      value: '2026-12-19T09:30:00'
+  field_difficulty:
+    -
+      value: easy
+  field_distance:
+    -
+      value: '9.0'
+  field_hike_leader:
+    -
+      entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  field_meeting_place:
+    -
+      value: 'Flotterstone car park'
+  field_photo:
+    -
+      entity: 007b8ba0-f9b9-4e37-b1c1-9d08413563f8
+translations:
+  es:
+    nid:
+      -
+        value: 20
+    revision_timestamp:
+      -
+        value: 1794672759
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Renamed: the winter route.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Vuelta invernal al embalse de Glencorse'
+    created:
+      -
+        value: 1794672759
+    changed:
+      -
+        value: 1794679477
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/vuelta-invernal-al-embalse-de-glencorse
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: bfea7e2f-120b-471b-ab3a-9854167ab570
+    field_content:
+      -
+        value: '<p>Un paseo tranquilo junto al embalse, con vuelta por las laderas bajas; ideal para la luz de invierno sobre el agua. Una buena primera excursión con el club.</p>'
+        format: content_format
+    field_date:
+      -
+        value: '2026-12-19T09:30:00'
+    field_difficulty:
+      -
+        value: easy
+    field_distance:
+      -
+        value: '9.0'
+    field_hike_leader:
+      -
+        entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+    field_meeting_place:
+      -
+        value: 'Estacionamiento de Flotterstone'
+    field_photo:
+      -
+        entity: 007b8ba0-f9b9-4e37-b1c1-9d08413563f8

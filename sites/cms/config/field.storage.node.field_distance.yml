@@ -1,11 +1,9 @@
-uuid: 4445716e-74e2-43c8-b801-02b638477acf
+uuid: a27febc2-9317-4f7b-984e-dad4971d649d
 langcode: en
 status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: ynjRdgaMWS6zkSZVO8ltccs_k0JDRvMMRF5m70efQfU
 id: node.field_distance
 field_name: field_distance
 entity_type: node

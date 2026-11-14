@@ -1,9 +1,11 @@
-uuid: f7de07e0-b99a-409a-840c-7afae724df1a
+uuid: 40f452f0-1a36-40f5-889d-407f82d7b059
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
+    - field.field.user.user.field_about_me
+    - field.field.user.user.field_camera
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -32,5 +34,7 @@ content:
     weight: 0
     region: content
 hidden:
+  field_about_me: true
+  field_camera: true
   langcode: true
   member_for: true

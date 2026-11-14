@@ -1,4 +1,4 @@
-uuid: c86a6db5-ee33-4a5a-993c-70f1bf6ee6ea
+uuid: 9392c938-ac86-41da-bf75-800ca1f9a3e4
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - field.storage.node.field_photo
     - media.type.image
     - node.type.hike
-_core:
-  default_config_hash: 8UYGpXD1Umgsi_FAPf2oty4qdujNRK3LRWAv1v9OiqI
 id: node.hike.field_photo
 field_name: field_photo
 entity_type: node

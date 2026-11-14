@@ -1,32 +1,53 @@
-uuid: e827e499-3c77-4911-a425-3de13f4b7084
+uuid: b7f80845-c7e1-475e-ac50-fc1c794a79e7
 langcode: en
 status: true
 dependencies:
   config:
+    - canvas.component.block.language_block.language_interface
     - canvas.component.block.system_branding_block
     - canvas.component.block.system_menu_block.footer
     - canvas.component.block.system_menu_block.main
+    - canvas.component.block.views_block.albums-block_1
     - canvas.component.block.views_exposed_filter_block.search-search
     - canvas.component.marker.page_content
+    - canvas.component.sdc.mercury.button
     - canvas.component.sdc.mercury.footer
+    - canvas.component.sdc.mercury.heading
     - canvas.component.sdc.mercury.navbar
+    - canvas.component.sdc.mercury.text
     - canvas.component.theme_page_template.mercury
+    - filter.format.canvas_html_block
   module:
+    - link
     - options
+    - text
 id: theme_mercury
 label: 'Mercury theme'
 description: null
 component_tree:
-  98a4603b-1a23-42b7-b49c-ed2e8d23613c:
-    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
-    slot: links
-    uuid: 98a4603b-1a23-42b7-b49c-ed2e8d23613c
-    component_id: block.views_exposed_filter_block.search-search
-    component_version: 4057b7da328713e4
+  94420671-2ec2-465e-bb83-8504c753ad44:
+    uuid: 94420671-2ec2-465e-bb83-8504c753ad44
+    component_id: theme_page_template.mercury
+    component_version: 15fe1e06320b1035
+    inputs: {  }
+  6049aa3c-067c-413d-8ece-b1747d35b2b7:
+    parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
+    slot: content
+    uuid: 6049aa3c-067c-413d-8ece-b1747d35b2b7
+    component_id: marker.page_content
+    component_version: 3b12c0b99a6caecc
+    inputs: {  }
+  e4410b88-d07a-4d37-9c47-7522c57b23c4:
+    parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
+    slot: content
+    uuid: e4410b88-d07a-4d37-9c47-7522c57b23c4
+    component_id: block.views_block.albums-block_1
+    component_version: bbac963e46f43a7c
     inputs:
-      label: Search
+      label: 'Albums from this hike'
       label_display: '0'
       views_label: ''
+      items_per_page: null
   6ca4582c-07eb-42b0-ae5c-390e1870c57a:
     parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
     slot: header
@@ -35,30 +56,6 @@ component_tree:
     component_version: 3149f199d66bbc29
     inputs:
       menu_align: right
-  7b62b82a-e5e9-4f4b-876c-88a28caa6bbb:
-    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
-    slot: navigation
-    uuid: 7b62b82a-e5e9-4f4b-876c-88a28caa6bbb
-    component_id: block.system_menu_block.main
-    component_version: 322535c0078cf59c
-    inputs:
-      label: 'Main navigation'
-      label_display: '0'
-      level: 1
-      depth: null
-      expand_all_items: false
-  6049aa3c-067c-413d-8ece-b1747d35b2b7:
-    parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
-    slot: content
-    uuid: 6049aa3c-067c-413d-8ece-b1747d35b2b7
-    component_id: marker.page_content
-    component_version: 3b12c0b99a6caecc
-    inputs: {  }
-  94420671-2ec2-465e-bb83-8504c753ad44:
-    uuid: 94420671-2ec2-465e-bb83-8504c753ad44
-    component_id: theme_page_template.mercury
-    component_version: 15fe1e06320b1035
-    inputs: {  }
   aa3884ff-e4d9-40c7-9cb4-576dec126e87:
     parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
     slot: logo
@@ -71,6 +68,37 @@ component_tree:
       use_site_logo: true
       use_site_name: false
       use_site_slogan: false
+  7b62b82a-e5e9-4f4b-876c-88a28caa6bbb:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: navigation
+    uuid: 7b62b82a-e5e9-4f4b-876c-88a28caa6bbb
+    component_id: block.system_menu_block.main
+    component_version: 322535c0078cf59c
+    inputs:
+      label: 'Main navigation'
+      label_display: '0'
+      level: 1
+      depth: null
+      expand_all_items: false
+  eb3c5c17-79b6-4703-8478-1a042ee8732e:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: links
+    uuid: eb3c5c17-79b6-4703-8478-1a042ee8732e
+    component_id: block.language_block.language_interface
+    component_version: fb2494ad75f77da6
+    inputs:
+      label: 'Language switcher'
+      label_display: '0'
+  6d8b5735-93de-49f3-8a73-fe293bab1495:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: links
+    uuid: 6d8b5735-93de-49f3-8a73-fe293bab1495
+    component_id: block.views_exposed_filter_block.search-search
+    component_version: 4057b7da328713e4
+    inputs:
+      label: 'Exposed form: search-search'
+      label_display: '0'
+      views_label: ''
   cd4b4630-df49-42a7-903a-973b63a4b211:
     parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
     slot: footer
@@ -79,6 +107,59 @@ component_tree:
     component_version: d696cea1796b650e
     inputs:
       align: true
+  fee1ecab-1c6c-468c-9c00-091f07e629a7:
+    parent_uuid: cd4b4630-df49-42a7-903a-973b63a4b211
+    slot: footer_first
+    uuid: fee1ecab-1c6c-468c-9c00-091f07e629a7
+    component_id: sdc.mercury.text
+    component_version: 16c79c28a4108f9b
+    inputs:
+      text:
+        value: '<p><strong>Hikes:</strong> every other Saturday at 9:30.<br><strong>Photo evenings:</strong> the first Thursday of the month at 19:00, in a café in Leith.</p><p><a href="mailto:hello@lens-and-trail.ddev.site">hello@lens-and-trail.ddev.site</a> · Follow us on <a href="https://www.flickr.com/groups/lens-and-trail/">Flickr</a></p>'
+        format: canvas_html_block
+      text_size: normal
+      text_color: default
+  f2e61161-49b0-401e-bd87-a3ff0c7c15ec:
+    parent_uuid: cd4b4630-df49-42a7-903a-973b63a4b211
+    slot: footer_last
+    uuid: f2e61161-49b0-401e-bd87-a3ff0c7c15ec
+    component_id: sdc.mercury.heading
+    component_version: 9ba4baa1476e5856
+    inputs:
+      heading_text: 'Join the club'
+      level: 3
+      text_size: heading-responsive-4xl
+      text_color: default
+      align: left
+  b547ca8a-08d0-480c-8142-cd5d334c3c4b:
+    parent_uuid: cd4b4630-df49-42a7-903a-973b63a4b211
+    slot: footer_last
+    uuid: b547ca8a-08d0-480c-8142-cd5d334c3c4b
+    component_id: sdc.mercury.text
+    component_version: 16c79c28a4108f9b
+    inputs:
+      text:
+        value: '<p>New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students.</p>'
+        format: canvas_html_block
+      text_size: normal
+      text_color: default
+  4ca952ef-7007-406b-9857-5631f44719a6:
+    parent_uuid: cd4b4630-df49-42a7-903a-973b63a4b211
+    slot: footer_last
+    uuid: 4ca952ef-7007-406b-9857-5631f44719a6
+    component_id: sdc.mercury.button
+    component_version: 0ca665b3987e81dd
+    inputs:
+      variant: primary
+      label: 'How to join'
+      href:
+        uri: 'internal:/join'
+        options: {  }
+      size: medium
+      icon: arrow-right
+      mobile_width: false
+      icon_first: false
+      disabled: false
   d12f78a0-2cce-4d7d-a1f1-7aaf9ad92d80:
     parent_uuid: cd4b4630-df49-42a7-903a-973b63a4b211
     slot: footer_utility_first

@@ -1,9 +1,9 @@
-uuid: b6eac3f0-d5b9-4462-9784-0f7edc32ef20
+uuid: a0677f83-fb8d-4eb6-b4a8-bc260a93e0e1
 langcode: en
 status: true
 dependencies:
   module:
-    - ai_chatbot
+    - comment
     - klaro
     - media
     - system
@@ -14,7 +14,7 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
+  - 'access comments'
   - 'access content'
-  - 'access deepchat api'
   - 'use klaro'
   - 'view media'

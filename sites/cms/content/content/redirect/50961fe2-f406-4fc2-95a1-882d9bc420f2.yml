@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 50961fe2-f406-4fc2-95a1-882d9bc420f2
+  bundle: redirect
+  default_langcode: en
+  depends:
+    479de379-7ea7-4b05-ac11-9986f2c0c350: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 8
+  hash:
+    -
+      value: 3bRC2DmTEWsaDePW_cvBx6SrHoi9De_wElC9JKl3Dtg
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: arthurs-seat-night
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: 479de379-7ea7-4b05-ac11-9986f2c0c350
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

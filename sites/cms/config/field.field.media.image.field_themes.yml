@@ -1,0 +1,29 @@
+uuid: cb38578b-fbb3-46f8-9198-7a9c06005426
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_themes
+    - media.type.image
+    - taxonomy.vocabulary.photo_themes
+id: media.image.field_themes
+field_name: field_themes
+entity_type: media
+bundle: image
+label: Themes
+description: 'What the photo shows, such as Landscape or Winter. A new theme is added to the list.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      photo_themes: photo_themes
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

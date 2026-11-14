@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 3183ee2a-2d35-45fe-99ed-49351f6dbf3b
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 29
+  revision_created:
+    -
+      value: 1794682381
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Camera Gear'
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794682381
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_created:
+    -
+      value: 1794682381

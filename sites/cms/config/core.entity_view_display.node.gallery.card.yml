@@ -1,0 +1,47 @@
+uuid: a0cfda2c-ad86-41ce-a008-76b93028f43c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.gallery.comment
+    - field.field.node.gallery.field_area
+    - field.field.node.gallery.field_content
+    - field.field.node.gallery.field_hike
+    - field.field.node.gallery.field_photos
+    - node.type.gallery
+  module:
+    - text
+    - user
+id: node.gallery.card
+targetEntityType: node
+bundle: gallery
+mode: card
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_area:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_content:
+    type: text_trimmed
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  comment: true
+  field_hike: true
+  field_photos: true
+  langcode: true
+  links: true

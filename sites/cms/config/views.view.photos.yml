@@ -1,15 +1,13 @@
-uuid: 2ca3a4bc-769e-4408-bc69-b31887e6fad2
+uuid: d9fecaf4-978d-4f5d-87c0-ec7b3e48975e
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.small
+    - core.entity_view_mode.media.16_9_small
     - media.type.image
   module:
     - media
     - user
-_core:
-  default_config_hash: dObF079Kht6CuoWou28l-Ik9fDGDI1XhVZIRJiB3-Jo
 id: photos
 label: Photos
 module: views
@@ -187,7 +185,7 @@ display:
         type: 'entity:media'
         options:
           relationship: none
-          view_mode: small
+          view_mode: 16_9_small
       query:
         type: views_query
         options:
@@ -204,6 +202,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - user.permissions
       tags: {  }
@@ -219,6 +218,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - user.permissions
       tags: {  }

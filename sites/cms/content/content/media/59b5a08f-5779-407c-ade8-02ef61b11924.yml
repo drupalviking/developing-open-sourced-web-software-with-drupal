@@ -1,0 +1,117 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 59b5a08f-5779-407c-ade8-02ef61b11924
+  bundle: image
+  default_langcode: en
+  depends:
+    144725c9-a2dc-42e3-b940-aa7046e1e31f: file
+default:
+  mid:
+    -
+      value: 3
+  revision_created:
+    -
+      value: 1794665215
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'Carnethy Hill from Turnhouse Hill'
+  created:
+    -
+      value: 1794665215
+  changed:
+    -
+      value: 1794665215
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_license:
+    -
+      value: cc_by_sa_2_0
+  field_media_image:
+    -
+      alt: 'The path down from Turnhouse Hill, with Carnethy Hill rising behind it'
+      title: ''
+      width: 1600
+      height: 1060
+      entity: 144725c9-a2dc-42e3-b940-aa7046e1e31f
+  field_photographer:
+    -
+      value: 'Jim Barton'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Carnethy_Hill_from_Turnhouse_Hill_-_geograph.org.uk_-_6273248.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }
+translations:
+  es:
+    mid:
+      -
+        value: 3
+    revision_created:
+      -
+        value: 1794665215
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    name:
+      -
+        value: 'Carnethy Hill desde Turnhouse Hill'
+    created:
+      -
+        value: 1794665215
+    changed:
+      -
+        value: 1794665215
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: null
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_license:
+      -
+        value: cc_by_sa_2_0
+    field_media_image:
+      -
+        alt: 'El sendero que baja de Turnhouse Hill, con Carnethy Hill alzándose detrás'
+        title: ''
+        width: 1600
+        height: 1060
+        entity: 144725c9-a2dc-42e3-b940-aa7046e1e31f
+    field_photographer:
+      -
+        value: 'Jim Barton'
+    field_source:
+      -
+        uri: 'https://commons.wikimedia.org/wiki/File:Carnethy_Hill_from_Turnhouse_Hill_-_geograph.org.uk_-_6273248.jpg'
+        title: 'Wikimedia Commons'
+        options: {  }

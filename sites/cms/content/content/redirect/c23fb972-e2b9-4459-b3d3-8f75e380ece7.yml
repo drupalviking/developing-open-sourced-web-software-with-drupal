@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: c23fb972-e2b9-4459-b3d3-8f75e380ece7
+  bundle: redirect
+  default_langcode: en
+  depends:
+    6a5c9465-6f02-478b-afe5-1ceaaebf7c75: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 4
+  hash:
+    -
+      value: T466L7Cf4ZzvaCCM89zGi7jBwlQqFqMnqPChLF93ao0
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: north-berwick-law-and-harbour
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: 6a5c9465-6f02-478b-afe5-1ceaaebf7c75
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

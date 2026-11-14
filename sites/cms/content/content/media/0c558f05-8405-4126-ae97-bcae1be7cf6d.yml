@@ -1,0 +1,117 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 0c558f05-8405-4126-ae97-bcae1be7cf6d
+  bundle: image
+  default_langcode: en
+  depends:
+    d24a41e1-0747-4f2a-b46e-851c544a910b: file
+default:
+  mid:
+    -
+      value: 6
+  revision_created:
+    -
+      value: 1794665215
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'A burn in the Pentland Hills in winter'
+  created:
+    -
+      value: 1794665215
+  changed:
+    -
+      value: 1794665215
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'A stream running through a snowy valley in the Pentland Hills'
+      title: ''
+      width: 3000
+      height: 2000
+      entity: d24a41e1-0747-4f2a-b46e-851c544a910b
+  field_photographer:
+    -
+      value: Bops92
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Pentland_hills_winter.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }
+translations:
+  es:
+    mid:
+      -
+        value: 6
+    revision_created:
+      -
+        value: 1794665215
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    name:
+      -
+        value: 'Un arroyo en las Pentland Hills en invierno'
+    created:
+      -
+        value: 1794665215
+    changed:
+      -
+        value: 1794665215
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: null
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_license:
+      -
+        value: cc_by_sa_4_0
+    field_media_image:
+      -
+        alt: 'Un arroyo que atraviesa un valle nevado en las Pentland Hills'
+        title: ''
+        width: 3000
+        height: 2000
+        entity: d24a41e1-0747-4f2a-b46e-851c544a910b
+    field_photographer:
+      -
+        value: Bops92
+    field_source:
+      -
+        uri: 'https://commons.wikimedia.org/wiki/File:Pentland_hills_winter.jpg'
+        title: 'Wikimedia Commons'
+        options: {  }

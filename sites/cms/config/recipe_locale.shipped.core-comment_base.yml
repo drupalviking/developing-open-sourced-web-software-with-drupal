@@ -1,0 +1,11 @@
+recipe: 'Default comments'
+config:
+  -
+    name: comment.type.comment
+    data:
+      label: 'Default comments'
+      description: 'Allows commenting on content'
+  -
+    name: field.field.comment.comment.comment_body
+    data:
+      label: Comment

@@ -1,0 +1,153 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7c847849-dbd6-4388-980e-964b1b51ebd5
+  bundle: hike
+  default_langcode: en
+  depends:
+    bf0c6384-ff8f-4215-ba34-1973cf4775bc: taxonomy_term
+    5b7dfcdc-c004-4a57-8d98-9e2997c903ac: user
+default:
+  nid:
+    -
+      value: 18
+  revision_timestamp:
+    -
+      value: 1794672759
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: "Arthur's Seat at sunrise"
+  created:
+    -
+      value: 1794672759
+  changed:
+    -
+      value: 1794678464
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/arthurs-seat-sunrise
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: bf0c6384-ff8f-4215-ba34-1973cf4775bc
+  field_content:
+    -
+      value: "<p>An early start for the best light of the day: up Arthur's Seat by the Salisbury Crags path, in time for the sun to rise over the Firth of Forth. Bring a head torch for the way up.</p>"
+      format: content_format
+  field_date:
+    -
+      value: '2026-10-24T05:30:00'
+  field_difficulty:
+    -
+      value: moderate
+  field_distance:
+    -
+      value: '5.5'
+  field_hike_leader:
+    -
+      entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  field_meeting_place:
+    -
+      value: 'Holyrood Palace car park'
+translations:
+  es:
+    nid:
+      -
+        value: 18
+    revision_timestamp:
+      -
+        value: 1794672759
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: "Arthur's Seat al amanecer"
+    created:
+      -
+        value: 1794672759
+    changed:
+      -
+        value: 1794678464
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/arthurs-seat-al-amanecer
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: bf0c6384-ff8f-4215-ba34-1973cf4775bc
+    field_content:
+      -
+        value: "<p>Madrugamos para tener la mejor luz del día: subimos a Arthur's Seat por el sendero de Salisbury Crags, a tiempo para ver salir el sol sobre el estuario del Forth. Trae una linterna frontal para la subida.</p>"
+        format: content_format
+    field_date:
+      -
+        value: '2026-10-24T05:30:00'
+    field_difficulty:
+      -
+        value: moderate
+    field_distance:
+      -
+        value: '5.5'
+    field_hike_leader:
+      -
+        entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+    field_meeting_place:
+      -
+        value: 'Estacionamiento del palacio de Holyrood'

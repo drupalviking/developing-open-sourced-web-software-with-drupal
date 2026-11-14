@@ -1,0 +1,37 @@
+uuid: 18fbe289-cfc2-44ff-b6b8-cd99caa7041a
+langcode: en
+status: false
+dependencies:
+  config:
+    - views.view.comments_recent
+  module:
+    - views
+active_version: 53d9a490e6db7c72
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:comments_recent-block_1'
+        label: 'Recent comments'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+  4f701ea9c5b7fc35:
+    settings:
+      default_settings:
+        id: 'views_block:comments_recent-block_1'
+        label: 'Recent comments'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Recent comments'
+id: block.views_block.comments_recent-block_1
+provider: views
+source: block
+source_local_id: 'views_block:comments_recent-block_1'

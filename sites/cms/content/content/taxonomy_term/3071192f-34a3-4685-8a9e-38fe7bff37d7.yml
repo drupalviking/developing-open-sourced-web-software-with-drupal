@@ -1,0 +1,79 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 3071192f-34a3-4685-8a9e-38fe7bff37d7
+  bundle: photo_themes
+  default_langcode: en
+default:
+  tid:
+    -
+      value: 12
+  revision_created:
+    -
+      value: 1794672568
+  status:
+    -
+      value: true
+  name:
+    -
+      value: Hills
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794672568
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /photo-themes/hills
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 12
+    revision_created:
+      -
+        value: 1794672568
+    status:
+      -
+        value: true
+    name:
+      -
+        value: Colinas
+    weight:
+      -
+        value: 0
+    changed:
+      -
+        value: 1794672568
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /temas-fotograficos/colinas
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1794680903

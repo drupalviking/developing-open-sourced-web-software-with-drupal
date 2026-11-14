@@ -1,0 +1,87 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: f1f3e646-71eb-4748-8690-0540bc0971e5
+  bundle: areas
+  default_langcode: en
+  depends:
+    50256ae2-304d-4ac8-9230-d8d66a97608f: taxonomy_term
+default:
+  tid:
+    -
+      value: 4
+  revision_created:
+    -
+      value: 1794672557
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Turnhouse Hill'
+  weight:
+    -
+      value: 2
+  parent:
+    -
+      entity: 50256ae2-304d-4ac8-9230-d8d66a97608f
+  changed:
+    -
+      value: 1794672557
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/pentland-hills/turnhouse-hill
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 4
+    revision_created:
+      -
+        value: 1794672557
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'Turnhouse Hill'
+    weight:
+      -
+        value: 2
+    parent:
+      -
+        entity: 50256ae2-304d-4ac8-9230-d8d66a97608f
+    changed:
+      -
+        value: 1794672557
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/pentland-hills/turnhouse-hill
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1794680903

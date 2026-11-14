@@ -1,11 +1,9 @@
-uuid: a4c7d03b-e87d-4e12-9611-434646903d7c
+uuid: 82642700-98a8-4e77-b207-8a0f9fb8a342
 langcode: en
 status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: xo-VjqxnjYmJUElXpmPzvdiEd7HiHOc2ezBUOl4PMBE
 id: node.field_elevation_gain
 field_name: field_elevation_gain
 entity_type: node

@@ -1,12 +1,10 @@
-uuid: cb77554e-ccac-45c6-848e-517ae2a624cf
+uuid: 3d1511c3-1f89-4225-92c4-16de8467ae60
 langcode: en
 status: true
 dependencies:
   module:
     - media
     - node
-_core:
-  default_config_hash: NdzErWmh4yJtMOdjY7KTujgy9CJNWrnSi3mKfpSaMe4
 id: node.field_photo
 field_name: field_photo
 entity_type: node

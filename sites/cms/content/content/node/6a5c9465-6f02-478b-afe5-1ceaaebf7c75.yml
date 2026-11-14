@@ -1,0 +1,153 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 6a5c9465-6f02-478b-afe5-1ceaaebf7c75
+  bundle: hike
+  default_langcode: en
+  depends:
+    139c23cc-e2c8-4dbd-81eb-597bd2e453ff: taxonomy_term
+    5b7dfcdc-c004-4a57-8d98-9e2997c903ac: user
+default:
+  nid:
+    -
+      value: 19
+  revision_timestamp:
+    -
+      value: 1794672759
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Jordi leads this hike.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'North Berwick Law and the harbour'
+  created:
+    -
+      value: 1794672759
+  changed:
+    -
+      value: 1794678464
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/north-berwick-law-and-harbour
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: 139c23cc-e2c8-4dbd-81eb-597bd2e453ff
+  field_content:
+    -
+      value: '<p>A short climb up North Berwick Law, with the whalebone arch at the top and views to the Bass Rock, then down to the harbour for lunch. We take the train from Edinburgh Waverley at 8:55.</p>'
+      format: content_format
+  field_date:
+    -
+      value: '2026-12-05T09:30:00'
+  field_difficulty:
+    -
+      value: easy
+  field_distance:
+    -
+      value: '7.0'
+  field_hike_leader:
+    -
+      entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  field_meeting_place:
+    -
+      value: 'North Berwick railway station'
+translations:
+  es:
+    nid:
+      -
+        value: 19
+    revision_timestamp:
+      -
+        value: 1794672759
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Jordi leads this hike.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'North Berwick Law y el puerto'
+    created:
+      -
+        value: 1794672759
+    changed:
+      -
+        value: 1794678464
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/north-berwick-law-y-el-puerto
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: 139c23cc-e2c8-4dbd-81eb-597bd2e453ff
+    field_content:
+      -
+        value: '<p>Una subida corta a North Berwick Law, con el arco de hueso de ballena en la cima y vistas a Bass Rock; después bajamos al puerto a comer. Tomamos el tren desde Edinburgh Waverley a las 8:55.</p>'
+        format: content_format
+    field_date:
+      -
+        value: '2026-12-05T09:30:00'
+    field_difficulty:
+      -
+        value: easy
+    field_distance:
+      -
+        value: '7.0'
+    field_hike_leader:
+      -
+        entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+    field_meeting_place:
+      -
+        value: 'Estación de tren de North Berwick'

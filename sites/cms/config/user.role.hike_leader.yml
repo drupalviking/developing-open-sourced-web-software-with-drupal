@@ -1,4 +1,4 @@
-uuid: bebefc41-6dc4-461f-8d4c-0507a669dacc
+uuid: a0538053-700c-47f9-9498-174361116bc1
 langcode: en
 status: true
 dependencies:
@@ -10,8 +10,6 @@ dependencies:
     - navigation
     - node
     - system
-_core:
-  default_config_hash: mN0oNdxBR6pPm_aY-m1KJNARAAvW6uBhym-SGXCGiIg
 id: hike_leader
 label: 'Hike leader'
 weight: 3

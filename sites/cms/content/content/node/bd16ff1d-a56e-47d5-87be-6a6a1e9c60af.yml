@@ -1,0 +1,122 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: bd16ff1d-a56e-47d5-87be-6a6a1e9c60af
+  bundle: news
+  default_langcode: en
+  depends:
+    c16fa17e-be31-4f09-9c5c-1758d97cda02: media
+default:
+  nid:
+    -
+      value: 6
+  revision_timestamp:
+    -
+      value: 1794664288
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Added a photo.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'The club has a website'
+  created:
+    -
+      value: 1794664288
+  changed:
+    -
+      value: 1794665211
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /news/club-has-website
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      value: "<p>Lens &amp; Trail finally has a website of its own. From now on, you'll find the hike program, news from the club, and the members' best photos here.</p><p>The website is new, and we're building it as we go. If something is missing or wrong, tell the secretary.</p>"
+      format: content_format
+  field_photo:
+    -
+      entity: c16fa17e-be31-4f09-9c5c-1758d97cda02
+translations:
+  es:
+    nid:
+      -
+        value: 6
+    revision_timestamp:
+      -
+        value: 1794664288
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Added a photo.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'El club tiene sitio web'
+    created:
+      -
+        value: 1794664288
+    changed:
+      -
+        value: 1794665211
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /noticias/el-club-tiene-sitio-web
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        value: '<p>Por fin Lens &amp; Trail tiene su propio sitio web. A partir de ahora encontrarás aquí el programa de excursiones, las noticias del club y las mejores fotos de los miembros.</p><p>El sitio es nuevo y lo vamos construyendo sobre la marcha. Si falta algo o hay un error, díselo a la secretaría.</p>'
+        format: content_format
+    field_photo:
+      -
+        entity: c16fa17e-be31-4f09-9c5c-1758d97cda02

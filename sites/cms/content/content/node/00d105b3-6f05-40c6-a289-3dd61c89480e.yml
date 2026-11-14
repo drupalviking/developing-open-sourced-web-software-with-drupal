@@ -10,13 +10,13 @@ default:
       value: 1
   revision_timestamp:
     -
-      value: 1793818894
+      value: 1794663035
   revision_uid:
     -
       target_id: 1
   status:
     -
-      value: false
+      value: true
   uid:
     -
       target_id: 1
@@ -25,27 +25,24 @@ default:
       value: 'Privacy policy'
   created:
     -
-      value: 1793818894
+      value: 1794663035
   changed:
     -
-      value: 1793818894
+      value: 1794678181
   promote:
     -
       value: false
   sticky:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   moderation_state:
     -
-      value: draft
+      value: published
   path:
     -
       alias: /privacy-policy
       langcode: en
-      pathauto: 1
+      pathauto: 0
   content_translation_source:
     -
       value: und
@@ -54,8 +51,64 @@ default:
       value: false
   field_content:
     -
-      value: '<h2>This content needs to be edited before publishing</h2><p>Note that your site requires a privacy statement.</p>'
+      value: '<p>Lens &amp; Trail keeps only what it needs to run the club: your name and email address if you join, and the photos you choose to share. We never sell or pass on your details.</p>'
       format: content_format
   field_description:
     -
       value: 'Nothing here yet.'
+translations:
+  es:
+    nid:
+      -
+        value: 1
+    revision_timestamp:
+      -
+        value: 1794663035
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Política de privacidad'
+    created:
+      -
+        value: 1794663035
+    changed:
+      -
+        value: 1794678181
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /privacidad
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        value: '<p>Lens &amp; Trail solo guarda lo que necesita para llevar el club: tu nombre y tu dirección de correo electrónico si te haces miembro, y las fotos que decides compartir. Nunca vendemos ni cedemos tus datos.</p>'
+        format: content_format
+    field_description:
+      -
+        value: 'Qué datos guarda Lens & Trail, y para qué.'

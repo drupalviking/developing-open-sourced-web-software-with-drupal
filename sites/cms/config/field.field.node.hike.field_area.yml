@@ -1,4 +1,4 @@
-uuid: 981fe777-e15b-4d83-9811-63aed0fa92f2
+uuid: 84fe2bef-dd7c-4bab-be80-b02d9770d075
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - field.storage.node.field_area
     - node.type.hike
     - taxonomy.vocabulary.areas
-_core:
-  default_config_hash: GQvCrr1Y4b45Uquc31WNKqFfcynimx6stFcJS3eGIyk
 id: node.hike.field_area
 field_name: field_area
 entity_type: node

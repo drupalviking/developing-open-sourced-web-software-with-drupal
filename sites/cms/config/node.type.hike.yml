@@ -1,4 +1,4 @@
-uuid: e287689f-6650-4e25-aeb4-c19447dd32ad
+uuid: 6fffe0de-5016-4829-be8c-21fbc8d71d00
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,6 @@ third_party_settings:
     parent: ''
   search_api_exclude:
     enabled: true
-_core:
-  default_config_hash: Bl9vXO9zlouJqr8R8BzLzolyMl5mv7BeytcpK2aDc6o
 name: Hike
 type: hike
 description: 'A hike or photo walk the club organizes, with its date, meeting place, distance and difficulty.'

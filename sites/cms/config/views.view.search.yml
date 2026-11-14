@@ -1,4 +1,4 @@
-uuid: 3f5ba08a-885a-479b-8687-9ac238b81255
+uuid: 8d8d0b39-d9ab-4dec-a50e-5965bf3e7050
 langcode: en
 status: true
 dependencies:
@@ -9,8 +9,6 @@ dependencies:
     - facets_exposed_filters
     - search_api
     - user
-_core:
-  default_config_hash: lPNvylc4F0AdfWRO2ccS8hNkKGguheDAFt3ag303zZM
 id: search
 label: Search
 module: views

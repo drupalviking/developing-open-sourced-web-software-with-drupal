@@ -1,4 +1,4 @@
-uuid: fcd6363b-1131-407e-b9fc-51073a3e8357
+uuid: d189a3fc-d4fd-4fad-a69d-efe83543b0f4
 langcode: en
 status: true
 dependencies:
@@ -30,7 +30,7 @@ _core:
   default_config_hash: g-zSnaBXJnH7VoimReFb6KcLjIgHCU-hisiShtZ9hjQ
 id: content_editor
 label: 'Content editor'
-weight: 2
+weight: 5
 is_admin: false
 permissions:
   - 'access administration pages'

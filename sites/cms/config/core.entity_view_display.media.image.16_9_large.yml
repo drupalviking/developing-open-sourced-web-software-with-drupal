@@ -1,4 +1,4 @@
-uuid: 6a7a0ca2-601c-4960-a06a-b3aa607aa8d2
+uuid: 89461821-f2ff-4a0a-afa3-257e433c2fa9
 langcode: en
 status: true
 dependencies:
@@ -9,6 +9,7 @@ dependencies:
     - field.field.media.image.field_photographer
     - field.field.media.image.field_source
     - field.field.media.image.field_tags
+    - field.field.media.image.field_themes
     - media.type.image
     - responsive_image.styles.16_9_large
   module:
@@ -37,8 +38,8 @@ hidden:
   field_photographer: true
   field_source: true
   field_tags: true
+  field_themes: true
   langcode: true
   name: true
-  search_api_excerpt: true
   thumbnail: true
   uid: true

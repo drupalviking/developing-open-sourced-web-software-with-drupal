@@ -1,4 +1,4 @@
-uuid: 95b3123d-6da6-4a26-aea2-82aa59820bfd
+uuid: d7373228-1c6a-4ccd-9db3-d6f9f48ccd0a
 langcode: en
 status: true
 dependencies:
@@ -21,5 +21,5 @@ settings:
   handler_settings:
     target_bundles:
       tags: tags
-    auto_create: false
+    auto_create: true
 field_type: entity_reference

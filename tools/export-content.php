@@ -91,6 +91,12 @@ foreach ($types as $type) {
     if ($type === 'path_alias' && preg_match($entity_paths, $entity->getPath())) {
       continue;
     }
+    // Temporary files: uploads nothing uses (a theme settings form keeps its
+    // upload as a temporary copy). Cron deletes them, and the ones in
+    // temporary:// aren't in the site's files folder to copy.
+    if ($type === 'file' && $entity->isTemporary()) {
+      continue;
+    }
     assert($entity instanceof ContentEntityInterface);
     $exporter->exportToFile($entity, $dir);
     $count++;

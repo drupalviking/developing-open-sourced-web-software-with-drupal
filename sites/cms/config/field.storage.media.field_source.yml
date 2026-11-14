@@ -1,12 +1,10 @@
-uuid: f41ada65-0579-4cd1-b855-b32d86e19a8c
+uuid: 3dd5fd3e-d3be-4399-a6f6-e84552e7986e
 langcode: en
 status: true
 dependencies:
   module:
     - link
     - media
-_core:
-  default_config_hash: FguG2aY8ZYJ0CIa0MqPfQQQtoTd1tdzRdf9H9svspDQ
 id: media.field_source
 field_name: field_source
 entity_type: media

@@ -9,7 +9,7 @@ default:
       value: 1
   revision_created:
     -
-      value: 1793818898
+      value: 1794663039
   revision_user:
     -
       target_id: 1
@@ -21,15 +21,15 @@ default:
       target_id: 1
   title:
     -
-      value: Home
+      value: 'Welcome to Lens & Trail'
   components:
     -
       uuid: b7563f5f-d4db-4029-a292-593e82fda2ec
       component_id: sdc.mercury.cta
       inputs:
-        heading_text: 'Your hero content goes here'
+        heading_text: 'Welcome to Lens & Trail'
         level: 1
-        text: 'Bring your site to life, starting here.'
+        text: "We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them."
         text_align: center
         overlay_opacity: 20%
     -
@@ -40,11 +40,63 @@ default:
       inputs:
         variant: primary
         size: large
-        label: 'Call to action'
+        label: 'How to join'
         mobile_width: false
         icon: arrow-right
         icon_first: false
         disabled: false
+        href:
+          uri: 'internal:/join'
+          options: {  }
+    -
+      uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+      component_id: sdc.mercury.grid
+      inputs:
+        width: 100%
+        columns: '2 columns 67%-33%'
+        mobile_columns: '1'
+    -
+      parent_uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+      slot: main_slot
+      uuid: c029324b-0181-475b-b16c-82d00ff5005b
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in Leith to look at each other''s photos.</p><p>Read more <a href="/about">about the club</a>, or find out <a href="/join">how to join</a>.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+      slot: main_slot
+      uuid: 345e0598-8c23-47e9-9658-b3fcfe8b23a9
+      component_id: sdc.mercury.card-icon
+      inputs:
+        border_radius: medium
+        icon: calendar-dots
+        icon_size: large
+        icon_align: center
+        text: 'When and where'
+        description:
+          value: '<p>Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before.</p><p>Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith.</p>'
+          format: canvas_html_block
+        text_align: left
+    -
+      uuid: e43a69a6-38b8-434f-b2fe-4fa3361fbe8b
+      component_id: block.views_block.hikes-block_1
+      inputs:
+        label: 'Next hikes'
+        label_display: '0'
+        views_label: ''
+        items_per_page: null
+    -
+      uuid: 715d698d-ade0-4c9c-8788-dc4b911b3b77
+      component_id: block.views_block.photos-block_1
+      inputs:
+        label: 'Newest photos'
+        label_display: '0'
+        views_label: ''
+        items_per_page: null
   path:
     -
       alias: /home
@@ -52,13 +104,10 @@ default:
       pathauto: 0
   created:
     -
-      value: 1793818898
+      value: 1794663039
   changed:
     -
-      value: 1793818898
-  revision_translation_affected:
-    -
-      value: true
+      value: 1794672788
   metatags:
     -
       value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
@@ -68,3 +117,121 @@ default:
   content_translation_outdated:
     -
       value: false
+translations:
+  es:
+    id:
+      -
+        value: 1
+    revision_created:
+      -
+        value: 1794663039
+    revision_user:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    owner:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Te damos la bienvenida a Lens & Trail'
+    components:
+      -
+        uuid: b7563f5f-d4db-4029-a292-593e82fda2ec
+        component_id: sdc.mercury.cta
+        inputs:
+          heading_text: 'Te damos la bienvenida a Lens & Trail'
+          level: 1
+          text: 'Somos un club de fotografía y senderismo en Edimburgo. Caminamos, tomamos fotos y las compartimos.'
+          text_align: center
+          overlay_opacity: 20%
+      -
+        parent_uuid: b7563f5f-d4db-4029-a292-593e82fda2ec
+        slot: actions
+        uuid: 1c006688-4739-47e3-a57c-eaa65026afbf
+        component_id: sdc.mercury.button
+        inputs:
+          variant: primary
+          label: 'Cómo unirse'
+          href:
+            uri: 'internal:/unete'
+            options: {  }
+          size: large
+          icon: arrow-right
+          mobile_width: false
+          icon_first: false
+          disabled: false
+      -
+        uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+        component_id: sdc.mercury.grid
+        inputs:
+          width: 100%
+          columns: '2 columns 67%-33%'
+          mobile_columns: '1'
+      -
+        parent_uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+        slot: main_slot
+        uuid: c029324b-0181-475b-b16c-82d00ff5005b
+        component_id: sdc.mercury.text
+        inputs:
+          text:
+            value: '<p>Nos reunimos dos veces al mes: una para hacer una excursión por las Pentland Hills, por la costa o más lejos, en las Highlands, y otra en un café de Leith para ver las fotos de todos.</p><p>Lee más <a href="/es/sobre-el-club">sobre el club</a>, o descubre <a href="/es/unete">cómo unirte</a>.</p>'
+            format: canvas_html_block
+          text_size: normal
+          text_color: default
+      -
+        parent_uuid: 9315cf8a-79d3-4fae-85d9-5b4d9f0c88e8
+        slot: main_slot
+        uuid: 345e0598-8c23-47e9-9658-b3fcfe8b23a9
+        component_id: sdc.mercury.card-icon
+        inputs:
+          border_radius: medium
+          icon: calendar-dots
+          icon_size: large
+          icon_align: center
+          text: 'Cuándo y dónde'
+          description:
+            value: '<p>Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen.</p><p>Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith.</p>'
+            format: canvas_html_block
+          text_align: left
+      -
+        uuid: e43a69a6-38b8-434f-b2fe-4fa3361fbe8b
+        component_id: block.views_block.hikes-block_1
+        inputs:
+          label: 'Next hikes'
+          label_display: '0'
+          views_label: ''
+          items_per_page: null
+      -
+        uuid: 715d698d-ade0-4c9c-8788-dc4b911b3b77
+        component_id: block.views_block.photos-block_1
+        inputs:
+          label: 'Newest photos'
+          label_display: '0'
+          views_label: ''
+          items_per_page: null
+    path:
+      -
+        alias: /home
+        langcode: es
+        pathauto: 0
+    created:
+      -
+        value: 1794663039
+    changed:
+      -
+        value: 1794672788
+    revision_translation_affected:
+      -
+        value: true
+    metatags:
+      -
+        value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false

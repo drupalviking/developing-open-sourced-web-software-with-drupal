@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 6003a1e1-23c9-42cf-9d1e-423f03a04d77
+  bundle: redirect
+  default_langcode: en
+  depends:
+    1be77810-7e7f-4f40-be90-9706a8bce4fa: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 6
+  hash:
+    -
+      value: pZCjJztdtAVD0U64kBapknFTxXeqRMzvXhDdHBWk18A
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: pentland-hills-ridge
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: 1be77810-7e7f-4f40-be90-9706a8bce4fa
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

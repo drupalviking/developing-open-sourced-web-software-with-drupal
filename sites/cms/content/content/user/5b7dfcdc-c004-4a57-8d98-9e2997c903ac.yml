@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 3
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: jordi
+  pass:
+    -
+      value: $2y$12$eylTVpfhRQBeR1FJZPf.3uY7M2reK7ULqPDObSOaO9OMTrfngil5C
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: jordi@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794678464
+  changed:
+    -
+      value: 1794678464
+  access:
+    -
+      value: 1794678503
+  login:
+    -
+      value: 1794678503
+  roles:
+    -
+      target_id: member
+    -
+      target_id: hike_leader
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  field_about_me:
+    -
+      value: "I moved to Edinburgh from Barcelona in 2019, and I've been leading hikes in the Pentlands ever since. Ask me about the best spots for sunrise."
+  field_camera:
+    -
+      value: 'Fujifilm X-T5, and a phone when it rains'

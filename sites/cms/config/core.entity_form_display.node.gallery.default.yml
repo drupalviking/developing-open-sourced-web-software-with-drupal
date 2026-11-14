@@ -1,26 +1,34 @@
-uuid: c20bd3e9-14b5-46ab-a22e-51c7ff19dd8f
+uuid: f7581522-7464-47e4-b106-7f3ca50ecff9
 langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.gallery.comment
     - field.field.node.gallery.field_area
-    - field.field.node.gallery.field_body
+    - field.field.node.gallery.field_content
     - field.field.node.gallery.field_hike
     - field.field.node.gallery.field_photos
     - node.type.gallery
     - workflows.workflow.basic_editorial
   module:
+    - comment
     - content_moderation
     - media_library
     - path
+    - tagify
+    - tagify_user_list
     - text
-_core:
-  default_config_hash: 4YEocpehQeiL5SVq_iQbcoCslZEeRhavmMer7X1pV98
 id: node.gallery.default
 targetEntityType: node
 bundle: gallery
 mode: default
 content:
+  comment:
+    type: comment_default
+    weight: 124
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
@@ -29,31 +37,35 @@ content:
     third_party_settings: {  }
   field_area:
     type: options_select
-    weight: 2
+    weight: -4
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_body:
+  field_content:
     type: text_textarea
-    weight: 6
+    weight: 121
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_hike:
-    type: entity_reference_autocomplete
-    weight: 122
+    type: tagify_entity_reference_autocomplete_widget
+    weight: 123
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
       placeholder: ''
+      suggestions_dropdown: 1
+      show_entity_id: 0
+      show_info_label: 0
+      info_label: ''
+      parent_selection: 1
     third_party_settings: {  }
   field_photos:
     type: media_library_widget
-    weight: 121
+    weight: 122
     region: content
     settings:
       media_types: {  }
@@ -98,14 +110,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
   uid:
-    type: entity_reference_autocomplete
+    type: tagify_user_list_entity_reference_autocomplete_widget
     weight: 5
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
+      suggestions_dropdown: 1
       placeholder: ''
+      image: user_picture
+      image_style: thumbnail
+      show_info_label: 0
+      info_label: ''
+      show_entity_id: 0
+      parent_selection: 1
     third_party_settings: {  }
   url_redirects:
     weight: 50

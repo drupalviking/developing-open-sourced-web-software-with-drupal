@@ -1,4 +1,4 @@
-uuid: b729f21a-30bb-4059-acfc-34443a0866d7
+uuid: e00605c1-2098-4317-822d-46ec08b658ff
 langcode: en
 status: true
 dependencies:
@@ -9,6 +9,17 @@ dependencies:
 active_version: a043771f39d46820
 versioned_properties:
   active:
+    settings:
+      default_settings:
+        id: 'views_block:photos-block_1'
+        label: 'Newest photos'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+  995099a1c8d94ddb:
     settings:
       default_settings:
         id: 'views_block:photos-block_1'

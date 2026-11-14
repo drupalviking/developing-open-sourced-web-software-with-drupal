@@ -1,0 +1,30 @@
+uuid: 6c59b537-dc96-46ab-80a5-ed4ed8c17bd4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.gallery
+    - node.type.hike
+    - node.type.news
+    - node.type.page
+    - workflows.workflow.basic_editorial
+  module:
+    - content_moderation
+    - content_translation
+    - navigation
+    - system
+id: translator
+label: Translator
+weight: 7
+is_admin: false
+permissions:
+  - 'access navigation'
+  - 'create content translations'
+  - 'translate gallery node'
+  - 'translate hike node'
+  - 'translate news node'
+  - 'translate page node'
+  - 'update content translations'
+  - 'use basic_editorial transition publish'
+  - 'view latest version'
+  - 'view the administration theme'

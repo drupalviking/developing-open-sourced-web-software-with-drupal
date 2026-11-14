@@ -1,4 +1,4 @@
-uuid: 822c42de-26f4-4d24-8b9e-40064afbc0a2
+uuid: c797bd0b-1f7d-4813-aa12-5b7bfefe9c56
 langcode: en
 status: true
 dependencies:
@@ -83,11 +83,8 @@ display:
       contexts:
         - 'languages:language_interface'
         - url
-        - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:search_api.index.hikes_by_meaning'
-        - 'search_api_list:hikes_by_meaning'
+      tags: {  }
   page_1:
     id: page_1
     display_title: 'Find a hike (English)'
@@ -139,11 +136,8 @@ display:
       contexts:
         - 'languages:language_interface'
         - url
-        - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:search_api.index.hikes_by_meaning'
-        - 'search_api_list:hikes_by_meaning'
+      tags: {  }
   page_2:
     id: page_2
     display_title: 'Find a hike (Spanish)'
@@ -195,8 +189,5 @@ display:
       contexts:
         - 'languages:language_interface'
         - url
-        - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:search_api.index.hikes_by_meaning'
-        - 'search_api_list:hikes_by_meaning'
+      tags: {  }

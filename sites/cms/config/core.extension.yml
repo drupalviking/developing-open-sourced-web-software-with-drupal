@@ -25,9 +25,12 @@ module:
   canvas_page_template_component: 0
   canvas_translate: 0
   canvas_translate_ai: 0
+  captcha: 0
   checklistapi: 0
   ckeditor5: 0
   coffee: 0
+  comment: 0
+  config: 0
   config_language_lock: 0
   config_translation: 0
   content_moderation: 0
@@ -39,6 +42,7 @@ module:
   dblog: 0
   devel: 0
   devel_generate: 0
+  diff: 0
   drupal_cms_helper: 0
   drupical: 0
   dynamic_page_cache: 0
@@ -67,6 +71,7 @@ module:
   gin_login: 0
   gin_toolbar: 0
   image: 0
+  image_captcha: 0
   jquery_ui: 0
   jquery_ui_resizable: 0
   key: 0

@@ -1,0 +1,21 @@
+uuid: 8f3dc85c-a2f6-4d63-b926-2a86832397ca
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_camera
+field_name: field_camera
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

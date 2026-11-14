@@ -1,4 +1,4 @@
-uuid: 6effef7f-3b63-460e-a56d-ab1109633297
+uuid: c98c6ed6-2168-40d4-8858-1abe5845ee99
 langcode: en
 status: true
 dependencies:
@@ -6,14 +6,12 @@ dependencies:
     - node.type.hike
   module:
     - node
-_core:
-  default_config_hash: 67R_t5CIsdPR73L54PI7a9SlJQVtSAlA2DOLDJidxUE
 id: hikes
 label: Hikes
 type: 'canonical_entities:node'
 pattern: '/hikes/[node:title]'
 selection_criteria:
-  f221e975-7747-4b6a-aec9-4c24b7456f9c:
+  d5c379b4-6242-4f38-93e9-2fc1f26541d0:
     id: 'entity_bundle:node'
     negate: false
     context_mapping:
@@ -21,5 +19,5 @@ selection_criteria:
     bundles:
       hike: hike
 selection_logic: and
-weight: -5
+weight: -10
 relationships: {  }

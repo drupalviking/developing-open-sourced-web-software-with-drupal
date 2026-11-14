@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 40a60311-346d-48d2-8226-d4d503488252
+  bundle: redirect
+  default_langcode: en
+  depends:
+    b949a861-d63e-415c-9edf-59e952b0f8fb: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 7
+  hash:
+    -
+      value: '-vOpONOXOZa9Vkk0tUMyWpZUEQpuZtG-yrnJhG_bugg'
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: edinburgh-24-october
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: b949a861-d63e-415c-9edf-59e952b0f8fb
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

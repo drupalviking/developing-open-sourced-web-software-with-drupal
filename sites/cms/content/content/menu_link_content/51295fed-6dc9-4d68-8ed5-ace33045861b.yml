@@ -12,7 +12,7 @@ default:
       value: 8
   revision_created:
     -
-      value: 1793818898
+      value: 1794663039
   enabled:
     -
       value: true
@@ -41,7 +41,7 @@ default:
       value: false
   changed:
     -
-      value: 1793818898
+      value: 1794663039
   revision_translation_affected:
     -
       value: true
@@ -54,3 +54,58 @@ default:
   content_translation_status:
     -
       value: true
+translations:
+  es:
+    id:
+      -
+        value: 8
+    revision_created:
+      -
+        value: 1794663039
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: Inicio
+    menu_name:
+      -
+        value: main
+    link:
+      -
+        title: ''
+        options: {  }
+        target_uuid: bb5bbbb1-4a16-4b86-bbea-b215ab8096cf
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: false
+    weight:
+      -
+        value: 0
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1794663039
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1794680903

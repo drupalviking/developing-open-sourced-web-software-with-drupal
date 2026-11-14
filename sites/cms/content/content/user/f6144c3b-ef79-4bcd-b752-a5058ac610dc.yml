@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: f6144c3b-ef79-4bcd-b752-a5058ac610dc
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 2
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: morag
+  pass:
+    -
+      value: $2y$12$IDqlCL1MOt25woRT7ELKsuVcFyKG05ooq3.jM6cLACJfdocvpU.Qi
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: morag@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794678464
+  changed:
+    -
+      value: 1794678464
+  access:
+    -
+      value: 1794678509
+  login:
+    -
+      value: 1794678509
+  roles:
+    -
+      target_id: member
+    -
+      target_id: secretary
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1

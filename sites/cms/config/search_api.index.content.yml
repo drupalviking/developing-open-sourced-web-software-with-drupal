@@ -1,4 +1,4 @@
-uuid: 7827f599-4d9d-4942-a501-646aaf52096e
+uuid: 3ef4987e-b8d0-4609-aea6-cffe219dde03
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,6 @@ dependencies:
     - canvas
     - node
     - search_api_exclude
-_core:
-  default_config_hash: Bwdo9t7U7F50Lt2Fnin7BVNG8-iYx3ovRqyKwlgji0k
 id: content
 name: Content
 description: 'Can search within all content types.'

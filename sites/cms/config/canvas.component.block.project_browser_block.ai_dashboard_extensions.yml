@@ -1,0 +1,27 @@
+uuid: 42ab8b99-9e8b-401b-a56e-fed61102f3a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - project_browser
+active_version: 33ab9b2d222f8320
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'project_browser_block:ai_dashboard_extensions'
+        label: 'AI extensions'
+        label_display: '0'
+        provider: project_browser
+        paginate: true
+        page_sizes: '12, 24, 36, 48'
+        sort_options: null
+        default_sort: null
+        filters: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'AI extensions'
+id: block.project_browser_block.ai_dashboard_extensions
+provider: project_browser
+source: block
+source_local_id: 'project_browser_block:ai_dashboard_extensions'

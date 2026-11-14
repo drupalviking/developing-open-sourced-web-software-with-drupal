@@ -1,8 +1,10 @@
-uuid: fac9f5af-b752-499c-836f-1102e9beb5f4
+uuid: 3085c45b-8d84-4d41-94db-0e90e85448b3
 langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_about_me
+    - field.field.user.user.field_camera
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -15,6 +17,22 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  field_about_me:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_camera:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 6
+    region: content
   member_for:
     weight: 5
     region: content

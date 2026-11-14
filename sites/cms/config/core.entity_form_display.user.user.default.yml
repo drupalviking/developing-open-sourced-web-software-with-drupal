@@ -1,8 +1,10 @@
-uuid: 046f5b35-daae-4319-8ce3-8d1c37e8e744
+uuid: 3e2ad915-f927-493a-b158-18b51bfd877e
 langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_about_me
+    - field.field.user.user.field_camera
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -19,6 +21,22 @@ content:
   account:
     weight: -10
     region: content
+  field_about_me:
+    type: string_textarea
+    weight: 32
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_camera:
+    type: string_textfield
+    weight: 31
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   language:
     weight: 0
     region: content

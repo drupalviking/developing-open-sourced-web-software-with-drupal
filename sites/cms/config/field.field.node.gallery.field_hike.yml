@@ -1,4 +1,4 @@
-uuid: 7f0a523f-f49c-45a6-9eb2-692b84807c52
+uuid: e5e8ac38-4175-4276-b034-011479770a17
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - field.storage.node.field_hike
     - node.type.gallery
     - node.type.hike
-_core:
-  default_config_hash: gMpRqt3U2o5HYFKtubkGOQzp6olozY3Tmi3NvQm8qcw
 id: node.gallery.field_hike
 field_name: field_hike
 entity_type: node

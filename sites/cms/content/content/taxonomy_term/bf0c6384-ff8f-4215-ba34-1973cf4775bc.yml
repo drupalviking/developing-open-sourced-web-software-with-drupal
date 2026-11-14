@@ -1,0 +1,87 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: bf0c6384-ff8f-4215-ba34-1973cf4775bc
+  bundle: areas
+  default_langcode: en
+  depends:
+    2a427bf6-c13c-4e45-affc-b31fc3ce0ab8: taxonomy_term
+default:
+  tid:
+    -
+      value: 8
+  revision_created:
+    -
+      value: 1794672557
+  status:
+    -
+      value: true
+  name:
+    -
+      value: "Arthur's Seat"
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      entity: 2a427bf6-c13c-4e45-affc-b31fc3ce0ab8
+  changed:
+    -
+      value: 1794672557
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/edinburgh/arthurs-seat
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 8
+    revision_created:
+      -
+        value: 1794672557
+    status:
+      -
+        value: true
+    name:
+      -
+        value: "Arthur's Seat"
+    weight:
+      -
+        value: 0
+    parent:
+      -
+        entity: 2a427bf6-c13c-4e45-affc-b31fc3ce0ab8
+    changed:
+      -
+        value: 1794672557
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/edimburgo/arthurs-seat
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1794680903

@@ -1,0 +1,109 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 0d84a9c5-09fb-4820-97e2-75a68c73eb62
+  bundle: menu_link_content
+  default_langcode: en
+default:
+  id:
+    -
+      value: 12
+  revision_created:
+    -
+      value: 1794678181
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Upcoming hikes (RSS)'
+  menu_name:
+    -
+      value: footer
+  link:
+    -
+      uri: 'internal:/hikes/feed'
+      title: null
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: 1
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1794678181
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_status:
+    -
+      value: true
+translations:
+  es:
+    id:
+      -
+        value: 12
+    revision_created:
+      -
+        value: 1794678181
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: 'Próximas excursiones (RSS)'
+    menu_name:
+      -
+        value: footer
+    link:
+      -
+        uri: 'internal:/hikes/feed'
+        title: null
+        options: {  }
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: true
+    weight:
+      -
+        value: 1
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1794678181
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1794680903

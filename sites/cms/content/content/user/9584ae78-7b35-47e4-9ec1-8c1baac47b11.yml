@@ -1,0 +1,49 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 9584ae78-7b35-47e4-9ec1-8c1baac47b11
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 4
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: ailsa
+  pass:
+    -
+      value: $2y$12$r/m.AmFTTT3GFWSLcwKJbOfE/rWmEaG6pJEsSxfERYLpkc./LqC1O
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: ailsa@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794678464
+  changed:
+    -
+      value: 1794678464
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: member
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1

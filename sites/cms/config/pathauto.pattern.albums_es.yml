@@ -1,4 +1,4 @@
-uuid: 2484a8ad-b8ea-47f9-8a13-81bc92513d92
+uuid: ce06234e-daca-401f-93d4-f0888496fb79
 langcode: en
 status: true
 dependencies:
@@ -7,21 +7,19 @@ dependencies:
   module:
     - language
     - node
-_core:
-  default_config_hash: 1bOVa-FPzPJCZ9XKERL-4yxeiVeQXkZfS_9BxTs22Xw
 id: albums_es
 label: Álbumes
 type: 'canonical_entities:node'
 pattern: '/albumes/[node:title]'
 selection_criteria:
-  5df828fd-f4d0-49d3-9430-5f087204cc46:
+  3ae4d909-e69a-4546-a5f0-754537c44b63:
     id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: node
     bundles:
       gallery: gallery
-  a87f3a9d-77a1-43ef-ab98-b16c106e3065:
+  b4aaf0c7-53bc-4a05-b751-af2e070211fa:
     id: language
     negate: false
     context_mapping:
@@ -29,7 +27,7 @@ selection_criteria:
     langcodes:
       es: es
 selection_logic: and
-weight: -10
+weight: -20
 relationships:
   'node:langcode:language':
     label: Language

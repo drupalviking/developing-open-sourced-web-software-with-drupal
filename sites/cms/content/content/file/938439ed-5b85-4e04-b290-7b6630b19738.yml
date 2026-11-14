@@ -1,0 +1,30 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 938439ed-5b85-4e04-b290-7b6630b19738
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 10
+  filename:
+    -
+      value: glencorse-reservoir-portrait.jpg
+  uri:
+    -
+      value: 'public://glencorse-reservoir-portrait.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 1104043
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794679492
+  changed:
+    -
+      value: 1794679492

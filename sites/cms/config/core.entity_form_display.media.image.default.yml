@@ -1,4 +1,4 @@
-uuid: 5664b108-7b13-4afb-ac3f-155fc72a855d
+uuid: 0bf2c757-85e0-44e1-ade0-d8ed60fc9d34
 langcode: en
 status: true
 dependencies:
@@ -8,10 +8,13 @@ dependencies:
     - field.field.media.image.field_photographer
     - field.field.media.image.field_source
     - field.field.media.image.field_tags
+    - field.field.media.image.field_themes
     - image.style.media_library
     - media.type.image
   module:
     - focal_point
+    - link
+    - tagify
 _core:
   default_config_hash: N2Imq6kLhAPzzFt_VZQCkWItt-UfqPOkcQlyC-3yTgM
 id: media.image.default
@@ -25,6 +28,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_license:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_media_image:
     type: image_focal_point
     weight: 1
@@ -35,8 +44,24 @@ content:
       preview_link: true
       offsets: '50,50'
     third_party_settings: {  }
+  field_photographer:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_source:
+    type: link_default
+    weight: 5
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_tags:
-    type: entity_reference_autocomplete_tags
+    type: entity_reference_autocomplete
     weight: 0
     region: content
     settings:
@@ -44,6 +69,20 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_themes:
+    type: tagify_entity_reference_autocomplete_widget
+    weight: 102
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      placeholder: ''
+      suggestions_dropdown: 1
+      show_entity_id: 0
+      show_info_label: 0
+      info_label: ''
+      parent_selection: 1
     third_party_settings: {  }
   langcode:
     type: language_select
@@ -54,7 +93,7 @@ content:
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -5
+    weight: 2
     region: content
     settings:
       size: 60
@@ -78,9 +117,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_license: true
-  field_photographer: true
-  field_source: true
   path: true
   publish_on: true
   publish_state: true

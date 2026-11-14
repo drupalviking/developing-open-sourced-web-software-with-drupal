@@ -1,9 +1,9 @@
-uuid: f0c8bc4f-9924-4948-bcde-d659479bfe6e
+uuid: 0cc55fc2-fae1-4e20-ad90-0a800f8f7f12
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: pZ4A233ZIqcGEBJtnZv6mB5plciPQdH82htOY0fXuv8
+  default_config_hash: ekun9m8-3Z8fYBX3cAbnUr8aUbQXC9W7PlKnUlDaNe4
 id: drupal_cms_assistant
 label: 'Drupal CMS Assistant'
 description: 'An assistant that can take actions on your website.'
@@ -23,12 +23,7 @@ specific_error_messages:
   AiRequestErrorException: 'I am sorry, there was an error communicating with the AI. If the problem persists, please contact an administrator.'
 llm_provider: __default__
 llm_model: ''
-llm_configuration:
-  max_tokens: 4096
-  temperature: 1.0
-  frequency_penalty: 0
-  presence_penalty: 0
-  top_p: 1.0
+llm_configuration: {  }
 actions_enabled: {  }
 roles:
   administrator: administrator

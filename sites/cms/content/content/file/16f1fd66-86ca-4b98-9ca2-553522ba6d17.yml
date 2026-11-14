@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 16f1fd66-86ca-4b98-9ca2-553522ba6d17
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 3
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: turnhouse-hill-glencorse.jpg
+  uri:
+    -
+      value: 'public://2026-11/turnhouse-hill-glencorse.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 2047252
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794665206
+  changed:
+    -
+      value: 1794665210

@@ -1,6 +1,6 @@
 {
     "name": "drupal/cms",
-    "version": "2.2.8",
+    "version": "2.2.9",
     "description": "Drupal CMS is a ready-to-use platform built on Drupal core, offering smart defaults to get started quickly and enterprise-grade tools for marketers, designers, and content creators.",
     "type": "project",
     "license": "GPL-2.0-or-later",
@@ -34,6 +34,7 @@
         "drupal/better_exposed_filters": "^7.2",
         "drupal/canvas": "^1.11",
         "drupal/canvas_translate": "@alpha",
+        "drupal/captcha": "^2.0",
         "drupal/coffee": "^2",
         "drupal/core": "^11.4",
         "drupal/core-composer-scaffold": "^11.4",
@@ -42,6 +43,7 @@
         "drupal/core-recommended": "^11.4",
         "drupal/core-vendor-hardening": "^11.4",
         "drupal/dashboard": "^2.2",
+        "drupal/diff": "^2.1",
         "drupal/drupal_cms_helper": "^2",
         "drupal/drupal_cms_installer": "^2",
         "drupal/drupical": "^1",

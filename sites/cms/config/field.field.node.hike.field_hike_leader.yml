@@ -1,12 +1,10 @@
-uuid: 625ba8c8-90b1-46f8-9517-53d111f086af
+uuid: cf13d42e-126c-4478-ac55-9eb2fcd94bfa
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_hike_leader
     - node.type.hike
-_core:
-  default_config_hash: ZcN1uEc0ldC8qj4T7AJVtCigEYHcgNVY2VObI_7Qg1Y
 id: node.hike.field_hike_leader
 field_name: field_hike_leader
 entity_type: node
@@ -29,9 +27,5 @@ settings:
       type: role
       role:
         hike_leader: hike_leader
-        member: '0'
-        secretary: '0'
-        content_editor: '0'
-        administrator: '0'
     include_anonymous: false
 field_type: entity_reference

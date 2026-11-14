@@ -930,6 +930,79 @@ function replay_ch18_translator(): void {
   $lucia->save();
 }
 
+/**
+ * Chapter 21: the Elevation gain field on Hike, as core does: right after Distance on the form and on every
+ * display that shows Distance, with Distance's label setting.
+ */
+function replay_ch21_elevation(): void {
+  replay_field('node', 'hike', 'field_elevation_gain', 'integer', 'Elevation gain', ['settings' => ['min' => 0, 'suffix' => ' m']]);
+  $displays = array_merge(
+    \Drupal::entityTypeManager()->getStorage('entity_form_display')->loadByProperties(['targetEntityType' => 'node', 'bundle' => 'hike']),
+    \Drupal::entityTypeManager()->getStorage('entity_view_display')->loadByProperties(['targetEntityType' => 'node', 'bundle' => 'hike'])
+  );
+  foreach ($displays as $display) {
+    $distance = $display->getComponent('field_distance');
+    if (!$distance) {
+      $display->removeComponent('field_elevation_gain')->save();
+      continue;
+    }
+    $after = $distance['weight'];
+    foreach ($display->getComponents() as $name => $component) {
+      if ($name !== 'field_elevation_gain' && ($component['weight'] ?? 0) > $after) {
+        $component['weight']++;
+        $display->setComponent($name, $component);
+      }
+    }
+    $form = $display instanceof EntityFormDisplay;
+    $display->setComponent('field_elevation_gain', [
+      'type' => $form ? 'number' : 'number_integer',
+      'weight' => $after + 1,
+      'region' => 'content',
+    ] + ($form ? [] : ['label' => $distance['label'] ?? 'above', 'settings' => ['thousand_separator' => '', 'prefix_suffix' => TRUE]]))->save();
+  }
+}
+
+/**
+ * Chapter 23: Hike's Teaser tidied for Mercury: the title linked, no labels on Date, Distance, Elevation gain and
+ * Difficulty, no Links.
+ */
+function replay_ch23_teaser(): void {
+  $display = EntityViewDisplay::load('node.hike.teaser');
+  foreach (['field_date', 'field_distance', 'field_elevation_gain', 'field_difficulty'] as $name) {
+    if ($component = $display->getComponent($name)) {
+      $display->setComponent($name, ['label' => 'hidden'] + $component);
+    }
+  }
+  if ($title = $display->getComponent('title')) {
+    $title['settings']['link_to_entity'] = TRUE;
+    $display->setComponent('title', $title);
+  }
+  $display->removeComponent('links')->save();
+}
+
+/**
+ * Chapter 23: Find a hike in the main menu, its Spanish title, and the Spanish redirect to /buscar-excursion.
+ */
+function replay_ch23_menu(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $link = current($storage->loadByProperties(['title' => 'Find a hike'])) ?: $storage->create([
+    'title' => 'Find a hike', 'link' => ['uri' => 'internal:/find-a-hike'], 'menu_name' => 'main', 'weight' => 5,
+  ]);
+  $link->save();
+  if (!$link->hasTranslation('es')) {
+    $link->addTranslation('es', ['title' => 'Buscar excursión', 'link' => $link->get('link')->getValue(), 'menu_name' => 'main'])->save();
+  }
+  $redirects = \Drupal::entityTypeManager()->getStorage('redirect');
+  if (!$redirects->loadByProperties(['redirect_source__path' => 'find-a-hike', 'language' => 'es'])) {
+    $redirects->create([
+      'redirect_source' => ['path' => 'find-a-hike', 'query' => []],
+      'redirect_redirect' => ['uri' => 'internal:/buscar-excursion'],
+      'language' => 'es',
+      'status_code' => 301,
+    ])->save();
+  }
+}
+
 $steps = $extra ?? [];
 if (!$steps) {
   throw new \InvalidArgumentException('Name one or more steps, such as ch07_hike_type.');

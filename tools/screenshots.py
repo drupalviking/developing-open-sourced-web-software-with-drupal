@@ -5023,14 +5023,13 @@ def ai19_canvas_page(page: Page, site: dict, prompt: str, shot_prompt=None) -> N
 def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     """Chapter 19 on Drupal CMS: the AI Assistant, the chatbot, alt text, Canvas AI and Canvas Translate AI.
 
-    Starts from the end of Chapter 18 (a DDEV snapshot). Installs with amazee.ai, as the chapter does, then
-    switches to Anthropic for the AI steps (needs the author's key), so it needs the internet, costs a little,
-    and the AI's answers (and so the screenshots) are different every time.
+    From ch18-cms-done to ch19-cms-done (and ch19-ai-installed, right after the install, for ai19_anthropic_steps).
+    Installs with amazee.ai, as the chapter does, then switches to Anthropic for the AI steps (needs the author's
+    key), so it needs the internet, costs a little, and the AI's answers (and so the screenshots) are different
+    every time.
     """
     url = site["url"]
-    subprocess.run(["ddev", "snapshot", "restore", "ch18-done"], cwd=site["dir"], check=True, capture_output=True)
-    drush(site, "cache:rebuild")
-    log_in(page, site)
+    cms_restore(page, site, "ch18-cms-done")
 
     # Installing the AI Assistant from Recommended add-ons.
     page.goto(url + "/admin/modules/browse/recommended")
@@ -5042,10 +5041,17 @@ def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     page.wait_for_timeout(500)
     snap("19-cms-recommended")
     card.locator("button:text-is('Install')").first.click()
-    page.locator(".ui-dialog-buttonpane button:has-text('Continue')").first.wait_for(timeout=60000)
+    # Project Browser downloads the recipe with Composer first (minutes), then asks for the provider.
+    cont = page.locator(".ui-dialog-buttonpane button:has-text('Continue')").first
+    for _ in range(120):
+        if cont.is_visible() or "Installed" in card.inner_text() or page.locator(".ui-dialog:has-text('Error')").count():
+            break
+        page.wait_for_timeout(5000)
+    if not cont.is_visible():
+        raise RuntimeError("Project Browser didn't ask for the AI provider: " + card.inner_text()[:200])
     page.wait_for_timeout(1000)
     snap("19-cms-provider", element=".ui-dialog")
-    page.locator(".ui-dialog-buttonpane button:has-text('Continue')").first.click()
+    cont.click()
     for _ in range(80):
         page.wait_for_timeout(5000)
         if "Installed" in card.inner_text() or page.locator(".ui-dialog:has-text('Error')").count():
@@ -5053,6 +5059,7 @@ def ai19_cms_steps(page: Page, site: dict, snap) -> None:
     if "Installed" not in card.inner_text():
         raise RuntimeError("Project Browser didn't install the AI Assistant")
     drush(site, "cache:rebuild")
+    cms_snapshot(site, "ch19-ai-installed")
     page.goto(url + "/admin/config/ai")
     page.wait_for_load_state("networkidle")
     # The dashboard's Filter box takes the focus, and scrolls the page down to it.
@@ -5165,6 +5172,7 @@ $p->save();
             break
     page.wait_for_timeout(2000)
     snap("19-cms-translate-ai")
+    cms_snapshot(site, "ch19-cms-done")
 
 
 def ai19_anthropic_key() -> str:
@@ -5248,9 +5256,7 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     it only takes the provider page, with no key selected.
     """
     url = site["url"]
-    subprocess.run(["ddev", "snapshot", "restore", "ch19-ai-installed"], cwd=site["dir"], check=True, capture_output=True)
-    drush(site, "cache:rebuild")
-    log_in(page, site)
+    cms_restore(page, site, "ch19-ai-installed")
     ai19_use_anthropic(page, site, snap)
     if not ai19_anthropic_key():
         return
@@ -5285,6 +5291,31 @@ def ai19_anthropic_steps(page: Page, site: dict, snap) -> None:
     ai19_canvas_page(page, site, AI19_PAGE)
     print("--- Canvas AI\n" + ai19_chat_text(page)[-4000:])
     snap("19-cms-anthropic-page")
+
+
+def cms21_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 21 on Drupal CMS: Configuration Manager (not installed by Drupal CMS), the sync folder, the Elevation
+    gain field, and an export. No live copy: the chapter points to core's. From ch19-cms-done to ch21-cms-done."""
+    url = site["url"]
+    d = Path(site["dir"])
+    cms_restore(page, site, "ch19-cms-done")
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    box = page.locator("input[name='modules[config][enable]']")
+    box.check()
+    scroll_to(page, "input[name='modules[config][enable]']", offset=250)
+    snap("21-cms-extend-config")
+    cms_submit(page)
+    # The sync folder, as on core (settings.php isn't in the snapshots).
+    config21_settings(site)
+    shutil.rmtree(d / "config", ignore_errors=True)
+    (d / "config/sync").mkdir(parents=True)
+    drush(site, "cache:rebuild")
+    cms_replay(site, "ch21_elevation")
+    cms_shot_page(page, "/admin/structure/types/manage/hike/fields", "21-cms-hike-fields", snap)
+    print(drush(site, "config:export", "-y"))
+    print("Exported:", len(list((d / "config/sync").rglob("*.yml"))), "files")
+    cms_snapshot(site, "ch21-cms-done")
 
 
 def safe20_restore(site: dict) -> None:
@@ -5665,9 +5696,20 @@ def search22_core_steps(page: Page, site: dict, snap) -> None:
     search22_visitor(page, site, "/", "22-autocomplete", prepare=type_res, full_page=False)
 
 
+# The Search view's exposed form, as the Canvas Library names it (checked when the sequence runs: it prints the names).
+SEARCH22_BLOCK = "Exposed form: search-search"
+SEARCH22_FACETS_PATCH = {"drupal/facets": {
+    "Facets Exposed Filters: no fatal error when a Search API view has no results, e.g. a disabled index "
+    "(https://www.drupal.org/project/facets/issues/3540239; MR !317 rerolled for 3.0.7)": "patches/facets-3540239-null-results.patch"}}
+
+
 def search22_cms_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 22 on Drupal CMS: the Search recipe, and facets. From the finished site (snapshot ch22-cms-done or later)."""
+    """Chapter 22 on Drupal CMS: the Search recipe from Project Browser, the search index view modes, Facets (with the
+    #3540239 patch), the Search view's page with facets, and the search box in the page template. The view and the
+    index come from sites/cms/config (cms_config). From ch21-cms-done to ch22-cms-done."""
     url = site["url"]
+    d = Path(site["dir"])
+    cms_restore(page, site, "ch21-cms-done")
     page.goto(url + "/admin/modules/browse/recommended")
     page.wait_for_load_state("networkidle")
     page.wait_for_timeout(4000)
@@ -5677,6 +5719,48 @@ def search22_cms_steps(page: Page, site: dict, snap) -> None:
     page.mouse.move(1100, 700)
     page.wait_for_timeout(800)
     snap("22-cms-recommended")
+    card.locator("button:text-is('Install')").first.click()
+    for _ in range(120):
+        page.wait_for_timeout(5000)
+        cont = page.locator(".ui-dialog-buttonpane button:has-text('Continue')")
+        if cont.count() and cont.first.is_visible():
+            cont.first.click()
+        if "Installed" in card.inner_text() or page.locator(".ui-dialog:has-text('Error')").count():
+            break
+    print("--- Search recipe: " + card.inner_text()[:200].replace("\n", " "))
+    if "Installed" not in card.inner_text():
+        raise RuntimeError("Project Browser didn't apply the Search recipe")
+    drush(site, "cache:rebuild")
+    # Hike's, Album's and Basic page's Search index display, without labels, photos and the like (the chapter).
+    cms_config(site, ["core.entity_view_display.node.hike.search_index", "core.entity_view_display.node.gallery.search_index",
+                      "core.entity_view_display.node.page.search_index"])
+    # Facets and Better Exposed Filters, with the Facets patch, through composer-patches (the reader's way: Project Browser).
+    (d / "patches").mkdir(exist_ok=True)
+    shutil.copy(ROOT / "sites/cms/codebase/patches/facets-3540239-null-results.patch", d / "patches")
+    composer(site, "config", "--no-plugins", "allow-plugins.cweagans/composer-patches", "true")
+    composer(site, "require", "cweagans/composer-patches:^2")
+    composer(site, "config", "--json", "extra.patches", json.dumps(SEARCH22_FACETS_PATCH))
+    composer(site, "require", "drupal/facets:^3.0", "drupal/better_exposed_filters:^7.2")
+    composer(site, "patches-relock")
+    composer(site, "patches-repatch")
+    drush(site, "pm:enable", "-y", "facets", "facets_exposed_filters", "better_exposed_filters")
+    cms_config(site, ["search_api.index.content", "views.view.search"])
+    drush(site, "search-api:index", "content")
+    # The search box: the Search view's exposed form, in the Navbar's CTAs, after the language switcher.
+    cv_template(page)
+    cv_layer(page, "Language switcher")
+    cv_panel(page, "Library", "Components")
+    names = [t.strip() for t in page.locator("text=/xposed form|Search/").all_inner_texts()]
+    print("--- Library items:", names[:20])
+    cv_insert(page, SEARCH22_BLOCK)
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(1500)
+    page.get_by_text(SEARCH22_BLOCK, exact=True).first.click()
+    page.wait_for_timeout(1500)
+    page.click("[data-testid='scale-to-fit']")
+    page.wait_for_timeout(2000)
+    snap("22-cms-search-box")
+    cv_publish(page)
 
     # A facet's own settings are behind the Settings link next to it in Filter criteria (handler-extra).
     page.goto(url + "/admin/structure/views/nojs/handler-extra/search/page_1/filter/facets_field_area")
@@ -5692,6 +5776,45 @@ def search22_cms_steps(page: Page, site: dict, snap) -> None:
     visit.wait_for_timeout(1500)
     search22_tall(visit, "22-cms-facets")
     context.close()
+    cms_snapshot(site, "ch22-cms-done")
+
+
+def cms_config(site: dict, names: list[str], language: str | None = None) -> None:
+    """Brings configuration items from sites/cms/config (the finished Drupal CMS site of the book's first run) onto
+    the Drupal CMS site, without their UUIDs: what a reader builds by hand in Chapters 22 and 23, where the text has
+    every step. Config entities are created or updated through their storage; other items are replaced. With
+    `language`, the items are that language's configuration translations (language/<code>/)."""
+    import yaml
+    folder = ROOT / "sites/cms/config" / (f"language/{language}" if language else "")
+    data = {}
+    for name in names:
+        # The first run's Drupal CMS site had Body (field_body) on hikes and albums; this one has Content (Chapter 7).
+        item = yaml.safe_load((folder / f"{name}.yml").read_text().replace("field_body", "field_content"))
+        item.pop("uuid", None)
+        item.pop("_core", None)
+        data[name] = item
+    i18n18_php(site, r"""
+$language = $data['language'];
+foreach ($data['items'] as $name => $item) {
+  if ($language) {
+    \Drupal::languageManager()->getLanguageConfigOverride($language, $name)->setData($item)->save();
+    continue;
+  }
+  $type = \Drupal::service('config.manager')->getEntityTypeIdByName($name);
+  if ($type) {
+    $storage = \Drupal::entityTypeManager()->getStorage($type);
+    $id = $item[$storage->getEntityType()->getKey('id')];
+    $existing = $storage->load($id);
+    $entity = $existing ? $storage->updateFromStorageRecord($existing, $item) : $storage->createFromStorageRecord($item);
+    $entity->save();
+  }
+  else {
+    \Drupal::configFactory()->getEditable($name)->setData($item)->save();
+  }
+  echo $name, "\n";
+}
+""", {"language": language, "items": data})
+    drush(site, "cache:rebuild")
 
 
 MEANING23_QUESTION = "Is there an easy hike by the water before Christmas?"
@@ -5700,10 +5823,36 @@ MEANING23_QUESTION = "Is there an easy hike by the water before Christmas?"
 def meaning23_steps(page: Page, site: dict, snap) -> None:
     """Chapter 23 on Drupal CMS: AI Search, Find a hike, and the hike guide.
 
-    From the finished site. The last screenshot asks the hike guide a question, so it needs the internet and
-    the author's API keys, costs a little, and the answer is different every time.
+    From ch22-cms-done to ch23-cms-done. The keys, the provider, the server, the index, the view, the assistant and its
+    agent as the chapter sets them up (from sites/cms/config, with cms_config), then the teaser, the menu link and the
+    Spanish redirect. Indexing and the last screenshot call OpenAI, Pinecone and Anthropic with the author's keys
+    (~/.config/lens-and-trail/), cost a little, and the answer is different every time.
     """
     url = site["url"]
+    cms_restore(page, site, "ch22-cms-done")
+    composer(site, "require", "drupal/ai_vdb_provider_pinecone:^1.1@beta")
+    drush(site, "pm:enable", "-y", "ai_search", "ai_vdb_provider_pinecone", "ai_provider_openai")
+    keys = Path.home() / ".config" / "lens-and-trail"
+    meaning23_key(page, url, "OpenAI API key", (keys / "openai-api-key").read_text().strip())
+    meaning23_key(page, url, "Pinecone API key", (keys / "pinecone-api-key").read_text().strip())
+    cms_config(site, ["ai_provider_openai.settings", "ai_vdb_provider_pinecone.settings"])
+    drush_php(site, r"""
+$config = \Drupal::configFactory()->getEditable('ai.settings');
+$defaults = $config->get('default_providers');
+$defaults['embeddings'] = ['provider_id' => 'openai', 'model_id' => 'text-embedding-3-small'];
+$config->set('default_providers', $defaults)->save();
+""")
+    cms_config(site, ["search_api.server.ai_search", "search_api.index.hikes_by_meaning", "ai_search.index.hikes_by_meaning",
+                      "views.view.find_a_hike", "ai_agents.ai_agent.hike_guide", "ai_assistant_api.ai_assistant.hike_guide"])
+    # sites/cms/config has the AI server and index switched off (tools/export-sites.sh, so the exported sites don't
+    # call Pinecone): the chapter's are on.
+    drush(site, "search-api:server-enable", "ai_search")
+    drush(site, "search-api:enable", "hikes_by_meaning")
+    # Pinecone's namespace still has the vectors of the book's first run: clear it, then index the club's hikes.
+    drush(site, "search-api:clear", "hikes_by_meaning")
+    drush(site, "search-api:index", "hikes_by_meaning")
+    cms_replay(site, "ch23_teaser", "ch23_menu")
+    cms_config(site, ["block.block.ai_chatbot"])
     page.goto(url + "/admin/config/search/search-api/server/ai_search/edit")
     page.wait_for_load_state("networkidle")
     page.mouse.move(1100, 700)
@@ -5756,6 +5905,25 @@ def meaning23_steps(page: Page, site: dict, snap) -> None:
     ai19_klaro_yes(page)
     ai19_ask(page, MEANING23_QUESTION)
     snap("23-chatbot")
+    cms_snapshot(site, "ch23-cms-done")
+
+
+def meaning23_key(page: Page, url: str, label: str, value: str) -> None:
+    """Adds a key on Configuration > System > Keys, as Chapter 19 does for Anthropic. The value is never printed."""
+    page.goto(url + "/admin/config/system/keys/add")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.fill("#edit-label", label)
+    for _ in range(20):
+        page.wait_for_timeout(500)
+        if page.input_value("#edit-id"):
+            break
+    page.fill("#edit-key-input-settings-key-value", value)
+    page.locator("#edit-submit").first.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    if "has been added" not in page.locator("body").inner_text():
+        raise RuntimeError(f"The key {label} wasn't saved")
 
 
 # Chapter 4 on Drupal CMS: the installer. The Drupal CMS site is replayed from here, chapter by chapter
@@ -5773,11 +5941,15 @@ def cms_snapshot(site: dict, name: str) -> None:
 def cms_restore(page: Page, site: dict, name: str) -> None:
     """Back to a snapshot taken by cms_snapshot, with the Composer files of that moment, and log in again."""
     d = Path(site["dir"])
+    # Both files first, then one install: composer.json alone doesn't match the lock file.
+    changed = False
     for f in ("composer.json", "composer.lock"):
         saved = d / ".ddev" / f"{name}.{f}"
         if saved.exists() and saved.read_bytes() != (d / f).read_bytes():
             shutil.copy(saved, d / f)
-            subprocess.run(["ddev", "composer", "install"], cwd=d, check=True, capture_output=True)
+            changed = True
+    if changed:
+        subprocess.run(["ddev", "composer", "install"], cwd=d, check=True, capture_output=True)
     subprocess.run(["ddev", "snapshot", "restore", name], cwd=d, check=True, capture_output=True)
     drush(site, "cache:rebuild")
     page.context.clear_cookies()
@@ -6047,15 +6219,16 @@ SEQUENCES = [
     ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury-logo", "16-cms-mercury", "16-cms-olivero", "16-cms-olivero-hike", "16-cms-tara", "16-cms-byte"]),
     ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-aliases", "17-cms-redirects", "17-cms-404", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
     ("cms", cms18_steps, 1440, ["18-cms-content-language", "18-cms-switcher", "18-cms-front-page", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-translate-template", "18-cms-es-front", "18-cms-es-hike"]),
+    ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
+    ("cms", cms21_steps, 1440, ["21-cms-extend-config", "21-cms-hike-fields"]),
+    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
     ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-search-box", "22-autocomplete"]),
-    ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
+    ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-search-box", "22-cms-facet-settings", "22-cms-facets"]),
     ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
     ("core", config21_steps, 1280, ["21-sync-missing", "21-single-export", "21-full-export", "21-full-import", "21-synchronize", "21-differences", "21-differences-deleted", "21-imported", "21-live-fields", "21-cron", "21-performance"]),
     ("core", safe20_core_steps, 1280, ["20-core-available-updates", "20-core-update-settings", "20-core-up-to-date", "20-core-security-update-required", "20-core-status-report-security", "20-core-maintenance"]),
     ("cms", safe20_cms_steps, 1440, ["20-cms-available-updates", "20-cms-update-form", "20-cms-downloading", "20-cms-ready", "20-cms-updated", "20-cms-unattended", "20-cms-backup-migrate"]),
     ("d11", safe20_d11_steps, 1280, ["20-d11-available-updates", "20-d11-upgrade-status"]),
-    ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
-    ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
     ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),
     ("core", i18n18_views_steps, 1280, ["18-es-hikes-twice", "18-views-default-translation", "18-views-rendering-language", "18-es-hikes"]),
     ("core", i18n18_config_steps, 1280, ["18-config-translation", "18-translate-view", "18-interface-translation", "18-es-front", "18-es-hike", "18-es-join"]),

@@ -340,7 +340,7 @@ The recipe sets up what we built by hand on core, and a little more. Under **Con
 - installed **Automated Cron**, so the index stays up to date even on a site without a cron job (Chapter 11);
 - made a view, **Search**, with a block that shows a search box.
 
-%% Author: drupal_cms_search 2.2.9 (2026-11-14). We applied it with `drush recipe`, not with Project Browser: the first run failed with an error, and the second applied cleanly (from snapshot `ch22-hikes` on the Drupal CMS site). Try it from Project Browser on a fresh copy of the site before publication, and check what Search API Exclude's checkbox is called, and what the ECA model `search_exclude` the recipe adds does. %%
+%% Author: drupal_cms_search 2.2.9. On the first Drupal CMS site, Project Browser failed the first time and we applied it with `drush recipe`; on the new site (2026-11-14), Project Browser applied it without an error. Check what Search API Exclude's checkbox is called, and what the ECA model `search_exclude` the recipe adds does. %%
 
 The search index view modes are copies of **Default**, labels and all, so they have the "meeting" problem from earlier in this chapter. Fix it as on core: for **Hike** (and **Album**), open **Manage display** > **Search index**, hide the labels, and disable the photo, the hike leader, the date and the distance.
 
@@ -370,14 +370,17 @@ The recipe's Search view has only a block, which a Canvas page shows. Facets don
 
 Search for `pentland` at `/search`:
 
-![The search page on Drupal CMS with pentland in the box: the Area, Content type and Difficulty facets as checkboxes with counts, such as Hike (2) and Moderate (1), and five results with excerpts](images/22-cms-facets.png)
+![The search page on Drupal CMS with pentland in the box: the Area, Content type and Difficulty facets as checkboxes with counts, such as Hike (2) and Moderate (1), and six results with excerpts](images/22-cms-facets.png)
 *Figure 22.17: Facets on Drupal CMS*
 
 Check *Moderate* under Difficulty, and the results, and the counts in the other facets, change to match.
 
-The search box goes in the header, which on Drupal CMS is a Canvas page template (Chapter 14). Open Canvas, **Templates**, **Mercury theme**, and in the **Library**, find the Search view's exposed form block; drag it into the **Navbar**'s **CTAs** slot, next to the main menu. It works in both languages: `/es/search` gives Spanish results.
+The search box goes in the header, which on Drupal CMS is a Canvas page template (Chapter 14). Open Canvas, **Templates**, **Mercury theme**. In the **Library**, find the Search view's exposed form, **Exposed form: search-search**, and drag it into the **Navbar**'s **CTAs** slot, after the language switcher from Chapter 18. Then **Review** and **Publish**, as in Chapter 14.
 
-%% Author: the block is `views_exposed_filter_block:search-search`, placed in the Navbar's `links` slot (labelled CTAs in Layers? check when taking the screenshot). %%
+![The Mercury theme page template in Canvas: Exposed form: search-search selected in Layers, under CTAs after the Language switcher, and in the preview a search box with a Search button at the right of the menu and the switcher](images/22-cms-search-box.png)
+*Figure 22.18: The search box, in the page template's header*
+
+It works in both languages: `/es/search` gives Spanish results.
 
 ## Bigger search engines
 

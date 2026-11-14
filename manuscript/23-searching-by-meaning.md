@@ -1,6 +1,6 @@
 # Search by Meaning
 
-%% Author: a chapter of its own since the author's review of 2026-11-14 (it was the last part of the Search chapter). It comes after Search (22) and before *Where Next?* (24). Screenshots are taken by `tools/screenshots.py 23`, from the finished Drupal CMS site; the last one asks the guide a question, so its answer differs a little each time. %%
+%% Author: a chapter of its own since the author's review of 2026-11-14 (it was the last part of the Search chapter). It comes after Search (22) and before *Where Next?* (24). Screenshots are taken by `tools/screenshots.py 23`, which builds the chapter on the Drupal CMS site from `ch22-cms-done` to `ch23-cms-done`; the last one asks the guide a question, so its answer differs a little each time. %%
 
 The club's search box from Chapter 22 does what a search box should: type "reservoir", and you get the Glencorse hike. But visitors don't always know the words. A new member types what she's after, "an easy walk by the water", and the search looks for pages that contain "easy", "walk" and "water". The Glencorse hike doesn't say "water": it says "reservoir". So it isn't found, though it's exactly what she wants.
 
@@ -30,7 +30,7 @@ Three services, each with an account and an API key:
 
 Chapter 19 showed how to store API keys with the **Key** module, under **Configuration** > **System** > **Keys**: add an `OpenAI API key` and a `Pinecone API key` there the same way. Then set up OpenAI under **Configuration** > **AI** > **Providers**, as Chapter 19 did with Anthropic.
 
-%% Author: tested 2026-11-14 on Drupal CMS 2.2.8 (11.4.11) with AI 1.5.2, ai_vdb_provider_pinecone 1.1.0-beta5, OpenAI embeddings and Anthropic Claude Haiku 5.5. The AI module's own AI Search submodule is marked deprecated: it's moving to a standalone project, AI Search (drupal/ai_search), which only had alpha releases (https://www.drupal.org/node/3570322). Check before publication which one to use, and rewrite the steps if the new project has different screens. amazee.ai's vector database not tried. %%
+%% Author: tested 2026-11-14 on Drupal CMS 2.2.8 (11.4.11) with AI 1.5.2, ai_vdb_provider_pinecone 1.1.0-beta5, OpenAI embeddings and Anthropic Claude Haiku 5.5, and replayed the same day on the new Drupal CMS 2.2.9 site (11.4.12, AI 1.5.2), with the same results. The AI module's own AI Search submodule is marked deprecated: it's moving to a standalone project, AI Search (drupal/ai_search), which only had alpha releases (https://www.drupal.org/node/3570322). Check before publication which one to use, and rewrite the steps if the new project has different screens. amazee.ai's vector database not tried. %%
 
 ### A vector database on Pinecone
 

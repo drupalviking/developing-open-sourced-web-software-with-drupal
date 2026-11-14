@@ -553,6 +553,148 @@ def cms13_steps(page: Page, site: dict, snap) -> None:
     as_visitor(page, site, "/hikes/archive", "13-cms-archive")
     cms_snapshot(site, "ch13-cms-done")
 
+CLUB_INFO14 = (
+    "<p><strong>Hikes:</strong> every other Saturday at 9:30.<br><strong>Photo evenings:</strong> the first Thursday of "
+    "the month at 19:00, in a café in Leith.</p>"
+    "<p><a href=\"mailto:hello@lens-and-trail.ddev.site\">hello@lens-and-trail.ddev.site</a> · Follow us on "
+    "<a href=\"https://www.flickr.com/groups/lens-and-trail/\">Flickr</a></p>"
+)
+JOIN14 = "<p>New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students.</p>"
+
+
+def cv_field(page: Page, suffix: str, value: str) -> None:
+    field = page.locator(f"input[name$='{suffix}'], textarea[name$='{suffix}']").first
+    field.fill(value)
+    field.press("Tab")
+    page.wait_for_timeout(1500)
+
+
+def cv_rich_text(page: Page, html: str) -> None:
+    page.evaluate("h => [...document.querySelectorAll('.ck-editor__editable')].pop().ckeditorInstance.setData(h)", html)
+    page.locator(".ck-editor__editable").last.click()
+    page.keyboard.press("End")
+    page.wait_for_timeout(2500)
+
+
+def cv_drop(page: Page, name: str, slot: str) -> None:
+    """Drags a component from the Library onto an empty slot in the preview (Insert can't put it into a slot)."""
+    cv_panel(page, "Library", "Components")
+    item = page.get_by_text(name, exact=True).first
+    item.scroll_into_view_if_needed()
+    target = next(f.get_by_text(slot, exact=True).first for f in page.frames if f.get_by_text(slot, exact=True).count())
+    box, goal = item.bounding_box(), target.bounding_box()
+    x, y = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+    page.mouse.move(x, y)
+    page.mouse.down()
+    page.mouse.move(x + 30, y, steps=5)
+    page.mouse.move(goal["x"] + goal["width"] / 2, goal["y"] + goal["height"] / 2, steps=30)
+    page.wait_for_timeout(800)
+    page.mouse.up()
+    page.wait_for_timeout(4000)
+
+
+def cv_template(page: Page) -> None:
+    """Opens the Mercury theme page template in Canvas, with Layers."""
+    page.goto(site_of(page)["url"] + "/canvas")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    page.locator("button[aria-label*='emplate']").first.click()
+    page.wait_for_timeout(2500)
+    page.get_by_text("Mercury theme").first.click()
+    page.wait_for_timeout(6000)
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+
+
+def cms14_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 14 on Drupal CMS: the page template, the menus as on core (Mercury shows one level), the Privacy policy
+    page, and the club's details and Join the club in the page template's footer. From ch13-cms-done to ch14-cms-done."""
+    cms_restore(page, site, "ch13-cms-done")
+    cv_template(page)
+    snap("14-cms-page-template")
+    cms_replay(site, "ch14_menus")
+    cms_shot_page(page, "/admin/structure/menu/manage/main", "14-cms-main-menu", snap)
+    cms_shot_page(page, "/admin/structure/menu/manage/footer", "14-cms-footer-menu", snap)
+    cv_template(page)
+    cv_drop(page, "Text", "Branding & Social")
+    cv_rich_text(page, CLUB_INFO14)
+    cv_drop(page, "Heading", "Call to action")
+    cv_field(page, "[heading_text][0][value]", "Join the club")
+    page.select_option("select[name$='[level]']", "3")
+    page.wait_for_timeout(1500)
+    cv_insert(page, "Text")
+    cv_rich_text(page, JOIN14)
+    cv_insert(page, "Button")
+    cv_field(page, "[label][0][value]", "How to join")
+    link = page.locator("input[name$='[href][0][uri]']").first
+    link.fill("/join")
+    link.press("Tab")
+    page.wait_for_timeout(2500)
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+    page.mouse.move(900, 400)
+    page.mouse.wheel(0, 600)
+    page.wait_for_timeout(1500)
+    snap("14-cms-footer-template")
+    cv_publish(page)
+    visitor_shot(page, site, "/about", "14-cms-footer", element="footer")
+    page.goto(site["url"] + "/admin/config/user-interface/easy-breadcrumb")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+    snap("14-cms-easy-breadcrumb")
+    cms_snapshot(site, "ch14-cms-done")
+
+def cms15_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 15 on Drupal CMS: the club's roles and permissions, its accounts, registration with approval, CAPTCHA,
+    the user fields, and a hike from Jordi's draft to Morag's publish. From ch14-cms-done to ch15-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch14-cms-done")
+    cms_replay(site, "ch15_roles")
+    cms_shot_page(page, "/admin/people/roles", "15-cms-roles", snap)
+    page.goto(url + "/admin/people/permissions/hike_leader")
+    page.wait_for_load_state("networkidle")
+    permissions_filter(page, "basic editorial")
+    snap("15-cms-permissions-transitions")
+    cms_replay(site, "ch15_users")
+    # CAPTCHA: Project Browser in the book; Composer here, as for Diff in Chapter 11.
+    composer(site, "require", "drupal/captcha")
+    cms_replay(site, "ch15_captcha")
+    as_visitor(page, site, "/user/login", "15-cms-login")
+    as_visitor(page, site, "/user/register", "15-cms-register")
+    cms_replay(site, "ch15_lucia")
+    cms_shot_page(page, "/admin/people", "15-cms-people", snap)
+    # Jordi writes a hike: he can only save it as a draft.
+    context, leader = as_user(page, site, "jordi")
+    leader.set_viewport_size({"width": 1440, "height": 1000})
+    leader.goto(url + "/node/add/hike")
+    leader.wait_for_load_state("networkidle")
+    leader.fill("#edit-title-0-value", "Arthur's Seat by night")
+    leader.fill("[name='field_date[0][value][date]']", "2027-01-16")
+    leader.fill("[name='field_date[0][value][time]']", "17:30:00")
+    leader.fill("[name='field_meeting_place[0][value]']", "Holyrood Park, St Margaret's Loch car park")
+    leader.fill("[name='field_distance[0][value]']", "5")
+    leader.check("input[name='field_difficulty'][value='moderate']")
+    leader.select_option("[name='field_hike_leader']", label="jordi")
+    leader.mouse.move(700, 600)
+    leader.wait_for_timeout(800)
+    save(leader, "15-cms-leader-draft")
+    cms_submit(leader)
+    context.close()
+    # Morag, the secretary, publishes it.
+    node = drush(site, "php:eval", "echo current(\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Arthur\\'s Seat by night']))->id();").strip()
+    context, secretary = as_user(page, site, "morag")
+    secretary.set_viewport_size({"width": 1440, "height": 1000})
+    secretary.goto(url + f"/node/{node}/edit")
+    secretary.wait_for_load_state("networkidle")
+    secretary.select_option("[name='moderation_state[0][state]']", "published")
+    secretary.mouse.move(700, 600)
+    secretary.wait_for_timeout(800)
+    save(secretary, "15-cms-secretary-publish")
+    cms_submit(secretary)
+    context.close()
+    cms_snapshot(site, "ch15-cms-done")
+
+
 WELCOME_TEXT = (
     "<p>We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, "
     "and once in a café in Leith to look at each other's photos.</p>"
@@ -3279,28 +3421,6 @@ drupal_flush_all_caches();""")
     visitor_shot(page, site, "/hikes/archive/202612", "14-breadcrumb")
 
 
-def cms_page_template_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 14, On Drupal CMS: the Mercury theme's page template in Canvas, with its layers."""
-    page.goto(site["url"] + "/canvas")
-    page.wait_for_load_state("networkidle")
-    page.wait_for_timeout(4000)
-    page.locator("button[aria-label*='emplate']").first.click()
-    page.wait_for_timeout(2500)
-    page.get_by_text("Mercury theme").first.click()
-    page.wait_for_timeout(6000)
-    page.click("button[aria-label='Layers']")
-    page.wait_for_timeout(2000)
-    snap("14-cms-page-template")
-
-
-def cms_easy_breadcrumb_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 14: Easy Breadcrumb's settings on Drupal CMS (looks only)."""
-    page.goto(site["url"] + "/admin/config/user-interface/easy-breadcrumb")
-    page.wait_for_load_state("networkidle")
-    page.wait_for_timeout(800)
-    snap("14-cms-easy-breadcrumb")
-
-
 # Chapter 15: users, roles and permissions.
 
 ROLES15 = [("member", "Member"), ("hike_leader", "Hike leader"), ("secretary", "Secretary")]
@@ -3680,6 +3800,7 @@ def members15_steps(page: Page, site: dict, snap) -> None:
 # Chapter 16: themes.
 
 LOGO16 = ROOT / "examples" / "club" / "lens-and-trail-logo.svg"
+LOGO16_GREEN = ROOT / "examples" / "club" / "lens-and-trail-logo-green.svg"
 
 
 def theme_link(page: Page, url: str, theme: str, action: str = "default") -> None:
@@ -3788,18 +3909,37 @@ if ($gone) { \\Drupal::service('theme_installer')->uninstall($gone); }""")
 
 
 def themes16_cms_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 16 on Drupal CMS: Mercury and its settings, then the same site in Olivero, Tara and Byte."""
+    """Chapter 16 on Drupal CMS: Mercury and its settings, the club's logo, then the Welcome page in Olivero, Tara and
+    Byte, and a hike in Olivero. From ch15-cms-done to ch16-cms-done."""
     url = site["url"]
-    themes16_cms_reset(site)
+    cms_restore(page, site, "ch15-cms-done")
     views_admin_shot(page, url, "/admin/appearance", "16-cms-appearance", full=False)
-    views_admin_shot(page, url, "/admin/appearance/settings/mercury", "16-cms-mercury-settings", full=False)
-    as_visitor(page, site, "/join", "16-cms-mercury")
+    page.goto(url + "/admin/appearance/settings/mercury")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(800)
+    snap("16-cms-mercury-settings")
+    page.uncheck("input[name='default_logo']")
+    page.wait_for_timeout(500)
+    page.set_input_files("input[name='files[logo_upload]']", str(LOGO16_GREEN))
+    # The box shows off on Drupal CMS though the page template is in use; saving it off switches the template off
+    # (a Canvas bug, issue-drafts/canvas-theme-settings-page-template.md). The book tells readers to check it.
+    page.check("input[name='use_canvas']")
+    page.wait_for_timeout(500)
+    scroll_to(page, "input[name='use_canvas']", 150)
+    page.mouse.move(700, 600)
+    snap("16-cms-mercury-logo")
+    cms_submit(page)
+    as_visitor(page, site, "/", "16-cms-mercury")
     composer(site, "require", "drupal/tara", "drupal/byte_theme")
     for theme in ["olivero", "tara", "byte_theme"]:
         theme_link(page, url, theme)
-        as_visitor(page, site, "/join", f"16-cms-{theme.replace('_theme', '')}")
+        as_visitor(page, site, "/", f"16-cms-{theme.replace('_theme', '')}")
+        if theme == "olivero":
+            as_visitor(page, site, "/hikes/turnhouse-hill", "16-cms-olivero-hike")
     theme_link(page, url, "mercury")
     themes16_cms_reset(site)
+    composer(site, "remove", "drupal/tara", "drupal/byte_theme")
+    cms_snapshot(site, "ch16-cms-done")
 
 
 def themes16_twig_steps(page: Page, site: dict, snap) -> None:
@@ -4011,10 +4151,20 @@ foreach (\\Drupal::entityTypeManager()->getStorage('path_alias')->loadMultiple()
 
 
 def seo17_cms_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 17 on Drupal CMS: Metatag defaults, a Basic page's SEO fields, Real-time SEO and the SEO Checklist."""
+    """Chapter 17 on Drupal CMS: core's patterns and aliases, the renamed hike's redirect, Redirect 404, then Metatag
+    defaults, a Utility page's SEO fields, Real-time SEO and the SEO Checklist. From ch16-cms-done to ch17-cms-done."""
     url = site["url"]
-    seo17_cms_reset(site)
+    cms_restore(page, site, "ch16-cms-done")
+    cms_replay(site, "ch17_cleanup", "ch17_patterns")
     views_admin_shot(page, url, "/admin/config/search/path/patterns", "17-cms-patterns", full=False)
+    views_admin_shot(page, url, "/admin/config/search/path", "17-cms-aliases", full=False)
+    cms_replay(site, "ch17_rename")
+    views_admin_shot(page, url, "/admin/config/search/redirect", "17-cms-redirects", full=False)
+    for path in ["/hikes/arthurs-seat", "/gallery"]:
+        context = page.context.browser.new_context(ignore_https_errors=True)
+        context.new_page().goto(url + path)
+        context.close()
+    views_admin_shot(page, url, "/admin/config/search/redirect/404", "17-cms-404", full=False)
     views_admin_shot(page, url, "/admin/config/search/metatag", "17-cms-metatag", full=False)
     page.goto(url + "/admin/config/search/metatag/node")
     page.wait_for_load_state("networkidle")
@@ -4070,6 +4220,7 @@ echo $node->id();
     page.wait_for_load_state("networkidle")
     as_visitor(page, site, f"/node/{nid}", "17-cms-tips")
     views_admin_shot(page, url, "/admin/config/search/seo-checklist", "17-cms-seo-checklist", full=False)
+    cms_snapshot(site, "ch17-cms-done")
 
 
 # Chapter 18: multilingual sites. The sequences restore a database snapshot taken when Chapter 17 was done.
@@ -4530,24 +4681,98 @@ def i18n18_people_steps(page: Page, site: dict, snap) -> None:
     snap("18-translations-lucia")
 
 
-CMS18_JOIN = {
-    "title": "Cómo unirse",
-    "card": "Cuándo y dónde",
-    "text": "<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p>"
-            "<p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail-cms.ddev.site.</p>"
-            "<p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>",
-    "card_text": "<p>Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen.</p>"
-                 "<p>Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith.</p>",
+CMS18_PAGES = {
+    "About the club": ES18_PAGES["About the club"] + ("Un club de fotografía y senderismo en Edimburgo: quiénes somos y cuándo nos reunimos.",),
+    "How to join": ES18_PAGES["How to join"] + ("Cómo hacerse miembro de Lens & Trail y cuánto cuesta.",),
+    "Privacy policy": ("Política de privacidad", "/privacidad", ES18_PAGES["Privacy"][2], "Qué datos guarda Lens & Trail, y para qué."),
 }
+CMS18_LINKS = {"Home": "Inicio", "About": "Nosotros", "Join us": "Únete", "Hike archive": "Archivo de excursiones",
+               "Privacy policy": "Política de privacidad", "Upcoming hikes (RSS)": "Próximas excursiones (RSS)"}
+# Core's configuration translations, with Drupal CMS's field names; Drupal CMS has no blocks in Block layout.
+CMS18_CONFIG = [(n, k, v.replace("field_body", "field_content") if isinstance(v, str) else v) for n, k, v in ES18_CONFIG
+                if not n.startswith(("block.", "field.field.block_content."))]
+CMS18_CONFIG = [(n.replace("field_body", "field_content"), k, v) for n, k, v in CMS18_CONFIG]
+# What core's chapter types into the Hikes view's translation form (i18n18_config_steps).
+CMS18_CONFIG += [("views.view.hikes", "display.default.display_options.title", "Próximas excursiones"),
+                 ("views.view.hikes", "display.page_1.display_options.menu.title", "Excursiones")]
 
 
-def i18n18_cms_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 18 on Drupal CMS: Spanish, Canvas pages made translatable, and How to join translated in Canvas Translate."""
+def cms18_translate_background(site: dict) -> None:
+    """Translates the club's content on Drupal CMS, as i18n18_translate_background does on core, except Arthur's Seat
+    by night (Lucía's) and the Canvas pages (Canvas Translate)."""
+    data = {"pages": CMS18_PAGES, "hikes": ES18_HIKES, "nodes": ES18_OTHER_NODES, "terms": ES18_TERMS,
+            "media": ES18_MEDIA, "links": CMS18_LINKS}
+    i18n18_php(site, r"""
+$etm = \Drupal::entityTypeManager();
+$copy = function ($e) {
+  $values = [];
+  foreach ($e->getTranslatableFields(FALSE) as $name => $f) { $values[$name] = $f->getValue(); }
+  foreach (['langcode', 'default_langcode', 'content_translation_source', 'content_translation_outdated', 'revision_translation_affected', 'content_translation_uid', 'content_translation_status', 'content_translation_created', 'content_translation_changed'] as $k) { unset($values[$k]); }
+  return $values;
+};
+$tr = function ($e) use ($copy) {
+  if ($e->hasTranslation('es')) { return $e->getTranslation('es'); }
+  $t = $e->addTranslation('es', $copy($e));
+  $t->set('content_translation_source', 'en');
+  return $t;
+};
+$node = fn($title) => current($etm->getStorage('node')->loadByProperties(['title' => $title]));
+$publish = function ($t) { $t->set('moderation_state', 'published'); $t->save(); };
+$html = fn($body) => ['value' => $body, 'format' => 'content_format'];
+foreach ($data['pages'] as $title => [$es, $alias, $body, $description]) {
+  $t = $tr($node($title));
+  $t->set('title', $es); $t->set('field_content', $html($body)); $t->set('field_description', $description);
+  $t->set('path', ['alias' => $alias, 'pathauto' => 0]); $publish($t);
+}
+foreach ($data['hikes'] as $title => [$es, $place, $body]) {
+  $n = $node($title); $t = $tr($n);
+  $t->set('title', $es); $t->set('field_meeting_place', $place); $t->set('field_content', $html($body));
+  // The Turnhouse hike keeps a short address, by hand, as in English.
+  $t->set('path', $title == 'Turnhouse Hill and Carnethy Hill' ? ['alias' => '/excursiones/turnhouse-hill', 'pathauto' => 0] : ['pathauto' => 1]);
+  $publish($t);
+}
+foreach ($data['nodes'] as $title => [$es, $body]) {
+  $t = $tr($node($title));
+  $t->set('title', $es); $t->set('field_content', $html($body)); $t->set('path', ['pathauto' => 1]); $publish($t);
+}
+foreach ($data['terms'] as $name => [$es, $desc]) {
+  $term = current($etm->getStorage('taxonomy_term')->loadByProperties(['name' => $name]));
+  $t = $tr($term); $t->setName($es); $t->set('path', ['pathauto' => 1]);
+  if ($desc) { $t->setDescription($desc); $t->setFormat('content_format'); }
+  $t->save();
+}
+foreach ($data['media'] as $name => [$es, $alt]) {
+  foreach ($etm->getStorage('media')->loadByProperties(['name' => $name]) as $m) {
+    $t = $tr($m); $t->setName($es); $t->get('field_media_image')->alt = $alt; $t->save();
+  }
+}
+foreach ($data['links'] as $title => $es) {
+  $l = current($etm->getStorage('menu_link_content')->loadByProperties(['title' => $title]));
+  $t = $tr($l); $t->set('title', $es); $t->save();
+}
+""", data)
+
+
+def cms18_config_background(site: dict) -> None:
+    i18n18_php(site, r"""
+foreach ($data as [$name, $key, $value]) {
+  if (\Drupal::config($name)->isNew()) { continue; }
+  \Drupal::languageManager()->getLanguageConfigOverride('es', $name)->set($key, $value)->save();
+}
+""", CMS18_CONFIG)
+    drush(site, "cache:rebuild")
+
+
+def cms18_setup(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on Drupal CMS, up to Canvas Translate: the modules and Spanish, what can be translated (Canvas pages
+    in the form), the language switcher in the page template, Spanish patterns and aliases, the club's content and
+    configuration in Spanish, the views, and Lucía the translator."""
     url = site["url"]
-    i18n18_restore(site, page)
+    cms_restore(page, site, "ch17-cms-done")
     drush(site, "pm:enable", "-y", "language", "locale", "content_translation", "config_translation", "canvas_translate")
     drush(site, "language:add", "es")
     drush(site, "cache:rebuild")
+    cms_replay(site, "ch18_translatable")
     # Canvas pages, and their fields, translatable.
     page.goto(url + "/admin/config/regional/content-language")
     page.wait_for_load_state("networkidle")
@@ -4569,38 +4794,138 @@ def i18n18_cms_steps(page: Page, site: dict, snap) -> None:
         drush(site, "php:script", "remove-empty-heading-links.php")
     finally:
         script.unlink()
-    drush(site, "cache:rebuild")
-    # The dashboard.
-    page.goto(url + "/canvas/app/canvas_translate")
+    # The language switcher, in the Navbar's CTAs slot of the page template.
+    cv_template(page)
+    cv_drop(page, "Language switcher", "CTAs")
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+    page.get_by_text("Language switcher", exact=True).first.click()
+    page.wait_for_timeout(2000)
+    page.click("[data-testid='scale-to-fit']")
+    page.wait_for_timeout(2000)
+    snap("18-cms-switcher")
+    cv_publish(page)
+    cms_replay(site, "ch18_patterns")
+    cms18_translate_background(site)
+    i18n18_views_background(site)
+    cms18_config_background(site)
+    cms_replay(site, "ch18_translator")
+    # Drupal CMS's front page is the alias /home, which only exists in English, so /es was "Page not found". The
+    # system path works in every language.
+    page.goto(url + "/admin/config/system/site-information")
     page.wait_for_load_state("networkidle")
-    frame = page.frame_locator("iframe").first
-    frame.locator("[title^='Translate “How to join”']").wait_for()
-    page.wait_for_timeout(1500)
-    snap("18-cms-translate-dashboard")
-    # The editor: source on the left, Spanish on the right.
-    frame.locator("[title^='Translate “How to join”']").click()
-    targets = frame.locator("textarea[placeholder^='Add translation']")
-    targets.first.wait_for()
-    page.wait_for_timeout(1500)
-    # The plain-text targets, in order: page title, meta description, heading, icon name, card heading.
-    targets.nth(0).fill(CMS18_JOIN["title"])
-    targets.nth(2).fill(CMS18_JOIN["title"])
-    editors = frame.locator(".ck-editor__editable")
-    editors.nth(0).evaluate("(e, html) => e.ckeditorInstance.setData(html)", CMS18_JOIN["text"])
-    page.wait_for_timeout(500)
-    targets.nth(4).fill(CMS18_JOIN["card"])
-    editors.nth(1).evaluate("(e, html) => e.ckeditorInstance.setData(html)", CMS18_JOIN["card_text"])
-    page.wait_for_timeout(3000)
+    page.fill("input[name='site_frontpage']", "/page/1")
+    scroll_to(page, "input[name='site_frontpage']", offset=200)
+    snap("18-cms-front-page")
+    cms_submit(page)
+    # Lucía's translation, as on core.
+    i18n18_php(site, r"""
+$n = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => $data[0]]));
+$t = $n->addTranslation('es', ['title' => $data[1], 'field_meeting_place' => $data[2], 'field_content' => $n->get('field_content')->getValue(),
+  'uid' => current(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'lucia']))->id()]);
+$t->set('content_translation_source', 'en'); $t->set('path', ['pathauto' => 1]); $t->set('moderation_state', 'published'); $t->save();
+""", ES18_LUCIA)
+    drush(site, "cache:rebuild")
+    cms_snapshot(site, "ch18-cms-setup")
+
+
+CMS18_WELCOME = {
+    "Welcome to Lens & Trail": "Te damos la bienvenida a Lens & Trail",
+    "We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them.":
+        "Somos un club de fotografía y senderismo en Edimburgo. Caminamos, tomamos fotos y las compartimos.",
+    "How to join": "Cómo unirse",
+    "internal:/join": "internal:/unete",
+    "calendar-dots": "calendar-dots",
+    "When and where": "Cuándo y dónde",
+}
+CMS18_WELCOME_RICH = [
+    "<p>Nos reunimos dos veces al mes: una para hacer una excursión por las Pentland Hills, por la costa o más lejos, en "
+    "las Highlands, y otra en un café de Leith para ver las fotos de todos.</p>"
+    "<p>Lee más <a href=\"/es/sobre-el-club\">sobre el club</a>, o descubre <a href=\"/es/unete\">cómo unirte</a>.</p>",
+    "<p>Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes "
+    "vienen.</p><p>Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de "
+    "Leith.</p>",
+]
+CMS18_TEMPLATE = {"Join the club": "Únete al club", "How to join": "Cómo unirse", "internal:/join": "internal:/unete"}
+CMS18_TEMPLATE_RICH = [
+    "<p><strong>Excursiones:</strong> un sábado sí y otro no, a las 9:30.<br><strong>Tardes de fotografía:</strong> el "
+    "primer jueves de cada mes a las 19:00, en un café de Leith.</p>"
+    "<p><a href=\"mailto:hello@lens-and-trail.ddev.site\">hello@lens-and-trail.ddev.site</a> · Síguenos en "
+    "<a href=\"https://www.flickr.com/groups/lens-and-trail/\">Flickr</a></p>",
+    "<p>Siempre damos la bienvenida a nuevos miembros, traigas cámara, botas o las dos cosas. La cuota es de 20 £ al "
+    "año, 10 £ para estudiantes.</p>",
+]
+
+
+def ct_frame(page: Page):
+    """Canvas Translate runs in an iframe inside Canvas."""
+    return next(f for f in page.frames if "canvas_translate/extension" in f.url)
+
+
+def ct_open(page: Page, title: str, snap=None):
+    page.goto(site_of(page)["url"] + "/canvas/app/canvas_translate")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(6000)
+    if snap:
+        snap("18-cms-translate-dashboard")
+    frame = next(f for f in page.frames if f.locator(f"[title^='Translate “{title}”']").count())
+    frame.locator(f"[title^='Translate “{title}”']").first.click()
+    page.wait_for_timeout(8000)
+    return ct_frame(page)
+
+
+def ct_fill(frame, texts: dict, rich: list) -> None:
+    """Types each translation into the box next to its English text, and the rich texts into the editors, in order."""
+    for source, value in texts.items():
+        # The same English text can be in several fields (the page's title and the hero's heading): fill them all.
+        found = frame.evaluate("""s => { const all = [...document.querySelectorAll('textarea')]; let n = 0;
+            all.forEach((e, i) => { if (e.value === s && e.placeholder === 'Empty') {
+              all.slice(i + 1).find(t => t.placeholder.startsWith('Add translation')).setAttribute('data-ct', '1'); n++; } });
+            return n; }""", source)
+        assert found, source
+        for _ in range(found):
+            box = frame.locator("[data-ct='1']").first
+            box.fill(value)
+            box.press("Tab")
+            box.evaluate("e => e.removeAttribute('data-ct')")
+            frame.page.wait_for_timeout(700)
+    for n, html in enumerate(rich):
+        frame.evaluate("([n, h]) => document.querySelectorAll('.ck-editor__editable')[n].ckeditorInstance.setData(h)", [n, html])
+        frame.locator(".ck-editor__editable").nth(n).click()
+        frame.page.keyboard.press("End")
+        frame.page.wait_for_timeout(1500)
+    frame.page.wait_for_timeout(2000)
+
+
+def cms18_canvas(page: Page, site: dict, snap) -> None:
+    """The Welcome page and the page template in Canvas Translate."""
+    frame = ct_open(page, "Welcome to Lens & Trail", snap)
+    ct_fill(frame, CMS18_WELCOME, CMS18_WELCOME_RICH)
+    frame.evaluate("() => { window.scrollTo(0, 0); document.querySelectorAll('*').forEach(e => { if (e.scrollTop) e.scrollTop = 0; }); }")
+    page.wait_for_timeout(1000)
     snap("18-cms-translate-editor")
-    # Review and publish.
     frame.get_by_text("Review & publish").click()
-    page.wait_for_timeout(2500)
-    frame.locator("tr:has-text('How to join') button[role='checkbox'], tr:has-text('How to join') input[type='checkbox']").first.click()
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(3000)
     snap("18-cms-translate-review")
-    frame.get_by_text("Publish selected").click()
-    page.wait_for_timeout(4000)
-    as_visitor(page, site, "/es/join", "18-cms-es-join", width=1440)
+    frame.get_by_text("Publish all").click()
+    page.wait_for_timeout(5000)
+    frame = ct_open(page, "Mercury theme")
+    ct_fill(frame, CMS18_TEMPLATE, CMS18_TEMPLATE_RICH)
+    frame.get_by_text("Heading", exact=True).last.scroll_into_view_if_needed()
+    snap("18-cms-translate-template")
+    frame.get_by_role("button", name="Publish").first.click()
+    page.wait_for_timeout(5000)
+    drush(site, "cache:rebuild")
+    as_visitor(page, site, "/es", "18-cms-es-front")
+    as_visitor(page, site, "/es/excursiones/turnhouse-hill", "18-cms-es-hike")
+    cms_snapshot(site, "ch18-cms-done")
+
+
+def cms18_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 18 on Drupal CMS: everything core translates, then the Welcome page and the page template in Canvas
+    Translate. From ch17-cms-done to ch18-cms-done."""
+    cms18_setup(page, site, snap)
+    cms18_canvas(page, site, snap)
 
 
 # Chapter 19: the prompts, as the chapter prints them. The answers differ from run to run.
@@ -5717,6 +6042,11 @@ SEQUENCES = [
     ("cms", cms_modules_steps, 1280, ["11-cms-pb-install", "11-cms-pb-installed", "11-cms-diff", "11-cms-gallery-comments", "11-cms-devel-generate", "11-cms-generated"]),
     ("cms", cms12_steps, 1600, ["12-cms-hikes", "12-cms-canvas-blocks", "12-cms-front-page", "12-cms-galleries"]),
     ("cms", cms13_steps, 1600, ["13-cms-photo-credits", "13-cms-page-template", "13-cms-albums-from-hike", "13-cms-term-depth", "13-cms-archive"]),
+    ("cms", cms14_steps, 1600, ["14-cms-page-template", "14-cms-main-menu", "14-cms-footer-menu", "14-cms-footer-template", "14-cms-footer", "14-cms-easy-breadcrumb"]),
+    ("cms", cms15_steps, 1440, ["15-cms-roles", "15-cms-permissions-transitions", "15-cms-login", "15-cms-register", "15-cms-people", "15-cms-leader-draft", "15-cms-secretary-publish"]),
+    ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury-logo", "16-cms-mercury", "16-cms-olivero", "16-cms-olivero-hike", "16-cms-tara", "16-cms-byte"]),
+    ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-aliases", "17-cms-redirects", "17-cms-404", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
+    ("cms", cms18_steps, 1440, ["18-cms-content-language", "18-cms-switcher", "18-cms-front-page", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-translate-template", "18-cms-es-front", "18-cms-es-hike"]),
     ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-search-box", "22-autocomplete"]),
     ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
     ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
@@ -5726,24 +6056,19 @@ SEQUENCES = [
     ("d11", safe20_d11_steps, 1280, ["20-d11-available-updates", "20-d11-upgrade-status"]),
     ("cms", ai19_anthropic_steps, 1440, ["19-cms-anthropic", "19-cms-ai-settings", "19-cms-anthropic-chatbot-tags", "19-cms-anthropic-page"]),
     ("cms", ai19_cms_steps, 1440, ["19-cms-recommended", "19-cms-provider", "19-cms-ai-dashboard", "19-cms-chatbot-consent", "19-cms-chatbot-tags", "19-cms-tags", "19-cms-chatbot-field", "19-cms-media-fields", "19-cms-alt-settings", "19-cms-alt-consent", "19-cms-alt-generated", "19-cms-canvas-ai-prompt", "19-cms-canvas-ai-page", "19-cms-canvas-ai-facts", "19-cms-review-changes", "19-cms-translate-ai"]),
-    ("cms", i18n18_cms_steps, 1440, ["18-cms-content-language", "18-cms-translate-dashboard", "18-cms-translate-editor", "18-cms-translate-review", "18-cms-es-join"]),
     ("core", i18n18_setup_steps, 1280, ["18-extend", "18-add-language", "18-languages", "18-detection", "18-url-prefixes", "18-switcher-block", "18-es-front-interface", "18-content-language", "18-pattern-es", "18-patterns", "18-translations-about", "18-translate-about", "18-translate-hike", "18-aliases", "18-content"]),
     ("core", i18n18_views_steps, 1280, ["18-es-hikes-twice", "18-views-default-translation", "18-views-rendering-language", "18-es-hikes"]),
     ("core", i18n18_config_steps, 1280, ["18-config-translation", "18-translate-view", "18-interface-translation", "18-es-front", "18-es-hike", "18-es-join"]),
     ("core", i18n18_people_steps, 1280, ["18-translator-permissions", "18-lucia-translate", "18-translations-lucia"]),
-    ("cms", seo17_cms_steps, 1440, ["17-cms-patterns", "17-cms-metatag", "17-cms-metatag-node", "17-cms-social-style", "17-cms-seo-fields", "17-cms-realtime-seo", "17-cms-tips", "17-cms-seo-checklist"]),
     ("core", seo17_steps, 1280, ["17-extend", "17-token-browser", "17-pattern-hike", "17-pattern-areas", "17-patterns", "17-pathauto-settings", "17-bulk", "17-aliases", "17-term-alias", "17-hike-alias", "17-redirects", "17-404", "17-sitemap-settings", "17-sitemap"]),
     ("core", themes16_twig_steps, 1280, ["16-development-settings"]),
-    ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury", "16-cms-olivero", "16-cms-tara", "16-cms-byte"]),
     ("core", themes16_steps, 1280, ["16-appearance", "16-stark", "16-appearance-solo", "16-solo", "16-solo-settings", "16-solo-blocks", "16-uninstall-solo", "16-olivero-global", "16-olivero-color", "16-olivero-logo", "16-olivero-club", "16-admin-theme", "16-default-admin-settings"]),
-    ("cms", cms_easy_breadcrumb_steps, 1440, ["14-cms-easy-breadcrumb"]),
     ("core", members15_steps, 1280, ["appendix-d-members-block", "appendix-d-members-access", "appendix-d-members-view", "appendix-d-members-page", "appendix-d-members-denied"]),
     ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),
     ("core", users15_captcha_steps, 1280, ["15-extend-captcha", "15-captcha-points", "15-register-captcha"]),
     ("core", users15_registration_steps, 1280, ["15-account-settings", "15-register", "15-register-done", "15-mailpit", "15-people-blocked", "15-activate", "15-unapproved", "15-bulk-role"]),
     ("core", users15_roles_steps, 1280, ["15-people", "15-add-role", "15-roles", "15-permissions-member", "15-permissions-transitions", "15-permissions-all", "15-add-user", "15-people-after"]),
     ("core", views2_album_count_steps, 1280, ["appendix-d-count-duplicates", "appendix-d-group-column", "appendix-d-album-count"]),
-    ("cms", cms_page_template_steps, 1440, ["14-cms-page-template"]),
     ("core", menus14_steps, 1280, ["14-menus", "14-main-menu", "14-add-link", "14-expanded", "14-dropdown", "14-footer-menu", "14-footer-menu-visitor", "14-breadcrumb"]),
     ("core", blocks14_content_steps, 1280, ["14-block-types", "14-club-info-fields", "14-add-club-info", "14-footer-top", "14-content-blocks", "14-visibility-roles", "14-sidebar-visitor", "14-footer"]),
     ("core", blocks14_steps, 1280, ["14-block-layout", "14-regions", "14-place-block", "14-configure-block", "14-visibility-pages", "14-sidebar"]),

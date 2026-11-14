@@ -1,6 +1,6 @@
 # Search
 
-%% Author: this chapter comes before *Search by Meaning* (23) and *Where Next?*, which becomes Chapter 24, and the patching appendix becomes Appendix C (the answers move to D). The renumbering waits until the chapter list is final (Backlog), so for now the chapter calls itself 22 and the appendix calls itself C, next to the old numbers. Screenshots are taken by `tools/screenshots.py 22`, from the finished sites. %%
+%% Author: this chapter comes before *Search by Meaning* (23) and *Where Next?* (24); the patching appendix is C and the answers are D (renumbered 2026-11-14). Screenshots are taken by `tools/screenshots.py 22`, from the finished sites. %%
 
 A visitor lands on the club's site with one thing in mind: "that walk by the reservoir". She doesn't know it's called *Glencorse Reservoir winter loop*, and she doesn't know whether it's under Hikes, the hike archive, or an album. She looks for a search box. Lens & Trail doesn't have one.
 
@@ -419,9 +419,9 @@ You can now:
 2. Make the text for no results more helpful: add a link to the hike archive (`/hikes/archive`) for visitors who were looking for a hike, and translate the text into Spanish.
 3. On the core site, switch to Spanish, and search for `embalse`, then for `embalses`. Explain both results with what this chapter says about stemming and partial matching. What would a Spanish visitor have to type to find the hike if the server matched whole words only?
 4. *(challenge)* Make a second block for the Search view, **Search hikes only**, for the hikes page: the box searches only hikes, and the results page shows only hikes. Which filter goes where? Does it need a page display of its own?
-5. *(advanced)* Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it? (The answer is in Appendix C.)
+5. *(advanced)* Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it? (The answer is in Appendix D.)
 
-%% Author: Exercise 5's answer is in `appendix-c-answers-to-the-advanced-exercises.md`. When the renumbering happens, its "(The answer is in Appendix C.)" becomes D. %%
+%% Author: Exercise 5's answer is in `appendix-d-answers-to-the-advanced-exercises.md`. %%
 
 ## Want to know more?
 

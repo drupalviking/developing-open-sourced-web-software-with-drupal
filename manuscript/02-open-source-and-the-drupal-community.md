@@ -12,7 +12,7 @@ In this chapter we look at:
 - Why you'd choose open source software, and the honest trade-offs.
 - Who makes Drupal: the people, the companies, and the Drupal Association.
 
-There's no hands-on work in this chapter. We start building in Chapter 4. How *you* can take part in the community is the topic of Chapter 22, at the end of the book, once you know your way around.
+There's no hands-on work in this chapter. We start building in Chapter 4. How *you* can take part in the community is the topic of Chapter 24, at the end of the book, once you know your way around.
 
 ## What is open source?
 
@@ -173,7 +173,7 @@ The Drupal Association doesn't decide what goes into Drupal. That's the work of 
 
 Drupal CMS, the product we met in Chapter 1, is made the same way. It started in 2024 as an initiative called *Starshot*, and it's built by a team of contributors from many companies, in public, on drupal.org, like everything else.
 
-> **Note:** You'll hear the Drupal motto again and again: **"Come for the code, stay for the community."** It's the line on the front page of a new Drupal site, too (look at Figure 1.1). We get to how you can be part of that community in Chapter 22.
+> **Note:** You'll hear the Drupal motto again and again: **"Come for the code, stay for the community."** It's the line on the front page of a new Drupal site, too (look at Figure 1.1). We get to how you can be part of that community in Chapter 24.
 
 ## Summary
 

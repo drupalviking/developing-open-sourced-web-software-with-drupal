@@ -41,9 +41,11 @@ We start with the big picture, and then build a site, one piece at a time.
 - **Chapter 19, AI in Drupal CMS**, looks at what AI tools can, and can't, do for a site builder.
 - **Chapter 20, Keeping Your Site Safe**, covers updates, security advisories, and backups.
 - **Chapter 21, Configuration and Going Live**, moves your settings from one copy of the site to another, and goes through what to check when the site goes live on a real server.
-- **Chapter 22, Where Next?**, shows how to get involved in the community, and where to go from here.
+- **Chapter 22, Search**, gives the site a search box that finds pages by their words, with filters to narrow the results down.
+- **Chapter 23, Search by Meaning**, uses AI on Drupal CMS to find hikes by what a visitor means, not only the words they type.
+- **Chapter 24, Where Next?**, shows how to get involved in the community, and where to go from here.
 
-There are two appendices. **Appendix A, Development Tools**, explains the tools we use to run Drupal on our own computers (Docker, DDEV, Lando, editors, Git). **Appendix B, How Drupal Is Built**, looks under the hood, at the software Drupal is built from, for those who are curious.
+There are four appendices. **Appendix A, Development Tools**, explains the tools we use to run Drupal on our own computers (Docker, DDEV, Lando, editors, Git). **Appendix B, How Drupal Is Built**, looks under the hood, at the software Drupal is built from, for those who are curious. **Appendix C, Patching a Contributed Module**, shows how to use a fix from a module's issue queue before it's released. **Appendix D, Answers to the Advanced Exercises**, has our answers to the exercises that go a step beyond their chapter.
 
 ## The site we build
 

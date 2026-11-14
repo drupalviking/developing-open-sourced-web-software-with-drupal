@@ -1,6 +1,6 @@
 # Where Next?
 
-Twenty-one chapters ago, Lens & Trail was an idea: a small club in Edinburgh that wanted a place for its hikes and its photos. Now it has a site, in two languages, with hikes, albums, news, members, roles, nice addresses, backups, and a plan for going live. And you built it.
+Twenty-three chapters ago, Lens & Trail was an idea: a small club in Edinburgh that wanted a place for its hikes and its photos. Now it has a site, in two languages, with hikes, albums, news, members, roles, nice addresses, a search box, backups, and a plan for going live. And you built it.
 
 This last chapter has no new screens on the club's site. It's about what comes after the book: the people behind Drupal, and how you can be one of them. Chapter 2 told you who makes Drupal. Here we show you how you can take part, even if you never write a line of code, with a real example from the writing of this book. Then we look at where to learn more, where Drupal skills can take you, and what the club could build next.
 
@@ -62,6 +62,8 @@ A good issue has a clear title, and a summary that a stranger can follow. Drupal
 
 We posted it as [issue #NNNNNNN](https://www.drupal.org/project/drupal/issues/NNNNNNN), *Purging a deleted field removes the schema data of a new field with the same name*, in the *field system* part of core, as a **Bug report** with **Normal** priority, and linked it to the issue from 2016.
 
+%% For the author: post the issue (draft and patch in ~/websites/open-university/drupal-core-dev/), then replace NNNNNNN above and in Want to know more. Core takes code as merge requests from an issue fork, not patch files: open the MR from the issue. A screenshot of the issue page would fit here: drupal.org shows our screenshot script a CAPTCHA, so it has to be taken by hand (images/24-issue.png). %%
+
 ### What happens next
 
 An issue moves through **statuses**, which you can see at the top of every issue, and filter by in every queue:
@@ -74,13 +76,13 @@ An issue moves through **statuses**, which you can see at the top of every issue
 
 There are other endings too: **Closed (duplicate)** if it was reported before, **Closed (works as designed)** if it isn't a bug after all, **Postponed** if it waits for something else. None of them is a failure: they all save somebody's time.
 
-This can take days or years, depending on how many people care about the issue and how risky the change is. When it's fixed, everyone who helped gets **credit** on drupal.org (Chapter 2): not only whoever wrote the code, but the people who reported it, tested it, and commented usefully. 
+This can take days or years, depending on how many people care about the issue and how risky the change is. When it's fixed, everyone who helped gets **credit** on drupal.org (Chapter 2): not only whoever wrote the code, but the people who reported it, tested it, and commented usefully. %% For the author: update this story with what actually happened to the issue before publication. %%
 
 > **Note:** Security holes are the one exception to "report it in the queue". Never post them in public: report them to the security team, which works in private until a fix is out (Chapter 20).
 
 > **Try it:** Look at a queue. Go to the Pathauto project page (Chapter 17), and select **All issues** in the box on the right. You'll see the queue, with a filter at the top. Set **Status** to **Needs review**, and open one of the issues. Read the summary and the comments: what's the problem, who proposed the fix, and what did the reviewers say?
 >
-> 
+> %% For the author: a screenshot of Pathauto's queue filtered by Needs review (images/24-queue.png), taken by hand. %%
 
 ### Your first contribution
 
@@ -104,9 +106,9 @@ The community is at its best in person, and there's an event for every size:
 
 - **Meetups**: an evening, often in a pub or at a company's office, once a month. Edinburgh has one, *Drupal Drinks*: the club's webmaster could go along.
 - **DrupalCamps**: one to three days, run by volunteers in a city or a country, with talks, often a contribution day, and tickets that cost little.
-- **DrupalCon**: the big ones, run with the Drupal Association, with thousands of people. The next DrupalCon Europe is in Edinburgh, 25 to 28 October 2027, in the club's own city. Lens & Trail could lead a walk up Arthur's Seat for the attendees. :-)
+- **DrupalCon**: the big ones, run with the Drupal Association, with thousands of people. The next DrupalCon Europe is in {{ number:next_drupalcon_europe }}, in the club's own city. Lens & Trail could lead a walk up Arthur's Seat for the attendees. :-)
 - **Contribution days**: a day of working on issues together, usually the last day of a DrupalCon or a camp, with **mentors** who help first-timers with everything from making an account to their first merge request. If you go to one event in your life, go to the contribution day.
-- **Drupal in a Day**: a free workshop for students and newcomers, at DrupalCons and camps, where you build a site in a day. It's run by the **Drupal Open University Initiative**, which is also behind this book and the teaching of Drupal at universities. 
+- **Drupal in a Day**: a free workshop for students and newcomers, at DrupalCons and camps, where you build a site in a day. It's run by the **Drupal Open University Initiative**, which is also behind this book and the teaching of Drupal at universities. %% For the author: name the co-presenters here later (and in the Preface's acknowledgments). A link to the Initiative, if it has a page? %%
 
 drupal.org's [events page](https://www.drupal.org/community/events) lists them all, and you can search it by place and type.
 
@@ -165,6 +167,8 @@ A club never stops having ideas, though. Here are a few the club could ask for n
 - **A shop**: calendars and prints of the members' photos. **Drupal Commerce** is a whole shop, built from Drupal's own pieces: products are entities, with fields.
 
 You know how to find each of these now (Chapter 11), how to judge them, and how to check whether they support your Drupal version. They're all big, well-kept modules with many sites using them, and their Drupal 12 releases are expected soon after Drupal 12 itself; check the project page all the same, as Chapter 20 showed. Whichever you pick, you'll recognize the pieces: content types, fields, views, roles, and configuration that moves from your computer to the live site.
+
+%% For the author: Webform 6.3.1, Registration 3.4.9, Group 3.3.5, Simplenews 4.1.3 and Commerce 3.3.14 require ^10.3 || ^11 (Simplenews ^10 || ^11); Flag 5.2.0 requires ^10.3 || ^11 || ^12 (2026-11-07). The author expects Drupal 12 releases very soon; check before publication, and drop the sentence about it once they're out. %%
 
 ## Summary
 

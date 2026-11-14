@@ -1,4 +1,4 @@
-# Appendix C: Answers to the Advanced Exercises
+# Appendix D: Answers to the Advanced Exercises
 
 Most exercises in this book have more than one good answer, and you'll learn the most by trying them before you look. But the exercises marked *(advanced)* go a step further than their chapter, and we don't want to leave you stuck. Here are our answers, with the reasons behind them. If you found another way that works, it's probably fine: in Drupal, there usually is more than one.
 
@@ -31,22 +31,22 @@ Give the attachment the same exposed filter, and let it take the visitor's choic
 4. Add the filter **Difficulty (field_difficulty)** for **This attachment (override)**, and turn on **Expose this filter to visitors, to allow them to change it**, with the **Label** `Difficulty`, as you did on the page in Chapter 12. Its **Filter identifier** must be the same as the page's, `field_difficulty_value`: that's how the attachment recognizes the visitor's choice.
 5. Under **Pager**, select **10 items**, set **Items to display** to `1`, and select **Apply**.
 
-![The Next hike attachment of the Hikes view: Attach to Page, Attachment position Before, Inherit contextual filters Yes, Inherit exposed filters Yes, and the filters Published, Content type Hike, Date (>= now) and Difficulty (exposed), in italics because they're overridden](images/appendix-c-next-hike-attachment.png)
-*Figure C.1: An attachment that listens to the page's exposed filter*
+![The Next hike attachment of the Hikes view: Attach to Page, Attachment position Before, Inherit contextual filters Yes, Inherit exposed filters Yes, and the filters Published, Content type Hike, Date (>= now) and Difficulty (exposed), in italics because they're overridden](images/appendix-d-next-hike-attachment.png)
+*Figure D.1: An attachment that listens to the page's exposed filter*
 
 An attachment never shows an exposed form of its own, so visitors still see one **Difficulty** select: the page's. **Inherit exposed filters** passes its value on.
 
 6. Select the **Page** display. Under **Pager**, select **Mini**, set **For** to **This page (override)**, keep **Paged output, mini pager**, and select **Apply (this display)**. In the pager options, set **Offset (number of items to skip)** to `1`, and select **Apply**.
 
-![The Pager options of the Page: Items per page 10, Offset 1, Pager ID 0, and the pager link labels](images/appendix-c-offset.png)
-*Figure C.2: The page skips the hike the attachment shows*
+![The Pager options of the Page: Items per page 10, Offset 1, Pager ID 0, and the pager link labels](images/appendix-d-offset.png)
+*Figure D.2: The page skips the hike the attachment shows*
 
 We override the pager for the page only: **Page 2** and **Page 3**, the member's hikes and the archive, share the same pager, and they shouldn't skip anything.
 
 7. **Save** the view, and choose *Easy* on `/hikes`.
 
-![The Upcoming hikes page with Easy chosen in the Difficulty filter: North Berwick Law and the harbour first, in the attachment, then Glencorse Reservoir loop in the list](images/appendix-c-easy.png)
-*Figure C.3: The next easy hike first, then the other easy hikes*
+![The Upcoming hikes page with Easy chosen in the Difficulty filter: North Berwick Law and the harbour first, in the attachment, then Glencorse Reservoir loop in the list](images/appendix-d-easy.png)
+*Figure D.3: The next easy hike first, then the other easy hikes*
 
 The attachment shows the next easy hike, and the list starts with the one after it. Without a filter, the attachment shows the next hike of any difficulty, and the list the rest.
 
@@ -77,8 +77,8 @@ Counting works as it did for the photographers: turn on aggregation, and count a
 
 Look at the preview:
 
-![The preview of the Albums view with aggregation on: Pentlands, 21 November four times, each with a different photo, photographer, the same hike and date, and Photos: 1](images/appendix-c-count-duplicates.png)
-*Figure C.4: Four rows for one album, each with one photo*
+![The preview of the Albums view with aggregation on: Pentlands, 21 November four times, each with a different photo, photographer, the same hike and date, and Photos: 1](images/appendix-d-count-duplicates.png)
+*Figure D.4: Four rows for one album, each with one photo*
 
 *Pentlands, 21 November* is back four times, as in "Too many rows" in Chapter 13, and each copy says **Photos: 1**. The count is right, in a way: each row has one photo.
 
@@ -95,15 +95,15 @@ Tell the **Photos** field to group by the album instead of the photo.
 4. Under **Fields**, select **Aggregation settings** next to **Content: Photos**. (Once aggregation is on, every field, sort and filter has this link.)
 5. Set **Group column** to **Entity ID**, and select **Apply**.
 
-![The dialog Configure aggregation settings for field Content: Photos: Aggregation type Group results together, Group column Entity ID, and the unchecked additional group columns Bundle, Language, Entity_type, Entity ID and Target_id](images/appendix-c-group-column.png)
-*Figure C.5: Group the first photo by its album, not by the photo*
+![The dialog Configure aggregation settings for field Content: Photos: Aggregation type Group results together, Group column Entity ID, and the unchecked additional group columns Bundle, Language, Entity_type, Entity ID and Target_id](images/appendix-d-group-column.png)
+*Figure D.5: Group the first photo by its album, not by the photo*
 
 **Entity ID** means the item the field belongs to: the album. All four rows of *Pentlands, 21 November* now have the same values in every grouped field, so they become one row, and the count adds up the photos. The field still shows the album's first photo, because it loads the album and shows its **Photos** as before, with **Display 1 value**.
 
 6. **Save** the view, and open `/galleries`.
 
-![The Albums page as a visitor sees it: Pentlands, 21 November with 4 photos and Edinburgh, 24 October with 1 photo, each with its first photo, photographer, hike and date](images/appendix-c-album-count.png)
-*Figure C.6: Every album with its number of photos*
+![The Albums page as a visitor sees it: Pentlands, 21 November with 4 photos and Edinburgh, 24 October with 1 photo, each with its first photo, photographer, hike and date](images/appendix-d-album-count.png)
+*Figure D.6: Every album with its number of photos*
 
 The **Albums from this hike** block on a hike's page uses the same fields, so it shows the number too.
 
@@ -128,8 +128,8 @@ But core can protect a *page*, rather than the content on it. A view's page has 
 1. On **Content** > **Blocks**, select **Add content block**, and choose **Basic block**.
 2. **Block description**: `Members' corner`. Write the text in **Body**.
 
-![The Add Basic block content block form: Block description Members' corner, and in Body: Photo evenings are in the back room of the Shore Café, 12 Water Street, Leith; the secretary's phone number for hike days; and the shared album for 2027; with Save and Save and configure buttons](images/appendix-c-members-block.png)
-*Figure C.7: The members' text, in a content block*
+![The Add Basic block content block form: Block description Members' corner, and in Body: Photo evenings are in the back room of the Shore Café, 12 Water Street, Leith; the secretary's phone number for hike days; and the shared album for 2027; with Save and Save and configure buttons](images/appendix-d-members-block.png)
+*Figure D.7: The members' text, in a content block*
 
 3. Select **Save**, not **Save and configure**: this block doesn't go in a region.
 
@@ -143,23 +143,23 @@ A content block has no page of its own that visitors can open. As long as nobody
 7. Next to **Show** under **Format**, select **Fields**, choose **Content block view mode**, select **Apply**, and keep the **Default** view mode. The block appears as it was written, not as a list of fields.
 8. Under **Page settings**, select **Permission** next to **Access**, choose **Role**, and select **Apply**. Check **Member**, and select **Apply**.
 
-![The Page: Access options dialog, with the roles Anonymous user, Authenticated user, Member (checked), Hike leader, Secretary, Content editor and Administrator, and the text Only the checked roles will be able to access this display.](images/appendix-c-members-access.png)
-*Figure C.8: Members only*
+![The Page: Access options dialog, with the roles Anonymous user, Authenticated user, Member (checked), Hike leader, Secretary, Content editor and Administrator, and the text Only the checked roles will be able to access this display.](images/appendix-d-members-access.png)
+*Figure D.8: Members only*
 
-![The Members' corner view: the title Members' corner, Format Unformatted list showing Content block view mode Default, the filters Published, Reusable and Block description (= Members' corner), the path /members, and Access: Role, Member](images/appendix-c-members-view.png)
-*Figure C.9: The whole view*
+![The Members' corner view: the title Members' corner, Format Unformatted list showing Content block view mode Default, the filters Published, Reusable and Block description (= Members' corner), the path /members, and Access: Role, Member](images/appendix-d-members-view.png)
+*Figure D.9: The whole view*
 
 The wizard added the filters **Published** and **Reusable** by itself; leave them.
 
 9. **Save** the view. Log in as Ailsa, a member, and open `/members`:
 
-![The Members' corner page as a member sees it: the title, and the text about the photo evenings, the secretary's phone number and the shared album](images/appendix-c-members-page.png)
-*Figure C.10: What members see*
+![The Members' corner page as a member sees it: the title, and the text about the photo evenings, the secretary's phone number and the shared album](images/appendix-d-members-page.png)
+*Figure D.10: What members see*
 
 In a private window, as a visitor:
 
-![The same address as a visitor sees it: Access denied, You are not authorized to access this page, with the Join the club block in the sidebar](images/appendix-c-members-denied.png)
-*Figure C.11: What everyone else sees*
+![The same address as a visitor sees it: Access denied, You are not authorized to access this page, with the Join the club block in the sidebar](images/appendix-d-members-denied.png)
+*Figure D.11: What everyone else sees*
 
 Lucía, before the administrator made her a member, would have seen the same: **Access denied** checks roles, not whether someone is logged in. Morag is a member as well as the secretary, so they see the page. Administrators, on the other hand, don't: a role check isn't a permission, so neither the Administrator role nor user 1 gets past it. Log in as `admin` and you get **Access denied** too. Check **Administrator** as well in step 8 if that's a problem.
 

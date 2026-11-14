@@ -539,8 +539,8 @@ display:
           preserve_facet_query_args: false
           query_tags: {  }
       relationships: {  }
-      link_display: custom_url
-      link_url: search
+      link_display: page_1
+      link_url: ''
       header:
         result:
           id: result

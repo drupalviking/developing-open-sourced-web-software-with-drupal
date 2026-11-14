@@ -1,0 +1,78 @@
+recipe: Search
+config:
+  -
+    name: core.entity_view_mode.node.search_index
+    data:
+      label: 'Search index'
+  -
+    name: eca.eca.search_exclude
+    data:
+      third_party_settings:
+        modeler_api:
+          label: 'Allow content to be excluded from search'
+          documentation: 'For new content types, allows editors to choose whether each item should be included in the search index.'
+      events:
+        build_form_7ig6xsh1:
+          label: 'Creating a content type in the UI'
+      actions:
+        form_field_set_default_value_5yg9r3c8:
+          label: 'Opt into Search API Exclude'
+  -
+    name: search_api.index.content
+    data:
+      name: Content
+      description: 'Can search within all content types.'
+  -
+    name: search_api.server.database
+    data:
+      name: Database
+      description: 'Uses database tables for indexing content.'
+  -
+    name: views.view.search
+    data:
+      label: Search
+      description: 'Displays search results.'
+      display:
+        default:
+          display_title: Default
+          display_options:
+            title: Search
+            fields:
+              title:
+                admin_label: '(Title) (node)'
+                separator: ', '
+              title_1:
+                admin_label: 'Title (Canvas page)'
+                separator: ', '
+            pager:
+              options:
+                tags:
+                  next: ››
+                  previous: ‹‹
+                  first: '« First'
+                  last: 'Last »'
+                expose:
+                  items_per_page_label: 'Items per page'
+                  items_per_page_options_all_label: '- All -'
+                  offset_label: Offset
+            exposed_form:
+              options:
+                submit_button: Search
+                reset_button_label: Reset
+                exposed_sorts_label: 'Sort by'
+                sort_asc_label: Asc
+                sort_desc_label: Desc
+                text_input_required: 'Enter keywords to search.'
+            empty:
+              area_text_custom:
+                content: '<p class="text-lg md:text-xl">There are no results for your search, please try another query.</p>'
+            filters:
+              search_api_fulltext:
+                expose:
+                  placeholder: 'Enter search keywords'
+            link_url: search
+            header:
+              result:
+                content: 'Displaying @start - @end of @total results'
+        search:
+          display_title: Block

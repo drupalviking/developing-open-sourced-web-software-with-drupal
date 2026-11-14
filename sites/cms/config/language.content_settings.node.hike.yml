@@ -1,0 +1,20 @@
+uuid: 148b3234-457a-47d7-bb46-aca0de7f7d3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hike
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '1'
+_core:
+  default_config_hash: VPCCzxEoyAi1mn060NgpvAl98OvOhjT1JPz9qWhrT4g
+id: node.hike
+target_entity_type_id: node
+target_bundle: hike
+default_langcode: site_default
+language_alterable: true

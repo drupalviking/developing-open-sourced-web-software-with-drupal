@@ -1,0 +1,24 @@
+uuid: f51dd97e-851a-41cd-a0d2-88228ddde0bd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body
+    - node.type.gallery
+  module:
+    - text
+_core:
+  default_config_hash: mWanCB6pflB3dv58j3Y9JpGJk77Kg44hcTrU7orA2WM
+id: node.gallery.field_body
+field_name: field_body
+entity_type: node
+bundle: gallery
+label: Description
+description: 'What the album is about: where and when, and anything worth knowing.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

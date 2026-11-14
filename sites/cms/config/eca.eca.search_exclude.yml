@@ -1,0 +1,45 @@
+uuid: 89cd9457-f09a-4bce-9500-ccd951b0f9f2
+langcode: en
+status: true
+dependencies:
+  module:
+    - eca_form
+    - modeler_api
+third_party_settings:
+  modeler_api:
+    modeler_id: workflow_modeler
+    data: 'hash:395ee9f3073ae5c7f8d1d0f1c3295ff1'
+    label: 'Allow content to be excluded from search'
+    documentation: 'For new content types, allows editors to choose whether each item should be included in the search index.'
+    version: 1.0.0
+_core:
+  default_config_hash: zevay6djSs67VM0WgxTUUFdPFO5g0ZVt1EpBw5gH0vk
+id: search_exclude
+weight: 0
+template: false
+events:
+  build_form_7ig6xsh1:
+    plugin: 'form:form_build'
+    label: 'Creating a content type in the UI'
+    configuration:
+      form_ids: node_type_add_form
+      entity_type_id: ''
+      bundle: ''
+      operation: ''
+    successors:
+      -
+        id: form_field_set_default_value_5yg9r3c8
+        condition: ''
+conditions: {  }
+gateways: {  }
+actions:
+  form_field_set_default_value_5yg9r3c8:
+    label: 'Opt into Search API Exclude'
+    plugin: eca_form_field_default_value
+    configuration:
+      value: '1'
+      field_name: search_api_exclude_enabled
+      strip_tags: false
+      trim: false
+      xss_filter: false
+    successors: {  }

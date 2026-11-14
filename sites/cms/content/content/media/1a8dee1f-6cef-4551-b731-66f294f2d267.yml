@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 1a8dee1f-6cef-4551-b731-66f294f2d267
+  bundle: image
+  default_langcode: en
+  depends:
+    b94b5cfb-42b3-46bf-8980-0afeebe34be1: file
+default:
+  mid:
+    -
+      value: 11
+  revision_created:
+    -
+      value: 1793888247
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'Glencorse Reservoir from the hillside'
+  created:
+    -
+      value: 1793888247
+  changed:
+    -
+      value: 1793888247
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees'
+      title: ''
+      width: 1728
+      height: 3072
+      entity: b94b5cfb-42b3-46bf-8980-0afeebe34be1
+  field_photographer:
+    -
+      value: 'Jaroslaw Musialkowski'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Pentland_Hills_-_Glencorse_Reservoir.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }

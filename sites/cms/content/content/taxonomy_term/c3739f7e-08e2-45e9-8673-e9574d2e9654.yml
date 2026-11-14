@@ -1,0 +1,93 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: c3739f7e-08e2-45e9-8673-e9574d2e9654
+  bundle: areas
+  default_langcode: en
+  depends:
+    e3032dc7-b244-4604-b8e0-ba1b0f6ce88c: taxonomy_term
+default:
+  tid:
+    -
+      value: 37
+  revision_created:
+    -
+      value: 1793891696
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Glencorse Reservoir'
+  weight:
+    -
+      value: 1
+  parent:
+    -
+      entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+  changed:
+    -
+      value: 1793891711
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/pentland-hills/glencorse-reservoir
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_created:
+    -
+      value: 1794645083
+translations:
+  es:
+    tid:
+      -
+        value: 37
+    revision_created:
+      -
+        value: 1793891696
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'Embalse de Glencorse'
+    weight:
+      -
+        value: 1
+    parent:
+      -
+        entity: e3032dc7-b244-4604-b8e0-ba1b0f6ce88c
+    changed:
+      -
+        value: 1793891711
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/pentland-hills/embalse-de-glencorse
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391

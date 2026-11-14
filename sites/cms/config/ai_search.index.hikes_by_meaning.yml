@@ -1,0 +1,24 @@
+index_id: hikes_by_meaning
+control_field_max_length: false
+exclude_chunk_from_metadata: false
+exclude_title: false
+indexing_options:
+  rendered_item:
+    indexing_option: main_content
+    max: -1
+  field_area:
+    indexing_option: attributes
+    max: -1
+  field_difficulty:
+    indexing_option: attributes
+    max: -1
+  title:
+    indexing_option: contextual_content
+    max: -1
+  langcode:
+    indexing_option: attributes
+    max: -1
+  field_date:
+    indexing_option: contextual_content
+    max: -1
+results_cache_mode: per_role

@@ -1,0 +1,21 @@
+uuid: 14cc3ab0-bf98-434e-a586-9b3a9e435720
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_photographer
+    - media.type.image
+_core:
+  default_config_hash: ApmE1sX-QYo3fWqp1ycWlP7Z5pZ-0aXbKjgdHz1glfg
+id: media.image.field_photographer
+field_name: field_photographer
+entity_type: media
+bundle: image
+label: Photographer
+description: "The photographer's name, as they want to be credited."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

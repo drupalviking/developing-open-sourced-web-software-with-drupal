@@ -1,0 +1,15 @@
+uuid: c1114569-292f-4af0-92ce-98773e316a5c
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: club_database
+name: 'Club database'
+description: ''
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 1
+  matching: prefix
+  phrase: bigram

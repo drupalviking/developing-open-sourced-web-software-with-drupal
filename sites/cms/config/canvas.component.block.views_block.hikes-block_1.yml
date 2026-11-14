@@ -1,0 +1,26 @@
+uuid: d3ded820-51be-455c-be71-811b33273a23
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.hikes
+  module:
+    - views
+active_version: 0198370114db4e0d
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:hikes-block_1'
+        label: 'Next hikes'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Next hikes'
+id: block.views_block.hikes-block_1
+provider: views
+source: block
+source_local_id: 'views_block:hikes-block_1'

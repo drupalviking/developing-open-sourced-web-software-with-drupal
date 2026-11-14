@@ -1,0 +1,150 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: afe7d2c7-31b3-4bb6-aa11-c88e279aec06
+  bundle: hike
+  default_langcode: en
+  depends:
+    c3739f7e-08e2-45e9-8673-e9574d2e9654: taxonomy_term
+    1a8dee1f-6cef-4551-b731-66f294f2d267: media
+default:
+  nid:
+    -
+      value: 22
+  revision_timestamp:
+    -
+      value: 1793979961
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Glencorse Reservoir winter loop'
+  created:
+    -
+      value: 1793956990
+  changed:
+    -
+      value: 1793979961
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/glencorse-reservoir-winter-loop
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: c3739f7e-08e2-45e9-8673-e9574d2e9654
+  field_body:
+    -
+      value: '<p>A gentle walk along the reservoir and back over the lower slopes, good for winter light on the water. A good first hike with the club.</p>'
+      format: content_format
+  field_date:
+    -
+      value: '2026-12-19T09:30:00'
+  field_difficulty:
+    -
+      value: easy
+  field_distance:
+    -
+      value: '9.0'
+  field_meeting_place:
+    -
+      value: 'Flotterstone car park'
+  field_photo:
+    -
+      entity: 1a8dee1f-6cef-4551-b731-66f294f2d267
+translations:
+  es:
+    nid:
+      -
+        value: 22
+    revision_timestamp:
+      -
+        value: 1793979961
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Vuelta invernal al embalse de Glencorse'
+    created:
+      -
+        value: 1793956990
+    changed:
+      -
+        value: 1793979961
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/vuelta-invernal-al-embalse-de-glencorse
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: c3739f7e-08e2-45e9-8673-e9574d2e9654
+    field_body:
+      -
+        value: '<p>Un paseo tranquilo junto al embalse, con vuelta por las laderas bajas; ideal para la luz de invierno sobre el agua. Una buena primera excursión con el club.</p>'
+        format: content_format
+    field_date:
+      -
+        value: '2026-12-19T09:30:00'
+    field_difficulty:
+      -
+        value: easy
+    field_distance:
+      -
+        value: '9.0'
+    field_meeting_place:
+      -
+        value: 'Estacionamiento de Flotterstone'
+    field_photo:
+      -
+        entity: 1a8dee1f-6cef-4551-b731-66f294f2d267

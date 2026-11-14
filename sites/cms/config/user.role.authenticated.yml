@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - ai_chatbot
     - coffee
     - contextual
     - file
@@ -22,6 +23,7 @@ permissions:
   - 'access coffee'
   - 'access content'
   - 'access contextual links'
+  - 'access deepchat api'
   - 'access navigation'
   - 'delete own files'
   - 'use klaro'

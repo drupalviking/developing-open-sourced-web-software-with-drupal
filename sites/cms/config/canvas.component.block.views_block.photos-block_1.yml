@@ -1,0 +1,26 @@
+uuid: b729f21a-30bb-4059-acfc-34443a0866d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.photos
+  module:
+    - views
+active_version: a043771f39d46820
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:photos-block_1'
+        label: 'Newest photos'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Newest photos'
+id: block.views_block.photos-block_1
+provider: views
+source: block
+source_local_id: 'views_block:photos-block_1'

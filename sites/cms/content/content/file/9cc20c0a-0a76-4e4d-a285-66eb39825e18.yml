@@ -1,0 +1,33 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 9cc20c0a-0a76-4e4d-a285-66eb39825e18
+  default_langcode: en
+default:
+  fid:
+    -
+      value: 15
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: carnethy-hill-views.jpg
+  uri:
+    -
+      value: 'public://2026-11/carnethy-hill-views_1.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 2421910
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793888247
+  changed:
+    -
+      value: 1793888249

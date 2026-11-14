@@ -1,33 +1,33 @@
 _meta:
   version: '1.0'
   entity_type: file
-  uuid: 2431260a-09be-452d-befd-e68828ef3566
+  uuid: 47dac82a-4d10-48c4-9772-e7d8cdb54cd4
   default_langcode: en
 default:
   fid:
     -
-      value: 12
+      value: 16
   uid:
     -
       target_id: 1
   filename:
     -
-      value: portobello-beach_12.jpg
+      value: carnethy-from-turnhouse.jpg
   uri:
     -
-      value: 'public://2026-11/portobello-beach_12.jpg'
+      value: 'public://2026-11/carnethy-from-turnhouse_1.jpg'
   filemime:
     -
       value: image/jpeg
   filesize:
     -
-      value: 132799
+      value: 590750
   status:
     -
-      value: false
+      value: true
   created:
     -
-      value: 1794062877
+      value: 1793888247
   changed:
     -
-      value: 1794062877
+      value: 1793888249

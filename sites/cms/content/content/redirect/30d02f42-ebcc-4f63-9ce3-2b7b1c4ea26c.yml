@@ -1,0 +1,34 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 30d02f42-ebcc-4f63-9ce3-2b7b1c4ea26c
+  bundle: redirect
+  default_langcode: es
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 1
+  hash:
+    -
+      value: ryA7DC9NQCQz1uH_jalzkvUNga_s2ornbbdmpxl6AzI
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: find-a-hike
+      query: {  }
+  redirect_redirect:
+    -
+      uri: 'internal:/buscar-excursion'
+      title: null
+      options: {  }
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794648851

@@ -1,0 +1,38 @@
+uuid: 4f4aa221-9eb5-4cf3-b1c3-c209061121cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+    - options
+_core:
+  default_config_hash: WEG7N6NSdyvLLHoQ4dCFVTbjrMz6Hc5DTTLfcWAvQYk
+id: media.field_license
+field_name: field_license
+entity_type: media
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: cc_by_sa_4_0
+      label: 'CC BY-SA 4.0'
+    -
+      value: cc_by_sa_2_0
+      label: 'CC BY-SA 2.0'
+    -
+      value: cc_by_4_0
+      label: 'CC BY 4.0'
+    -
+      value: cc0
+      label: CC0
+    -
+      value: all_rights_reserved_used_with_permission
+      label: 'All rights reserved, used with permission'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

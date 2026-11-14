@@ -48,6 +48,12 @@ default:
       alias: /taking-photos-hike
       langcode: en
       pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
   field_content:
     -
       value: '<p>Hiking photography is about travelling light and stopping often. Here are the tips we share with new members before their first hike with the club.</p><h2>Pack light</h2><p>One camera body and one zoom lens are enough for a day in the Pentland Hills. A phone is a fine second camera.</p><h2>Shoot the light</h2><p>Early starts give the best light on Glencorse Reservoir. On a grey day, look for details: frost on a gate, a burn in the snow.</p><h2>Keep up with the group</h2><p>Tell the hike leader when you stop for a photo, and catch up at the next gate.</p>'

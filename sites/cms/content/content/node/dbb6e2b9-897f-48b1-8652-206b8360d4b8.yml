@@ -1,0 +1,150 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: dbb6e2b9-897f-48b1-8652-206b8360d4b8
+  bundle: hike
+  default_langcode: en
+  depends:
+    29ced187-8540-4354-9ba0-e26175ed7471: taxonomy_term
+    6bb88330-cb85-437c-bb62-5aa907a2cb74: media
+default:
+  nid:
+    -
+      value: 21
+  revision_timestamp:
+    -
+      value: 1793984390
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Turnhouse Hill and Carnethy Hill'
+  created:
+    -
+      value: 1793876964
+  changed:
+    -
+      value: 1793979960
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/turnhouse-hill
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: 29ced187-8540-4354-9ba0-e26175ed7471
+  field_body:
+    -
+      value: '<p>Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy Hill, and come back down through the glen.</p><p>Bring boots, a waterproof jacket, something warm, lunch, your camera, and a head torch: it gets dark before five in November. The path is steep in places and can be muddy.</p>'
+      format: content_format
+  field_date:
+    -
+      value: '2026-11-21T09:30:00'
+  field_difficulty:
+    -
+      value: moderate
+  field_distance:
+    -
+      value: '11.5'
+  field_meeting_place:
+    -
+      value: 'Flotterstone car park'
+  field_photo:
+    -
+      entity: 6bb88330-cb85-437c-bb62-5aa907a2cb74
+translations:
+  es:
+    nid:
+      -
+        value: 21
+    revision_timestamp:
+      -
+        value: 1793984390
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Turnhouse Hill y Carnethy Hill'
+    created:
+      -
+        value: 1793984389
+    changed:
+      -
+        value: 1793984390
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/turnhouse-hill
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: 29ced187-8540-4354-9ba0-e26175ed7471
+    field_body:
+      -
+        value: '<p>Dos de las cumbres más conocidas de las Pentland Hills, con vistas sobre Edimburgo y el estuario del Forth en un día despejado. Subimos a ritmo constante desde Flotterstone hasta Turnhouse Hill, seguimos la cresta hasta Carnethy Hill y bajamos por el valle.</p><p>Trae botas, una chaqueta impermeable, algo de abrigo, comida, tu cámara y una linterna frontal: en noviembre oscurece antes de las cinco. El camino es empinado en algunos tramos y puede haber barro.</p>'
+        format: content_format
+    field_date:
+      -
+        value: '2026-11-21T09:30:00'
+    field_difficulty:
+      -
+        value: moderate
+    field_distance:
+      -
+        value: '11.5'
+    field_meeting_place:
+      -
+        value: 'Estacionamiento de Flotterstone'
+    field_photo:
+      -
+        entity: 6bb88330-cb85-437c-bb62-5aa907a2cb74

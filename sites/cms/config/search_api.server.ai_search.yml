@@ -1,0 +1,33 @@
+uuid: b4088867-8f8d-4491-b2e7-6f19c09f08f7
+langcode: en
+status: false
+dependencies:
+  config:
+    - ai_vdb_provider_pinecone.settings
+  module:
+    - ai_search
+    - ai_vdb_provider_pinecone
+id: ai_search
+name: 'AI search'
+description: ''
+backend: search_api_ai_search
+backend_config:
+  chat_model: anthropic__claude-haiku-5-5
+  database: pinecone
+  database_settings:
+    database_name: lens-and-trail
+    collection: content
+    metric: cosine_similarity
+  embeddings_engine: openai__text-embedding-3-small
+  embeddings_engine_configuration:
+    set_dimensions: false
+    dimensions: 1536
+  embedding_strategy: contextual_chunks
+  embedding_strategy_configuration:
+    chunk_size: '500'
+    embedding_collection_size: 50
+    chunk_min_overlap: '100'
+    contextual_content_max_percentage: '30'
+    skip_moderation: false
+  embedding_strategy_details: ''
+  include_raw_embedding_vector: false

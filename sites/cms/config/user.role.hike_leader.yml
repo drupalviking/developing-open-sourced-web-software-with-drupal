@@ -1,0 +1,27 @@
+uuid: bebefc41-6dc4-461f-8d4c-0507a669dacc
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hike
+    - workflows.workflow.basic_editorial
+  module:
+    - content_moderation
+    - navigation
+    - node
+    - system
+_core:
+  default_config_hash: mN0oNdxBR6pPm_aY-m1KJNARAAvW6uBhym-SGXCGiIg
+id: hike_leader
+label: 'Hike leader'
+weight: 3
+is_admin: false
+permissions:
+  - 'access content overview'
+  - 'access navigation'
+  - 'create hike content'
+  - 'edit own hike content'
+  - 'use basic_editorial transition create_new_draft'
+  - 'view latest version'
+  - 'view own unpublished content'
+  - 'view the administration theme'

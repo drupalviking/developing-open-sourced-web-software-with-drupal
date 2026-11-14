@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: d878c7e3-533c-40b8-95ee-cb1e36674e1f
+  bundle: image
+  default_langcode: en
+  depends:
+    c3875282-d263-4b2d-bbda-6cc0b2875622: file
+default:
+  mid:
+    -
+      value: 7
+  revision_created:
+    -
+      value: 1793888000
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: "Edinburgh's Old Town from Calton Hill"
+  created:
+    -
+      value: 1793888000
+  changed:
+    -
+      value: 1793888000
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  field_license:
+    -
+      value: cc_by_sa_2_0
+  field_media_image:
+    -
+      alt: "Edinburgh's Old Town and the castle seen from Calton Hill, with trees in front"
+      title: ''
+      width: 1600
+      height: 1089
+      entity: c3875282-d263-4b2d-bbda-6cc0b2875622
+  field_photographer:
+    -
+      value: 'Jim Barton'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Edinburgh_skyline_from_Calton_Hill_-_geograph.org.uk_-_7467002.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }

@@ -1,0 +1,31 @@
+uuid: d9874aab-23c0-4d4f-8686-5c2b3600084a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_photos
+    - media.type.image
+    - node.type.gallery
+_core:
+  default_config_hash: J052deeE1yp-iUSYMuKIJEvqGZoyhvJjpVm4rKjjnZI
+id: node.gallery.field_photos
+field_name: field_photos
+entity_type: node
+bundle: gallery
+label: Photos
+description: 'Upload several photos at once: select them all in the file window.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

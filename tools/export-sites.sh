@@ -82,6 +82,19 @@ export_site() {
   mkdir -p "$out/content"
   rsync -a "$site_dir/$tmp/config/" "$out/config/"
   rm -f "$out"/config/key.key.*.yml
+  # Search API servers on the AI Search backend (Chapter 23), and their
+  # indexes, go out disabled: without the keys, saving a hike makes the index
+  # call the vector database, and the content import stops with a fatal error.
+  # Enter your own keys on the rebuilt site, then switch them on.
+  for server in "$out"/config/search_api.server.*.yml; do
+    [[ -f "$server" ]] && grep -q "^backend: search_api_ai_search$" "$server" || continue
+    local id
+    id=$(basename "$server" .yml); id=${id#search_api.server.}
+    perl -pi -e 's/^status: true$/status: false/' "$server"
+    grep -l "^server: $id$" "$out"/config/search_api.index.*.yml | while read -r index; do
+      perl -pi -e 's/^status: true$/status: false/' "$index"
+    done
+  done
   rsync -a "$site_dir/$tmp/content/" "$out/content/content/"
   rm -f "$out/focal-points.json"
   [[ -f "$site_dir/$tmp/focal-points.json" ]] && cp "$site_dir/$tmp/focal-points.json" "$out/"

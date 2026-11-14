@@ -1,0 +1,70 @@
+uuid: b0af29f7-297b-4d30-8f13-01e1c4cd08ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_index
+    - field.field.node.hike.field_area
+    - field.field.node.hike.field_body
+    - field.field.node.hike.field_date
+    - field.field.node.hike.field_difficulty
+    - field.field.node.hike.field_distance
+    - field.field.node.hike.field_elevation_gain
+    - field.field.node.hike.field_hike_leader
+    - field.field.node.hike.field_meeting_place
+    - field.field.node.hike.field_photo
+    - node.type.hike
+  module:
+    - layout_builder
+    - options
+    - text
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.hike.search_index
+targetEntityType: node
+bundle: hike
+mode: search_index
+content:
+  field_area:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {}
+    weight: 4
+    region: content
+  field_body:
+    type: text_default
+    label: hidden
+    settings: {}
+    third_party_settings: {}
+    weight: 8
+    region: content
+  field_difficulty:
+    type: list_default
+    label: hidden
+    settings: {}
+    third_party_settings: {}
+    weight: 6
+    region: content
+  field_meeting_place:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {}
+    weight: 3
+    region: content
+hidden:
+  content_moderation_control: true
+  field_date: true
+  field_distance: true
+  field_elevation_gain: true
+  field_hike_leader: true
+  field_photo: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

@@ -1,0 +1,25 @@
+uuid: 46ae1f95-3b32-4b6f-a9e3-1e67afd11d94
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.areas
+  module:
+    - taxonomy
+_core:
+  default_config_hash: fqS8aVePgEy-wRUTkm9lJSPZv0O6Vd_kdh-QoYFjY8I
+id: areas
+label: Areas
+type: 'canonical_entities:taxonomy_term'
+pattern: '/areas/[term:parents:join-path]/[term:name]'
+selection_criteria:
+  6d27df8a-368b-4fae-9bba-d1e575003e18:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      areas: areas
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -17,13 +17,13 @@ settings:
   label: 'Drupal Agent Chatbot'
   label_display: '0'
   provider: ai_chatbot
-  bot_name: 'Drupal Agent'
+  bot_name: 'Hike guide'
   bot_image: /modules/contrib/ai/modules/ai_chatbot/assets/ai-icon-gradient.svg
   use_username: 0
   default_username: ''
   use_avatar: 0
   default_avatar: /core/misc/druplicon.png
-  first_message: 'I am a Drupal AI Assistant, I can help you set up your Drupal site. I can give you instructions and I can also do some functions.'
+  first_message: 'Hello! Tell me what kind of hike you are looking for, and I will find a club hike that fits.'
   loading_message: ''
   agent_delegation_message: ''
   stream: 0
@@ -37,9 +37,9 @@ settings:
   disable_csrf: false
   chat_processor_plugin: ai_assistant_api_processor
   plugin_configuration:
-    assistant_id: drupal_cms_assistant
+    assistant_id: hike_guide
     stream_output: false
-    verbose_mode: true
+    verbose_mode: false
     show_structured_results: false
   expansion_method: expand
   load_strategy: eager

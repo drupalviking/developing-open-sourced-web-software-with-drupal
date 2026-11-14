@@ -1,0 +1,11 @@
+uuid: cd47ee81-d08f-43d0-8893-c75ce893e376
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 9Y--phNEUFt8k_56KV8peXCe9JmBjz_1sQEvG4EWo6U
+name: Areas
+vid: areas
+description: 'Regions, and the hills and places in them.'
+weight: 0
+new_revision: false

@@ -1,0 +1,33 @@
+label: Buscar
+display:
+  default:
+    display_options:
+      title: Buscar
+      exposed_form:
+        options:
+          submit_button: Buscar
+      filters:
+        search_api_fulltext:
+          expose:
+            label: Buscar
+        type:
+          expose:
+            label: Tipo
+        field_area:
+          expose:
+            label: Zona
+        field_difficulty:
+          expose:
+            label: Dificultad
+      empty:
+        area_text_custom:
+          content: 'No se encontró nada. Prueba con menos palabras u otras.'
+  block_1:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Buscar
+      filters:
+        search_api_fulltext:
+          expose:
+            label: Buscar

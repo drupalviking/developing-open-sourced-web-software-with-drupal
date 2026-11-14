@@ -17,6 +17,7 @@
     "require": {
         "composer/installers": "^2.3",
         "cweagans/composer-patches": "^2",
+        "drupal/better_exposed_filters": "^7.2",
         "drupal/captcha": "^2.0",
         "drupal/core-composer-scaffold": "^12",
         "drupal/core-project-message": "^12",
@@ -28,8 +29,11 @@
         "drupal/pathauto": "^1.0@dev",
         "drupal/project_browser": "^2.1",
         "drupal/redirect": "^1.0@dev",
+        "drupal/search_api": "^1.43",
+        "drupal/search_api_autocomplete": "^1.12",
         "drupal/simple_sitemap": "^5.0@dev",
-        "drush/drush": "14.x-dev"
+        "drush/drush": "14.x-dev",
+        "mglaman/composer-drupal-lenient": "^2.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -47,7 +51,8 @@
             "php-http/discovery": true,
             "php-tuf/composer-integration": true,
             "symfony/runtime": true,
-            "cweagans/composer-patches": true
+            "cweagans/composer-patches": true,
+            "mglaman/composer-drupal-lenient": true
         },
         "sort-packages": true
     },
@@ -116,6 +121,27 @@
                     "description": "PHP 8.5: ContentTranslationManageAccessCheck passes NULL to getLanguage() https://www.drupal.org/project/drupal/issues/3590967 (MR !15820)",
                     "url": "patches/drupal-3590967-content-translation-access-null.patch"
                 }
+            ],
+            "drupal/search_api_autocomplete": [
+                {
+                    "description": "Add Drupal 12 support https://git.drupalcode.org/project/search_api_autocomplete/-/work_items/3634845 (MR !64)",
+                    "url": "patches/search_api_autocomplete-3634845-drupal-12.patch"
+                }
+            ],
+            "drupal/search_api": [
+                {
+                    "description": "Drupal 12: theme hooks use 'initial preprocess' instead of template_preprocess_HOOK() (committed to 8.x-1.x as ece4453f, not in 1.43) https://www.drupal.org/project/search_api/issues/3552883",
+                    "url": "patches/search_api-3552883-initial-preprocess.patch"
+                },
+                {
+                    "description": "Drupal 12: ^12 for search_api_db and search_api_db_defaults, the .info.yml part of MR !371 https://www.drupal.org/project/search_api/issues/3630149",
+                    "url": "patches/search_api-3630149-db-info.patch"
+                }
+            ]
+        },
+        "drupal-lenient": {
+            "allowed-list": [
+                "drupal/search_api_autocomplete"
             ]
         }
     }

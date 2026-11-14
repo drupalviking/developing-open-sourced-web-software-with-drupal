@@ -37,6 +37,8 @@
 #     focal point exported with each image (tools/export-content.php).
 #   - key.key.*: API keys (AI providers, Chapter 19). Even encrypted, they don't
 #     belong in a public repository; enter your own on a rebuilt site.
+#   - Spanish translations of Canvas templates (the Drupal CMS site's page
+#     template): an import can't install them (see below).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -94,6 +96,19 @@ export_site() {
     grep -l "^server: $id$" "$out"/config/search_api.index.*.yml | while read -r index; do
       perl -pi -e 's/^status: true$/status: false/' "$index"
     done
+  done
+  # Translations of Canvas page and content templates (Chapter 18's Canvas
+  # Translate) can't be imported: the override holds only the translated
+  # inputs, without component_id, and Canvas's schema check stops the import
+  # (Canvas 1.12.0, Canvas Translate 1.0.0-beta1). Leave them out, with Canvas
+  # Translate's record of the source text they were made from; the rebuilt
+  # site shows those templates in English on its Spanish pages. Not reported
+  # yet (PROJECT-LOG backlog); drop this when it's fixed.
+  for override in "$out"/config/language/*/canvas.*.yml; do
+    [[ -f "$override" ]] && grep -q "^component_tree:" "$override" || continue
+    local lang name
+    lang=$(basename "$(dirname "$override")"); name=$(basename "$override" .yml)
+    rm "$override" "$out/config/canvas_translate.baseline.$lang.$name.yml" 2>/dev/null || true
   done
   rsync -a "$site_dir/$tmp/content/" "$out/content/content/"
   rm -f "$out/focal-points.json"

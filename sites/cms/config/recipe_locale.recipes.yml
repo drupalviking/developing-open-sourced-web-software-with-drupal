@@ -23,15 +23,15 @@ recipes:
     label: 'Easy Email: Express Mail'
   drupal_cms_site_template_base:
     package: drupal/drupal_cms_site_template_base
-    version: 2.2.8
+    version: 2.2.9
     label: 'Drupal CMS Basics'
   drupal_cms_starter:
     package: drupal/drupal_cms_starter
-    version: 2.2.8
+    version: 2.2.9
     label: Starter
   drupal_cms_ai:
     package: drupal/drupal_cms_ai
-    version: 2.2.8
+    version: 2.2.9
     label: 'AI Assistant'
   drupal_cms_search:
     package: drupal/drupal_cms_search

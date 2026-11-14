@@ -1,12 +1,10 @@
-uuid: 4f4aa221-9eb5-4cf3-b1c3-c209061121cf
+uuid: c26b426b-0ccf-43ee-b77f-e1e262d537b1
 langcode: en
 status: true
 dependencies:
   module:
     - media
     - options
-_core:
-  default_config_hash: WEG7N6NSdyvLLHoQ4dCFVTbjrMz6Hc5DTTLfcWAvQYk
 id: media.field_license
 field_name: field_license
 entity_type: media

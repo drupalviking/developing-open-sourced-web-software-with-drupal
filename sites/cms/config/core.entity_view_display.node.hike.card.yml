@@ -1,11 +1,11 @@
-uuid: efd352bd-a8d8-4c7a-8d5a-e1aa42b873d7
+uuid: a9994fa0-5c8f-4160-8e10-6d2bd47996df
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.card
     - field.field.node.hike.field_area
-    - field.field.node.hike.field_body
+    - field.field.node.hike.field_content
     - field.field.node.hike.field_date
     - field.field.node.hike.field_difficulty
     - field.field.node.hike.field_distance
@@ -16,15 +16,8 @@ dependencies:
     - node.type.hike
   module:
     - datetime
-    - layout_builder
     - options
     - user
-third_party_settings:
-  layout_builder:
-    enabled: false
-    allow_custom: false
-_core:
-  default_config_hash: DZJ5MiLsZaNfvv46W5CNUQ0BsCapsF55P_ZLxCr8jLw
 id: node.hike.card
 targetEntityType: node
 bundle: hike
@@ -42,18 +35,18 @@ content:
       timezone_override: ''
       format_type: day_date_and_time
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_difficulty:
     type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 2
     region: content
 hidden:
   field_area: true
-  field_body: true
+  field_content: true
   field_distance: true
   field_elevation_gain: true
   field_hike_leader: true
@@ -61,4 +54,3 @@ hidden:
   field_photo: true
   langcode: true
   links: true
-  search_api_excerpt: true

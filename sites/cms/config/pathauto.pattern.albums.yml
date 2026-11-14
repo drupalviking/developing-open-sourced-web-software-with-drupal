@@ -1,4 +1,4 @@
-uuid: 5a11dfbc-858f-4026-98cc-216cc3492527
+uuid: febf5adc-b4af-4ff2-9b89-5a6362d0f204
 langcode: en
 status: true
 dependencies:
@@ -6,14 +6,12 @@ dependencies:
     - node.type.gallery
   module:
     - node
-_core:
-  default_config_hash: F3Gbs5aQyccnOkZjSHCLtjAli_D8aDgdwDgq76JVgXc
 id: albums
 label: Albums
 type: 'canonical_entities:node'
 pattern: '/galleries/[node:title]'
 selection_criteria:
-  f6a2ea0f-efe3-4768-96d4-920b55f1a127:
+  8236daa9-3916-42d5-8e0b-c1eeb3221888:
     id: 'entity_bundle:node'
     negate: false
     context_mapping:
@@ -21,5 +19,5 @@ selection_criteria:
     bundles:
       gallery: gallery
 selection_logic: and
-weight: -5
+weight: -9
 relationships: {  }

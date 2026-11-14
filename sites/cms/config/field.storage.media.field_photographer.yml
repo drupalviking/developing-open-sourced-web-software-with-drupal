@@ -1,11 +1,9 @@
-uuid: 4c3b533a-5c00-407c-bb17-bbc3a695a607
+uuid: c8a13415-f5ee-4085-8678-0414af4177dc
 langcode: en
 status: true
 dependencies:
   module:
     - media
-_core:
-  default_config_hash: XhAv2_bHVk7jzaAbzP4SHkvVHDG0Xsy5ItNLgSXkHcE
 id: media.field_photographer
 field_name: field_photographer
 entity_type: media

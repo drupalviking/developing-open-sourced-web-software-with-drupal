@@ -1,0 +1,662 @@
+_meta:
+  version: '1.0'
+  entity_type: canvas_page
+  uuid: 97a8ed37-347a-4ad2-af23-b7a741c2823f
+  default_langcode: en
+default:
+  id:
+    -
+      value: 2
+  revision_created:
+    -
+      value: 1794682531
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  owner:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'First Hike with Lens &amp; Trail: What to Bring, What to Expect and How to Join'
+  description:
+    -
+      value: 'Joining your first hike with Lens &amp; Trail? Learn what to bring, what to expect on the day, and how to join our club for a friendly, beginner-ready outing.'
+  components:
+    -
+      uuid: 22a356da-c1b3-4305-8fdd-5eed847ea84e
+      component_id: sdc.mercury.hero-billboard
+      inputs:
+        height: large
+        flex_position: center-left
+        overlay_opacity: 40%
+        object_position: center
+        media:
+          sourceType: default-relative-url
+          value:
+            src: assets/luke-chesser-pJadQetzTkI-unsplash.jpg
+            alt: 'Green blue gradient placeholder image'
+            width: 1920
+            height: 1344
+          jsonSchema:
+            type: object
+            properties:
+              src:
+                type: string
+                contentMediaType: 'image/*'
+                format: uri-reference
+                x-allowed-schemes:
+                  - http
+                  - https
+              alt:
+                type: string
+              width:
+                type: integer
+              height:
+                type: integer
+            required:
+              - src
+          componentId: sdc.mercury.hero-billboard
+        overlap_navbar: false
+    -
+      parent_uuid: 22a356da-c1b3-4305-8fdd-5eed847ea84e
+      slot: hero_slot
+      uuid: b386d8f2-c6e6-4f8e-918a-15e57d06e7df
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'First hike with Lens &amp; Trail'
+        level: 1
+        text_size: heading-responsive-6xl
+        text_color: inverted
+        align: left
+    -
+      parent_uuid: 22a356da-c1b3-4305-8fdd-5eed847ea84e
+      slot: hero_slot
+      uuid: fad051c0-1f29-4fbf-9c33-92bef61df996
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Never joined one of our walks before? Welcome. Here is everything you need to know to feel prepared, confident and ready to enjoy a relaxed day outdoors with photographers and walkers who love the trail as much as the view.</p>'
+          format: canvas_html_block
+        text_size: text-xl
+        text_color: inverted
+    -
+      parent_uuid: 22a356da-c1b3-4305-8fdd-5eed847ea84e
+      slot: hero_slot
+      uuid: 7093d8db-0f6d-4fba-876b-ab191a34de40
+      component_id: sdc.mercury.button
+      inputs:
+        variant: primary-inverted
+        label: 'Join our next hike'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+    -
+      uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      component_id: sdc.mercury.section
+      inputs:
+        width: 90%
+        columns: 33-33-33
+        mobile_columns: '1'
+        margin_block_start: '64'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: header_slot
+      uuid: a4ec67ea-1bcb-4266-b947-4a9874435093
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'What to bring'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: header_slot
+      uuid: f32c1fdb-de45-4454-b03a-d2074755e7fb
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>You do not need expensive gear. Pack these essentials and you will be comfortable from the first step to the last.</p>'
+          format: canvas_html_block
+        text_size: text-lg
+        text_color: default
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: 34e0dd58-6621-4df8-ad70-60553f090c24
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: boot
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Sturdy footwear'
+        description:
+          value: '<p>Broken-in hiking shoes or boots with good grip. Trail runners are fine for easy routes.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: a79b185b-f642-4988-896c-a8281e37cf11
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: drop
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Water and snacks'
+        description:
+          value: '<p>At least one litre of water plus a lunch and a few energy snacks to share at the viewpoint.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: d930ca9c-d1d7-43ad-b873-64fa8e5d2fb5
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: cloud-sun
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Layers and rain gear'
+        description:
+          value: '<p>Weather changes quickly outdoors. Bring a light waterproof jacket, a warm layer and a hat.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: 7c144fa3-aaaf-44fb-80b2-0661051e1672
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: camera
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Your camera or phone'
+        description:
+          value: '<p>Any camera works. Bring a spare battery or power bank and a lens cloth.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: 871f3515-fc3b-4a5b-ad51-38bd1adbb4c2
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: backpack
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'A comfortable daypack'
+        description:
+          value: '<p>A small backpack with padded straps keeps your hands free and your gear dry.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: ba1f2136-af45-4960-a6eb-b445fb583c7e
+      slot: main_slot
+      uuid: ea8a13f1-692b-46f6-abec-e4351d1f6a8e
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: first-aid-kit
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Personal essentials'
+        description:
+          value: '<p>Sunscreen, any personal medication and a few blister plasters. We carry a group first aid kit.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      uuid: b3d8191b-298b-4f14-9f96-bc8552bd83fe
+      component_id: sdc.mercury.hero-side-by-side
+      inputs:
+        hero_flex_gap: large
+        justify_content: center
+        hero_flex_direction_mobile: vertical
+        padding_block_start: '32'
+        padding_block_end: '32'
+        image_size: '3:2'
+        image_position: left
+        image_radius: large
+        media:
+          sourceType: default-relative-url
+          value:
+            src: assets/luke-chesser-pJadQetzTkI-unsplash.jpg
+            alt: 'Green blue gradient placeholder image'
+            width: 1920
+            height: 1344
+          jsonSchema:
+            type: object
+            properties:
+              src:
+                type: string
+                contentMediaType: 'image/*'
+                format: uri-reference
+                x-allowed-schemes:
+                  - http
+                  - https
+              alt:
+                type: string
+              width:
+                type: integer
+              height:
+                type: integer
+            required:
+              - src
+          componentId: sdc.mercury.hero-side-by-side
+    -
+      parent_uuid: b3d8191b-298b-4f14-9f96-bc8552bd83fe
+      slot: hero_slot
+      uuid: 0877f669-cff8-4ab2-a551-c84ad8c6f699
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'What to expect on the day'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: left
+    -
+      parent_uuid: b3d8191b-298b-4f14-9f96-bc8552bd83fe
+      slot: hero_slot
+      uuid: eff50ef9-07a5-470d-9aee-d847ab19099d
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Our first-timer hikes are friendly, unhurried and built around good light. Expect a group of 8 to 15 people, a relaxed pace of about 3 km per hour, and plenty of stops to take photos, catch your breath and enjoy the scenery.</p><ul><li>Meet your hike leader and the group at the trailhead 15 minutes before the start</li><li>A short safety briefing and route overview</li><li>Regular photo stops, with tips from experienced members if you want them</li><li>A shared lunch break at a scenic spot</li><li>Back at the car park by mid-afternoon</li></ul>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: b3d8191b-298b-4f14-9f96-bc8552bd83fe
+      slot: hero_slot
+      uuid: f747ea45-c8b1-4d57-8441-f0ad522e1467
+      component_id: sdc.mercury.badge
+      inputs:
+        label: 'All abilities welcome'
+        style: secondary
+        icon: mountains
+        icon_first: true
+    -
+      uuid: 4adf04e0-01ba-455b-aab4-190beb3803a2
+      component_id: sdc.mercury.section
+      inputs:
+        width: 80%
+        columns: '100'
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '32'
+        padding_block_end: '32'
+        background_color: muted
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 4adf04e0-01ba-455b-aab4-190beb3803a2
+      slot: header_slot
+      uuid: 4d2cf564-ca08-4e68-b14e-00bb557e18fb
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'Common questions from first-timers'
+        level: 2
+        text_size: heading-responsive-3xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 4adf04e0-01ba-455b-aab4-190beb3803a2
+      slot: main_slot
+      uuid: 31ec3378-90b6-4c05-b199-62b7c3de22b1
+      component_id: sdc.mercury.accordion-container
+      inputs: {  }
+    -
+      parent_uuid: 31ec3378-90b6-4c05-b199-62b7c3de22b1
+      slot: accordion_content
+      uuid: 7485a2f9-a7e4-4f20-b31a-cc104ba8f42f
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'How fit do I need to be?'
+        heading_level: 3
+        open_by_default: true
+    -
+      parent_uuid: 7485a2f9-a7e4-4f20-b31a-cc104ba8f42f
+      slot: accordion_content
+      uuid: 4b407726-9136-4a68-9e87-44ffe42782af
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>If you can walk for two to three hours on uneven ground, you will be fine. Beginner routes are 6 to 9 km with gentle elevation, and we always keep the group together.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 31ec3378-90b6-4c05-b199-62b7c3de22b1
+      slot: accordion_content
+      uuid: 31453315-edd2-450c-a222-4f13bb640abb
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'What if the weather turns bad?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: 31453315-edd2-450c-a222-4f13bb640abb
+      slot: accordion_content
+      uuid: 972c2944-4710-43f0-b230-d4900e9e51ab
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Your hike leader checks the forecast the day before and emails everyone. If conditions are unsafe, we reschedule or switch to a sheltered route.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 31ec3378-90b6-4c05-b199-62b7c3de22b1
+      slot: accordion_content
+      uuid: 4bff36a3-d928-4f91-999d-cb4bc03355cf
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'Do I need a professional camera?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: 4bff36a3-d928-4f91-999d-cb4bc03355cf
+      slot: accordion_content
+      uuid: b0be2212-add5-4c9e-b5ec-b5d6bc33ce4f
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Not at all. Phones, compacts and mirrorless cameras are all welcome. Members love sharing tips, whatever your equipment.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 31ec3378-90b6-4c05-b199-62b7c3de22b1
+      slot: accordion_content
+      uuid: 9d0c5c2f-4a55-4434-939a-5716329a9a97
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'Can I bring a friend or my dog?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: 9d0c5c2f-4a55-4434-939a-5716329a9a97
+      slot: accordion_content
+      uuid: 03419d7d-c56d-45d6-865c-ce1939ce3824
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Friends are very welcome, just register them too. Dogs are welcome on selected routes when kept on a lead. Check the hike description before booking.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      component_id: sdc.mercury.section
+      inputs:
+        width: 90%
+        columns: 33-33-33
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      slot: header_slot
+      uuid: a3c3bac7-1d85-4069-ad3c-77dc0e4e76dd
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'How to join'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      slot: header_slot
+      uuid: 4368768a-a364-411a-8da4-eb1a7db2825f
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Joining your first hike takes just three simple steps.</p>'
+          format: canvas_html_block
+        text_size: text-lg
+        text_color: default
+    -
+      parent_uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      slot: main_slot
+      uuid: b5c132cd-5184-42d4-8066-dfd012fb1247
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: background
+        border_radius: medium
+        icon: calendar-check
+        icon_size: large
+        icon_align: center
+        icon_style: primary
+        text: '1. Pick a hike'
+        description:
+          value: '<p>Browse the upcoming beginner-friendly hikes and choose a date and route that suits you.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      slot: main_slot
+      uuid: b5d13d47-8d43-46f3-b796-6af86e2441da
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: background
+        border_radius: medium
+        icon: user-plus
+        icon_size: large
+        icon_align: center
+        icon_style: primary
+        text: '2. Register online'
+        description:
+          value: '<p>Fill in the short sign-up form with your contact details and any questions for the hike leader.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: 1f9b895e-65df-41c4-86b6-fa6c741c79a6
+      slot: main_slot
+      uuid: 0da70219-74fe-4f96-b94b-aa576a2b3368
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: background
+        border_radius: medium
+        icon: envelope-simple
+        icon_size: large
+        icon_align: center
+        icon_style: primary
+        text: '3. Get your details'
+        description:
+          value: '<p>We email the meeting point, schedule and packing reminders a few days before the hike.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      uuid: 4e718475-ae18-4b5f-8cc0-e7aee6390fc0
+      component_id: sdc.mercury.section
+      inputs:
+        width: 80%
+        columns: 50-50
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 4e718475-ae18-4b5f-8cc0-e7aee6390fc0
+      slot: header_slot
+      uuid: 55d64ac9-c7c1-4bd5-94d9-d48e384fce94
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'Hear from members who started where you are'
+        level: 2
+        text_size: heading-responsive-3xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 4e718475-ae18-4b5f-8cc0-e7aee6390fc0
+      slot: main_slot
+      uuid: 3aa88f2e-907b-4fe6-967d-08c34a97433f
+      component_id: sdc.mercury.card-testimonial
+      inputs:
+        text: 'I was nervous about keeping up, but the group was so welcoming. We stopped constantly for photos and I went home with my best landscape shots ever.'
+        cite_name: 'Maya Thompson'
+        cite_text: 'Joined in spring'
+        align: left
+        style: default
+        media:
+          sourceType: default-relative-url
+          value:
+            src: assets/portrait.png
+            alt: Placeholder
+            width: 100
+            height: 100
+          jsonSchema:
+            type: object
+            properties:
+              src:
+                type: string
+                contentMediaType: 'image/*'
+                format: uri-reference
+                x-allowed-schemes:
+                  - http
+                  - https
+              alt:
+                type: string
+              width:
+                type: integer
+              height:
+                type: integer
+            required:
+              - src
+          componentId: sdc.mercury.card-testimonial
+    -
+      parent_uuid: 4e718475-ae18-4b5f-8cc0-e7aee6390fc0
+      slot: main_slot
+      uuid: a3e6fde5-9f80-4a42-8212-8d041b5b89cd
+      component_id: sdc.mercury.card-testimonial
+      inputs:
+        text: 'My first hike with Lens &amp; Trail was easy, friendly and beautiful. The leader gave great advice on what to pack, and I have been back every month since.'
+        cite_name: 'Daniel Okafor'
+        cite_text: 'Member for one year'
+        align: left
+        style: inverted
+        media:
+          sourceType: default-relative-url
+          value:
+            src: assets/portrait.png
+            alt: Placeholder
+            width: 100
+            height: 100
+          jsonSchema:
+            type: object
+            properties:
+              src:
+                type: string
+                contentMediaType: 'image/*'
+                format: uri-reference
+                x-allowed-schemes:
+                  - http
+                  - https
+              alt:
+                type: string
+              width:
+                type: integer
+              height:
+                type: integer
+            required:
+              - src
+          componentId: sdc.mercury.card-testimonial
+    -
+      uuid: 2ae4ae23-83ad-489a-b3b0-f02acba6d416
+      component_id: sdc.mercury.cta
+      inputs:
+        heading_text: 'Ready to lace up your boots?'
+        level: 2
+        text: 'Reserve your place on our next beginner-friendly hike and meet the people behind the lenses. Your first walk is only a click away.'
+        text_align: center
+        background_color: primary
+        overlay_opacity: 20%
+    -
+      parent_uuid: 2ae4ae23-83ad-489a-b3b0-f02acba6d416
+      slot: actions
+      uuid: bbc65ca7-6d7d-485b-ac33-e8e76d04009e
+      component_id: sdc.mercury.button
+      inputs:
+        variant: primary-inverted
+        label: 'Register for a hike'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+    -
+      parent_uuid: 2ae4ae23-83ad-489a-b3b0-f02acba6d416
+      slot: actions
+      uuid: 94be35ab-2fa5-4fa5-8fba-09394965a135
+      component_id: sdc.mercury.button
+      inputs:
+        variant: secondary-inverted
+        label: 'Ask a question'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+  path:
+    -
+      alias: /first-hike-with-lens-amp-trail-what-to-bring-what-to-expect-and-how-to-join
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1794682531
+  changed:
+    -
+      value: 1794682662
+  revision_translation_affected:
+    -
+      value: true
+  metatags:
+    -
+      value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1

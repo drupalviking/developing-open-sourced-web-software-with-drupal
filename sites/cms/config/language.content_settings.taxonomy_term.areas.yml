@@ -1,4 +1,4 @@
-uuid: 5a2fd972-a511-4701-b044-8c3fa4cd9b24
+uuid: 046180e6-b471-4099-a05c-306b9605f537
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,6 @@ third_party_settings:
     enabled: true
     bundle_settings:
       untranslatable_fields_hide: '1'
-_core:
-  default_config_hash: kCAzla9vxpMf0kCy0IHirlrJkxP7RGsYrrerMbOoHlw
 id: taxonomy_term.areas
 target_entity_type_id: taxonomy_term
 target_bundle: areas

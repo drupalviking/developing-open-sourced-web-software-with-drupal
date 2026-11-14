@@ -1,0 +1,448 @@
+_meta:
+  version: '1.0'
+  entity_type: canvas_page
+  uuid: 76f554ed-94d1-4753-96e7-ccbaa2b02e06
+  default_langcode: en
+default:
+  id:
+    -
+      value: 3
+  revision_created:
+    -
+      value: 1794682729
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  owner:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'First hike with Lens & Trail'
+  description:
+    -
+      value: 'New to Lens & Trail? Join our hikes every other Saturday at 9:30. No booking needed, just come along. Membership is £20 a year, £10 for students.'
+  components:
+    -
+      uuid: 91ac8489-d7fe-45d5-8cc5-bd297b107c88
+      component_id: sdc.mercury.cta
+      inputs:
+        heading_text: 'First hike with Lens & Trail'
+        level: 1
+        text: 'Never been on a hike with the club? Here is everything you need to know before your first walk with us. Hikes run every other Saturday at 9:30, and no booking is needed. Just come along.'
+        text_align: center
+        background_color: primary
+        overlay_opacity: 20%
+    -
+      parent_uuid: 91ac8489-d7fe-45d5-8cc5-bd297b107c88
+      slot: actions
+      uuid: f5af2ee5-f3ef-43f7-a24a-ba0c67f2d851
+      component_id: sdc.mercury.button
+      inputs:
+        variant: primary-inverted
+        label: 'How to become a member'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+    -
+      parent_uuid: 91ac8489-d7fe-45d5-8cc5-bd297b107c88
+      slot: actions
+      uuid: 7caab0a8-0b50-4cd5-af67-d98dc4afc93c
+      component_id: sdc.mercury.button
+      inputs:
+        variant: secondary-inverted
+        label: 'What to bring'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+    -
+      uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      component_id: sdc.mercury.section
+      inputs:
+        width: 90%
+        columns: 33-33-33
+        mobile_columns: '1'
+        margin_block_start: '64'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      slot: header_slot
+      uuid: 1a5b6060-8548-4e64-a7b1-c70b0c20c0ff
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'What to expect'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      slot: header_slot
+      uuid: 384e3268-8353-42f9-b7bc-29d949650b53
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Joining your first hike is simple. Here is how it works.</p>'
+          format: canvas_html_block
+        text_size: text-lg
+        text_color: default
+    -
+      parent_uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      slot: main_slot
+      uuid: d3f8e48d-e7fc-4aa8-a238-427498fd24cb
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: calendar-blank
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Every other Saturday'
+        description:
+          value: '<p>Hikes start at 9:30 on every other Saturday.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      slot: main_slot
+      uuid: 87b547b2-d806-4db7-bd72-b781e74db0f4
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: envelope-simple
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'Meeting point by email'
+        description:
+          value: '<p>The meeting point is emailed a week before to the people who are coming.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      parent_uuid: 90ac6dae-ea58-42d3-a022-87d66f864c2c
+      slot: main_slot
+      uuid: 2a0b4eef-a92d-4d1b-a2c7-fd94263fb4d3
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: muted
+        border_radius: medium
+        icon: check-circle
+        icon_size: large
+        icon_align: center
+        icon_style: primary_background
+        text: 'No booking needed'
+        description:
+          value: '<p>There is nothing to book. Just come along.</p>'
+          format: canvas_html_block
+        text_align: center
+    -
+      uuid: 3bb25a1e-1ef6-4ca0-8fd2-16521ababc95
+      component_id: sdc.mercury.section
+      inputs:
+        width: 90%
+        columns: 50-50
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '32'
+        padding_block_end: '32'
+        background_color: muted
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 3bb25a1e-1ef6-4ca0-8fd2-16521ababc95
+      slot: header_slot
+      uuid: d579a355-6571-4f4b-843d-2d31934c23c5
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'What to bring'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 3bb25a1e-1ef6-4ca0-8fd2-16521ababc95
+      slot: main_slot
+      uuid: 7e3a7b46-ba7c-4bb8-97e9-c54a17aa11ed
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<ul><li>Boots</li><li>A waterproof jacket</li><li>A warm layer</li><li>Food</li><li>Your camera</li><li>A head torch</li></ul>'
+          format: canvas_html_block
+        text_size: text-lg
+        text_color: default
+    -
+      parent_uuid: 3bb25a1e-1ef6-4ca0-8fd2-16521ababc95
+      slot: main_slot
+      uuid: 9c1a8b40-a711-4da1-9a64-793c1159923b
+      component_id: sdc.mercury.card-icon
+      inputs:
+        background_color: background
+        border_radius: medium
+        icon: mountains
+        icon_size: large
+        icon_align: left
+        icon_style: primary_background
+        text: 'Be ready for the terrain'
+        description:
+          value: '<p>The path can be steep and muddy, so wear your boots and dress for the weather.</p>'
+          format: canvas_html_block
+        text_align: left
+    -
+      uuid: 4b231435-f4b0-4d40-9c9a-752783cf4615
+      component_id: sdc.mercury.section
+      inputs:
+        width: 80%
+        columns: '100'
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: false
+    -
+      parent_uuid: 4b231435-f4b0-4d40-9c9a-752783cf4615
+      slot: header_slot
+      uuid: ea2366f1-2995-4d73-90e9-3bfe3f21912f
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'Common questions'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 4b231435-f4b0-4d40-9c9a-752783cf4615
+      slot: main_slot
+      uuid: 86881061-12eb-419f-b829-c4d3e6d92cdf
+      component_id: sdc.mercury.accordion-container
+      inputs: {  }
+    -
+      parent_uuid: 86881061-12eb-419f-b829-c4d3e6d92cdf
+      slot: accordion_content
+      uuid: dbac56ff-218d-4257-9a2f-00bca992adde
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'Do I need to book?'
+        heading_level: 3
+        open_by_default: true
+    -
+      parent_uuid: dbac56ff-218d-4257-9a2f-00bca992adde
+      slot: accordion_content
+      uuid: 6623f849-dc7d-49da-9791-dee0ac0becc8
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>No. No booking is needed, just come along.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 86881061-12eb-419f-b829-c4d3e6d92cdf
+      slot: accordion_content
+      uuid: 074df988-fb2b-4bfb-9b95-b1bcc57c857f
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'When do hikes happen?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: 074df988-fb2b-4bfb-9b95-b1bcc57c857f
+      slot: accordion_content
+      uuid: 7e3ced44-f7c3-4de6-bcbb-2e904c51c838
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Hikes are every other Saturday at 9:30.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 86881061-12eb-419f-b829-c4d3e6d92cdf
+      slot: accordion_content
+      uuid: d5deb280-ab74-4153-b10f-490ce1463732
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'Where do we meet?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: d5deb280-ab74-4153-b10f-490ce1463732
+      slot: accordion_content
+      uuid: 78112b0b-439e-4ee4-ad42-bd77e6a82bcc
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>The meeting point is emailed a week before to the people who are coming.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      parent_uuid: 86881061-12eb-419f-b829-c4d3e6d92cdf
+      slot: accordion_content
+      uuid: d6a5ce1f-d8fb-43cf-9e9b-560b1381bb26
+      component_id: sdc.mercury.accordion
+      inputs:
+        title: 'Is the path difficult?'
+        heading_level: 3
+        open_by_default: false
+    -
+      parent_uuid: d6a5ce1f-d8fb-43cf-9e9b-560b1381bb26
+      slot: accordion_content
+      uuid: 374edec5-af44-4779-a0db-3f1f5496485a
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>The path can be steep and muddy. Bring boots, a waterproof jacket and a warm layer.</p>'
+          format: canvas_html_block
+        text_size: normal
+        text_color: default
+    -
+      uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      component_id: sdc.mercury.section
+      inputs:
+        width: 80%
+        columns: 50-50
+        mobile_columns: '1'
+        margin_block_start: '48'
+        margin_block_end: '48'
+        padding_block_start: '0'
+        padding_block_end: '0'
+        section_header: true
+        section_footer: true
+    -
+      parent_uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      slot: header_slot
+      uuid: 34052a80-b47e-48d7-b9ff-e31be48209cb
+      component_id: sdc.mercury.heading
+      inputs:
+        heading_text: 'Becoming a member'
+        level: 2
+        text_size: heading-responsive-4xl
+        text_color: default
+        align: center
+    -
+      parent_uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      slot: header_slot
+      uuid: 73a78a33-9792-4666-b1d4-c718e37a6403
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>To become a member, talk to the club secretary on the day or email hello@lens-and-trail-cms.ddev.site.</p>'
+          format: canvas_html_block
+        text_size: text-lg
+        text_color: default
+    -
+      parent_uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      slot: main_slot
+      uuid: c6d2fd38-3d99-4c9b-9589-75a83bb5a42b
+      component_id: sdc.mercury.card-pricing
+      inputs:
+        heading_text: Membership
+        description: 'Annual club membership'
+        price: '20'
+        currency_code: GBP
+        currency_symbol: £
+        symbol_position: before
+        text:
+          value: '<ul><li>£20 a year</li></ul>'
+          format: canvas_html_block
+        button_url:
+          uri: 'https://example.com'
+          options: {  }
+        button_label: 'Email the secretary'
+        promote: true
+    -
+      parent_uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      slot: main_slot
+      uuid: 66a508fc-dcf6-4810-b5f7-d36942bacab9
+      component_id: sdc.mercury.card-pricing
+      inputs:
+        heading_text: 'Student membership'
+        description: 'Annual club membership for students'
+        price: '10'
+        currency_code: GBP
+        currency_symbol: £
+        symbol_position: before
+        text:
+          value: '<ul><li>£10 a year for students</li></ul>'
+          format: canvas_html_block
+        button_url:
+          uri: 'https://example.com'
+          options: {  }
+        button_label: 'Email the secretary'
+        promote: false
+    -
+      parent_uuid: 0273a376-35e9-4863-abad-96f5de9ebc5f
+      slot: footer_slot
+      uuid: d41eb70c-efaa-4296-9f78-54b7dca04d54
+      component_id: sdc.mercury.text
+      inputs:
+        text:
+          value: '<p>Contact: hello@lens-and-trail-cms.ddev.site</p>'
+          format: canvas_html_block
+        text_size: text-sm
+        text_color: default
+    -
+      uuid: 0b73c19f-e90c-4234-9694-9c6e58ab8acd
+      component_id: sdc.mercury.cta
+      inputs:
+        heading_text: 'Come along to your first hike'
+        level: 2
+        text: 'Hikes are every other Saturday at 9:30. No booking needed. Pack your boots, your camera and a head torch, and join us.'
+        text_align: center
+        background_color: secondary
+        overlay_opacity: 20%
+    -
+      parent_uuid: 0b73c19f-e90c-4234-9694-9c6e58ab8acd
+      slot: actions
+      uuid: a249a0a7-54cf-4765-8754-0f5b19b904cc
+      component_id: sdc.mercury.button
+      inputs:
+        variant: primary-inverted
+        label: 'Email the club'
+        href:
+          uri: 'https://example.com'
+          options: {  }
+        size: large
+        icon: arrow-right
+  path:
+    -
+      alias: /first-hike
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1794682729
+  changed:
+    -
+      value: 1794682939
+  revision_translation_affected:
+    -
+      value: true
+  metatags:
+    -
+      value: '{"canonical_url":"[canvas_page:url]","image_src":"[canvas_page:image:entity:field_media_image:entity:url]"}'
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1

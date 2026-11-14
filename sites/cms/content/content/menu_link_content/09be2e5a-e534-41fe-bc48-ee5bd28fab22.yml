@@ -1,0 +1,115 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 09be2e5a-e534-41fe-bc48-ee5bd28fab22
+  bundle: menu_link_content
+  default_langcode: en
+default:
+  id:
+    -
+      value: 13
+  revision_created:
+    -
+      value: 1794684334
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'Find a hike'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      uri: 'internal:/find-a-hike'
+      title: null
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: 5
+  expanded:
+    -
+      value: false
+  changed:
+    -
+      value: 1794684334
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 0
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1794684334
+translations:
+  es:
+    id:
+      -
+        value: 13
+    revision_created:
+      -
+        value: 1794684334
+    enabled:
+      -
+        value: true
+    title:
+      -
+        value: 'Buscar excursión'
+    menu_name:
+      -
+        value: main
+    link:
+      -
+        uri: 'internal:/find-a-hike'
+        title: null
+        options: {  }
+    external:
+      -
+        value: false
+    rediscover:
+      -
+        value: true
+    weight:
+      -
+        value: 5
+    expanded:
+      -
+        value: false
+    changed:
+      -
+        value: 1794684334
+    revision_translation_affected:
+      -
+        value: true
+    content_translation_source:
+      -
+        value: und
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_status:
+      -
+        value: true
+    content_translation_created:
+      -
+        value: 1794684334

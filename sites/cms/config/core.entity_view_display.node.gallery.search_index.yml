@@ -1,19 +1,18 @@
-uuid: 0e14bfbb-f2e7-4774-b60a-d9de6b03dc6b
+uuid: d2fe7c3d-c7be-4075-a070-383083633801
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.search_index
+    - field.field.node.gallery.comment
     - field.field.node.gallery.field_area
-    - field.field.node.gallery.field_body
+    - field.field.node.gallery.field_content
     - field.field.node.gallery.field_hike
     - field.field.node.gallery.field_photos
     - node.type.gallery
   module:
     - text
     - user
-_core:
-  default_config_hash: OC7oNPJv_5k-uqEUz3XPdcXgi7jnD0SOsL1rsbZ4ysM
 id: node.gallery.search_index
 targetEntityType: node
 bundle: gallery
@@ -32,7 +31,7 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_body:
+  field_content:
     type: text_default
     label: hidden
     settings: {  }
@@ -53,6 +52,7 @@ content:
     weight: 100
     region: content
 hidden:
+  comment: true
   field_date: true
   field_distance: true
   field_elevation_gain: true

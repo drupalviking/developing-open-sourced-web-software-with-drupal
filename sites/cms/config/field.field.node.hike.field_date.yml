@@ -1,4 +1,4 @@
-uuid: 1e4639c4-81a2-4f7f-8fe8-2f8f4af60284
+uuid: 318a4381-c528-4a5b-93d2-ae51342b1344
 langcode: en
 status: true
 dependencies:
@@ -7,8 +7,6 @@ dependencies:
     - node.type.hike
   module:
     - datetime
-_core:
-  default_config_hash: e5vzsvzBANbZQDNw68BkDZdCBoIPPuCzmu7fJj1dpZ8
 id: node.hike.field_date
 field_name: field_date
 entity_type: node

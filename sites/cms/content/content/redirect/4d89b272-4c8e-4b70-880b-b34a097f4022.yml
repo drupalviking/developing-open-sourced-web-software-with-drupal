@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 4d89b272-4c8e-4b70-880b-b34a097f4022
+  bundle: redirect
+  default_langcode: en
+  depends:
+    bd5a6489-c779-42d3-8b2a-f77763472bd6: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 5
+  hash:
+    -
+      value: 9LZBzNT05xMCZRYHynUr1VwfIDs1LA5IkgRNF2wCyrk
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: glencorse-reservoir-loop
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: bd5a6489-c779-42d3-8b2a-f77763472bd6
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

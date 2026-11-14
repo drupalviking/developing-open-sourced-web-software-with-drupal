@@ -1,0 +1,134 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 479de379-7ea7-4b05-ac11-9986f2c0c350
+  bundle: hike
+  default_langcode: en
+  depends:
+    f6144c3b-ef79-4bcd-b752-a5058ac610dc: user
+    5b7dfcdc-c004-4a57-8d98-9e2997c903ac: user
+    1eeeade7-6bd8-4a01-a71d-f04763c8a9a4: user
+default:
+  nid:
+    -
+      value: 23
+  revision_timestamp:
+    -
+      value: 1794678512
+  revision_uid:
+    -
+      entity: f6144c3b-ef79-4bcd-b752-a5058ac610dc
+  status:
+    -
+      value: true
+  uid:
+    -
+      entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  title:
+    -
+      value: "Arthur's Seat by night"
+  created:
+    -
+      value: 1794678507
+  changed:
+    -
+      value: 1794678512
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /hikes/arthurs-seat-night
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_date:
+    -
+      value: '2027-01-16T17:30:00'
+  field_difficulty:
+    -
+      value: moderate
+  field_distance:
+    -
+      value: '5.0'
+  field_hike_leader:
+    -
+      entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+  field_meeting_place:
+    -
+      value: "Holyrood Park, St Margaret's Loch car park"
+translations:
+  es:
+    nid:
+      -
+        value: 23
+    revision_timestamp:
+      -
+        value: 1794678512
+    revision_uid:
+      -
+        entity: f6144c3b-ef79-4bcd-b752-a5058ac610dc
+    status:
+      -
+        value: true
+    uid:
+      -
+        entity: 1eeeade7-6bd8-4a01-a71d-f04763c8a9a4
+    title:
+      -
+        value: "Arthur's Seat de noche"
+    created:
+      -
+        value: 1794680916
+    changed:
+      -
+        value: 1794680916
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /excursiones/arthurs-seat-de-noche
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_date:
+      -
+        value: '2027-01-16T17:30:00'
+    field_difficulty:
+      -
+        value: moderate
+    field_distance:
+      -
+        value: '5.0'
+    field_hike_leader:
+      -
+        entity: 5b7dfcdc-c004-4a57-8d98-9e2997c903ac
+    field_meeting_place:
+      -
+        value: "Holyrood Park, estacionamiento de St Margaret's Loch"

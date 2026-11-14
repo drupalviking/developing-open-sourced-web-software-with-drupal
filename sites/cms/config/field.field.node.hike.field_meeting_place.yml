@@ -1,12 +1,10 @@
-uuid: 87b78d49-1661-48fb-953f-a354d6f442cf
+uuid: 05e2ba43-8b07-4ef4-8ff4-7d475b56d4ad
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_meeting_place
     - node.type.hike
-_core:
-  default_config_hash: tQfa4gFPSM1ZFCy0iYN8Vh05mE86xVvoQUcxgFCzL0g
 id: node.hike.field_meeting_place
 field_name: field_meeting_place
 entity_type: node

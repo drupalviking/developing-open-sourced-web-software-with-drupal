@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: c1812373-5a6c-4816-93a9-5f85da51dbdd
+  bundle: tags
+  default_langcode: und
+default:
+  tid:
+    -
+      value: 27
+  revision_created:
+    -
+      value: 1794682381
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Black And White'
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794682381
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: und
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_created:
+    -
+      value: 1794682381

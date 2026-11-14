@@ -1,4 +1,4 @@
-uuid: 0afea33d-faf7-494f-ad8f-72f3cb5e9503
+uuid: 50c59d70-1ed9-4e94-8f69-3de02fdd551f
 langcode: en
 status: true
 dependencies:
@@ -13,8 +13,6 @@ dependencies:
     - node
     - options
     - user
-_core:
-  default_config_hash: lGLnNVfuQBLgP8Culzs4Bndlv9aaeHeysTHFsu7MBHs
 id: hikes
 label: Hikes
 module: views
@@ -112,7 +110,7 @@ display:
           empty: true
           content:
             value: '<p>No hikes are planned right now. New hikes are usually announced a month ahead, so check back soon.</p>'
-            format: content_format
+            format: basic_html
           tokenize: false
       sorts:
         field_date_value:
@@ -262,6 +260,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
@@ -382,6 +381,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
@@ -424,6 +424,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
@@ -449,6 +450,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
@@ -630,6 +632,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
@@ -693,6 +696,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
@@ -814,6 +818,7 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'

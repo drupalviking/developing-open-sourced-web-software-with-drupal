@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 1eeeade7-6bd8-4a01-a71d-f04763c8a9a4
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 5
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: lucia
+  pass:
+    -
+      value: $2y$12$vuUGnMwQAEnDVWiBTEiy2OOefLjOpckR7ST3mJSRGO1Ng7C9rILFq
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: lucia@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1794678500
+  changed:
+    -
+      value: 1794680912
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: member
+    -
+      target_id: translator
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1

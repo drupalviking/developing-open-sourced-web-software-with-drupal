@@ -1,4 +1,4 @@
-uuid: cad78652-aa0c-45cf-9cfe-9dc29ca18931
+uuid: 58d60988-b51a-45d0-bbf5-2a22dad2f18f
 langcode: en
 status: true
 dependencies:
@@ -6,8 +6,6 @@ dependencies:
     - field.storage.taxonomy_term.field_photo
     - media.type.image
     - taxonomy.vocabulary.areas
-_core:
-  default_config_hash: T9iPI5J1UX2IHGIO_CwHOj3YNzgv0bHrVMkActw_I_U
 id: taxonomy_term.areas.field_photo
 field_name: field_photo
 entity_type: taxonomy_term

@@ -1,10 +1,11 @@
-uuid: 00506600-4eb4-4eff-88c6-3110e0e26e4a
+uuid: 923c8173-7074-496a-8eb9-ca54ea1a98c0
 langcode: en
 status: true
 dependencies:
   config:
     - node.type.gallery
     - node.type.hike
+    - node.type.news
     - node.type.page
   module:
     - content_moderation
@@ -57,5 +58,6 @@ type_settings:
     node:
       - gallery
       - hike
+      - news
       - page
   default_moderation_state: draft

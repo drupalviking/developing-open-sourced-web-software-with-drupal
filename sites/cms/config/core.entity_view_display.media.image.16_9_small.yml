@@ -1,4 +1,4 @@
-uuid: fc11c3c9-07f2-48b7-adf1-839844073b1a
+uuid: b78a887a-342d-466c-af67-19ef63a35311
 langcode: en
 status: true
 dependencies:
@@ -9,6 +9,7 @@ dependencies:
     - field.field.media.image.field_photographer
     - field.field.media.image.field_source
     - field.field.media.image.field_tags
+    - field.field.media.image.field_themes
     - media.type.image
     - responsive_image.styles.16_9_small
   module:
@@ -31,14 +32,22 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_photographer:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   created: true
   field_license: true
-  field_photographer: true
   field_source: true
   field_tags: true
+  field_themes: true
   langcode: true
   name: true
-  search_api_excerpt: true
   thumbnail: true
   uid: true

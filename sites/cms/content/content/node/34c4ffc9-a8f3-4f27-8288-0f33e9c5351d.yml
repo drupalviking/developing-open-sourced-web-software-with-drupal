@@ -1,0 +1,126 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 34c4ffc9-a8f3-4f27-8288-0f33e9c5351d
+  bundle: page
+  default_langcode: en
+default:
+  nid:
+    -
+      value: 3
+  revision_timestamp:
+    -
+      value: 1794663914
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'How to join'
+  created:
+    -
+      value: 1794663912
+  changed:
+    -
+      value: 1794663914
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /join
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      value: "<p>Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need to tell us in advance.</p><p>If you'd like to become a member, talk to the secretary on the day, or send an email to hello@lens-and-trail-cms.ddev.site.</p><p>Membership is £20 a year (£10 for students). It covers the room for the photo evenings and the club's insurance for the hikes.</p>"
+      format: content_format
+  field_description:
+    -
+      value: 'How to become a member of Lens & Trail, and what it costs.'
+  field_seo_analysis:
+    -
+      status: '0'
+      focus_keyword: ''
+      title: ''
+      description: ''
+translations:
+  es:
+    nid:
+      -
+        value: 3
+    revision_timestamp:
+      -
+        value: 1794663914
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Cómo unirse'
+    created:
+      -
+        value: 1794663912
+    changed:
+      -
+        value: 1794663914
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /unete
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        value: '<p>Antes de nada, ven a una de nuestras excursiones o tardes de fotografía para ver si el club es para ti. No hace falta avisar.</p><p>Si quieres hacerte miembro, habla con la secretaría ese mismo día o escribe a hello@lens-and-trail.ddev.site.</p><p>La cuota es de 20 £ al año (10 £ para estudiantes). Cubre la sala de las tardes de fotografía y el seguro del club para las excursiones.</p>'
+        format: content_format
+    field_description:
+      -
+        value: 'Cómo hacerse miembro de Lens & Trail y cuánto cuesta.'
+    field_seo_analysis:
+      -
+        status: '0'
+        focus_keyword: ''
+        title: ''
+        description: ''

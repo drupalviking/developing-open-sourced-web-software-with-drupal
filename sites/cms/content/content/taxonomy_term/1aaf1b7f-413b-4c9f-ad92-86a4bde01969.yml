@@ -1,0 +1,87 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 1aaf1b7f-413b-4c9f-ad92-86a4bde01969
+  bundle: areas
+  default_langcode: en
+  depends:
+    2a427bf6-c13c-4e45-affc-b31fc3ce0ab8: taxonomy_term
+default:
+  tid:
+    -
+      value: 9
+  revision_created:
+    -
+      value: 1794672557
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'Calton Hill'
+  weight:
+    -
+      value: 1
+  parent:
+    -
+      entity: 2a427bf6-c13c-4e45-affc-b31fc3ce0ab8
+  changed:
+    -
+      value: 1794672557
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/edinburgh/calton-hill
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 9
+    revision_created:
+      -
+        value: 1794672557
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'Calton Hill'
+    weight:
+      -
+        value: 1
+    parent:
+      -
+        entity: 2a427bf6-c13c-4e45-affc-b31fc3ce0ab8
+    changed:
+      -
+        value: 1794672557
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/edimburgo/calton-hill
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1794680903

@@ -1,0 +1,10 @@
+uuid: a3ab3319-c33f-49e7-ac38-c0bde5907ead
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mercury
+id: mercury.footer
+region: footer
+theme: mercury
+component_tree: {  }

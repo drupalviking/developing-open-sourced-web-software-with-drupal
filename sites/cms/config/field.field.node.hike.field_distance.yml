@@ -1,12 +1,10 @@
-uuid: a74e6cab-60ad-49a3-b675-7ee42bbd8370
+uuid: 0859ecdf-fc8d-4b8a-9d44-05c86654e0d4
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_distance
     - node.type.hike
-_core:
-  default_config_hash: qOFr28_BVlmYrKE_CxJzIYuq3vv-LrrdyOLU7oNytj0
 id: node.hike.field_distance
 field_name: field_distance
 entity_type: node

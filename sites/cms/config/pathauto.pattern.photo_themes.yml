@@ -1,0 +1,23 @@
+uuid: 6583a138-ee3a-44e9-84c9-db056c8f6108
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.photo_themes
+  module:
+    - taxonomy
+id: photo_themes
+label: 'Photo themes'
+type: 'canonical_entities:taxonomy_term'
+pattern: '/photo-themes/[term:name]'
+selection_criteria:
+  fbab8c27-98d8-4ee6-868c-e822c072ca43:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      photo_themes: photo_themes
+selection_logic: and
+weight: -6
+relationships: {  }

@@ -1,4 +1,4 @@
-uuid: 94d06bb5-20fd-4167-affe-8000a58f908d
+uuid: 79a0d0cd-2b0a-4a6a-a078-352567bcf074
 langcode: en
 status: true
 dependencies:
@@ -16,7 +16,7 @@ bundle: page
 label: 'SEO analysis'
 description: 'Pick the main keyword this page is about.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

@@ -4191,7 +4191,9 @@ def seo17_cms_steps(page: Page, site: dict, snap) -> None:
 $file = \\Drupal\\file\\Entity\\File::create(['uri' => 'public://glencorse-reservoir-portrait.jpg', 'status' => 1]);
 $file->save();
 $media = \\Drupal\\media\\Entity\\Media::create(['bundle' => 'image', 'name' => 'Glencorse Reservoir from the hillside',
-  'field_media_image' => ['target_id' => $file->id(), 'alt' => 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees']]);
+  'field_media_image' => ['target_id' => $file->id(), 'alt' => 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees'],
+  'field_photographer' => 'Jaroslaw Musialkowski', 'field_license' => 'cc_by_sa_4_0',
+  'field_source' => 'https://commons.wikimedia.org/wiki/File:Pentland_Hills_-_Glencorse_Reservoir.jpg, Wikimedia Commons']);
 $media->save();
 $node = \\Drupal\\node\\Entity\\Node::create(['type' => 'page', 'title' => '{SEO17_TIPS}', 'uid' => 1,
   'field_description' => 'How the club takes photos on a hike: what to pack, when the light is best, and how to keep up with the group.',

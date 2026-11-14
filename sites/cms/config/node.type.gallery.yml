@@ -1,4 +1,4 @@
-uuid: dd9f1807-3c37-4be8-9612-6d12a9664fe5
+uuid: df837389-2b11-4699-8282-f190fbc2a920
 langcode: en
 status: true
 dependencies:
@@ -11,8 +11,6 @@ third_party_settings:
     parent: ''
   search_api_exclude:
     enabled: true
-_core:
-  default_config_hash: OxCXUyzWnWKFIaC1BuGNVdfwIxkdOWkyjLRV2iwPnFg
 name: Gallery
 type: gallery
 description: "A photo album from one of the club's hikes or photo evenings."

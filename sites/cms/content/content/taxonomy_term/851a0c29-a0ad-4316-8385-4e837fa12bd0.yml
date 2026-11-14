@@ -1,0 +1,79 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: 851a0c29-a0ad-4316-8385-4e837fa12bd0
+  bundle: photo_themes
+  default_langcode: en
+default:
+  tid:
+    -
+      value: 15
+  revision_created:
+    -
+      value: 1794672568
+  status:
+    -
+      value: true
+  name:
+    -
+      value: Winter
+  weight:
+    -
+      value: 0
+  changed:
+    -
+      value: 1794672568
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /photo-themes/winter
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+translations:
+  es:
+    tid:
+      -
+        value: 15
+    revision_created:
+      -
+        value: 1794672568
+    status:
+      -
+        value: true
+    name:
+      -
+        value: Invierno
+    weight:
+      -
+        value: 0
+    changed:
+      -
+        value: 1794672568
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /temas-fotograficos/invierno
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1794680903

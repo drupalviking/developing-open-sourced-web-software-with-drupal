@@ -1,10 +1,10 @@
-uuid: b62ac251-2ed5-4e0c-a00c-4ae84d2d5ced
+uuid: ced4e9dd-63d2-4450-ac9c-ad60bf7d12ff
 langcode: en
 status: true
 dependencies:
   module:
-    - ai_chatbot
     - coffee
+    - comment
     - contextual
     - file
     - klaro
@@ -21,11 +21,12 @@ is_admin: false
 permissions:
   - 'access administration pages'
   - 'access coffee'
+  - 'access comments'
   - 'access content'
   - 'access contextual links'
-  - 'access deepchat api'
   - 'access navigation'
   - 'delete own files'
+  - 'post comments'
   - 'use klaro'
   - 'view media'
   - 'view own unpublished content'

@@ -19,11 +19,6 @@ display:
           exposed_sorts_label: 'Ordenar por'
           sort_asc_label: Asc
           sort_desc_label: Desc
-      arguments:
-        tid:
-          exception:
-            title: Todo(s)
-          title: '{{ arguments.tid }}'
   feed_1:
     display_title: 'Canal de noticias'
   page_1:

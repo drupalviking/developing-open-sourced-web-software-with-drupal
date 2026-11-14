@@ -1,0 +1,167 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 415b2938-c8c0-4188-8cbd-1bbcd09e91f0
+  bundle: gallery
+  default_langcode: en
+  depends:
+    f1f3e646-71eb-4748-8690-0540bc0971e5: taxonomy_term
+    7a9015b9-efe9-4641-bcba-04b6ed4312de: node
+    59b5a08f-5779-407c-ade8-02ef61b11924: media
+    a9464316-4296-4aec-9a09-d30e82830e11: media
+    007b8ba0-f9b9-4e37-b1c1-9d08413563f8: media
+    0c558f05-8405-4126-ae97-bcae1be7cf6d: media
+default:
+  nid:
+    -
+      value: 7
+  revision_timestamp:
+    -
+      value: 1794665215
+  revision_uid:
+    -
+      target_id: 1
+  revision_log:
+    -
+      value: 'Added the area.'
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Pentlands, 21 November'
+  created:
+    -
+      value: 1794665215
+  changed:
+    -
+      value: 1794672563
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /galleries/pentlands-21-november
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  comment:
+    -
+      status: 2
+      cid: 2
+      last_comment_timestamp: 1794678500
+      last_comment_name: ''
+      last_comment_uid: 5
+      comment_count: 2
+  field_area:
+    -
+      entity: f1f3e646-71eb-4748-8690-0540bc0971e5
+  field_content:
+    -
+      value: '<p>Our first hike with the new website: Turnhouse Hill and Carnethy Hill, in sun, wind and, near the top, a little snow.</p>'
+      format: content_format
+  field_hike:
+    -
+      entity: 7a9015b9-efe9-4641-bcba-04b6ed4312de
+  field_photos:
+    -
+      entity: 59b5a08f-5779-407c-ade8-02ef61b11924
+    -
+      entity: a9464316-4296-4aec-9a09-d30e82830e11
+    -
+      entity: 007b8ba0-f9b9-4e37-b1c1-9d08413563f8
+    -
+      entity: 0c558f05-8405-4126-ae97-bcae1be7cf6d
+translations:
+  es:
+    nid:
+      -
+        value: 7
+    revision_timestamp:
+      -
+        value: 1794665215
+    revision_uid:
+      -
+        target_id: 1
+    revision_log:
+      -
+        value: 'Added the area.'
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Pentlands, 21 de noviembre'
+    created:
+      -
+        value: 1794665215
+    changed:
+      -
+        value: 1794672563
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /albumes/pentlands-21-de-noviembre
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    comment:
+      -
+        status: 2
+        cid: 2
+        last_comment_timestamp: 1794678500
+        last_comment_name: ''
+        last_comment_uid: 5
+        comment_count: 2
+    field_area:
+      -
+        entity: f1f3e646-71eb-4748-8690-0540bc0971e5
+    field_content:
+      -
+        value: '<p>Nuestra primera excursión con el nuevo sitio web: Turnhouse Hill y Carnethy Hill, con sol, viento y, cerca de la cima, un poco de nieve.</p>'
+        format: content_format
+    field_hike:
+      -
+        entity: 7a9015b9-efe9-4641-bcba-04b6ed4312de
+    field_photos:
+      -
+        entity: 59b5a08f-5779-407c-ade8-02ef61b11924
+      -
+        entity: a9464316-4296-4aec-9a09-d30e82830e11
+      -
+        entity: 007b8ba0-f9b9-4e37-b1c1-9d08413563f8
+      -
+        entity: 0c558f05-8405-4126-ae97-bcae1be7cf6d

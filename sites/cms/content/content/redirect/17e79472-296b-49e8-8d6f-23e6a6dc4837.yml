@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 17e79472-296b-49e8-8d6f-23e6a6dc4837
+  bundle: redirect
+  default_langcode: en
+  depends:
+    415b2938-c8c0-4188-8cbd-1bbcd09e91f0: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 2
+  hash:
+    -
+      value: 4RWQFqeG4zUGjtY6b-LoLASVoUexTfUQQC_XUr7Aock
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: pentlands-21-november
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: 415b2938-c8c0-4188-8cbd-1bbcd09e91f0
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

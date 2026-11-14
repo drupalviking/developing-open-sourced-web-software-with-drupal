@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: f1d832d6-4f9c-4906-a818-f64847adc852
+  bundle: redirect
+  default_langcode: en
+  depends:
+    7c847849-dbd6-4388-980e-964b1b51ebd5: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 3
+  hash:
+    -
+      value: DN0hmsv3bYqUDieXTcjOdjkuFbTG4HNMlQ2-TKsO2I0
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: arthurs-seat-sunrise
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: 7c847849-dbd6-4388-980e-964b1b51ebd5
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

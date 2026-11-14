@@ -1,11 +1,9 @@
-uuid: 8b5eb2d3-0ff0-4b31-9a49-67802e54082a
+uuid: fb212826-dd44-4f1f-a496-155515371c74
 langcode: en
 status: true
 dependencies:
   module:
     - node
-_core:
-  default_config_hash: czxEK-1Q2Kb-nybIlSiET_DzJ8xSWBJlIOGh4mmmL-A
 id: node.field_hike
 field_name: field_hike
 entity_type: node

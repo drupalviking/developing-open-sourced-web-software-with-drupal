@@ -1,12 +1,10 @@
-uuid: 56639664-fd77-4a69-b87a-6b229f50cdbc
+uuid: fc665bf8-77e5-42a4-9de7-345af240624f
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_elevation_gain
     - node.type.hike
-_core:
-  default_config_hash: l7kqzTObxc_SD3TdvK5FUNWJ7fQpGawcZkVmau9_amk
 id: node.hike.field_elevation_gain
 field_name: field_elevation_gain
 entity_type: node
@@ -14,7 +12,7 @@ bundle: hike
 label: 'Elevation gain'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

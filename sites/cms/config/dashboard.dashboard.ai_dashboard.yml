@@ -1,4 +1,4 @@
-uuid: 42835453-befd-491d-be2e-4cfc505ed023
+uuid: 86412cb9-7985-41b3-9d50-1ee43d943932
 langcode: en
 status: true
 dependencies:
@@ -11,7 +11,7 @@ dependencies:
     module:
       - ai_dashboard
 _core:
-  default_config_hash: Yd5dyCNMASsD2o3DeCLXPG97aJrxOBxHlJCcE6FrvV0
+  default_config_hash: Jf6mj8jlPBfQiVfpqQ6NHUlJI_WeekwgT5lxly-7r0c
 id: ai_dashboard
 label: 'AI Dashboard'
 description: 'Configure your AI environment, connect providers, and enable additional functionality.'
@@ -44,16 +44,23 @@ layout:
           context_mapping: {  }
         weight: 4
         additional: {  }
-      8a25f9d9-da87-4395-b350-3b3d303759a7:
-        uuid: 8a25f9d9-da87-4395-b350-3b3d303759a7
+      29b8273c-a647-481f-a421-d58230503a2c:
+        uuid: 29b8273c-a647-481f-a421-d58230503a2c
         region: content
         configuration:
-          id: module_list_packages
+          id: 'project_browser_block:ai_dashboard_extensions'
           label: Extensions
           label_display: visible
-          provider: ai_dashboard
+          provider: project_browser
           context_mapping: {  }
-          packages: "AI\r\nAI (Experimental)\r\nAI Providers\r\nAI Tools"
+          paginate: true
+          page_sizes: '8, 12, 16, 20'
+          sort_options:
+            - best_match
+            - created
+          default_sort: best_match
+          filters:
+            - search
         weight: 3
         additional: {  }
       69458115-683f-4417-8829-c194d2671ba3:

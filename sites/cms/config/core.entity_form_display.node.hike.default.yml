@@ -1,10 +1,10 @@
-uuid: 0ef89fdb-1b74-4578-9152-23dd977f4e24
+uuid: f8683f2f-30db-4040-8822-d04921995b54
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.hike.field_area
-    - field.field.node.hike.field_body
+    - field.field.node.hike.field_content
     - field.field.node.hike.field_date
     - field.field.node.hike.field_difficulty
     - field.field.node.hike.field_distance
@@ -19,9 +19,8 @@ dependencies:
     - datetime
     - media_library
     - path
+    - tagify_user_list
     - text
-_core:
-  default_config_hash: a-PoILx3HLV-oz47-hiyA50MzmRRru3WAnqOe2QZplE
 id: node.hike.default
 targetEntityType: node
 bundle: hike
@@ -39,12 +38,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_body:
+  field_content:
     type: text_textarea
     weight: 7
     region: content
     settings:
-      rows: 5
+      rows: 9
       placeholder: ''
     third_party_settings: {  }
   field_date:
@@ -134,14 +133,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
   uid:
-    type: entity_reference_autocomplete
-    weight: 7
+    type: tagify_user_list_entity_reference_autocomplete_widget
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
+      suggestions_dropdown: 1
       placeholder: ''
+      image: user_picture
+      image_style: thumbnail
+      show_info_label: 0
+      info_label: ''
+      show_entity_id: 0
+      parent_selection: 1
     third_party_settings: {  }
   url_redirects:
     weight: 50

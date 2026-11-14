@@ -1,0 +1,9 @@
+uuid: e7273a0c-48a9-4978-8730-d3fc454fa480
+langcode: en
+status: true
+dependencies: {  }
+name: 'Photo themes'
+vid: photo_themes
+description: 'What a photo shows. Anyone who uploads a photo can add a theme.'
+weight: 0
+new_revision: false

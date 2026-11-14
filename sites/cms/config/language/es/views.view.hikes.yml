@@ -1,15 +1,4 @@
 display:
-  default:
-    display_options:
-      title: 'Próximas excursiones'
-      empty:
-        area:
-          content:
-            value: '<p>No hay excursiones previstas por ahora. Solemos anunciarlas con un mes de antelación, así que vuelve pronto.</p>'
-  page_1:
-    display_options:
-      menu:
-        title: Excursiones
   block_1:
     display_options:
       title: 'Próximas excursiones'
@@ -21,3 +10,14 @@ display:
   page_3:
     display_options:
       title: 'Archivo de excursiones'
+  default:
+    display_options:
+      empty:
+        area:
+          content:
+            value: '<p>No hay excursiones previstas por ahora. Solemos anunciarlas con un mes de antelación, así que vuelve pronto.</p>'
+      title: 'Próximas excursiones'
+  page_1:
+    display_options:
+      menu:
+        title: Excursiones

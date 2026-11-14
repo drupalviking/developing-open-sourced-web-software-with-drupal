@@ -1,4 +1,4 @@
-uuid: 121fc286-1a34-40d3-9466-47e68f635b1f
+uuid: effcf10d-c780-409d-9006-fc2497c3e5b0
 langcode: en
 status: true
 dependencies:
@@ -92,21 +92,22 @@ display:
           exposed: false
           granularity: second
       arguments:
-        tid:
-          id: tid
-          table: taxonomy_index
-          field: tid
+        term_node_tid_depth:
+          id: term_node_tid_depth
+          table: node_field_data
+          field: term_node_tid_depth
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: taxonomy_index_tid
+          entity_type: node
+          plugin_id: taxonomy_index_tid_depth
           default_action: 'not found'
           exception:
-            value: ''
+            value: all
             title_enable: false
             title: All
           title_enable: true
-          title: '{{ arguments.tid }}'
+          title: '{{ arguments.term_node_tid_depth }}'
           default_argument_type: fixed
           default_argument_options:
             argument: ''
@@ -125,13 +126,12 @@ display:
             fail: 'not found'
           validate_options:
             bundles: {  }
-            access: true
+            access: false
             operation: view
             multiple: 0
           break_phrase: false
-          add_table: false
-          require_value: false
-          reduce_duplicates: false
+          depth: 2
+          use_taxonomy_term_path: false
       filters:
         langcode:
           id: langcode
@@ -246,7 +246,7 @@ display:
           admin_label: ''
           plugin_id: entity
           empty: true
-          target: '{{ raw_arguments.tid }}'
+          target: '{{ raw_arguments.term_node_tid_depth }}'
           view_mode: full
           tokenize: true
           bypass_access: false

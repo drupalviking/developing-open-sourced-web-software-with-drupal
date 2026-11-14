@@ -1,4 +1,4 @@
-uuid: 59a6102e-4b81-450d-a047-b11ee6a7085b
+uuid: bb76ef2f-ae5a-4330-a687-1c4f04007034
 langcode: en
 status: true
 dependencies:
@@ -7,8 +7,6 @@ dependencies:
     - media.type.image
   module:
     - link
-_core:
-  default_config_hash: MyVj9KE-O9q0age0URDFVKCSYqNua5zUYg7JIFS52rI
 id: media.image.field_source
 field_name: field_source
 entity_type: media

@@ -1,4 +1,4 @@
-uuid: 39bef8d8-b556-441a-b6aa-18092a48b3a8
+uuid: 6fe055ea-35bb-4743-828b-52c0df115844
 langcode: en
 status: true
 dependencies:
@@ -7,8 +7,6 @@ dependencies:
     - node.type.hike
   module:
     - options
-_core:
-  default_config_hash: 5Go6QdRIpDRUMbMf0dPv2xGlvhwJThxU0piY9UcLv2w
 id: node.hike.field_difficulty
 field_name: field_difficulty
 entity_type: node

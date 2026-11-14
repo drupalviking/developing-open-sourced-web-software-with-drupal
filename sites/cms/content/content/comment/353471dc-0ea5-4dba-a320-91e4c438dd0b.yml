@@ -1,0 +1,43 @@
+_meta:
+  version: '1.0'
+  entity_type: comment
+  uuid: 353471dc-0ea5-4dba-a320-91e4c438dd0b
+  bundle: comment
+  default_langcode: en
+  depends:
+    415b2938-c8c0-4188-8cbd-1bbcd09e91f0: node
+default:
+  cid:
+    -
+      value: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  entity_id:
+    -
+      entity: 415b2938-c8c0-4188-8cbd-1bbcd09e91f0
+  subject:
+    -
+      value: 'Snow on Carnethy'
+  created:
+    -
+      value: 1794672702
+  changed:
+    -
+      value: 1794672702
+  thread:
+    -
+      value: 01/
+  entity_type:
+    -
+      value: node
+  field_name:
+    -
+      value: comment
+  comment_body:
+    -
+      value: '<p>The second photo is my favorite: you can see the snow line on Carnethy Hill.</p>'
+      format: content_format

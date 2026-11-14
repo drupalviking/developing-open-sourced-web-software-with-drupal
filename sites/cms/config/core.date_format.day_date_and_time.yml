@@ -1,9 +1,7 @@
-uuid: f077761d-181e-4d36-a576-6a3e653a3e87
+uuid: 3a988ef7-4de9-443d-a95f-2ed7a2922f52
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: TlxxMkLbTejyBuCfaOlgdN-Z45tJpYtcOzyGcZaoOnU
 id: day_date_and_time
 label: 'Day, date and time'
 locked: false

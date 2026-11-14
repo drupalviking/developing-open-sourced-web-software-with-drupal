@@ -1,0 +1,117 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: c16fa17e-be31-4f09-9c5c-1758d97cda02
+  bundle: image
+  default_langcode: en
+  depends:
+    c02eab48-06c0-4ee2-9263-14217a0c61f7: file
+default:
+  mid:
+    -
+      value: 2
+  revision_created:
+    -
+      value: 1794665211
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: "Edinburgh's Old Town from Calton Hill"
+  created:
+    -
+      value: 1794665211
+  changed:
+    -
+      value: 1794665211
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_license:
+    -
+      value: cc_by_sa_2_0
+  field_media_image:
+    -
+      alt: "Edinburgh's Old Town and the castle seen from Calton Hill, with trees in front"
+      title: ''
+      width: 1600
+      height: 1089
+      entity: c02eab48-06c0-4ee2-9263-14217a0c61f7
+  field_photographer:
+    -
+      value: 'Jim Barton'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Edinburgh_skyline_from_Calton_Hill_-_geograph.org.uk_-_7467002.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }
+translations:
+  es:
+    mid:
+      -
+        value: 2
+    revision_created:
+      -
+        value: 1794665211
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    name:
+      -
+        value: 'El casco antiguo de Edimburgo desde Calton Hill'
+    created:
+      -
+        value: 1794665211
+    changed:
+      -
+        value: 1794665211
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: null
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_license:
+      -
+        value: cc_by_sa_2_0
+    field_media_image:
+      -
+        alt: 'El casco antiguo de Edimburgo y el castillo vistos desde Calton Hill, con árboles delante'
+        title: ''
+        width: 1600
+        height: 1089
+        entity: c02eab48-06c0-4ee2-9263-14217a0c61f7
+    field_photographer:
+      -
+        value: 'Jim Barton'
+    field_source:
+      -
+        uri: 'https://commons.wikimedia.org/wiki/File:Edinburgh_skyline_from_Calton_Hill_-_geograph.org.uk_-_7467002.jpg'
+        title: 'Wikimedia Commons'
+        options: {  }

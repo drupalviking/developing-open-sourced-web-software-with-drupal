@@ -1,0 +1,117 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: c8d55a3d-741b-44c0-be1c-990e0acfeda5
+  bundle: image
+  default_langcode: en
+  depends:
+    938439ed-5b85-4e04-b290-7b6630b19738: file
+default:
+  mid:
+    -
+      value: 7
+  revision_created:
+    -
+      value: 1794679492
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 0
+  name:
+    -
+      value: 'Glencorse Reservoir from the hillside'
+  created:
+    -
+      value: 1794679492
+  changed:
+    -
+      value: 1794685948
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'Glencorse Reservoir between the hills, seen from a grassy slope with two trees'
+      title: ''
+      width: 1728
+      height: 3072
+      entity: 938439ed-5b85-4e04-b290-7b6630b19738
+  field_photographer:
+    -
+      value: 'Jaroslaw Musialkowski'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Pentland_Hills_-_Glencorse_Reservoir.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }
+translations:
+  es:
+    mid:
+      -
+        value: 7
+    revision_created:
+      -
+        value: 1794679492
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 0
+    name:
+      -
+        value: 'El embalse de Glencorse desde la ladera'
+    created:
+      -
+        value: 1794679492
+    changed:
+      -
+        value: 1794679492
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: null
+        langcode: es
+        pathauto: 1
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_license:
+      -
+        value: cc_by_sa_4_0
+    field_media_image:
+      -
+        alt: 'El embalse de Glencorse entre las colinas, visto desde una ladera de hierba con dos árboles'
+        title: ''
+        width: 1728
+        height: 3072
+        entity: 938439ed-5b85-4e04-b290-7b6630b19738
+    field_photographer:
+      -
+        value: 'Jaroslaw Musialkowski'
+    field_source:
+      -
+        uri: 'https://commons.wikimedia.org/wiki/File:Pentland_Hills_-_Glencorse_Reservoir.jpg'
+        title: 'Wikimedia Commons'
+        options: {  }

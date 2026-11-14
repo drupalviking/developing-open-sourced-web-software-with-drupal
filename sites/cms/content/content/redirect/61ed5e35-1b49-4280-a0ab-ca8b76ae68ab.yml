@@ -1,0 +1,36 @@
+_meta:
+  version: '1.0'
+  entity_type: redirect
+  uuid: 61ed5e35-1b49-4280-a0ab-ca8b76ae68ab
+  bundle: redirect
+  default_langcode: en
+  depends:
+    bd16ff1d-a56e-47d5-87be-6a6a1e9c60af: node
+default:
+  enabled:
+    -
+      value: true
+  rid:
+    -
+      value: 1
+  hash:
+    -
+      value: LCiSY1Fq_GmevkrstkxczmY_HvpMDN9AIG7FuaTxn64
+  uid:
+    -
+      target_id: 0
+  redirect_source:
+    -
+      path: club-has-website
+      query: {  }
+  redirect_redirect:
+    -
+      title: null
+      options: {  }
+      target_uuid: bd16ff1d-a56e-47d5-87be-6a6a1e9c60af
+  status_code:
+    -
+      value: 301
+  created:
+    -
+      value: 1794679472

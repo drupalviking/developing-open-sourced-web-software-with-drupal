@@ -247,6 +247,40 @@ The albums show their area and description, but no photo. The Teaser could show 
 
 > **Coming from WordPress?** In WordPress, many lists come with the theme: the blog page, and an archive page for each category, tag, author and month. To build your own list, you add a **Query Loop** block to a page or template, choose a post type, a few filters (categories, tags, author, keyword) and the number of posts, and arrange the post's title, image and excerpt inside it. A Drupal view is the same idea, with more questions you can ask. The Query Loop orders posts by their date or title; ordering by a field of your own, such as the date of a hike, takes a plugin or code in WordPress, and a sort in Views. And a Drupal view isn't tied to one place: the same list can be a page, a block and a feed.
 
+## On Drupal CMS
+
+Views works the same on Drupal CMS (see the box above), so on the Drupal CMS site, build the three views exactly as in this chapter. Four things are different.
+
+**More hikes.** Type the four hikes from the table in "Before we start", as on core. The **Save as** list (Chapter 6) takes the place of **Change to**: choose **Published**. If you'd like photos on them, *Glencorse Reservoir from the hillside* and *A burn in the Pentland Hills in winter* are already in the Media Library, from the album.
+
+Then build **Hikes** as in "A page of upcoming hikes", "The next hikes on the front page" and "Letting visitors choose". Its menu link, **Hikes**, appears in Mercury's header, next to the links from Chapter 6. Mercury shows the teasers with their labels above the values, and the **Read more** link as a list item.
+
+![The Upcoming hikes page on Drupal CMS: a Difficulty filter with an Apply button, then four hikes, each with its title, a Read more link, its date, distance, difficulty and the start of its description](images/12-cms-hikes.png)
+*Figure 12.17: Upcoming hikes, on Drupal CMS*
+
+**A small view mode for photos.** Don't make a **Small** view mode: Drupal CMS has one already, but it shows the whole photo, uncropped, so the photos in a grid would all have different heights. Drupal CMS also has **16:9 Small**, which crops every photo to the same shape, keeping the focal point. Use that one: on Image's **Manage display**, select its tab, and add **Photographer** with an **Inline** label. Then build **Photos** as in "A grid of photos", choosing **16:9 Small** where the steps say **Small**.
+
+**The blocks on the front page, with Canvas.** The front page of the Drupal CMS site is the Canvas page you built in Chapter 8, so the two blocks go on it with Canvas, not Layout Builder. Every block display of a view is a Canvas component, and you'll find both in the **Library**, under **Lists (Views)**.
+
+1. On the front page, select **Edit**, which opens Canvas.
+2. In **Layers**, select the **Grid** with the welcome text and the card.
+3. In the **Library**, right-click **Next hikes** under **Lists (Views)**, and select **Insert**. It goes after the grid, as the card went after the text in Chapter 8.
+4. In **Layers**, select **Next hikes**. Right-click **Newest photos** in the **Library**, and select **Insert**.
+5. Select **Review 1 change**, then **Publish**.
+
+![Canvas, with Lists (Views) open in the Library showing Newest photos and Next hikes, and the page showing the three next hikes below the welcome text, with Newest photos selected and its settings on the right](images/12-cms-canvas-blocks.png)
+*Figure 12.18: The views' blocks, in Canvas*
+
+When you select a view's block in Canvas, its settings are on the right: **Items per block**, and the title. They're the same settings Layout Builder and Block layout give you, as we'll see in Chapter 14. A Canvas page has no revision log message, so there's nothing to type before you publish.
+
+![The front page on Drupal CMS as a visitor sees it: the hero, the welcome text and the When and where card, then three next hikes with their date and difficulty and a link All upcoming hikes, and a grid of six photos in three columns, each with its photographer](images/12-cms-front-page.png)
+*Figure 12.19: The front page, with the next hikes and the newest photos, on Drupal CMS*
+
+**Albums.** Do the Try it in "A page of albums" as on core: add *Edinburgh, 24 October* (with *Edinburgh's Old Town from Calton Hill*, the photo from Chapter 9's news item), and the **Albums** view.
+
+![The Albums page on Drupal CMS: Edinburgh, 24 October and Pentlands, 21 November side by side, each with Read more and comment links, its area and its description](images/12-cms-galleries.png)
+*Figure 12.20: The club's albums, on Drupal CMS*
+
 ## Summary
 
 You can now:
@@ -258,7 +292,7 @@ You can now:
 - override a setting for one display, and recognize overridden settings by their italics;
 - expose a filter to visitors;
 - list media in a responsive grid, using a view mode of their own;
-- place a view's block on a page with Layout Builder.
+- place a view's block on a page with Layout Builder, or with Canvas on Drupal CMS.
 
 ## Exercises
 

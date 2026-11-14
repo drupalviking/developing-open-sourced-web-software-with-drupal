@@ -242,6 +242,24 @@ Generated content is for testing: delete it when you're done, with the same form
 
 > **Coming from WordPress?** Drupal's modules are WordPress's plugins: code from the community that adds features, found in a directory on the project's website. The biggest difference is how you add them. In WordPress, you search **Plugins** > **Add New Plugin** in the dashboard, and select **Install Now**. On Drupal CMS, Project Browser is the same idea. On Drupal core sites, and on most professional Drupal sites, modules are added with Composer, because it also takes care of the libraries they need, and makes sure every copy of the site, from your laptop to the live server, runs exactly the same code. That's why Drupal developers keep `composer.json` and `composer.lock` in Git, and the downloaded code out of it. WordPress has nothing quite like recipes: the closest are plugins that import settings, or a starter theme with demo content.
 
+## On Drupal CMS
+
+Readers on the Drupal CMS site have done part of this chapter already: Devel Generate, and installing Module Filter from Project Browser (in the box above). Here's the rest.
+
+**Diff.** Drupal CMS doesn't come with Diff either. Install it from Project Browser, as you did Module Filter: search for `Diff`, and select **Install** on its card. (Composer works too: `ddev composer require drupal/diff`, and then install it on **Extend**.) Then edit the hike as in "Installing Diff", with the head torch and the revision log message. On Drupal CMS, the form says **Save as** where core says **Change to**, as you saw in Chapter 6; choose **Published**. On the hike's **Revisions** tab, select **Compare selected revisions**. Mercury shows the whole hike, as visitors see it, with the change marked in the description.
+
+![The comparison on Drupal CMS: the hike as Mercury shows it, and in the description the word and struck through in red, and a head torch: it gets dark before five in November underlined in green](images/11-cms-diff.png)
+*Figure 11.14: Diff on Drupal CMS*
+
+**Comments on albums.** Drupal CMS's Starter template has no comments, so apply the same recipe, with the same command: `ddev drush recipe core/recipes/comment_base`. Then re-use the **comment** field on Gallery, with the label `Comments`, and leave a comment on the album, as above.
+
+![The bottom of the album page on Drupal CMS: a large Comments heading, the comment Snow on Carnethy by admin with a picture placeholder and Delete, Edit and Reply as a plain list, and the Add new comment form](images/11-cms-gallery-comments.png)
+*Figure 11.15: Comments, as Mercury shows them*
+
+The comments work, but they don't look finished: Mercury has no styles for comments yet, so the author's picture, the links and the form come out plain. Styling them is a theme's job, and our companion book, *Theming Drupal*, is about exactly that kind of work.
+
+**Devel.** Devel and Devel Generate go on Composer's `require-dev` list, as in "Modules for building, not for running": `ddev composer require --dev drupal/devel`, then install both on **Extend**.
+
 ## Summary
 
 You can now:
@@ -252,7 +270,8 @@ You can now:
 - install a module on **Extend**, and compare revisions with Diff;
 - find modules and recipes with Project Browser;
 - read a recipe, apply it with `ddev drush recipe`, and finish the job it starts;
-- keep development modules such as Devel on Composer's `require-dev` list, and off the live site.
+- keep development modules such as Devel on Composer's `require-dev` list, and off the live site;
+- do all of it on Drupal CMS, installing modules from Project Browser.
 
 ## Exercises
 

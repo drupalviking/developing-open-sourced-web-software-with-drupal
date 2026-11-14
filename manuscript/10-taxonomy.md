@@ -180,12 +180,43 @@ The numbers in brackets are the terms' IDs, which Drupal adds when you choose a 
 
 > **Try it:** Most news sites have tags. Add a vocabulary called `Tags`, and a field called `Tags` on News that refers to it, with free tagging and the **Autocomplete (Tags style)** widget. Tag *The club has a website* with `Club news`. Who on the club's site should be able to add new tags, and who should be able to add new areas?
 
-> **On Drupal CMS:** Drupal CMS comes with one vocabulary, **Tags** ("Use tags to group articles on similar topics into categories."), and a **Tags** field on its Basic page, with free tagging on. Instead of a comma-separated box, its form uses the **Tagify** module: each tag becomes a small label with a cross to remove it, and you can drag the labels to change their order (Figure 10.14). Everything else, vocabularies, terms, fields on terms and term pages, works as on core.
+> **On Drupal CMS:** Drupal CMS comes with one vocabulary, **Tags** ("Use tags to group articles on similar topics into categories."), and a **Tags** field on its Basic page, with free tagging on. Instead of a comma-separated box, its form uses the **Tagify** module: each tag becomes a small label with a cross to remove it, and you can drag the labels to change their order (Figure 10.14). Everything else, vocabularies, terms, fields on terms and term pages, works as on core: see "On Drupal CMS" at the end of the chapter.
 
 ![The Basic page form on Drupal CMS, with the Tags field showing Hiking and Photography as labels with a cross](images/10-cms-tags.png)
 *Figure 10.14: Tags on Drupal CMS*
 
 > **Coming from WordPress?** WordPress has two built-in taxonomies for posts: **categories**, which can have parents, and **tags**, which can't. In Drupal, those are two vocabularies, one with a hierarchy (like our Areas) and one with free tagging (like our Photo themes), and you can have as many more as you like, on any content type, on media and on users. In WordPress, more taxonomies are *custom taxonomies*, registered with code or a plugin; in Drupal, they're made in the interface, the same way. Two differences to know. Every WordPress post is filed under at least one category, and gets the default category if you don't choose one; a Drupal field is only required if you make it so. And the page of a WordPress parent category lists the posts in its sub-categories too; Drupal's term page lists only the content with that exact term, until you change it with Views (Chapter 13).
+
+## On Drupal CMS
+
+On the Drupal CMS site, build the same vocabularies and fields, as above. Taxonomy works the same way there, so most steps are identical; here's what's different.
+
+**Areas.** Add the vocabulary, its terms, and its order as above. The list looks a little different in Gin, but the handles, **Show row weights** and **Reset to alphabetical** are all there.
+
+![The Areas list on Drupal CMS: Pentland Hills with Carnethy Hill, Glencorse Reservoir and Turnhouse Hill indented under it, then East Lothian with North Berwick Law, then Edinburgh with its places](images/10-cms-areas.png)
+*Figure 10.15: The Areas vocabulary on Drupal CMS*
+
+**A photo for each area.** Add the **Photo** field to Areas, as in "Fields on terms". On its display, choose the view mode you chose for hikes in Chapter 9, **16:9 Wide**, instead of Banner. Give Pentland Hills *The view from Carnethy Hill*, and look at its page: Mercury shows the term's photo, its credits and its description.
+
+![The Pentland Hills term page on Drupal CMS: the photo of the hills from Carnethy Hill, its credits, and the description](images/10-cms-term-page.png)
+*Figure 10.16: The page of an area, on Drupal CMS*
+
+**Areas on hikes and albums.** Add **Area** to Hike, and re-use it on Gallery, as in "Areas on hikes" and its Try it, with the same widget, place and **Inline** label. Then give the hike and the album **-Turnhouse Hill**. Remember from Chapter 8 that Mercury puts every label above its value, so **Area** is on a line of its own.
+
+![The hike page on Drupal CMS: the photo and its credits, then Date, Meeting place, Area (Turnhouse Hill), Distance, Difficulty and Hike leader, each label above its value](images/10-cms-hike-area.png)
+*Figure 10.17: The hike, in its area, on Drupal CMS*
+
+Now look at the page of Turnhouse Hill. Drupal CMS has changed the list that term pages use: it shows content in the **Card** view mode, not the Teaser. Hike has a Card display since Chapter 8, but Gallery doesn't, so the album is listed in full, with all four photos. The fix is the one from the Try it, on another view mode: on Gallery's **Manage display**, **Enable** the **Card**, and give it the **Area** (**Inline**) and the **Description**, trimmed to 200 characters. Set up the Teaser the same way, as in the Try it: Chapter 12 lists albums as teasers.
+
+![The Turnhouse Hill term page on Drupal CMS, listing the album Pentlands, 21 November with its area and description, and the hike Turnhouse Hill and Carnethy Hill with its date and difficulty](images/10-cms-term-cards.png)
+*Figure 10.18: Everything from Turnhouse Hill, as cards*
+
+**Photo themes.** Add the vocabulary and the **Themes** field on Image as in "Photo themes", with one change: on both forms of Image, choose the **Tagify** widget instead of **Autocomplete (Tags style)**. It's the widget Drupal CMS uses for its own Tags (see the box above): each theme becomes a label, new themes are added when you press Enter or type a comma, and there are no numbers in brackets. So leave "Separate themes with commas" out of the help text: `What the photo shows, such as Landscape or Winter. A new theme is added to the list.`
+
+![The edit form of the Turnhouse Hill photo on Drupal CMS, with the Themes Landscape, Water and Hills as labels in a Tagify box](images/10-cms-themes.png)
+*Figure 10.19: Themes on a photo, with Tagify*
+
+**Tags on News.** For the Try it, don't make a second Tags vocabulary: Drupal CMS has one already. On News's **Manage fields**, **Re-use an existing field**, and choose **Tags** (`field_tags`), the field the Utility page has. It comes with its settings, free tagging included, and Tagify as its widget.
 
 ## Summary
 
@@ -196,7 +227,8 @@ You can now:
 - create a vocabulary, add terms, and arrange them in a hierarchy by dragging or under **Relations**;
 - add fields to a vocabulary, and set up how a term's page looks;
 - add a term reference field to content, and choose a widget that suits the vocabulary;
-- let editors add terms as they type, with free tagging, and know when not to.
+- let editors add terms as they type, with free tagging, and know when not to;
+- do the same on Drupal CMS, with its Tagify widget and its own Tags vocabulary.
 
 ## Exercises
 

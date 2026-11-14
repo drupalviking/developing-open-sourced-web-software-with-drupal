@@ -408,6 +408,38 @@ Some habits keep views fast, cached or not:
 
 > **Coming from WordPress?** Many things this chapter builds come with WordPress: every category, tag and author has an archive page, and so does every month, at addresses like `/2026/12/`. The Query Loop block's **Default** query type does what a contextual filter does: it lists what the template's address asks for. What WordPress doesn't have without plugins is relationships: showing the hike an album belongs to, or sorting by it, takes a plugin such as a custom fields plugin, and some code. Tables with sortable columns and counts (aggregation) also need a plugin. In Drupal, they're all part of Views, in core.
 
+## On Drupal CMS
+
+Everything in this chapter works the same on the Drupal CMS site (see the box above), so build the same views, in the same order, on it. Where the steps choose the **Small** view mode, choose **16:9 Small**, as in Chapter 12. The administration pages look like the rest of Gin.
+
+![The Photo credits page on Drupal CMS: a table of six photos with their name, thumbnail, photographer, license, source and album](images/13-cms-photo-credits.png)
+*Figure 13.35: Photo credits, on Drupal CMS*
+
+**Term pages with depth.** Drupal CMS's **Taxonomy term** view isn't quite core's: it lists content as cards (Chapter 10), and its contextual filter is the same **Has taxonomy term ID**. Change it as in "Term pages with depth", header included. The page of the Pentland Hills now lists the hikes and the album from all its hills, as cards.
+
+![The Pentland Hills term page on Drupal CMS: the photo and description, then the Glencorse Reservoir loop, Pentland Hills ridge, the album Pentlands, 21 November and Turnhouse Hill and Carnethy Hill, each as a card](images/13-cms-term-depth.png)
+*Figure 13.36: The Pentland Hills, with everything in them, on Drupal CMS*
+
+**Albums from this hike.** Make the block as in "Albums from this hike", up to step 5. Step 6 is where Drupal CMS is different: Mercury has no blocks in Block layout. The header and the footer of every page come from a *page template* in Canvas, and Chapter 14 shows it properly. For now, it's enough to know that the template has a **Page content** component, where each page's own content goes, and that you can add components around it.
+
+1. Open Canvas (`/canvas`), and select **Templates** in the bar on the left. Under **Page templates**, select **Mercury theme**.
+2. Open **Layers**, and select **Page content**.
+3. In the **Library**, under **Lists (Views)**, right-click **Albums from this hike**, and select **Insert**. It goes right after the page's content.
+4. Select **Review 1 change**, then **Publish**.
+
+![The Mercury theme page template in Canvas, with Albums from this hike selected in Layers, right under Page content, and its settings on the right](images/13-cms-page-template.png)
+*Figure 13.37: Albums from this hike, in the page template*
+
+On core, the block's visibility settings keep it to hike pages. A page template has no such settings, and it doesn't need them here: the block's contextual filter finds no albums on any other page, and **Hide block if no result/empty text** hides it. Canvas doesn't show the block's title, so the album appears under the hike without a heading of its own.
+
+![The Turnhouse Hill hike on Drupal CMS, with the album Pentlands, 21 November at the bottom: its title, the first photo with its photographer, and the hike with its date](images/13-cms-albums-from-hike.png)
+*Figure 13.38: The hike, with its album, on Drupal CMS*
+
+**The archive.** The member's tab, the archive with its attachment, and the feed all work as on core. Mercury shows the attachment's months as a plain list, in the same `202612` form as on core, with all the hikes below them.
+
+![The Hike archive page on Drupal CMS: the months 202701, 202612, 202611 and 202610 with their counts, then all five hikes as teasers](images/13-cms-archive.png)
+*Figure 13.39: The hike archive, on Drupal CMS*
+
 ## Summary
 
 You can now:
@@ -420,7 +452,8 @@ You can now:
 - count and group with aggregation;
 - make a list depend on its address or its page with a contextual filter, with a default value, a title, validation and a summary;
 - add an attachment and a feed to a view;
-- explain how Views caches its results, and read the SQL behind a view.
+- explain how Views caches its results, and read the SQL behind a view;
+- put a view's block around every page on Drupal CMS, with Canvas's page template.
 
 ## Exercises
 

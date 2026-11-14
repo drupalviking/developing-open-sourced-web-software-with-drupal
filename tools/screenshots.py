@@ -355,6 +355,204 @@ def cms09_steps(page: Page, site: dict, snap) -> None:
     cms_snapshot(site, "ch09-cms-done")
 
 
+
+def cms10_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 10 on Drupal CMS: Areas (with a photo on its terms), an Area field on Hike and Gallery, Photo themes
+    with Tagify, and Drupal CMS's own Tags. From ch09-cms-done to ch10-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch09-cms-done")
+    cms_tags(page, url)
+    snap("10-cms-tags")
+    cms_replay(site, "ch10_areas")
+    cms_shot_page(page, "/admin/structure/taxonomy/manage/areas/overview", "10-cms-areas", snap)
+    term = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("taxonomy_term")->loadByProperties(["name" => "Pentland Hills"]))->id();').strip()
+    as_visitor(page, site, f"/taxonomy/term/{term}", "10-cms-term-page")
+    cms_replay(site, "ch10_area_fields")
+    as_visitor(page, site, "/hikes/turnhouse-hill", "10-cms-hike-area")
+    term = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("taxonomy_term")->loadByProperties(["name" => "Turnhouse Hill"]))->id();').strip()
+    as_visitor(page, site, f"/taxonomy/term/{term}", "10-cms-term-cards")
+    cms_replay(site, "ch10_themes")
+    media = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("media")->loadByProperties(["name" => "Turnhouse Hill across Glencorse Reservoir"]))->id();').strip()
+    page.goto(f"{url}/media/{media}/edit")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, ".field--name-field-photographer", 200)
+    page.mouse.move(700, 100)
+    snap("10-cms-themes")
+    cms_snapshot(site, "ch10-cms-done")
+
+
+def cms_views(site: dict, chapter: int) -> None:
+    """Imports the club's views on the Drupal CMS site, as Chapter 12 or 13 leaves them on core: the views in
+    sites/core/config (exported after the last chapter), adapted to Drupal CMS and trimmed back to the chapter.
+    A reader builds them by hand, exactly as on core; only the differences below are Drupal CMS's."""
+    import yaml
+    names = ["hikes", "photos", "albums"] + (["photo_credits", "photographers", "hike_admin"] if chapter >= 13 else [])
+    out = Path(site["dir"]) / "web" / "cms-views"
+    shutil.rmtree(out, ignore_errors=True)
+    out.mkdir()
+
+    def adapt(node):
+        if isinstance(node, dict):
+            for key in list(node):
+                value = node[key]
+                if key == "filters" and isinstance(value, dict):
+                    # Chapter 18's language filters: the Drupal CMS site has one language until then.
+                    for name in [n for n, f in value.items() if isinstance(f, dict) and f.get("field") == "default_langcode"]:
+                        del value[name]
+                if key == "rendering_language":
+                    node[key] = "***LANGUAGE_entity_translation***"
+                elif key == "view_mode" and value == "small":
+                    node[key] = "16_9_small"
+                else:
+                    adapt(value)
+        elif isinstance(node, list):
+            for i, value in enumerate(node):
+                if value == "core.entity_view_mode.media.small":
+                    node[i] = "core.entity_view_mode.media.16_9_small"
+                else:
+                    adapt(value)
+        return node
+
+    for name in names:
+        view = adapt(yaml.safe_load((ROOT / "sites" / "core" / "config" / f"views.view.{name}.yml").read_text()))
+        view.pop("uuid", None)
+        view.pop("_core", None)
+        if chapter == 12 and name == "hikes":
+            for display in ("page_2", "page_3", "attachment_1", "feed_1"):
+                view["display"].pop(display, None)
+            view["dependencies"]["config"] = [d for d in view["dependencies"]["config"] if d != "core.entity_view_mode.node.rss"]
+        if chapter == 12 and name == "albums":
+            # Chapter 12's albums: a grid of teasers, newest first. Chapter 13 turns it into fields.
+            view["display"].pop("block_1", None)
+            options = view["display"]["default"]["display_options"]
+            options["fields"] = {"title": options["fields"]["title"]}
+            options["relationships"] = {}
+            options["row"] = {"type": "entity:node", "options": {"relationship": "none", "view_mode": "teaser"}}
+            options["sorts"] = {"created": {
+                "id": "created", "table": "node_field_data", "field": "created", "relationship": "none", "group_type": "group",
+                "admin_label": "", "entity_type": "node", "entity_field": "created", "plugin_id": "date", "order": "DESC",
+                "expose": {"label": "", "field_identifier": ""}, "exposed": False, "granularity": "second"}}
+            view["dependencies"] = {"config": ["core.entity_view_mode.node.teaser", "node.type.gallery", "system.menu.main"], "module": ["node", "user"]}
+        (out / f"views.view.{name}.yml").write_text(yaml.safe_dump(view, sort_keys=False, allow_unicode=True))
+    # Drupal CMS has no Config module (so no config:import --partial): save each view through the API instead.
+    php = (
+        "foreach (glob(DRUPAL_ROOT . '/cms-views/*.yml') as $file) {"
+        " $data = \\Drupal\\Component\\Serialization\\Yaml::decode(file_get_contents($file));"
+        " $view = \\Drupal\\views\\Entity\\View::load($data['id']);"
+        " if ($view) { foreach ($data as $key => $value) { $view->set($key, $value); } } else { $view = \\Drupal\\views\\Entity\\View::create($data); }"
+        " $view->save(); echo $data['id'], ' '; }"
+    )
+    try:
+        drush(site, "php:eval", php)
+    except subprocess.CalledProcessError as error:
+        raise RuntimeError(f"Saving the views failed:\n{error.stdout}\n{error.stderr}") from None
+    finally:
+        shutil.rmtree(out)
+    drush(site, "cache:rebuild")
+
+
+def cv_open(page: Page, editor: str) -> None:
+    """Opens a Canvas editor at 100%, where its panels are measured (the same as reload() in canvas_steps)."""
+    page.goto(editor)
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(6000)
+
+
+def cv_panel(page: Page, label: str, marker: str) -> None:
+    if not page.get_by_text(marker, exact=True).first.is_visible():
+        page.click(f"button[aria-label='{label}']")
+        page.wait_for_timeout(1000)
+
+
+def cv_layer(page: Page, row: str) -> None:
+    cv_panel(page, "Layers", "Mercury theme")
+    page.get_by_text(row, exact=True).first.click()
+    page.wait_for_timeout(2500)
+
+
+def cv_insert(page: Page, name: str) -> None:
+    """Right-click a component in the Library, and Insert: it goes after the selected component."""
+    cv_panel(page, "Library", "Components")
+    item = page.get_by_text(name, exact=True).first
+    item.scroll_into_view_if_needed()
+    item.click(button="right")
+    page.wait_for_timeout(600)
+    page.get_by_role("menuitem", name="Insert").click()
+    page.wait_for_timeout(3500)
+
+
+def cv_publish(page: Page, snap=None, name: str = "") -> None:
+    page.click("button:has-text('Review')")
+    page.wait_for_timeout(2500)
+    page.get_by_text("Select All").click()
+    page.wait_for_timeout(800)
+    if snap:
+        snap(name)
+    page.click("button:has-text('Publish')")
+    page.wait_for_timeout(5000)
+
+
+def cms12_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 12 on Drupal CMS: four more hikes and a second album (typed by the reader, from the chapter's table),
+    the Hikes, Photos and Albums views, and the two blocks on the Welcome page, with Canvas. From ch11-cms-done to
+    ch12-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch11-cms-done")
+    cms_replay(site, "ch12_hikes", "ch12_small")
+    cms_views(site, 12)
+    as_visitor(page, site, "/hikes", "12-cms-hikes")
+    cv_open(page, url + "/canvas/editor/canvas_page/1")
+    cv_layer(page, "Grid")
+    cv_insert(page, "Next hikes")
+    cv_layer(page, "Next hikes")
+    cv_insert(page, "Newest photos")
+    # Fit the preview to the window, and scroll it down to the two new blocks.
+    page.click("[data-testid='scale-to-fit']")
+    page.wait_for_timeout(2000)
+    page.mouse.move(650, 500)
+    page.mouse.wheel(0, 900)
+    page.wait_for_timeout(1500)
+    snap("12-cms-canvas-blocks")
+    cv_publish(page)
+    as_visitor(page, site, "/", "12-cms-front-page")
+    as_visitor(page, site, "/galleries", "12-cms-galleries")
+    cms_snapshot(site, "ch12-cms-done")
+
+
+def cms13_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 13 on Drupal CMS: the views of Chapter 13 (tables, relationships, aggregation, contextual filters,
+    the archive and the feed), the term view with depth, and Albums from this hike in Canvas's page template.
+    From ch12-cms-done to ch13-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch12-cms-done")
+    cms_views(site, 13)
+    cms_replay(site, "ch13_term_view")
+    cms_shot_page(page, "/admin/content/photo-credits", "13-cms-photo-credits", snap)
+    # Albums from this hike: Mercury's pages come from Canvas's page template, so the block goes there, after the
+    # page's content. It hides itself where there are no albums to show.
+    page.goto(url + "/canvas")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    page.locator("button[aria-label*='emplate']").first.click()
+    page.wait_for_timeout(2500)
+    page.get_by_text("Mercury theme").first.click()
+    page.wait_for_timeout(6000)
+    # The Templates panel is open, and it says "Mercury theme" too, so open Layers by its button.
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+    page.get_by_text("Page content", exact=True).first.click()
+    page.wait_for_timeout(2500)
+    cv_insert(page, "Albums from this hike")
+    page.click("button[aria-label='Layers']")
+    page.wait_for_timeout(2000)
+    snap("13-cms-page-template")
+    cv_publish(page)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "13-cms-albums-from-hike")
+    term = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("taxonomy_term")->loadByProperties(["name" => "Pentland Hills"]))->id();').strip()
+    as_visitor(page, site, f"/taxonomy/term/{term}", "13-cms-term-depth")
+    as_visitor(page, site, "/hikes/archive", "13-cms-archive")
+    cms_snapshot(site, "ch13-cms-done")
+
 WELCOME_TEXT = (
     "<p>We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, "
     "and once in a café in Leith to look at each other's photos.</p>"
@@ -1823,10 +2021,10 @@ foreach ($ids as $vid) { $r = $s->loadRevision($vid); if ($keep && $vid != $keep
 
 
 def cms_modules_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 11, On Drupal CMS: installing from Project Browser, and Devel Generate (Devel is a dev requirement there)."""
+    """Chapter 11 on Drupal CMS: installing from Project Browser, Diff and a revision to compare, the Default comments
+    recipe on albums, and Devel Generate (Devel is a dev requirement there). From ch10-cms-done to ch11-cms-done."""
     url = site["url"]
-    uninstall(site, "module_filter")
-    composer(site, "remove", "drupal/module_filter")
+    cms_restore(page, site, "ch10-cms-done")
 
     def find() -> object:
         page.goto(url + "/admin/modules/browse/drupalorg_jsonapi")
@@ -1857,6 +2055,29 @@ def cms_modules_steps(page: Page, site: dict, snap) -> None:
         raise RuntimeError("Project Browser didn't install Module Filter")
     snap("11-cms-pb-installed")
 
+    # Diff, as the reader installs it from Project Browser like Module Filter; then the revision to compare.
+    composer(site, "require", "drupal/diff")
+    drush(site, "pm:install", "-y", "diff")
+    cms_replay(site, "ch11_head_torch")
+    hike = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("node")->loadByProperties(["title" => "Turnhouse Hill and Carnethy Hill"]))->id();').strip()
+    page.goto(f"{url}/node/{hike}/revisions")
+    page.wait_for_load_state("networkidle")
+    cms_submit(page, "#edit-submit")
+    page.locator("ins.diffins").first.evaluate("e => e.scrollIntoView({block: 'center'})")
+    page.wait_for_timeout(500)
+    page.mouse.move(700, 100)
+    snap("11-cms-diff")
+    # Comments on albums: core's Default comments recipe, then the field re-used on Gallery.
+    drush(site, "recipe", "core/recipes/comment_base")
+    cms_replay(site, "ch11_comments")
+    album = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("node")->loadByProperties(["title" => "Pentlands, 21 November"]))->id();').strip()
+    page.goto(f"{url}/node/{album}")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "#comment-form, form.comment-form, .comment-form", 500)
+    page.mouse.move(700, 100)
+    snap("11-cms-gallery-comments")
+    composer(site, "require", "--dev", "drupal/devel")
+    drush(site, "pm:install", "-y", "devel", "devel_generate")
     newest = drush_php(site, "echo (int) \\Drupal::entityQuery('node')->accessCheck(FALSE)->sort('nid', 'DESC')->range(0, 1)->execute() ? max(\\Drupal::entityQuery('node')->accessCheck(FALSE)->execute()) : 0;")
     page.goto(url + "/admin/config/development/generate/content")
     page.wait_for_load_state("networkidle")
@@ -1870,6 +2091,7 @@ def cms_modules_steps(page: Page, site: dict, snap) -> None:
     page.wait_for_load_state("networkidle")
     snap("11-cms-generated")
     drush_php(site, f"$s = \\Drupal::entityTypeManager()->getStorage('node'); $s->delete($s->loadMultiple(\\Drupal::entityQuery('node')->accessCheck(FALSE)->condition('nid', {int(newest or 0)}, '>')->execute()));")
+    cms_snapshot(site, "ch11-cms-done")
 
 
 # name: (site, function, logged in, full page[, window width])
@@ -1897,7 +2119,6 @@ SHOTS = {
     "07-hike-form": ("core", hike_form, True, False),
     "07-hike-page": ("core", visitor("/hikes/turnhouse-hill"), False, True),
     "07-hike-permissions": ("core", hike_permissions, True, False),
-    "10-cms-tags": ("cms", cms_tags, True, False),
 }
 
 
@@ -5419,6 +5640,8 @@ def cms_replay(site: dict, *steps: str) -> None:
     shutil.copytree(ROOT / "examples" / "photos", photos, dirs_exist_ok=True)
     try:
         drush(site, "php:script", "cms-replay.php", "--", *steps)
+    except subprocess.CalledProcessError as error:
+        raise RuntimeError(f"cms-replay.php {' '.join(steps)} failed:\n{error.stdout}\n{error.stderr}") from None
     finally:
         target.unlink()
         shutil.rmtree(photos)
@@ -5490,6 +5713,10 @@ SEQUENCES = [
     ("cms", cms07_steps, 1440, ["07-cms-utility-page-fields", "07-cms-reuse-field", "07-cms-hike-fields", "07-cms-hike-form", "07-cms-hike-page"]),
     ("cms", canvas_steps, 1600, ["08-cms-utility-page-display", "08-cms-hike-display", "08-cms-hike-after", "08-canvas-editor", "08-canvas-page-data", "08-canvas-hero", "08-canvas-button", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-welcome", "08-canvas-publish"]),
     ("cms", cms09_steps, 1440, ["09-cms-image-fields", "09-cms-focal-point", "09-cms-hike-photo", "09-cms-gallery-page"]),
+    ("cms", cms10_steps, 1440, ["10-cms-tags", "10-cms-areas", "10-cms-term-page", "10-cms-hike-area", "10-cms-term-cards", "10-cms-themes"]),
+    ("cms", cms_modules_steps, 1280, ["11-cms-pb-install", "11-cms-pb-installed", "11-cms-diff", "11-cms-gallery-comments", "11-cms-devel-generate", "11-cms-generated"]),
+    ("cms", cms12_steps, 1600, ["12-cms-hikes", "12-cms-canvas-blocks", "12-cms-front-page", "12-cms-galleries"]),
+    ("cms", cms13_steps, 1600, ["13-cms-photo-credits", "13-cms-page-template", "13-cms-albums-from-hike", "13-cms-term-depth", "13-cms-archive"]),
     ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-search-box", "22-autocomplete"]),
     ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
     ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
@@ -5542,7 +5769,6 @@ SEQUENCES = [
     ("core", taxonomy_fields_steps, 1280, ["10-area-fields", "10-term-pentland-hills", "10-area-field-settings", "10-hike-form-area", "10-hike-area", "10-term-turnhouse-hill"]),
     ("core", taxonomy_themes_steps, 1280, ["10-themes-field-settings", "10-media-themes", "10-photo-themes"]),
     ("core", modules_steps, 1280, ["11-extend-diff", "11-revisions-compare", "11-diff", "11-project-browser", "11-pb-commands", "11-module-filter", "11-pb-recipes", "11-reuse-comment", "11-gallery-comments"]),
-    ("cms", cms_modules_steps, 1280, ["11-cms-pb-install", "11-cms-pb-installed", "11-cms-devel-generate", "11-cms-generated"]),
 ]
 
 

@@ -42,6 +42,8 @@ function replay_field(string $entity_type, string $bundle, string $name, string 
       'field_name' => $name,
       'label' => $label,
     ] + $field)->save();
+    // The same, for entities of this bundle made later in the same request.
+    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
   }
   // Field UI puts a new field at the end of the default form and the default display, with the type's default
   // widget and formatter (or the ones given).
@@ -408,6 +410,252 @@ function replay_ch09_gallery(): void {
       'moderation_state' => 'published',
     ])->save();
   }
+}
+
+/**
+ * A vocabulary, with its terms: [name => [parent name or '', weight, description]].
+ */
+function replay_vocabulary(string $vid, string $name, string $description, array $terms): void {
+  if (!\Drupal\taxonomy\Entity\Vocabulary::load($vid)) {
+    \Drupal\taxonomy\Entity\Vocabulary::create(['vid' => $vid, 'name' => $name, 'description' => $description, 'new_revision' => FALSE])->save();
+  }
+  $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  foreach ($terms as $term => [$parent, $weight, $text]) {
+    if ($storage->loadByProperties(['vid' => $vid, 'name' => $term])) {
+      continue;
+    }
+    $parent_id = $parent ? (int) current($storage->loadByProperties(['vid' => $vid, 'name' => $parent]))->id() : 0;
+    $storage->create([
+      'vid' => $vid, 'name' => $term, 'weight' => $weight, 'parent' => $parent_id,
+      'description' => $text ? ['value' => "<p>$text</p>", 'format' => 'content_format'] : NULL,
+    ])->save();
+  }
+}
+
+function replay_term(string $vid, string $name): int {
+  return (int) current(\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => $vid, 'name' => $name]))->id();
+}
+
+/**
+ * Chapter 10: the Areas vocabulary, with a Photo field on its terms.
+ */
+function replay_ch10_areas(): void {
+  replay_vocabulary('areas', 'Areas', 'Regions, and the hills and places in them.', [
+    'Pentland Hills' => ['', 0, "A range of hills south-west of Edinburgh, most of it a regional park. The club's favourite: a bus from the city centre takes you to the foot of the hills."],
+    'Carnethy Hill' => ['Pentland Hills', 0, ''],
+    'Glencorse Reservoir' => ['Pentland Hills', 1, ''],
+    'Turnhouse Hill' => ['Pentland Hills', 2, ''],
+    'East Lothian' => ['', 2, 'The coast and hills east of Edinburgh.'],
+    'North Berwick Law' => ['East Lothian', 0, ''],
+    'Edinburgh' => ['', 4, 'Hills, beaches and viewpoints inside the city: walks you can do in an afternoon.'],
+    "Arthur's Seat" => ['Edinburgh', 0, ''],
+    'Calton Hill' => ['Edinburgh', 1, ''],
+    'Portobello' => ['Edinburgh', 2, ''],
+  ]);
+  replay_field('taxonomy_term', 'areas', 'field_photo', 'entity_reference', 'Photo',
+    ['description' => 'A photo of the area, shown at the top of its page.', 'settings' => ['handler' => 'default:media', 'handler_settings' => [
+      'target_bundles' => ['image' => 'image'], 'sort' => ['field' => '_none', 'direction' => 'ASC'], 'auto_create' => FALSE, 'auto_create_bundle' => '',
+    ]]],
+    ['settings' => ['target_type' => 'media']], 'media_library_widget', 'entity_reference_entity_view');
+  $display = EntityViewDisplay::load('taxonomy_term.areas.default');
+  $display->setComponent('field_photo', ['type' => 'entity_reference_entity_view', 'label' => 'hidden', 'settings' => ['view_mode' => '16_9_wide', 'link' => FALSE], 'weight' => -10]);
+  $display->save();
+  // The terms were made above, before the field: load them again, with it.
+  \Drupal::entityTypeManager()->getStorage('taxonomy_term')->resetCache();
+  $term = \Drupal\taxonomy\Entity\Term::load(replay_term('areas', 'Pentland Hills'));
+  $term->set('field_photo', replay_photo('carnethy-hill-views.jpg'))->save();
+}
+
+/**
+ * Chapter 10: an Area field on Hike and Gallery, and Gallery's Teaser.
+ */
+function replay_ch10_area_fields(): void {
+  $settings = ['handler' => 'default:taxonomy_term', 'handler_settings' => [
+    'target_bundles' => ['areas' => 'areas'], 'sort' => ['field' => 'name', 'direction' => 'asc'], 'auto_create' => FALSE, 'auto_create_bundle' => '',
+  ]];
+  $help = ['hike' => 'Where the hike is. Choose the hill or place; choose the region only if no place fits.', 'gallery' => 'Where the photos were taken.'];
+  foreach ($help as $bundle => $description) {
+    replay_field('node', $bundle, 'field_area', 'entity_reference', 'Area', ['description' => $description, 'settings' => $settings],
+      ['settings' => ['target_type' => 'taxonomy_term']], 'options_select', 'entity_reference_label');
+  }
+  // The form: after Meeting place on Hike, after the title on Gallery. The display: inline, after Meeting place
+  // (Hike) or first (Gallery).
+  $form = EntityFormDisplay::load('node.hike.default');
+  $order = ['title', 'field_date', 'field_meeting_place', 'field_area', 'field_distance', 'field_difficulty', 'field_hike_leader', 'field_content'];
+  foreach ($order as $weight => $name) {
+    $form->setComponent($name, ['weight' => $weight] + $form->getComponent($name));
+  }
+  $form->save();
+  $form = EntityFormDisplay::load('node.gallery.default');
+  $form->setComponent('field_area', ['weight' => ($form->getComponent('title')['weight'] ?? 0) + 1] + $form->getComponent('field_area'));
+  $form->save();
+  $area = ['type' => 'entity_reference_label', 'label' => 'inline', 'settings' => ['link' => TRUE]];
+  $display = EntityViewDisplay::load('node.hike.default');
+  $order = ['field_photo', 'content_moderation_control', 'field_date', 'field_meeting_place', 'field_area', 'field_distance', 'field_difficulty', 'field_hike_leader', 'field_content'];
+  foreach ($order as $weight => $name) {
+    $display->setComponent($name, ['weight' => $weight] + ($display->getComponent($name) ?: $area));
+  }
+  $display->save();
+  $display = EntityViewDisplay::load('node.gallery.default');
+  $display->setComponent('field_area', ['weight' => -1] + $area)->save();
+  // The Teaser as on core, and the same on Card: Drupal CMS's term pages list content as cards.
+  foreach (['teaser', 'card'] as $mode) {
+    replay_display('gallery', $mode, [
+      'content_moderation_control' => [],
+    ] + ($mode == 'teaser' ? ['links' => []] : []) + [
+      'field_area' => $area,
+      'field_content' => ['type' => 'text_trimmed', 'label' => 'hidden', 'settings' => ['trim_length' => 200]],
+    ]);
+  }
+  $nodes = \Drupal::entityTypeManager()->getStorage('node');
+  foreach (['Turnhouse Hill and Carnethy Hill', 'Pentlands, 21 November'] as $title) {
+    $node = current($nodes->loadByProperties(['title' => $title]));
+    if ($node->get('field_area')->isEmpty()) {
+      $node->set('field_area', replay_term('areas', 'Turnhouse Hill'));
+      $node->setNewRevision();
+      $node->setRevisionLogMessage('Added the area.');
+      $node->save();
+    }
+  }
+}
+
+/**
+ * Chapter 10: Photo themes, free tagging on Image media, with Drupal CMS's Tagify widget.
+ */
+function replay_ch10_themes(): void {
+  replay_vocabulary('photo_themes', 'Photo themes', 'What a photo shows. Anyone who uploads a photo can add a theme.', [
+    'City' => ['', 0, ''], 'Hills' => ['', 0, ''], 'Landscape' => ['', 0, ''], 'Water' => ['', 0, ''], 'Winter' => ['', 0, ''],
+  ]);
+  replay_field('media', 'image', 'field_themes', 'entity_reference', 'Themes',
+    ['description' => 'What the photo shows, such as Landscape or Winter. A new theme is added to the list.', 'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => [
+      'target_bundles' => ['photo_themes' => 'photo_themes'], 'sort' => ['field' => 'name', 'direction' => 'asc'], 'auto_create' => TRUE, 'auto_create_bundle' => '',
+    ]]],
+    ['settings' => ['target_type' => 'taxonomy_term'], 'cardinality' => -1], 'tagify_entity_reference_autocomplete_widget', 'entity_reference_label');
+  $widget = ['type' => 'tagify_entity_reference_autocomplete_widget', 'settings' => [
+    'match_operator' => 'CONTAINS', 'match_limit' => 10, 'placeholder' => '', 'suggestions_dropdown' => 1, 'show_entity_id' => 0, 'show_info_label' => 0, 'info_label' => '',
+  ]];
+  foreach (['default', 'media_library'] as $mode) {
+    $form = EntityFormDisplay::load("media.image.$mode");
+    $form->setComponent('field_themes', $widget + ['weight' => replay_last_weight($form) + 1])->save();
+  }
+  $media = \Drupal\media\Entity\Media::load(replay_photo('turnhouse-hill-glencorse.jpg'));
+  if ($media->get('field_themes')->isEmpty()) {
+    $media->set('field_themes', array_map(fn($t) => replay_term('photo_themes', $t), ['Landscape', 'Water', 'Hills']))->save();
+  }
+}
+
+/**
+ * Chapter 11: a revision of the hike, to compare with Diff.
+ */
+function replay_ch11_head_torch(): void {
+  $node = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Turnhouse Hill and Carnethy Hill']));
+  $text = $node->get('field_content')->value;
+  if (!str_contains($text, 'head torch')) {
+    $node->set('field_content', ['value' => str_replace('lunch, and your camera.', 'lunch, your camera, and a head torch: it gets dark before five in November.', $text), 'format' => $node->get('field_content')->format]);
+    $node->setNewRevision();
+    $node->setRevisionLogMessage('Added a head torch to the list.');
+    $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $node->set('moderation_state', 'published');
+    $node->save();
+  }
+}
+
+/**
+ * Chapter 11: the comment field from the Default comments recipe, re-used on Gallery, and the first comment.
+ */
+function replay_ch11_comments(): void {
+  replay_field('node', 'gallery', 'comment', 'comment', 'Comments', [
+    'default_value' => [['status' => 2, 'cid' => 0, 'last_comment_timestamp' => 0, 'last_comment_name' => NULL, 'last_comment_uid' => 0, 'comment_count' => 0]],
+    'settings' => ['default_mode' => 1, 'per_page' => 50, 'anonymous' => 0, 'form_location' => TRUE, 'preview' => 1],
+  ], [], 'comment_default', 'comment_default');
+  $album = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Pentlands, 21 November']));
+  if ((int) $album->get('comment')->status !== 2) {
+    // An album made before the field has no value in it yet: open its comments, as the form would.
+    $album->set('comment', ['status' => 2]);
+    $album->setNewRevision(FALSE);
+    $album->setSyncing(TRUE);
+    $album->save();
+  }
+  $comments = \Drupal::entityTypeManager()->getStorage('comment');
+  if (!$comments->loadByProperties(['subject' => 'Snow on Carnethy'])) {
+    $comments->create([
+      'entity_type' => 'node', 'entity_id' => $album->id(), 'field_name' => 'comment', 'comment_type' => 'comment',
+      'uid' => 1, 'subject' => 'Snow on Carnethy', 'status' => 1,
+      'comment_body' => ['value' => '<p>The second photo is my favorite: you can see the snow line on Carnethy Hill.</p>', 'format' => filter_default_format(\Drupal\user\Entity\User::load(1))],
+    ])->save();
+  }
+}
+
+/**
+ * Chapter 12: four more hikes, typed by the reader from the chapter's table, and a second album.
+ */
+function replay_ch12_hikes(): void {
+  $nodes = \Drupal::entityTypeManager()->getStorage('node');
+  $hikes = [
+    // Title => [date (UTC), meeting place, distance, difficulty, area, photo, description].
+    "Arthur's Seat at sunrise" => ['2026-10-24T05:30:00', 'Holyrood Palace car park', 5.5, 'moderate', "Arthur's Seat", NULL, 'An early start for the best light of the day: up Arthur\'s Seat by the Salisbury Crags path, in time for the sun to rise over the Firth of Forth. Bring a head torch for the way up.'],
+    'North Berwick Law and the harbour' => ['2026-12-05T09:30:00', 'North Berwick railway station', 7, 'easy', 'North Berwick Law', NULL, 'A short climb up North Berwick Law, with the whalebone arch at the top and views to the Bass Rock, then down to the harbour for lunch. We take the train from Edinburgh Waverley at 8:55.'],
+    'Glencorse Reservoir loop' => ['2026-12-19T09:30:00', 'Flotterstone car park', 9, 'easy', 'Glencorse Reservoir', 'glencorse-reservoir-portrait.jpg', 'A gentle walk along the reservoir and back over the lower slopes, good for winter light on the water. A good first hike with the club.'],
+    'Pentland Hills ridge' => ['2027-01-02T09:00:00', 'Flotterstone car park', 16, 'hard', 'Pentland Hills', 'pentland-hills-winter.jpg', 'The whole ridge, from Turnhouse Hill over Carnethy, Scald Law and the Kips, and back through the glen. A long day, with a lot of climbing: bring plenty of food and water.'],
+  ];
+  foreach ($hikes as $title => [$date, $place, $distance, $difficulty, $area, $photo, $text]) {
+    if ($nodes->loadByProperties(['title' => $title])) {
+      continue;
+    }
+    $nodes->create([
+      'type' => 'hike', 'title' => $title, 'uid' => 1,
+      'field_date' => $date, 'field_meeting_place' => $place, 'field_distance' => $distance, 'field_difficulty' => $difficulty,
+      'field_area' => replay_term('areas', $area),
+      'field_photo' => $photo ? replay_photo($photo) : NULL,
+      'field_content' => ['value' => "<p>$text</p>", 'format' => 'content_format'],
+      'moderation_state' => 'published',
+    ])->save();
+  }
+  if (!$nodes->loadByProperties(['title' => 'Edinburgh, 24 October'])) {
+    $nodes->create([
+      'type' => 'gallery', 'title' => 'Edinburgh, 24 October', 'uid' => 1,
+      'field_area' => replay_term('areas', 'Edinburgh'),
+      'field_content' => ['value' => '<p>Sunrise from Arthur\'s Seat, and the Old Town from Calton Hill on the way home.</p>', 'format' => 'content_format'],
+      'field_hike' => current($nodes->loadByProperties(['title' => "Arthur's Seat at sunrise"]))->id(),
+      'field_photos' => [replay_photo('edinburgh-skyline.jpg')],
+      'comment' => ['status' => 2],
+      'moderation_state' => 'published',
+    ])->save();
+  }
+}
+
+/**
+ * Chapter 12: Drupal CMS's 16:9 Small media view mode, with the photographer, for the Newest photos grid.
+ */
+function replay_ch12_small(): void {
+  $display = EntityViewDisplay::load('media.image.16_9_small');
+  $weight = ($display->getComponent('field_media_image')['weight'] ?? 0) + 1;
+  $display->setComponent('field_photographer', ['type' => 'string', 'label' => 'inline', 'settings' => ['link_to_entity' => FALSE], 'weight' => $weight]);
+  $display->save();
+}
+
+/**
+ * Chapter 13: term pages include the content of the term's children (depth), as on core.
+ */
+function replay_ch13_term_view(): void {
+  $view = \Drupal\views\Entity\View::load('taxonomy_term');
+  $display = &$view->getDisplay('default');
+  $display['display_options']['arguments'] = ['term_node_tid_depth' => [
+    'id' => 'term_node_tid_depth', 'table' => 'node_field_data', 'field' => 'term_node_tid_depth', 'relationship' => 'none',
+    'group_type' => 'group', 'admin_label' => '', 'entity_type' => 'node', 'plugin_id' => 'taxonomy_index_tid_depth',
+    'default_action' => 'not found',
+    'exception' => ['value' => 'all', 'title_enable' => FALSE, 'title' => 'All'],
+    'title_enable' => TRUE, 'title' => '{{ arguments.term_node_tid_depth }}',
+    'default_argument_type' => 'fixed', 'default_argument_options' => ['argument' => ''],
+    'summary_options' => ['base_path' => '', 'count' => TRUE, 'override' => FALSE, 'items_per_page' => 25],
+    'summary' => ['sort_order' => 'asc', 'number_of_records' => 0, 'format' => 'default_summary'],
+    'specify_validation' => TRUE,
+    'validate' => ['type' => 'entity:taxonomy_term', 'fail' => 'not found'],
+    'validate_options' => ['bundles' => [], 'access' => FALSE, 'operation' => 'view', 'multiple' => 0],
+    'break_phrase' => FALSE, 'depth' => 2, 'use_taxonomy_term_path' => FALSE,
+  ]];
+  $display['display_options']['header']['entity_taxonomy_term']['target'] = '{{ raw_arguments.term_node_tid_depth }}';
+  $view->save();
 }
 
 $steps = $extra ?? [];

@@ -5111,12 +5111,10 @@ def search22_core_steps(page: Page, site: dict, snap) -> None:
     search22_tall(page, "22-search-index-display")
 
     search22_visitor(page, site, "/es/buscar?keys=embalse", "22-es-buscar")
-    search22_visitor(page, site, "/", "22-sidebar-block")
+    search22_visitor(page, site, "/", "22-search-box", full_page=False)
 
     def type_res(visit: Page) -> None:
         box = visit.locator("input[name='keys']").first
-        box.scroll_into_view_if_needed()
-        visit.evaluate("window.scrollBy(0, 200)")
         box.press_sequentially("res", delay=200)
         visit.wait_for_selector(".ui-autocomplete", state="visible", timeout=20000)
         visit.wait_for_timeout(1500)
@@ -5217,7 +5215,7 @@ def meaning23_steps(page: Page, site: dict, snap) -> None:
 
 
 SEQUENCES = [
-    ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-sidebar-block", "22-autocomplete"]),
+    ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-search-box", "22-autocomplete"]),
     ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
     ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
     ("core", config21_steps, 1280, ["21-sync-missing", "21-single-export", "21-full-export", "21-full-import", "21-synchronize", "21-differences", "21-differences-deleted", "21-imported", "21-live-fields", "21-cron", "21-performance"]),

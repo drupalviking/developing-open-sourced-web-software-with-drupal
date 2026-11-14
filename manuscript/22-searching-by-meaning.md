@@ -101,6 +101,8 @@ Now a view, as for Chapter 22's search page: **Add view**, **Show** **Index Hike
 3. Add **Search: Relevance**, descending.
 4. Add **Index Hikes by meaning: Language**, *not* exposed, set to `en`.
 
+> **Tidy the teaser for Mercury.** The first time we tried it, the results looked rough: each label stacked above its value, and a "Read more" link in a bullet list. Mercury doesn't style the *Teaser* view mode, and it shows every label above its value, even one set to **Inline**. The fix is in the display, not the theme. Go to **Structure** > **Content types** > **Hike** > **Manage display** > **Teaser** (Chapter 8): for **Title**, open the settings and check **Link to the Content**; set the **Label** of **Date**, **Distance** and **Difficulty** to **- Hidden -** ("11.5 km" and "Moderate" make sense without one); and move **Links** to **Disabled**, since the title is the link now. Save. The **Hikes** page uses the same teaser, so it's tidier too.
+
 ### One page per language
 
 Why a fixed `en`, and not **Item language** with the interface language, as on Chapter 22's search page? Because the AI Search backend ignores **Item language**: it passes filters to the vector database only when they're on the index's own fields, such as **Language**, which we added as a filterable attribute. So this display shows English hikes, and we make a second one for Spanish: **Add** > **Page**, with the path `buscar-excursion`, and for this page only (**This page (override)**), the **Language** filter set to `es`. Save.

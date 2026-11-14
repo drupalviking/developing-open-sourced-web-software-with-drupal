@@ -267,12 +267,14 @@ A search page is good; a search box on every page is better. A view can have mor
 
 The block shows no results of its own, only the box: the **Input required** exposed form style, which the block shares with the page, shows results only after a search, and a search from the box goes to the page.
 
-Now place it, as in Chapter 14: **Structure** > **Block layout**, **Place block** in Olivero's **Sidebar** region, and choose **Search box** (from the Search view). Title it `Search the club`. Under **Pages**, enter `/search` and choose **Hide for the listed pages**: on the search page itself, a second box would be one too many.
+Now place it, as in Chapter 14: **Structure** > **Block layout**, **Place block** in Olivero's **Highlighted** region, and choose **Search box** (from the Search view). Title it `Search the club`. Under **Pages**, enter `/search` and choose **Hide for the listed pages**: on the search page itself, a second box would be one too many. Save, and on **Block layout**, drag **Search the club** to the top of the region, above **Status messages**, and select **Save blocks**.
 
-![The front page, with the Search the club block at the top of the sidebar, above Join the club](images/22-sidebar-block.png)
-*Figure 22.13: The search box in the sidebar*
+![The front page, with the Search the club box under the header, above the page title](images/22-search-box.png)
+*Figure 22.13: The search box under the header*
 
-Why the sidebar, and not the header, where most sites have their search box? Because of how Olivero's header works: when its main menu doesn't fit, Olivero folds it into a **Menu** button, and a search box in the header region makes it not fit much sooner. The sidebar keeps the header as it was. (*Theming Drupal* puts the box in the header, with a theme made for it.)
+Highlighted is the band under the header, where Chapter 14 put the status messages and the tabs. It's on every page, in the same place, and it's as wide as the content, so the box fits, on a phone too.
+
+Why not the header, where most sites have their search box? Because of how Olivero's header works: when its main menu doesn't fit, Olivero folds it into a **Menu** button, and a search box in the header region makes it not fit much sooner. And why not the sidebar, the usual place for an extra block? We tried it, and the box stuck out past the right edge of the page. Olivero shows a search box at its natural width, about 30 characters, which is wider than its sidebar on a computer screen, and nothing in Views or Search API makes a search box narrower. A theme could, with a line of CSS, but Olivero doesn't let you add your own. Highlighted needs no CSS. (*Theming Drupal* puts the box in the header, with a theme made for it.)
 
 > **Try it:** search for `pentland` from the box on the front page. You land on `/search?keys=pentland`, with the results, and the Type, Area and Difficulty filters to narrow them down.
 
@@ -298,7 +300,7 @@ Visitors need permission to use it: under **People** > **Permissions**, give **A
 
 Type `res` in the search box:
 
-![The sidebar search box with res typed, and suggestions below it: three pages, Glencorse Reservoir winter loop, Welcome to Lens & Trail and Pentlands, 21 November, and the word reservoir with the count 3](images/22-autocomplete.png)
+![The search box with res typed, and suggestions below it: three pages, Glencorse Reservoir winter loop, Welcome to Lens & Trail and Pentlands, 21 November, and the word reservoir with the count 3](images/22-autocomplete.png)
 *Figure 22.14: Suggestions while typing*
 
 ## Old hikes, and why they stay

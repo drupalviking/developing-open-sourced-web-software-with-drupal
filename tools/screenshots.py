@@ -5001,7 +5001,225 @@ def config21_steps(page: Page, site: dict, snap) -> None:
     subprocess.run(["ddev", "snapshot", "--name", "ch21-done"], cwd=d, check=True, capture_output=True)
 
 
+def search22_tall(page: Page, name: str) -> None:
+    """The whole page, with the window made as tall as the page first.
+
+    A full-page screenshot would leave the fixed navigation sidebar (and Olivero's fixed header) halfway down
+    the image; in a window as tall as the page, they stay where they belong.
+    """
+    size = page.viewport_size
+    height = page.evaluate("document.documentElement.scrollHeight")
+    page.set_viewport_size({"width": size["width"], "height": height})
+    page.wait_for_timeout(800)
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(400)
+    save(page, name)
+    page.set_viewport_size(size)
+
+
+def search22_visitor(page: Page, site: dict, path: str, name: str, prepare=None, full_page: bool = True) -> None:
+    """Like as_visitor, but can also save only the window (for a drop-down that's open)."""
+    context = page.context.browser.new_context(viewport={"width": WIDTH, "height": 900}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(site["url"] + path)
+    visit.wait_for_load_state("networkidle")
+    if prepare:
+        prepare(visit)
+    search22_tall(visit, name) if full_page else save(visit, name)
+    context.close()
+
+
+def search22_core_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 22 on core: Search API, its server, index and view, the search box and autocomplete.
+
+    Takes the pictures from the finished site (snapshot ch22-core-done): the add-forms are filled in, never saved.
+    """
+    url = site["url"]
+    page.goto(url + "/admin/modules")
+    page.wait_for_load_state("networkidle")
+    # Typed: the filter doesn't react to fill().
+    page.locator("input[name='text']").press_sequentially("search", delay=100)
+    page.wait_for_timeout(1500)
+    page.mouse.move(1100, 700)
+    snap("22-extend")
+
+    page.goto(url + "/admin/config/search/search-api/add-server")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='name']", "Club database")
+    page.wait_for_timeout(800)
+    page.get_by_label("Match words starting with given keywords").check()
+    search22_tall(page, "22-add-server")
+
+    page.goto(url + "/admin/config/search/search-api/add-index")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='name']", "Club content")
+    page.wait_for_timeout(800)
+    page.check("input[name='datasources[entity:node]']")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(2500)
+    page.get_by_label("Club database").check()
+    options = page.locator("summary:has-text('Index options')")
+    if options.count():
+        options.first.click()
+        page.wait_for_timeout(500)
+    search22_tall(page, "22-add-index")
+
+    fields = url + "/admin/config/search/search-api/index/club_content/fields"
+    page.goto(fields)
+    page.wait_for_load_state("networkidle")
+    page.locator("a:has-text('Add fields')").first.click()
+    page.wait_for_selector(".ui-dialog", timeout=20000)
+    page.wait_for_timeout(1500)
+    snap("22-add-fields", element=".ui-dialog")
+    page.goto(fields)
+    page.wait_for_load_state("networkidle")
+    search22_tall(page, "22-fields")
+
+    page.goto(url + "/admin/config/search/search-api/index/club_content/processors")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1000)
+    search22_tall(page, "22-processors")
+
+    page.goto(url + "/admin/config/search/search-api/index/club_content")
+    page.wait_for_load_state("networkidle")
+    snap("22-index-view")
+
+    page.goto(url + "/admin/structure/views/add")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='label']", "Search")
+    page.select_option("select[name='show[wizard_key]']", "standard:search_api_index_club_content")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(2500)
+    page.check("input[name='page[create]']")
+    page.wait_for_timeout(1500)
+    page.fill("input[name='page[title]']", "Search")
+    page.fill("input[name='page[path]']", "search")
+    pager = page.locator("input[name='page[pager]']")
+    if pager.count():
+        pager.check()
+    page.wait_for_timeout(500)
+    search22_tall(page, "22-add-view")
+
+    page.goto(url + "/admin/structure/views/nojs/handler/search/page_1/filter/search_api_fulltext")
+    page.wait_for_load_state("networkidle")
+    search22_tall(page, "22-fulltext-filter")
+
+    search22_visitor(page, site, "/search?keys=reservoir", "22-search-results")
+
+    page.goto(url + "/admin/structure/types/manage/hike/display/search_index")
+    page.wait_for_load_state("networkidle")
+    search22_tall(page, "22-search-index-display")
+
+    search22_visitor(page, site, "/es/buscar?keys=embalse", "22-es-buscar")
+    search22_visitor(page, site, "/", "22-sidebar-block")
+
+    def type_res(visit: Page) -> None:
+        box = visit.locator("input[name='keys']").first
+        box.scroll_into_view_if_needed()
+        visit.evaluate("window.scrollBy(0, 200)")
+        box.press_sequentially("res", delay=200)
+        visit.wait_for_selector(".ui-autocomplete", state="visible", timeout=20000)
+        visit.wait_for_timeout(1500)
+    search22_visitor(page, site, "/", "22-autocomplete", prepare=type_res, full_page=False)
+
+
+def search22_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 22 on Drupal CMS: the Search recipe, and facets. From the finished site (snapshot ch22-cms-done or later)."""
+    url = site["url"]
+    page.goto(url + "/admin/modules/browse/recommended")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(4000)
+    card = page.locator("li", has_text="Adds a search").first
+    card.scroll_into_view_if_needed()
+    page.evaluate("window.scrollBy(0, 150)")
+    page.mouse.move(1100, 700)
+    page.wait_for_timeout(800)
+    snap("22-cms-recommended")
+
+    # A facet's own settings are behind the Settings link next to it in Filter criteria (handler-extra).
+    page.goto(url + "/admin/structure/views/nojs/handler-extra/search/page_1/filter/facets_field_area")
+    page.wait_for_load_state("networkidle")
+    scroll_to(page, "label:has-text('Transform entity ID to label')", 300)
+    page.mouse.move(1100, 700)
+    snap("22-cms-facet-settings")
+
+    context = page.context.browser.new_context(viewport={"width": 1440, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(url + "/search?keywords=pentland")
+    visit.wait_for_load_state("networkidle")
+    visit.wait_for_timeout(1500)
+    search22_tall(visit, "22-cms-facets")
+    context.close()
+
+
+MEANING23_QUESTION = "Is there an easy hike by the water before Christmas?"
+
+
+def meaning23_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 23 on Drupal CMS: AI Search, Find a hike, and the hike guide.
+
+    From the finished site. The last screenshot asks the hike guide a question, so it needs the internet and
+    the author's API keys, costs a little, and the answer is different every time.
+    """
+    url = site["url"]
+    page.goto(url + "/admin/config/search/search-api/server/ai_search/edit")
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(1100, 700)
+    search22_tall(page, "23-ai-server")
+
+    page.goto(url + "/admin/config/search/search-api/index/hikes_by_meaning/edit")
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(1100, 700)
+    search22_tall(page, "23-ai-index")
+
+    context = page.context.browser.new_context(viewport={"width": 1440, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
+    visit = context.new_page()
+    visit.goto(url + "/find-a-hike?describe=an+easy+walk+by+the+water")
+    visit.wait_for_load_state("networkidle")
+    visit.wait_for_timeout(1500)
+    search22_tall(visit, "23-find-a-hike")
+    context.close()
+
+    page.goto(url + "/admin/config/ai/tools-automation/agents/hike_guide/edit/form")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.mouse.move(1100, 700)
+    search22_tall(page, "23-agent")
+    # The tool's settings, in a modal of its own: the index, amount and minimal score are forced and hidden.
+    page.locator("a.dynamic-tool-modal[data-tool='ai_search_rag_search']").first.click()
+    page.wait_for_selector("#tool-ai_search_rag_search .ai-modal__container", state="visible", timeout=20000)
+    page.wait_for_timeout(1000)
+    # Fold the general settings away, so the Property setup table shows, in a window tall enough for it.
+    page.locator("#tool-ai_search_rag_search summary:has-text('General Tool Settings')").click()
+    page.set_viewport_size({"width": 1440, "height": 1600})
+    page.wait_for_timeout(1000)
+    snap("23-agent-tool", element="#tool-ai_search_rag_search .ai-modal__container")
+    page.set_viewport_size({"width": 1440, "height": 1000})
+    page.keyboard.press("Escape")
+
+    page.goto(url + "/admin/config/ai/ai-assistant/hike_guide")
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(1100, 700)
+    search22_tall(page, "23-assistant")
+
+    # A new conversation: the assistant keeps the admin's chat history for an hour (private tempstore, per user,
+    # not per session), and would otherwise carry on from the last run.
+    drush(site, "sql:query", "DELETE FROM key_value_expire WHERE name LIKE '1:%' AND collection IN "
+          "('tempstore.private.ai_assistant_api', 'tempstore.private.ai_chat_memory', 'tempstore.private.ai_agents_status_updates')")
+    page.goto(url + "/admin/content")
+    page.wait_for_load_state("networkidle")
+    page.wait_for_timeout(1500)
+    page.locator("button.button--ai-chatbot").evaluate("e => e.click()")
+    page.wait_for_timeout(2000)
+    ai19_klaro_yes(page)
+    ai19_ask(page, MEANING23_QUESTION)
+    snap("23-chatbot")
+
+
 SEQUENCES = [
+    ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-sidebar-block", "22-autocomplete"]),
+    ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
+    ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
     ("core", config21_steps, 1280, ["21-sync-missing", "21-single-export", "21-full-export", "21-full-import", "21-synchronize", "21-differences", "21-differences-deleted", "21-imported", "21-live-fields", "21-cron", "21-performance"]),
     ("core", safe20_core_steps, 1280, ["20-core-available-updates", "20-core-update-settings", "20-core-up-to-date", "20-core-security-update-required", "20-core-status-report-security", "20-core-maintenance"]),
     ("cms", safe20_cms_steps, 1440, ["20-cms-available-updates", "20-cms-update-form", "20-cms-downloading", "20-cms-ready", "20-cms-updated", "20-cms-unattended", "20-cms-backup-migrate"]),

@@ -1,6 +1,6 @@
 # Search
 
-%% Author: this chapter comes before *Search by Meaning* (23) and *Where Next?*, which becomes Chapter 24, and the patching appendix becomes Appendix C (the answers move to D). The renumbering waits until the chapter list is final (Backlog), so for now the chapter calls itself 22 and the appendix calls itself C, next to the old numbers. Screenshots aren't taken yet: each `%% Screenshot` note marks where one goes. %%
+%% Author: this chapter comes before *Search by Meaning* (23) and *Where Next?*, which becomes Chapter 24, and the patching appendix becomes Appendix C (the answers move to D). The renumbering waits until the chapter list is final (Backlog), so for now the chapter calls itself 22 and the appendix calls itself C, next to the old numbers. Screenshots are taken by `tools/screenshots.py 22`, from the finished sites. %%
 
 A visitor lands on the club's site with one thing in mind: "that walk by the reservoir". She doesn't know it's called *Glencorse Reservoir winter loop*, and she doesn't know whether it's under Hikes, the hike archive, or an album. She looks for a search box. Lens & Trail doesn't have one.
 
@@ -69,7 +69,8 @@ ddev composer require drupal/search_api
 
 Go to **Extend**, filter on `search`, and check **Search API** and **Database Search**. Leave **Database Search Defaults** alone: it makes a ready-made server, index and view for you, which is handy, but we want to see how the parts fit together, and build them ourselves. Select **Install**.
 
-%% Screenshot: Extend filtered on "search", with Search API and Database Search checked and Database Search Defaults not. %%
+![Extend filtered on search, with Database Search and Search API checked, and Database Search Defaults not](images/22-extend.png)
+*Figure 22.1: Search API and Database Search on Extend*
 
 Search API's pages are under **Configuration** > **Search and metadata** > **Search API** (`/admin/config/search/search-api`). The page is empty for now, apart from two buttons: **Add server** and **Add index**. The text at the top sums up the difference between them: a server is the engine that stores the index, and an index defines what goes in it.
 
@@ -84,7 +85,8 @@ Select **Add server**:
 5. Keep **Phrase indexing** at **Bigram**.
 6. Select **Save**.
 
-%% Screenshot: the Add search server form, with Club database, Database, and Match words starting with given keywords. %%
+![The Add search server form, with the name Club database, the Database backend, minimum word length 1, Match words starting with given keywords, and Bigram phrase indexing](images/22-add-server.png)
+*Figure 22.2: The Club database server*
 
 **Partial matching** decides how much of a word a visitor has to type. **Match whole words only** needs the whole word, "glencorse"; **Match on parts of a word** finds "corse" inside "Glencorse" too, which also finds "horse" in "horseshoe", and makes the index slower. **Match words starting with given keywords** is in between: "glenc" finds "Glencorse", and "photo" finds "photographer". It's the one that suits suggestions while typing, which we add later in the chapter.
 
@@ -101,7 +103,8 @@ Back on the Search API page, select **Add index**:
 5. Open **Index options**. **Index items immediately** is on: when someone saves a hike, it's indexed straight away, not at the next cron run. Keep it.
 6. Select **Save and add fields**.
 
-%% Screenshot: the Add search index form, with Club content, Content checked, the Content datasource settings, and the server Club database. %%
+![The Add search index form, with the name Club content, Content checked as the datasource, all bundles and languages, the server Club database, and the index options open](images/22-add-index.png)
+*Figure 22.3: The Club content index*
 
 > **Bundles and languages.** "Bundle" is Drupal's general word for a content type, a vocabulary, a media type: the kinds within an entity type (Chapter 7). "All except those selected" means new content types go into the index automatically, which is usually what you want. If the club ever adds a content type that shouldn't be found (internal notes for the committee, say), come back here and select it.
 
@@ -122,7 +125,8 @@ Add these, with **Add** next to each, and **Done** at the end:
 
 **Rendered HTML output** asks what to render: for each content type, a *view mode* (Chapter 8), and which role to render it as. Keep **Anonymous user** as the role, so the index contains only what a visitor may see. For the view modes, choose **Default** for every content type for now; we come back to it in a moment.
 
-%% Screenshot: the Add fields dialog, with Rendered HTML output, Title, Content type, Area, Difficulty and Date added. %%
+![The Add fields dialog, with the General group: Aggregated field, Custom value, Entity type, Language, Rendered HTML output and URI, each with an Add button](images/22-add-fields.png)
+*Figure 22.4: The Add fields dialog*
 
 Now set each field's **Type** in the table:
 
@@ -133,9 +137,10 @@ Now set each field's **Type** in the table:
 
 Then set the **Boost** of **Title** to **5.00**. A *boost* multiplies a field's weight in the ranking: a word in the title now counts five times as much as the same word in the text. Someone who types "Turnhouse" most likely wants the hike with Turnhouse in its title, not the album that mentions it once. Select **Save changes**.
 
-%% Screenshot: the Fields tab with the six fields, their types, and the boost 5.00 on Title. %%
+![The index's Fields tab: Rendered HTML output as Fulltext, then Area as Integer, Content type and Difficulty as String, Date as Date, Title as Fulltext with a boost of 5.00, and two grey fields the processors added](images/22-fields.png)
+*Figure 22.5: The index's fields, with their types and boosts*
 
-You'll see two more fields in the table that you didn't add: **Published** (`status`) and **Authored by** (`uid`), in grey, without a **Remove** button. Search API's processors added them, as we see in a moment: they need them to check who may see what.
+You'll see two more fields in the table that you didn't add, in grey and without a **Remove** button: `status` (labeled **Boolean**: published or not) and `uid` (labeled **Entity reference**: the author). Search API's processors added them, as we see in a moment: they need them to check who may see what.
 
 ### Processors
 
@@ -152,7 +157,8 @@ Select the **Processors** tab. Each processor is one step from "What a search do
 
 Below the list, **Processor order** shows the order the processors run in, at three moments: when content is indexed (**Preprocess index**), when a visitor's words are processed (**Preprocess query**), and when results come back (**Postprocess query**). The defaults are in a sensible order: transliteration and lowercase before splitting into words, stemming after. Under **Processor settings**, each processor that has settings has a tab: for **Highlight**, check that **Create excerpt** is on. Select **Save**.
 
-%% Screenshot: the Processors tab, with the eight processors checked. %%
+![The Processors tab, with Content access, Entity status, Highlight, HTML filter, Ignore case, Stemmer, Tokenizer and Transliteration switched on, the processor order below, and the Highlight settings](images/22-processors.png)
+*Figure 22.6: The processors, their order, and Highlight's settings*
 
 > **No stemming in Spanish.** The stemmer only knows English. It's built on the *Porter2* algorithm, a set of rules for English endings ("-ies" to "-y", "-ing" off), and Spanish needs rules of its own ("embalses" to "embalse", "caminatas" to "caminata"). Search API leaves the Spanish pages alone, which is the right thing to do: English rules would damage Spanish words. Thanks to **Match words starting with given keywords**, "embalse" still finds "embalses", because one starts with the other. The other way around, it doesn't. For real Spanish stemming, a search engine such as Solr (later in this chapter) has languages built in.
 
@@ -160,7 +166,8 @@ Below the list, **Processor order** shows the order the processors run in, at th
 
 Back on the **View** tab, the index says **0%** and **0/26 indexed**: it knows about the club's 26 pieces of content, in both languages, but hasn't read them yet. New and changed content is indexed when it's saved, and the rest at cron, 50 items each run. To do it now, select **Index now**.
 
-%% Screenshot: the index's View tab after indexing: 100%, 26/26 indexed, Server Club database. %%
+![The index's View tab: 100 percent, 26 of 26 items indexed, on the server Club database](images/22-index-view.png)
+*Figure 22.7: The index after indexing*
 
 > **On the command line.** Drush has Search API commands too, such as `ddev drush search-api:index`. As we write this, that one fails with Drush 14's development version ("The log level "success" does not exist"), so use **Index now**, or let cron do it.
 
@@ -176,7 +183,8 @@ Search API has an index; now visitors need a page to search it. Go to **Structur
 4. **Display format**: **Unformatted list** of **fields**. **Items to display**: `10`. Check **Use a pager**.
 5. Select **Save and edit**.
 
-%% Screenshot: the Add view wizard, showing Index Club content, the page at search. %%
+![The Add view wizard, with the view name Search, Show Index Club content, and a page titled Search at the path search, as an unformatted list of fields, 10 items with a pager](images/22-add-view.png)
+*Figure 22.8: A view of the index*
 
 The view looks like Chapter 12's, with one difference: everything in it comes from the index, not from the database tables. Its fields, filters and sorts are in groups named after where they come from: **Index Club content** for the index's own fields, **Content datasource** for the fields of the content, and **Search** for the parts of the search itself.
 
@@ -194,7 +202,8 @@ Under **Filter criteria**, select **Add** and choose **Search: Fulltext search**
 
 A view with no words to search for shows everything, which is a strange search page. Under **Exposed form** (in the right column, under **Advanced**), select **Basic** next to **Exposed form style**, and choose **Input required**. Now the page shows only the search box until the visitor searches. Its **Text on demand** is what shows before that; leave it empty.
 
-%% Screenshot: the Fulltext search filter settings. %%
+![The settings of the Fulltext search filter: exposed, the label Search for, the operator Contains all of these words, the parse mode Multiple words, and the filter identifier keys](images/22-fulltext-filter.png)
+*Figure 22.9: The Fulltext search filter*
 
 ### Narrowing down
 
@@ -218,11 +227,12 @@ Under **Sort criteria**, add **Search: Relevance**, and choose **Sort descending
 
 Under **No results behavior**, add **Global: Text area**, and write `Nothing found. Try fewer or other words.` Under **Pager**, choose **Mini**: a search with eleven results doesn't need numbered pages.
 
-Save the view, and try it at `/search`: search for `reservoirs`.
+Save the view, and try it at `/search`: search for `reservoir`.
 
-%% Screenshot: /search with "reservoirs": the Glencorse hike, with "Reservoir" in bold in the excerpt. %%
+![The search page with reservoir in the box: the Glencorse Reservoir winter loop first, then the front page and an album, each with its type, and excerpts with Reservoir in bold](images/22-search-results.png)
+*Figure 22.10: Searching for reservoir*
 
-The Glencorse hike comes first, with "Reservoir" in bold in the excerpt, even though you typed "reservoirs": stemming at work. Try `photos`, which finds the albums, and `glencorse` in lowercase.
+The Glencorse hike comes first, with "Reservoir" in bold in the excerpt. Now try `reservoirs`: the same pages come back, thanks to the stemmer, which turned your "reservoirs" into "reservoir". But they come back without excerpts. The **Highlight** processor looks for the words you typed, and "reservoirs" isn't in the text; it doesn't know about stems. A search engine such as Solr, later in this chapter, highlights stems too. Try `photos`, which finds the albums, and `glencorse` in lowercase.
 
 > **Try it:** search for `meeting`. Every hike comes back. Why?
 
@@ -236,7 +246,8 @@ The index should read a version of the hike made for searching: its text, withou
 2. Move **Photo**, **Hike leader**, **Date**, **Distance** and **Elevation gain** down to **Disabled**: the photo has no words, and the rest are better as filters than as text.
 3. Select **Save**.
 
-%% Screenshot: Hike's Search index display, with the labels hidden. %%
+![Hike's Search index display: Meeting place, Area, Difficulty and Description with their labels hidden, and the photo, date, distance, elevation gain and hike leader disabled](images/22-search-index-display.png)
+*Figure 22.11: Hike's Search index view mode*
 
 Now tell the index to use it. On the index's **Fields** tab, select **Edit** next to **Rendered HTML output**, and choose **Search index** for **Hike**. Save, and select **Index now** on the **View** tab again: changing what the index reads means reading everything again, and Search API says so, with a message that the index needs to be rebuilt.
 
@@ -250,9 +261,8 @@ Switch the site to Spanish, at `/es/search`, and search for `embalse`: *Vuelta i
 
 The page itself needs two translations. Its address: Spanish visitors deserve `/es/buscar`. Go to **Configuration** > **Search and metadata** > **URL aliases**, select **Add alias**, and give `/search` the alias `/buscar`, with the language **Spanish**. Redirect (Chapter 17) now sends anyone who opens `/es/search` on to `/es/buscar`. And its words: translate the view, as in Chapter 18, under **Configuration** > **Region and language** > **Configuration translation**: **Views**, **Search**, **Translate**, **Spanish**. The title becomes `Buscar`, the label `Buscar`, the button `Buscar`, and the text for no results `No se encontró nada. Prueba con menos palabras u otras.`
 
-%% Screenshot: /es/buscar with "embalse". %%
-
-%% Author: the Spanish view title, label, button and empty text aren't translated on the test site yet (2026-11-14); do it when taking the screenshots. %%
+![The Spanish search page, Buscar, with embalse in the box: Vuelta invernal al embalse de Glencorse with embalse in bold in the excerpt, and a Spanish album](images/22-es-buscar.png)
+*Figure 22.12: The search page in Spanish*
 
 ## A search box on every page
 
@@ -267,7 +277,10 @@ The block shows no results of its own, only the box: the **Input required** expo
 
 Now place it, as in Chapter 14: **Structure** > **Block layout**, **Place block** in Olivero's **Sidebar** region, and choose **Search box** (from the Search view). Title it `Search the club`. Under **Pages**, enter `/search` and choose **Hide for the listed pages**: on the search page itself, a second box would be one too many.
 
-%% Screenshot: the front page with the Search the club block in the sidebar. %%
+![The front page, with the Search the club block at the top of the sidebar, above Join the club](images/22-sidebar-block.png)
+*Figure 22.13: The search box in the sidebar*
+
+%% Author: in Olivero's sidebar the search box is wider than the sidebar (312 px in a 211 px column at 1280 wide): Olivero lays out a view as a grid, and the text field's size of 30 sets the grid's minimum width. Seen 2026-11-14; no matching core issue found. Decide: leave, report, or work around. %%
 
 Why the sidebar, and not the header, where most sites have their search box? Because of how Olivero's header works: when its main menu doesn't fit, Olivero folds it into a **Menu** button, and a search box in the header region makes it not fit much sooner. The sidebar keeps the header as it was. (*Theming Drupal* puts the box in the header, with a theme made for it.)
 
@@ -297,7 +310,8 @@ Visitors need permission to use it: under **People** > **Permissions**, give **A
 
 Type `res` in the search box:
 
-%% Screenshot: the search box with "res" typed, and suggestions below it: the Glencorse hike, and "reservoir" with a count. %%
+![The sidebar search box with res typed, and suggestions below it: three pages, Glencorse Reservoir winter loop, Welcome to Lens & Trail and Pentlands, 21 November, and the word reservoir with the count 3](images/22-autocomplete.png)
+*Figure 22.14: Suggestions while typing*
 
 ## Old hikes, and why they stay
 
@@ -316,7 +330,8 @@ Drupal CMS doesn't come with search either, but it's one click away: **Search** 
 1. Go to **Extend** > **Browse projects**, and select the **Recommended add-ons** tab (`/admin/modules/browse/recommended`).
 2. Find **Search** ("Adds a search to help visitors find content"), and select **Install**.
 
-%% Screenshot: the Recommended add-ons with the Search card. %%
+![The Recommended add-ons on Drupal CMS, with the Search card: Adds a search to help visitors find content](images/22-cms-recommended.png)
+*Figure 22.15: Search in the Recommended add-ons*
 
 The recipe sets up what we built by hand on core, and a little more. Under **Configuration** > **Search and metadata** > **Search API**, there's a server, **Database**, and an index, **Content** ("Can search within all content types"). The index has two datasources: content, and Canvas pages (**Page**), so the pages you build in Canvas are found too. The recipe also:
 
@@ -344,18 +359,21 @@ Facets need fields in the index to count. On the **Content** index's **Fields** 
 The recipe's Search view has only a block, which a Canvas page shows. Facets don't show when the view is a block placed with Canvas: we tried, and the facets stayed empty. So give the view a page of its own. Edit the **Search** view, select **Add** > **Page**, with the path `search`. Then, for the page:
 
 1. Under **Filter criteria**, select **Add**, and look at the **Facets** group: every field of the index is there as a facet, such as **Area (field_area)**. Add **Area (field_area)**, **Content type (type)** and **Difficulty (field_difficulty)**.
-2. For each, expose it to visitors, give it a label (`Area`, `Type`, `Difficulty`), and check **Show the amount of results**. Under **Facet settings**, check **Transform entity ID to label** for Area and Content type, so the facet shows "Pentland Hills" rather than the term's ID, and **List item label** for Difficulty, so it shows "Moderate" rather than `moderate`.
+2. For each, give it a label: `Area`, `Type`, `Difficulty`. A facet is always exposed to visitors, so there's no **Expose** button.
 3. Add **Index Content: Item language**, set to **Interface text language selected for page**, as on core.
 4. Under **Exposed form**, change **Exposed form style** to **Better Exposed Filters**. In its settings, choose **Checkboxes/Radio Buttons** for the three facets.
 5. Save the view.
+6. Now each facet in **Filter criteria** has a **Settings** link next to it (it only appears once the view is saved). For each, select it, and check **Show the amount of results**. For Area and Content type, also check **Transform entity ID to label**, so the facet shows "Pentland Hills" rather than the term's ID; for Difficulty, check **List item label**, so it shows "Moderate" rather than `moderate`. Select **Apply**, and save the view again.
 
-%% Screenshot: the facet filter's settings in Views. %%
+![The settings of the Area facet in Views, with Transform entity ID to label switched on](images/22-cms-facet-settings.png)
+*Figure 22.16: A facet's settings*
 
 Search for `pentland` at `/search`:
 
-%% Screenshot: /search on Drupal CMS with "pentland": the results, and the Area, Type and Difficulty facets as checkboxes with counts. %%
+![The search page on Drupal CMS with pentland in the box: the Area, Content type and Difficulty facets as checkboxes with counts, such as Hike (2) and Moderate (1), and five results with excerpts](images/22-cms-facets.png)
+*Figure 22.17: Facets on Drupal CMS*
 
-Check *Easy* under Difficulty, and the results, and the counts in the other facets, change to match.
+Check *Moderate* under Difficulty, and the results, and the counts in the other facets, change to match.
 
 The search box goes in the header, which on Drupal CMS is a Canvas page template (Chapter 14). Open Canvas, **Templates**, **Mercury theme**, and in the **Library**, find the Search view's exposed form block; drag it into the **Navbar**'s **CTAs** slot, next to the main menu. It works in both languages: `/es/search` gives Spanish results.
 

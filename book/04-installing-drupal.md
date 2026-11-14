@@ -233,7 +233,7 @@ Drupal CMS is installed the same way, with a different project. We build the clu
    ddev composer create-project drupal/cms
    ```
 
-   At the time of writing, Drupal CMS (version 2.2.8) runs on Drupal 11, so the project type is `drupal11`. It includes Drush, so there's nothing more to add.
+   At the time of writing, Drupal CMS (version 2.2.9) runs on Drupal 11, so the project type is `drupal11`. It includes Drush, so there's nothing more to add.
 
 2. Run `ddev launch`. Drupal CMS has its own installer, with three screens.
 
@@ -250,7 +250,7 @@ Drupal CMS is installed the same way, with a different project. We build the clu
 ![Drupal CMS installer, Create your account, with email, password and time zone](images/04-cms-create-your-account.png)
 *Figure 4.8: Creating the administrator account*
 
-**Create your account.** Notice the difference from core's installer: Drupal CMS asks for an **Email** instead of a username, and you log in with your email address. Type `admin@lens-and-trail-cms.ddev.site`, the password `12345` (the same warning applies), and choose **London** as the **Default time zone**. Select **Finish**.
+**Create your account.** Notice the difference from core's installer: Drupal CMS asks for an **Email** instead of a username, and you log in with your email address. Type `admin@lens-and-trail-cms.ddev.site` and the password `12345` (the same warning applies). There's no question about the time zone here: Drupal CMS sets one for you, and you can check it under **Configuration** > **Region and language** > **Regional settings**, as we do for the core site in Chapter 5. Select **Finish**.
 
 ![Drupal CMS installing, with a progress bar](images/04-cms-finishing-setup.png)
 *Figure 4.9: Drupal CMS installs the site template*

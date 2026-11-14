@@ -39,7 +39,7 @@ numbers:
       path: 0.latest
 
   drupal_cms_version:
-    value: '2.2.8'
+    value: '2.2.9'
     label: Drupal CMS, newest version (Chapter 3)
     source: https://new.drupal.org/drupal-cms
     fetch:

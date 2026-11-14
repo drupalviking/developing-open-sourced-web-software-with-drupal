@@ -407,12 +407,35 @@ The photos come one under the other, each with its credits; the tall photo of Gl
 
 > **Try it: video and documents.** Media isn't only photos. Add a **Remote video**: at **Content** > **Media** > **Add media** > **Remote video**, paste the address of a YouTube video, such as `https://www.youtube.com/watch?v=zHgHQD-mL5s` (the Drupal Association's keynote from DrupalCon Atlanta 2025). Drupal fetches the title and a thumbnail from YouTube, and shows the video from there. Then add a **Document**: the club's membership form, `membership-form.pdf` from the book's `examples/` folder. Where would you put the form on the site?
 
-> **On Drupal CMS:** Drupal CMS has media set up from the start: Image, Document, Remote video, Video, and **SVG Image** for logos and icons. Its text editor has the media button, and no Upload image button, for the reasons above. Two things go further than what we built. First, the **Focal Point** module: when you upload a photo, you click the most important spot in it (the crosshair in Figure 9.31), and every **Scale and crop** keeps that spot in the picture, so a banner never cuts off the hiker's head. Second, Drupal CMS comes with more than 60 image styles, named after their shape and size, such as "16:9 | 1312x738 | Focal Point | WebP", and responsive image styles that use them. Its Featured image field shows a photo through media view modes, as we did with **Banner**, in cards and teasers; on the full blog post, it uses **Thumbnail** without an image style, which shows the original photo. If you give Drupal CMS's photos credits, switch that display to **Rendered entity** too. You can add Focal Point to a core site too, as a contributed module (Chapter 11).
+> **On Drupal CMS:** Drupal CMS has media set up from the start: Image, Document, Remote video, Video, and **SVG Image** for logos and icons. Its text editor has the media button, and no Upload image button, for the reasons above. Two things go further than what we built. First, the **Focal Point** module: when you upload a photo, you click the most important spot in it (the crosshair in Figure 9.31), and every **Scale and crop** keeps that spot in the picture, so a banner never cuts off the hiker's head. Second, Drupal CMS comes with more than 60 image styles, named after their shape and size, such as "16:9 | 1312x738 | Focal Point | WebP", and responsive image styles that use them. Its Featured image field shows a photo through media view modes, as we did with **Banner**: **Hero** on the full page, and smaller ones in cards and teasers. You can add Focal Point to a core site too, as a contributed module (Chapter 11).
 
-![The Add Image form on Drupal CMS, with an uploaded photo and the Focal Point crosshair in the middle of it](images/09-cms-focal-point.png)
+![The Add Image form on Drupal CMS, with the Turnhouse Hill photo uploaded, the Focal Point crosshair in the middle of it, and the name and credits filled in](images/09-cms-focal-point.png)
 *Figure 9.31: Focal Point on Drupal CMS*
 
 > **Coming from WordPress?** The Media Library will feel familiar: in WordPress, every upload is an *attachment* in the Media Library, and a post's *featured image* is a reference to one. Drupal's media items are the same idea, with fields of your own, such as our credits. Two differences are worth knowing. WordPress makes its image sizes (thumbnail, medium, medium_large and large) at the moment you upload, so when you change a size, only new uploads get it, and the old ones need a plugin such as Regenerate Thumbnails. Drupal makes an image style's copy the first time a page asks for it, and remakes them when you change the style. And WordPress adds `srcset` to images by itself (since version 4.4); in Drupal, you decide which copies to offer, with a responsive image style, as we did.
+
+## On Drupal CMS
+
+On the Drupal CMS site, Media, the Media Library and Responsive Image are already installed, and the image styles and responsive image styles are there too (see the box above). So skip "Installing Media", and do the rest with what Drupal CMS has.
+
+**Credits.** Add **Photographer**, **License** and **Source** to the Image media type, as in "Credits on every photo", with the same settings. Drupal CMS's Image already has a **Media library** form, so put the name and the credits on both forms, as above.
+
+![The Manage fields page of the Image media type on Drupal CMS, with Image, License, Photographer and Source](images/09-cms-image-fields.png)
+*Figure 9.32: Image's credit fields on Drupal CMS*
+
+**The first photo.** Add *Turnhouse Hill across Glencorse Reservoir* at **Media** > **Add media** > **Image**, as above. When the file is uploaded, Focal Point shows its crosshair on the photo (Figure 9.31). In this photo, the boat is what matters, and it's in the middle, so leave the crosshair where it is; in another photo, you'd drag it to the spot that should never be cut off.
+
+**A Photo field on Hike.** Add the **Photo** field to Hike, as in "A Photo field on Hike". Then, on Hike's **Manage display**, put it first, hide its label, and choose a view mode for it. This is where Drupal CMS saves you work: instead of making a Banner image style, a responsive image style and a Banner view mode, choose **16:9 Wide**, one of Drupal CMS's media view modes. It already shows the photo with a responsive image style of 16:9 crops, in several sizes, and every crop keeps the focal point. What it doesn't show is the credits, so go to **Structure** > **Media types** > **Image** > **Manage display**, select **16:9 Wide**, and add **Photographer**, **License** and **Source**, after the image, with **Inline** labels. Mercury shows them under the photo, each label on its own line, as in Chapter 8.
+
+![The Turnhouse Hill hike on the Drupal CMS site, with the photo of the reservoir and the boat at the top, its credits under it, then the facts and the description](images/09-cms-hike-photo.png)
+*Figure 9.33: The hike, with its photo, on Drupal CMS*
+
+Do the Try it with News too: re-use **Photo** on News, show it the same way, and give *The club has a website* the photo of Edinburgh's Old Town.
+
+**Galleries.** Build the Gallery content type as in "Galleries", re-using **Content** (`field_content`) for the description, as you did for Hike. The **Album** view mode is the one place where you make something new on Drupal CMS: add it for media, as above, but instead of an image style, set the Image's format to **Responsive image**, with Drupal CMS's **Uncropped Large** style. It scales the photo without cropping, like Max 1300x1300 on core, in several sizes. Put the credits on it, with **Inline** labels, and set up Gallery's display as above. Then make the album *Pentlands, 21 November* with its four photos.
+
+![The album Pentlands, 21 November on the Drupal CMS site: the hike, the description, and four photos one under the other, the tall one uncropped, each with its credits](images/09-cms-gallery-page.png)
+*Figure 9.34: The first album, on Drupal CMS*
 
 ## Summary
 
@@ -427,7 +450,8 @@ You can now:
 - set up a responsive image style, so browsers get the size of photo they need;
 - choose between Rendered entity and Thumbnail for a Media field, and between Image and Responsive image inside a media view mode;
 - put the media button in the text editor, and decide whether to offer it;
-- build a content type for photo albums.
+- build a content type for photo albums;
+- do the same on Drupal CMS, with its own media view modes and responsive image styles.
 
 ## Exercises
 

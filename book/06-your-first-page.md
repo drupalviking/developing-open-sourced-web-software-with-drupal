@@ -212,6 +212,33 @@ Before you delete, think about unpublishing instead. An unpublished page, or an 
 > ![The Trash in Drupal CMS, with a deleted page and its Restore button](images/06-trash.png)
 > *Figure 6.11: The Trash in Drupal CMS*
 
+## On Drupal CMS
+
+On the Drupal CMS site, the club's first pages are Utility pages, the content type Drupal CMS comes with. So there's no content type to create and no field to add: Utility page already has a body field, called **Content** (machine name `field_content`), and its label is already hidden.
+
+1. Select **Create** > **Utility page**.
+2. Type the **Title**, `About the club`, and the three paragraphs from the Try it above in **Content**.
+3. Fill in **Description**: `A photography and hiking club in Edinburgh: who we are, and when we meet.` It's required. Search engines show it under the page's title in their results, so Drupal CMS asks for it on every page; Chapter 17 is about that. **Featured image** is optional: we leave it empty until the club has photos, in Chapter 9.
+4. In the sidebar, under **Menu settings**, turn on **Provide a menu link**, type `About` as the **Menu link title**, and set **Weight** to `1`.
+5. Open **URL alias**. **Generate automatic URL alias** is on: that's Pathauto, from the box above. Left on, it would give the page the address `/about-club`, made from the title without short words such as "the" and "to". Turn it off, and type `/about`, so that both of the club's sites have the same addresses.
+6. Leave **Save as** on **Published**, and select **Save**.
+
+![The Utility page form for About the club: Title, Featured image, Description and Content on the left; the menu link About with weight 1, and the URL alias /about with Generate automatic URL alias turned off, on the right](images/06-cms-utility-form.png)
+*Figure 6.12: About the club, as a Utility page*
+
+Now do the same for *How to join*, with the text from the Try it, the **Description** `How to become a member of Lens & Trail, and what it costs.`, the menu link `Join us` with **Weight** `2`, and the URL alias `/join`. In its second paragraph, use the Drupal CMS site's address, `hello@lens-and-trail-cms.ddev.site`.
+
+There's no Welcome page to write, and no front page to set: Drupal CMS already has a front page, the page called **Home** that you saw at the end of Chapter 5. It's a different kind of page, built with Drupal Canvas, and we turn it into the club's Welcome page in Chapter 8. The menu already has a link to it, so the menu now reads **Home**, **About**, **Join us**.
+
+![About the club on the Drupal CMS site, in Mercury: the menu Home, About, Join us at the top right, a breadcrumb, the title and four paragraphs](images/06-cms-about.png)
+*Figure 6.13: About the club on the Drupal CMS site, as a visitor sees it*
+
+Revisions work the same: add the night walks to *About the club*, with the log message `Added the night walks.`, and look at the **Revisions** tab.
+
+Content moderation is already there, with a workflow of its own, **Basic editorial**. Its states are **Draft**, **Published** and **Unpublished**: there's no Archived, because **Unpublished** does the same job. The form shows the state as **Save as**, instead of **Change to**, but it works the same way. Do the Try it with the forty members: add the paragraph, set **Save as** to **Draft**, write the log message, and save. Then, on the **Latest version** tab, change it to **Published**, with the log message `The secretary checked the number.`, and select **Apply**.
+
+> **Try it:** See the Trash at work. Create a Utility page called `Summer barbecue` (any text and description will do), and delete it. Then open **Trash** in the sidebar: the page is there, with a **Restore** button, as in Figure 6.11. Leave it in the Trash.
+
 ## Summary
 
 You can now:
@@ -222,7 +249,8 @@ You can now:
 - set the site's front page, by the page's own address;
 - see a page's revisions, and go back to an older one;
 - install Content Moderation, and work on a draft while the published version stays online;
-- delete content, and know when it can and can't be restored.
+- delete content, and know when it can and can't be restored;
+- do the same on Drupal CMS, with its Utility pages, Pathauto and the Basic editorial workflow.
 
 ## Exercises
 

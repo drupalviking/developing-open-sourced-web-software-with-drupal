@@ -213,8 +213,6 @@ Clear the cache again, or visitors may get the stored maintenance page for a whi
 
 *Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it?*
 
-%% Author: the chapter number is the Search chapter's working number; it becomes 22 in the renumbering only if *Where Next?* moves to 23 as planned. %%
-
 ### Why boosting by date doesn't work
 
 Search API has a processor that sounds right: **Number field-based boosting**, on the index's **Processors** tab. It multiplies each item's score by the value of a number field, times a factor you choose. A date is stored as a number, the seconds since 1 January 1970, so you can pick the **Date** field. But look at the numbers. *Arthur's Seat at sunrise*, on 24 October 2026, is about 1,792,800,000 seconds; *Arthur's Seat by night*, on 16 January 2027, about 1,800,100,000. The second is bigger by less than half a percent. Both scores get multiplied by almost the same huge number, and the order doesn't change. And even if it did, the boost would favor the *later* hike, not the *upcoming* one: a hike next year beats one next week, and the index can't tell either from a hike that's over, because it doesn't know today's date (Chapter 22's box "Leaving out past hikes"). A boost is fixed when the item is indexed; "upcoming" changes every day.

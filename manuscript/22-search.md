@@ -1,10 +1,10 @@
 # Search
 
-%% Author: this chapter comes before *Where Next?*, which becomes Chapter 23, and the patching appendix becomes Appendix C (the answers move to D). The renumbering waits until the chapter list is final (Backlog), so for now the chapter calls itself 22 and the appendix calls itself C, next to the old numbers. Screenshots aren't taken yet: each `%% Screenshot` note marks where one goes. %%
+%% Author: this chapter comes before *Search by Meaning* (23) and *Where Next?*, which becomes Chapter 24, and the patching appendix becomes Appendix C (the answers move to D). The renumbering waits until the chapter list is final (Backlog), so for now the chapter calls itself 22 and the appendix calls itself C, next to the old numbers. Screenshots aren't taken yet: each `%% Screenshot` note marks where one goes. %%
 
 A visitor lands on the club's site with one thing in mind: "that walk by the reservoir". She doesn't know it's called *Glencorse Reservoir winter loop*, and she doesn't know whether it's under Hikes, the hike archive, or an album. She looks for a search box. Lens & Trail doesn't have one.
 
-This chapter gives it one, and a good one. We start with what a search actually does, and why it doesn't look through every page each time someone types a word. We try Drupal's old Search module, which used to come with Drupal core, and see where it falls short. Then we build the search the club deserves with **Search API**: an index of the club's content in a database, a search page as a view, in English and Spanish, a search box on every page, and suggestions while you type. On Drupal CMS, a recipe does most of this for you, and we add *facets*, the lists of choices next to the results that let a visitor narrow them down. We look at the bigger search engines that large sites use. And last, we try something new: a search that understands what you *mean*, built with the AI tools from Chapter 19.
+This chapter gives it one, and a good one. We start with what a search actually does, and why it doesn't look through every page each time someone types a word. We try Drupal's old Search module, which used to come with Drupal core, and see where it falls short. Then we build the search the club deserves with **Search API**: an index of the club's content in a database, a search page as a view, in English and Spanish, a search box on every page, and suggestions while you type. On Drupal CMS, a recipe does most of this for you, and we add *facets*, the lists of choices next to the results that let a visitor narrow them down. And we look at the bigger search engines that large sites use. (A search that understands what you *mean* gets a chapter of its own, the next one.)
 
 We start where Chapter 21 left the club's site: two languages, hikes, albums, news and pages, the views from Chapters 12 and 13, and the roles from Chapter 15.
 
@@ -373,128 +373,9 @@ Changing the backend is mostly changing the server. The index, the fields, the p
 
 Setting one up is beyond this book: it means running another program, which is a job for a server, not for a site builder's browser. If you'd like to try, DDEV can run Solr next to your site, with an add-on (`ddev add-on get ddev/ddev-solr`).
 
-## Search by meaning: AI search on Drupal CMS
+## Searching by meaning
 
-Everything so far looks for *words*. A visitor who types "an easy walk by the water" finds pages that contain "easy", "walk" and "water" (with Contains all of these words, all three). The Glencorse hike doesn't say "water": it says "reservoir". So it isn't found, though it's exactly what she wants.
-
-An AI search looks for *meaning*. It uses a model, like the ones in Chapter 19, to turn each piece of text into an *embedding*: a long list of numbers, 1536 of them in our case, that places the text in a kind of map of meanings. Texts about similar things end up close to each other on the map, whatever words they use: "a walk by the water" lands near "a loop around the reservoir". A search turns the visitor's words into an embedding too, and looks for the pages nearest to it. That also works across languages: "un paseo fácil junto al agua" lands in the same place as its English translation.
-
-> **Under the hood: embeddings and vector databases.** An embedding is a *vector*, a point in a space with as many directions as it has numbers. You can't picture 1536 directions, but the idea is the same as on a map with two: points close together mean similar things. "Close" is measured by the angle between two vectors (the *cosine similarity*), and a *vector database* is a database made to find the nearest vectors quickly, among millions. Long pages are cut into *chunks* first, a few hundred words each, so that a long page about many things can be found by any of them. Making an embedding costs a little money each time: the club pays for every page indexed, and every search, at the rates of the model's provider.
-
-The AI module from Chapter 19 has a backend for Search API that does this, **AI Search**, which keeps the index in a vector database instead of Drupal's database. The rest is Search API as you know it: a server, an index, a view.
-
-You need three services for this, each with an account and an API key:
-
-- **An embeddings model.** We use OpenAI's `text-embedding-3-small`, the provider the AI module calls OpenAI. Indexing the club's hikes, and a few hundred searches, cost less than one US cent when we tried it.
-- **A vector database.** We use **Pinecone**, a vector database you rent as a service, because its free plan is enough for a small site, and the AI module has a provider for it. The AI module also has providers for Milvus, PostgreSQL and others you'd run yourself. If you chose amazee.ai in Chapter 19, it offers a vector database and embeddings too; we haven't tried them for this chapter.
-- **A chat model,** to count the tokens in each chunk (Chapter 19). We use Anthropic's Claude Haiku, from Chapter 19.
-
-Chapter 19 showed how to store API keys with the **Key** module, under **Configuration** > **System** > **Keys**: add an `OpenAI API key` and a `Pinecone API key` there the same way. Then set up OpenAI under **Configuration** > **AI** > **Providers**, as Chapter 19 did with Anthropic.
-
-%% Author: tested 2026-11-14 on Drupal CMS 2.2.8 (11.4.11) with AI 1.5.2, ai_vdb_provider_pinecone 1.1.0-beta5, OpenAI embeddings and Anthropic Claude Haiku 5.5. The AI module's own AI Search submodule is marked deprecated: it's moving to a standalone project, AI Search (drupal/ai_search), which only had alpha releases (https://www.drupal.org/node/3570322). Check before publication which one to use, and rewrite the steps if the new project has different screens. amazee.ai's vector database not tried. %%
-
-### A vector database on Pinecone
-
-At [pinecone.io](https://www.pinecone.io), create a free account, then create an *index* (Pinecone's word for a database):
-
-1. **Name**: `lens-and-trail`.
-2. Set the **dimension** to `1536`, the length of `text-embedding-3-small`'s vectors (the two have to match), and the **metric** to **cosine**.
-3. Choose a serverless index on AWS, in `us-east-1`, the region of the free plan.
-4. Create it, and copy your API key from **API keys**.
-
-%% Author: Pinecone's labels are from our notes, not checked on its current screens (2026-11-14). Screenshot of its index form, if you want outside services shown. %%
-
-### The modules
-
-The Pinecone provider is a contributed module. As we write this, it only has *beta* releases, so ask for one by name:
-
-```
-ddev composer require 'drupal/ai_vdb_provider_pinecone:^1.1@beta'
-```
-
-On **Extend**, install **AI Search** (Extend marks it as deprecated; see the box below) and **Pinecone Serverless VDB Provider**. Then go to **Configuration** > **AI** > **Vector Database Configuration** (`/admin/config/ai/vdb_providers`), select **Pinecone Configuration**, choose your **Pinecone API key**, and save.
-
-> **AI Search is moving.** The AI module's **AI Search** module is being moved into a project of its own, also called AI Search, so that it can grow at its own pace. That's why **Extend** shows it as deprecated. When we wrote this, the new project had only test releases, and the one inside the AI module was the one to use. By the time you read this, check the AI Search project page on drupal.org: if it has a stable release, use that one; the steps should look much the same.
-
-### A server and an index
-
-Under **Configuration** > **Search and metadata** > **Search API**, select **Add server**:
-
-1. **Server name**: `AI search`.
-2. **Backend**: **AI Search** ("Index items on Vector DB").
-3. **Embeddings Engine**: **OpenAI | text-embedding-3-small**.
-4. **Tokenizer chat counting model**: **Anthropic - Claude Haiku 5.5**.
-5. **Vector Database**: **Pinecone DB**. Then **Database Name** **lens-and-trail**, **Namespace** `content` (a part of the Pinecone index, so other indexes could share it), and **Similarity Metric** **Cosine Similarity**.
-6. Under the embedding strategy, keep **Enriched Embedding Strategy** and its defaults: chunks of 500 tokens, with the title repeated in each.
-7. Select **Save**.
-
-%% Screenshot: the AI search server form. %%
-
-Then **Add index**:
-
-1. **Index name**: `Hikes by meaning`.
-2. **Datasources**: **Content**; under its settings, **Bundles**: **Only those selected**, with **Hike**. Visitors who describe a walk want hikes, not albums.
-3. **Tracker**: choose **AI Search Chunked Tracker**, *not* **Default**. This one matters, and nothing chooses it for you. The tracker keeps track of what needs indexing; AI Search indexes long pages a few chunks at a time, and only its own tracker remembers to start again from the first chunk when a hike changes. With the **Default** tracker, a changed hike is never indexed again, and its old version stays in Pinecone for good, without any error message. (We found out the hard way.)
-4. **Server**: **AI search**.
-5. Select **Save and add fields**.
-
-%% Screenshot: the index form, with the Tracker choice. %%
-
-The **Fields** tab looks different for an AI index: each field has an **Indexing option** instead of a boost. The descriptions at the top of the page explain them. Add these fields, and set their options:
-
-| Field | Indexing option | What it does |
-|---|---|---|
-| **Rendered HTML output** (Hike: **Search index**) | **Main content** | The text that's cut into chunks and turned into embeddings. |
-| **Title** | **Contextual content** | Added to every chunk, so each chunk knows which hike it's from. |
-| **Date** | **Contextual content** | The same: the date travels with each chunk. |
-| **Area**, **Difficulty**, **Language** | **Filterable attributes** | Stored next to each vector, to filter on before searching. |
-
-Save, and **Index now**. To check what went in, the **Fields** tab has **Preview content to be vectorized**, which shows a hike as the embeddings model sees it.
-
-### Find a hike
-
-Now a view, as for the core site's search: **Add view**, **Show** **Index Hikes by meaning**, a page at `find-a-hike` titled `Find a hike`, showing **Rendered entity** in the **Teaser** view mode, 3 items, no pager. Then:
-
-1. Add **Search: Fulltext search**, exposed, with the label `What kind of hike?`, the identifier `describe`, and the placeholder `an easy walk by the water`. Set its **Parse mode** to **Multiple words**. (**Direct query** sounds like the right choice for a sentence, but with AI Search it returned nothing in our tests.)
-2. Set **Exposed form style** to **Input required**.
-3. Add **Search: Relevance**, descending.
-4. Add **Index Hikes by meaning: Language**, *not* exposed, set to `en`.
-
-Why a fixed `en`, and not **Item language** with the interface language, as on the core site's search page? Because the AI Search backend ignores **Item language**: it passes filters to the vector database only when they're on the index's own fields, such as **Language**, which we added as a filterable attribute. So this display shows English hikes, and we make a second one for Spanish: **Add** > **Page**, with the path `buscar-excursion`, and for this page only (**This page (override)**), the **Language** filter set to `es`. Save.
-
-Last, the menu: add a link to `/find-a-hike` called `Find a hike` in the main menu, and translate its title to `Buscar excursión` (Chapter 18). A menu link's address can't be translated, so Spanish visitors would land on `/es/find-a-hike`, the English display. Send them on with a redirect (Chapter 17): under **URL redirects**, **Add redirect**, from `find-a-hike` to `/buscar-excursion`, with the language **Spanish**.
-
-Try it. "An easy walk by the water":
-
-%% Screenshot: /find-a-hike with "an easy walk by the water": Glencorse Reservoir winter loop, North Berwick Law and the harbour, Arthur's Seat by night, as teasers. %%
-
-The Glencorse loop comes first, though it never says "water", then North Berwick, by the sea. "A hard climb with sea views" gives the Pentland Hills ridge, Turnhouse Hill and Arthur's Seat at sunrise. And on `/es/buscar-excursion`, "un paseo fácil junto al agua" finds the Spanish Glencorse hike first.
-
-The results aren't perfect: every search gives three hikes, even when none of them fits, because a search by meaning always finds *something* nearest. Arthur's Seat by night is no walk by the water. That's the trade: a search by words gives nothing rather than something wrong; a search by meaning gives its best guess. For a club with six hikes, a best guess is helpful. For a site where a wrong answer matters, combine the two, or let people check.
-
-> **On Drupal core:** none of this is special to Drupal CMS: the AI module and its AI Search work on Drupal 11 core too. On Drupal 12, when we wrote this, the AI module wasn't available yet (Chapter 19).
-
-### A hike guide to talk to
-
-Chapter 19's AI Assistant answers questions about building the site. With the AI Search index, an assistant can answer questions about the *club*: "Is there an easy hike by the water before Christmas?" It searches the index for the hikes that fit, and writes an answer from what it finds, with links. This is called *retrieval-augmented generation*, or *RAG*: the model doesn't answer from what it learned in training, which knows nothing about Lens & Trail, but from what the search *retrieved* from your site.
-
-> **A hike guide, in the admin chatbot.** We built one, with the AI module's agents (Chapter 19), in three steps:
->
-> 1. An **AI agent**, under **Configuration** > **AI** > **AI Agents** (`/admin/config/ai/tools-automation/agents`): `Hike guide`, with one tool, **RAG/Vector Search**. In the tool's settings, we set **index** to *Force value* `hikes_by_meaning` and hid it from the model, so the guide can't search anything else, and **amount** to `4`. Its instructions:
->
-> <!-- include: examples/search/hike-guide-instructions.txt as=Instructions -->
->
-> `[current-date:html_date]` is a token (Chapter 17): the agent knows what day it is, so it can tell a hike that's coming from one that's over.
->
-> 2. An **AI assistant**, under **Configuration** > **AI** > **AI Assistants** (`/admin/config/ai/ai-assistant`), using that agent, with **Anthropic**'s **Claude Haiku 5.5** as the model, and the roles **Anonymous user** and **Authenticated user** allowed.
->
-> 3. The chatbot block. Here we hit a wall: on Drupal CMS, the header and footer are a Canvas page template (Chapter 14), and Canvas only offers blocks whose settings it can check fully, which the chatbot block's aren't (yet). So visitors can't get the chatbot. We tried the guide in the admin chatbot instead: edit the **Drupal Agent Chatbot** block in the Default Admin theme's block layout, and choose the hike guide as its **AI Assistant**.
->
-> Asked "Is there an easy hike by the water before Christmas?", it answered with the Glencorse Reservoir winter loop on Saturday 19 December at 9:30, rated easy, meeting at Flotterstone car park, and offered North Berwick on 5 December "if you'd like the sea instead", with links to both. Asked in Spanish about a hike with sea views, it answered in Spanish, with the Spanish North Berwick page. It never made up a hike.
->
-> Two more things we noticed. Drupal CMS's privacy settings (the *Klaro* consent manager) ask before the chatbot loads, because it sends what you type to an outside service: a visitor-facing chatbot needs that consent too, and a line in the privacy policy. And each question costs a few model calls, paid by the token: little for one question, real money for thousands. A chatbot on a busy public site needs a budget, and a limit.
-
-%% Author: the hike guide was tested 2026-11-14 (agent `hike_guide`, assistant `hike_guide`, tool `ai_search:rag_search` with index forced). Labels to check when taking screenshots: the agent and assistant pages, the tool's restriction table, and the chatbot block's settings. Issue drafts for the tracker default and for the chatbot block in Canvas are in the author's `issue-drafts` folder (PROJECT-LOG Backlog); if either is fixed, update the text. %%
+Every search in this chapter looks for *words*. A visitor who types "an easy walk by the water" gets the pages that contain "easy", "walk" and "water", and not the Glencorse hike, which says "reservoir". Chapter 23 builds a search that looks for what she *means*, with the AI tools from Chapter 19, on the same Search API you've used here.
 
 ## Coming from WordPress?
 
@@ -512,9 +393,7 @@ You can now:
 - add a search box to every page with a block display, and suggestions while typing with Search API Autocomplete;
 - explain why past content can't be left out of an index, and leave it out in the view instead;
 - on Drupal CMS, add search with the recipe, and narrow results with facets;
-- tell when a site needs a separate search engine, and name the common ones;
-- explain embeddings and vector databases, and build a search by meaning with AI Search, Pinecone and Views;
-- explain what RAG is, and what a chatbot on a public site needs.
+- tell when a site needs a separate search engine, and name the common ones.
 
 ## Exercises
 
@@ -532,7 +411,6 @@ You can now:
 - [Search API Autocomplete](https://www.drupal.org/project/search_api_autocomplete), [Facets](https://www.drupal.org/project/facets) and [Better Exposed Filters](https://www.drupal.org/project/better_exposed_filters).
 - The contributed [Search](https://www.drupal.org/project/search) project, Drupal's old Search module.
 - Search engines: [Search API Solr](https://www.drupal.org/project/search_api_solr), [Elasticsearch Connector](https://www.drupal.org/project/elasticsearch_connector), [Search API OpenSearch](https://www.drupal.org/project/search_api_opensearch), [Search API Typesense](https://www.drupal.org/project/search_api_typesense) and [Search API Meilisearch](https://www.drupal.org/project/search_api_meilisearch).
-- AI search: the [AI module](https://www.drupal.org/project/ai), the new [AI Search](https://www.drupal.org/project/ai_search) project, the [Pinecone provider](https://www.drupal.org/project/ai_vdb_provider_pinecone), and [Pinecone's own introduction to vector databases](https://www.pinecone.io/learn/vector-database/).
 - For comparison, WordPress's [Search block](https://wordpress.org/documentation/article/search-block/), and the plugins [Relevanssi](https://wordpress.org/plugins/relevanssi/) and [ElasticPress](https://wordpress.org/plugins/elasticpress/).
 
 %% Author: links checked 2026-11-14. drupal.org answers scripts with a challenge page, so the drupal.org project links were checked through packages.drupal.org (all exist); Search API's documentation pages redirected to new.drupal.org and gave 404 to our fetcher, so the text links the project page only. Check the docs links by hand. %%

@@ -1,0 +1,13 @@
+uuid: 1dc60237-1af7-4c96-a6bf-bd67b91d8a87
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: F9sMUTC68Wma4M9sUIDGaHjYQiFgqy2uhHYuTcvGa1o
+id: media.banner
+label: Banner
+description: 'A wide photo with its credits, at the top of a page.'
+targetEntityType: media
+cache: true

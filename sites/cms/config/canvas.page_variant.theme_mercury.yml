@@ -6,6 +6,7 @@ dependencies:
     - canvas.component.block.system_branding_block
     - canvas.component.block.system_menu_block.footer
     - canvas.component.block.system_menu_block.main
+    - canvas.component.block.views_exposed_filter_block.search-search
     - canvas.component.marker.page_content
     - canvas.component.sdc.mercury.footer
     - canvas.component.sdc.mercury.navbar
@@ -16,11 +17,36 @@ id: theme_mercury
 label: 'Mercury theme'
 description: null
 component_tree:
-  94420671-2ec2-465e-bb83-8504c753ad44:
-    uuid: 94420671-2ec2-465e-bb83-8504c753ad44
-    component_id: theme_page_template.mercury
-    component_version: 15fe1e06320b1035
-    inputs: {  }
+  98a4603b-1a23-42b7-b49c-ed2e8d23613c:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: links
+    uuid: 98a4603b-1a23-42b7-b49c-ed2e8d23613c
+    component_id: block.views_exposed_filter_block.search-search
+    component_version: 4057b7da328713e4
+    inputs:
+      label: Search
+      label_display: '0'
+      views_label: ''
+  6ca4582c-07eb-42b0-ae5c-390e1870c57a:
+    parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
+    slot: header
+    uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    component_id: sdc.mercury.navbar
+    component_version: 3149f199d66bbc29
+    inputs:
+      menu_align: right
+  7b62b82a-e5e9-4f4b-876c-88a28caa6bbb:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: navigation
+    uuid: 7b62b82a-e5e9-4f4b-876c-88a28caa6bbb
+    component_id: block.system_menu_block.main
+    component_version: 322535c0078cf59c
+    inputs:
+      label: 'Main navigation'
+      label_display: '0'
+      level: 1
+      depth: null
+      expand_all_items: false
   6049aa3c-067c-413d-8ece-b1747d35b2b7:
     parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
     slot: content
@@ -28,6 +54,23 @@ component_tree:
     component_id: marker.page_content
     component_version: 3b12c0b99a6caecc
     inputs: {  }
+  94420671-2ec2-465e-bb83-8504c753ad44:
+    uuid: 94420671-2ec2-465e-bb83-8504c753ad44
+    component_id: theme_page_template.mercury
+    component_version: 15fe1e06320b1035
+    inputs: {  }
+  aa3884ff-e4d9-40c7-9cb4-576dec126e87:
+    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
+    slot: logo
+    uuid: aa3884ff-e4d9-40c7-9cb4-576dec126e87
+    component_id: block.system_branding_block
+    component_version: 7d528e00f56b3abf
+    inputs:
+      label: 'Site branding'
+      label_display: '0'
+      use_site_logo: true
+      use_site_name: false
+      use_site_slogan: false
   cd4b4630-df49-42a7-903a-973b63a4b211:
     parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
     slot: footer
@@ -44,38 +87,6 @@ component_tree:
     component_version: 075503dbc228a45c
     inputs:
       label: Footer
-      label_display: '0'
-      level: 1
-      depth: null
-      expand_all_items: false
-  6ca4582c-07eb-42b0-ae5c-390e1870c57a:
-    parent_uuid: 94420671-2ec2-465e-bb83-8504c753ad44
-    slot: header
-    uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
-    component_id: sdc.mercury.navbar
-    component_version: 3149f199d66bbc29
-    inputs:
-      menu_align: right
-  aa3884ff-e4d9-40c7-9cb4-576dec126e87:
-    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
-    slot: logo
-    uuid: aa3884ff-e4d9-40c7-9cb4-576dec126e87
-    component_id: block.system_branding_block
-    component_version: 7d528e00f56b3abf
-    inputs:
-      label: 'Site branding'
-      label_display: '0'
-      use_site_logo: true
-      use_site_name: false
-      use_site_slogan: false
-  7b62b82a-e5e9-4f4b-876c-88a28caa6bbb:
-    parent_uuid: 6ca4582c-07eb-42b0-ae5c-390e1870c57a
-    slot: navigation
-    uuid: 7b62b82a-e5e9-4f4b-876c-88a28caa6bbb
-    component_id: block.system_menu_block.main
-    component_version: 322535c0078cf59c
-    inputs:
-      label: 'Main navigation'
       label_display: '0'
       level: 1
       depth: null

@@ -1,0 +1,23 @@
+uuid: d5a53b37-0bdd-41a4-9284-55fee723b32b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_license
+    - media.type.image
+  module:
+    - options
+_core:
+  default_config_hash: ohRiRCC99hAMS-MBE7Hlktx4PDzdM1aa7WMJPeCnx-Q
+id: media.image.field_license
+field_name: field_license
+entity_type: media
+bundle: image
+label: License
+description: "The license the photo is published under. Use only photos you're allowed to publish."
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

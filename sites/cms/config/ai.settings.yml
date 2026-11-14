@@ -19,11 +19,12 @@ default_providers:
     provider_id: anthropic
     model_id: claude-sonnet-5-5
   embeddings:
-    provider_id: amazeeio
-    model_id: embeddings
+    provider_id: openai
+    model_id: text-embedding-3-small
   text_to_image:
     provider_id: amazeeio
     model_id: gemini-2.5-flash-image
+default_vdb_provider: ''
 request_timeout: 60
 allowed_hosts: {  }
 allowed_hosts_rewrite_links: false

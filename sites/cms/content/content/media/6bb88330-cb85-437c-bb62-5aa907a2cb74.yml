@@ -1,0 +1,59 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 6bb88330-cb85-437c-bb62-5aa907a2cb74
+  bundle: image
+  default_langcode: en
+  depends:
+    2bac8580-0175-4881-a755-d5854e222a38: file
+default:
+  mid:
+    -
+      value: 10
+  revision_created:
+    -
+      value: 1793891942
+  revision_user:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'Turnhouse Hill across Glencorse Reservoir'
+  created:
+    -
+      value: 1793887500
+  changed:
+    -
+      value: 1793891942
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'Turnhouse Hill seen across Glencorse Reservoir, with a rowing boat at the landing stage'
+      title: ''
+      width: 3840
+      height: 2880
+      entity: 2bac8580-0175-4881-a755-d5854e222a38
+  field_photographer:
+    -
+      value: 'dave souza'
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Glencorse_Reservoir,_Turnhouse_Hill.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }

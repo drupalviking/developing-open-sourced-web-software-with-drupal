@@ -46,6 +46,12 @@ default:
       alias: /privacy-policy
       langcode: en
       pathauto: 1
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
   field_content:
     -
       value: '<h2>This content needs to be edited before publishing</h2><p>Note that your site requires a privacy statement.</p>'

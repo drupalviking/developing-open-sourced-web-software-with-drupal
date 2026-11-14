@@ -3,7 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.image.field_license
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - field.field.media.image.field_source
     - field.field.media.image.field_tags
     - image.style.large
     - media.type.image
@@ -37,7 +40,11 @@ content:
     region: content
 hidden:
   created: true
+  field_license: true
+  field_photographer: true
+  field_source: true
   langcode: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true

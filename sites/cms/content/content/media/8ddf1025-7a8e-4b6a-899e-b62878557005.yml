@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 8ddf1025-7a8e-4b6a-899e-b62878557005
+  bundle: image
+  default_langcode: en
+  depends:
+    0f0229df-cfdf-43d5-97e2-1d89f4b87ff7: file
+default:
+  mid:
+    -
+      value: 12
+  revision_created:
+    -
+      value: 1793888247
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'A burn in the Pentland Hills in winter'
+  created:
+    -
+      value: 1793888247
+  changed:
+    -
+      value: 1793888247
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  field_license:
+    -
+      value: cc_by_sa_4_0
+  field_media_image:
+    -
+      alt: 'A stream running through a snowy valley in the Pentland Hills'
+      title: ''
+      width: 3000
+      height: 2000
+      entity: 0f0229df-cfdf-43d5-97e2-1d89f4b87ff7
+  field_photographer:
+    -
+      value: Bops92
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Pentland_hills_winter.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }

@@ -3,9 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - canvas.component.block.views_block.albums-block_1
+    - canvas.component.block.views_block.hikes-block_1
+    - canvas.component.block.views_block.photos-block_1
     - canvas.component.block.views_block.recent_pages-block_recent_pages
+    - canvas.component.block.views_block.search-search
 name: 'Lists (Views)'
 configEntityTypeId: component
 weight: 0
 items:
+  - block.views_block.albums-block_1
+  - block.views_block.hikes-block_1
+  - block.views_block.photos-block_1
   - block.views_block.recent_pages-block_recent_pages
+  - block.views_block.search-search

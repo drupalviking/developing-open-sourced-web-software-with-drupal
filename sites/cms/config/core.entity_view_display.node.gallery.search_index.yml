@@ -1,0 +1,63 @@
+uuid: 0e14bfbb-f2e7-4774-b60a-d9de6b03dc6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_index
+    - field.field.node.gallery.field_area
+    - field.field.node.gallery.field_body
+    - field.field.node.gallery.field_hike
+    - field.field.node.gallery.field_photos
+    - node.type.gallery
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: OC7oNPJv_5k-uqEUz3XPdcXgi7jnD0SOsL1rsbZ4ysM
+id: node.gallery.search_index
+targetEntityType: node
+bundle: gallery
+mode: search_index
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_area:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_hike:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_date: true
+  field_distance: true
+  field_elevation_gain: true
+  field_hike_leader: true
+  field_photo: true
+  field_photos: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,26 @@
+uuid: 2fe79f2e-b43c-477e-a1b4-f768bbd752ec
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.search
+  module:
+    - views
+active_version: 0a1ef5ee6611642a
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:search-search'
+        label: Search
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: Search
+id: block.views_block.search-search
+provider: views
+source: block
+source_local_id: 'views_block:search-search'

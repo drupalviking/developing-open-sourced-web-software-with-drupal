@@ -6,7 +6,7 @@
  *
  * Run inside the rebuilt site, after its content recipe:
  *
- *   ddev drush php:script ../book1-content/../after-import.php -- <export folder>
+ *   ddev drush php:script <export folder>/after-import.php -- <export folder>
  *
  * Puts back what the content import can't bring: Focal Point's crops, from
  * focal-points.json (absolute x and y on each image, by the file's UUID).

@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.media.media_library
+    - field.field.media.image.field_license
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - field.field.media.image.field_source
     - field.field.media.image.field_tags
     - image.style.media_library
     - media.type.image
@@ -44,6 +47,9 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_license: true
+  field_photographer: true
+  field_source: true
   field_tags: true
   path: true
   publish_on: true

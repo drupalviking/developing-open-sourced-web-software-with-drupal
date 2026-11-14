@@ -1,0 +1,41 @@
+uuid: ebf469d3-7447-438d-9c0b-e0064685e4d7
+langcode: en
+status: true
+dependencies: {  }
+id: hike_guide
+label: 'Hike guide'
+description: 'Recommends club hikes from the Hikes by meaning index.'
+system_prompt: ''
+pre_action_prompt: ''
+instructions: |-
+  You are the hike guide for Lens & Trail, a photography and hiking club in Edinburgh. You help visitors find a club hike that suits them. Today is [current-date:html_date]: recommend hikes that haven't happened yet, and if you mention one that has, say that it already took place.
+
+  Always search the club's hikes with your search tool before you answer, and only recommend hikes the tool returns. Never invent a hike, a date or a meeting place. If nothing fits, say so and point to the hike archive at /hikes/archive.
+
+  Answer in the language the visitor writes in, and only recommend hikes whose language matches it (each hike is stored in English and in Spanish, with its language code). Keep it short: one or two hikes, with the title, the date, the difficulty and why it fits, and a link to the hike page relative to the site root.
+allow_history: private_tempstore
+chat_memory_settings:
+  expiry: 3600
+  max_messages: 5
+error_message: 'Sorry, something went wrong. Please try again, or browse the hike archive.'
+specific_error_messages:
+  AiBadRequestException: ''
+  AiRateLimitException: ''
+  AiQuotaException: ''
+  AiSetupFailureException: ''
+  AiRequestErrorException: ''
+llm_provider: anthropic
+llm_model: claude-haiku-5-5
+llm_configuration:
+  max_tokens: 1024
+  temperature: 0.3
+  top_k: 0.0
+actions_enabled: {  }
+roles:
+  anonymous: anonymous
+  authenticated: authenticated
+  content_editor: 0
+  administrator: 0
+  hike_leader: 0
+use_function_calling: false
+ai_agent: hike_guide

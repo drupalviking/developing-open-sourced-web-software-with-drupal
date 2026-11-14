@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.9_16_large
+    - field.field.media.image.field_license
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - field.field.media.image.field_source
     - field.field.media.image.field_tags
     - media.type.image
     - responsive_image.styles.9_16_large
@@ -30,8 +33,12 @@ content:
     region: content
 hidden:
   created: true
+  field_license: true
+  field_photographer: true
+  field_source: true
   field_tags: true
   langcode: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true

@@ -1,0 +1,52 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 5b3d77a2-aa73-4247-a5e4-bdfc3e09fa39
+  default_langcode: en
+default:
+  uid:
+    -
+      value: 3
+  preferred_langcode:
+    -
+      value: en
+  preferred_admin_langcode:
+    -
+      value: en
+  name:
+    -
+      value: lucia
+  pass:
+    -
+      value: '$argon2id$v=19$m=65536,t=4,p=1$WkkxUERtNzdIUWRwbnk1UQ$kYD/2Idm/BIZ4IfxYrVDWz/0BPkDjhifNITIeIGpxcg'
+      pre_hashed: true
+      existing: null
+  mail:
+    -
+      value: lucia@example.com
+  timezone:
+    -
+      value: Europe/London
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1793972395
+  changed:
+    -
+      value: 1793984443
+  access:
+    -
+      value: 1793984447
+  login:
+    -
+      value: 1793984447
+  init:
+    -
+      value: lucia@example.com
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0

@@ -1,0 +1,133 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: eba23450-2527-4a1f-8d09-8efe2ec78e5d
+  bundle: gallery
+  default_langcode: en
+  depends:
+    91f76b29-7993-421a-84ae-0cd9f0edec42: taxonomy_term
+    96d92002-eb4e-4bbe-bbb1-bfa5cd04f9cf: node
+    d878c7e3-533c-40b8-95ee-cb1e36674e1f: media
+default:
+  nid:
+    -
+      value: 18
+  revision_timestamp:
+    -
+      value: 1793958875
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Edinburgh, 24 October'
+  created:
+    -
+      value: 1793958875
+  changed:
+    -
+      value: 1793958875
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /galleries/edinburgh-24-october
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_area:
+    -
+      entity: 91f76b29-7993-421a-84ae-0cd9f0edec42
+  field_body:
+    -
+      value: "<p>Sunrise from Arthur's Seat, and the Old Town from Calton Hill on the way home.</p>"
+      format: content_format
+  field_hike:
+    -
+      entity: 96d92002-eb4e-4bbe-bbb1-bfa5cd04f9cf
+  field_photos:
+    -
+      entity: d878c7e3-533c-40b8-95ee-cb1e36674e1f
+translations:
+  es:
+    nid:
+      -
+        value: 18
+    revision_timestamp:
+      -
+        value: 1793958875
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Edimburgo, 24 de octubre'
+    created:
+      -
+        value: 1793958875
+    changed:
+      -
+        value: 1793958875
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /albumes/edimburgo-24-de-octubre
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_area:
+      -
+        entity: 91f76b29-7993-421a-84ae-0cd9f0edec42
+    field_body:
+      -
+        value: "<p>El amanecer desde Arthur's Seat y, de vuelta a casa, el casco antiguo desde Calton Hill.</p>"
+        format: content_format
+    field_hike:
+      -
+        entity: 96d92002-eb4e-4bbe-bbb1-bfa5cd04f9cf
+    field_photos:
+      -
+        entity: d878c7e3-533c-40b8-95ee-cb1e36674e1f

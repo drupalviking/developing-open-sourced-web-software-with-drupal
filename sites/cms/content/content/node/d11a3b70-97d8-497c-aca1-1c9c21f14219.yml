@@ -1,0 +1,117 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: d11a3b70-97d8-497c-aca1-1c9c21f14219
+  bundle: page
+  default_langcode: en
+default:
+  nid:
+    -
+      value: 24
+  revision_timestamp:
+    -
+      value: 1793984387
+  revision_uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'About the club'
+  created:
+    -
+      value: 1793868066
+  changed:
+    -
+      value: 1793868537
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: /about
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  field_content:
+    -
+      value: "<p>Lens &amp; Trail is a small club for people in and around Edinburgh who like taking photos and going for walks, usually at the same time.</p><p>We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in town to look at each other's photos over a cup of tea. We also go out at night now and then, to photograph the city lights from Calton Hill.</p><p>Many of our members came to Scotland from Spain and Latin America, so you'll hear as much Spanish as English on the trail. Everyone is welcome, whatever camera you have. A phone is fine!</p><p>The club has around forty members, and new ones join every month.</p>"
+      format: content_format
+  field_description:
+    -
+      value: 'Lens & Trail is a small club for people in and around Edinburgh who like taking photos and going for walks, usually at the same time.'
+translations:
+  es:
+    nid:
+      -
+        value: 24
+    revision_timestamp:
+      -
+        value: 1793984387
+    revision_uid:
+      -
+        target_id: 1
+    status:
+      -
+        value: true
+    uid:
+      -
+        target_id: 1
+    title:
+      -
+        value: 'Sobre el club'
+    created:
+      -
+        value: 1793984385
+    changed:
+      -
+        value: 1793984387
+    promote:
+      -
+        value: false
+    sticky:
+      -
+        value: false
+    revision_translation_affected:
+      -
+        value: true
+    moderation_state:
+      -
+        value: published
+    path:
+      -
+        alias: /sobre-el-club
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    field_content:
+      -
+        value: '<p>Lens &amp; Trail es un pequeño club para quienes viven en Edimburgo y sus alrededores y disfrutan de la fotografía y las caminatas, casi siempre a la vez.</p><p>Nos reunimos dos veces al mes: una para hacer una excursión por las Pentland Hills, por la costa o más lejos, en las Highlands, y otra en un café del centro para ver las fotos de todos con una taza de té. De vez en cuando también salimos de noche a fotografiar las luces de la ciudad desde Calton Hill.</p><p>Muchos de nuestros miembros llegaron a Escocia desde España y América Latina, así que en el camino se oye tanto español como inglés. Todo el mundo es bienvenido, tenga la cámara que tenga. ¡Un teléfono también sirve!</p><p>El club tiene unos cuarenta miembros, y cada mes se suman nuevos.</p>'
+        format: content_format
+    field_description:
+      -
+        value: 'Lens & Trail es un pequeño club para quienes viven en Edimburgo y sus alrededores y disfrutan de la fotografía y las caminatas, casi siempre a la vez.'

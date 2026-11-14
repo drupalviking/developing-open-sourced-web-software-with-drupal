@@ -1,0 +1,43 @@
+uuid: cb7be6d4-ec97-4259-8a74-d43e209e54c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.club_content
+    - views.view.search
+  module:
+    - views
+id: search
+label: Search
+index_id: club_content
+suggester_settings:
+  live_results:
+    fields: {}
+    highlight:
+      enabled: false
+      field: ''
+    suggest_keys: false
+    view_modes:
+      'entity:node':
+        gallery: ''
+        hike: ''
+        news: ''
+        page: ''
+  server:
+    fields: {}
+suggester_weights:
+  live_results: 0
+  server: 0
+suggester_limits: {}
+search_settings:
+  'views:search':
+    displays:
+      default: true
+      selected: {}
+options:
+  limit: 10
+  min_length: 3
+  show_count: true
+  delay: null
+  submit_button_selector: ':submit'
+  autosubmit: true

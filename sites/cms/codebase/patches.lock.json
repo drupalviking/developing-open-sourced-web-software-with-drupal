@@ -1,0 +1,39 @@
+{
+    "_hash": "1779ccd32c5e6c90c33fd08173e6b6ab802e9cf16ceeb2a69fe2c76731da4bfa",
+    "patches": {
+        "drupal/facets": [
+            {
+                "package": "drupal/facets",
+                "description": "Facets Exposed Filters: no fatal error when a Search API view has no results, e.g. a disabled index (https://www.drupal.org/project/facets/issues/3540239; MR !317 rerolled for 3.0.7)",
+                "url": "patches/facets-3540239-null-results.patch",
+                "sha256": "ce9e8e721e058a571185b2349bca0c1879918d7e08d71079f0791f01c62f1b23",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/project_browser": [
+            {
+                "package": "drupal/project_browser",
+                "description": "#3622921 Implement getModulesToInstall in TestModuleInstaller",
+                "url": "https://git.drupalcode.org/issue/project_browser-3622921/-/commit/9afcce0676ca61ca1514a14b6d882cbd081c0045.diff",
+                "sha256": "56fb6668c88cf2d6dc81d91a2cc85d0dae112d5d83053230fe18402674cfdf8a",
+                "depth": 1,
+                "extra": {
+                    "provenance": "dependency:drupal/project_browser"
+                }
+            },
+            {
+                "package": "drupal/project_browser",
+                "description": "#3631657 Implement getModulesToUninstall in TestModuleInstaller",
+                "url": "https://git.drupalcode.org/issue/project_browser-3631657/-/commit/1c06d55c8c1ec8983d2ddd74542dee125102a378.diff",
+                "sha256": "7873a261e4fe23fdc0cf9ba18fef2a9fe178916ddc449698445fa23994fe8730",
+                "depth": 1,
+                "extra": {
+                    "provenance": "dependency:drupal/project_browser"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+uuid: 483cf7fd-525d-4f98-ac7d-f5006a76d91e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - user
+_core:
+  default_config_hash: LAjm682EC3OHfSLuJXMthAA14-jY4QoadQVgYjYWKGs
+id: node.field_hike_leader
+field_name: field_hike_leader
+entity_type: node
+type: entity_reference
+settings:
+  target_type: user
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

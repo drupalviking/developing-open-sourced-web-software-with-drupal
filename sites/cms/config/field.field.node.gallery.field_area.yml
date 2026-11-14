@@ -1,0 +1,31 @@
+uuid: 2e3ff54b-ce66-43f8-90f9-b9852183f6eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area
+    - node.type.gallery
+    - taxonomy.vocabulary.areas
+_core:
+  default_config_hash: '-KA0tdI_QIYeVWYyb8W2YK7BDZbeqq85fS1_twU8zFE'
+id: node.gallery.field_area
+field_name: field_area
+entity_type: node
+bundle: gallery
+label: Area
+description: 'Where the photos were taken.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      areas: areas
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

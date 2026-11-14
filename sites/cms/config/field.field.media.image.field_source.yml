@@ -1,0 +1,25 @@
+uuid: 59a6102e-4b81-450d-a047-b11ee6a7085b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_source
+    - media.type.image
+  module:
+    - link
+_core:
+  default_config_hash: MyVj9KE-O9q0age0URDFVKCSYqNua5zUYg7JIFS52rI
+id: media.image.field_source
+field_name: field_source
+entity_type: media
+bundle: image
+label: Source
+description: 'Where the photo comes from, such as its page on Wikimedia Commons.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 16
+field_type: link

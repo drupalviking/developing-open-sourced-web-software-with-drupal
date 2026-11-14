@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: media
+  uuid: 340df1ea-778c-41c6-9b4f-d4175689833b
+  bundle: image
+  default_langcode: en
+  depends:
+    9cc20c0a-0a76-4e4d-a285-66eb39825e18: file
+default:
+  mid:
+    -
+      value: 9
+  revision_created:
+    -
+      value: 1793888247
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  name:
+    -
+      value: 'The view from Carnethy Hill'
+  created:
+    -
+      value: 1793888247
+  changed:
+    -
+      value: 1793888247
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: null
+      langcode: en
+      pathauto: 0
+  field_license:
+    -
+      value: cc_by_sa_2_0
+  field_media_image:
+    -
+      alt: 'Rolling green hills under a cloudy sky, seen from the stony top of Carnethy Hill'
+      title: ''
+      width: 3840
+      height: 2880
+      entity: 9cc20c0a-0a76-4e4d-a285-66eb39825e18
+  field_photographer:
+    -
+      value: "Alan O'Dowd"
+  field_source:
+    -
+      uri: 'https://commons.wikimedia.org/wiki/File:Carnethy_Hill_views_-_geograph.org.uk_-_4185120.jpg'
+      title: 'Wikimedia Commons'
+      options: {  }

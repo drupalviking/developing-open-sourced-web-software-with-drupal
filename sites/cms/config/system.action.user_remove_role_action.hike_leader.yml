@@ -1,0 +1,14 @@
+uuid: a2821271-c980-457b-8eb6-0821f9ddf968
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.hike_leader
+  module:
+    - user
+id: user_remove_role_action.hike_leader
+label: 'Remove the Hike leader role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: hike_leader

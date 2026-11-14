@@ -1,0 +1,13 @@
+uuid: 32c1109e-3d10-44d5-ba0c-a3c6ce122360
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: pFuebUUPgUdoJRk094rH5M5uB5ZsrctDEwHipajkHNk
+id: media.album
+label: Album
+description: null
+targetEntityType: media
+cache: true

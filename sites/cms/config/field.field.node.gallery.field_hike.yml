@@ -1,0 +1,31 @@
+uuid: 7f0a523f-f49c-45a6-9eb2-692b84807c52
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hike
+    - node.type.gallery
+    - node.type.hike
+_core:
+  default_config_hash: gMpRqt3U2o5HYFKtubkGOQzp6olozY3Tmi3NvQm8qcw
+id: node.gallery.field_hike
+field_name: field_hike
+entity_type: node
+bundle: gallery
+label: Hike
+description: "The hike the photos are from, if they're from one."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      hike: hike
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

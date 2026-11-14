@@ -1,0 +1,29 @@
+uuid: 6821589f-d741-499a-b364-9827d69a26a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.search
+  module:
+    - system
+    - views
+  theme:
+    - olivero
+id: olivero_search_box
+theme: olivero
+region: highlighted
+weight: -10
+provider: null
+plugin: 'views_block:search-block_1'
+settings:
+  id: 'views_block:search-block_1'
+  label: 'Search the club'
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: /search

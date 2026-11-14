@@ -1,5 +1,5 @@
 {
-    "_hash": "75336a44d9248aa330af9f1551f88c9b509a62aed3dc3c0b4cc55ffba8890af6",
+    "_hash": "6bc4810596167406dcdde82124b49c7abe1f5467edbd55bc36af7831a46d6606",
     "patches": {
         "drupal/core": [
             {
@@ -8,6 +8,40 @@
                 "url": "patches/drupal-3590967-content-translation-access-null.patch",
                 "sha256": "daf6fbc4a76787165f71eb0526f264a7dbd1bc445985319f6a1cfd22c1e0d3ed",
                 "depth": 2,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/search_api_autocomplete": [
+            {
+                "package": "drupal/search_api_autocomplete",
+                "description": "Add Drupal 12 support https://git.drupalcode.org/project/search_api_autocomplete/-/work_items/3634845 (MR !64)",
+                "url": "patches/search_api_autocomplete-3634845-drupal-12.patch",
+                "sha256": "5c874d1a6560672142ce11fe60c3e2c47b545079f233236a82014a46a2efc318",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/search_api": [
+            {
+                "package": "drupal/search_api",
+                "description": "Drupal 12: theme hooks use 'initial preprocess' instead of template_preprocess_HOOK() (committed to 8.x-1.x as ece4453f, not in 1.43) https://www.drupal.org/project/search_api/issues/3552883",
+                "url": "patches/search_api-3552883-initial-preprocess.patch",
+                "sha256": "55e59ce57ae07a278c557a10d8fe563fb34bf9b610d8c0130914d9eb4db9497a",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            },
+            {
+                "package": "drupal/search_api",
+                "description": "Drupal 12: ^12 for search_api_db and search_api_db_defaults, the .info.yml part of MR !371 https://www.drupal.org/project/search_api/issues/3630149",
+                "url": "patches/search_api-3630149-db-info.patch",
+                "sha256": "c5f96ca7daa052476eb65ff6eeb8da8e91dbdbeeccf87861060894779dac4a3e",
+                "depth": 1,
                 "extra": {
                     "provenance": "root"
                 }

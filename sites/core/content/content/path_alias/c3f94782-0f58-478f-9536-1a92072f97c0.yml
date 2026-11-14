@@ -1,0 +1,15 @@
+_meta:
+  version: '1.0'
+  entity_type: path_alias
+  uuid: c3f94782-0f58-478f-9536-1a92072f97c0
+  default_langcode: es
+default:
+  path:
+    -
+      value: /search
+  alias:
+    -
+      value: /buscar
+  status:
+    -
+      value: true

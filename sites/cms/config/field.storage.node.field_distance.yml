@@ -1,0 +1,22 @@
+uuid: 4445716e-74e2-43c8-b801-02b638477acf
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: ynjRdgaMWS6zkSZVO8ltccs_k0JDRvMMRF5m70efQfU
+id: node.field_distance
+field_name: field_distance
+entity_type: node
+type: decimal
+settings:
+  precision: 10
+  scale: 1
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

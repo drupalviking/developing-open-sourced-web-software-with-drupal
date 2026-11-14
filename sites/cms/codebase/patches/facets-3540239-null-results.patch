@@ -1,0 +1,12 @@
+diff --git a/modules/facets_exposed_filters/src/Hook/FacetsExposedFiltersHooks.php b/modules/facets_exposed_filters/src/Hook/FacetsExposedFiltersHooks.php
+--- a/modules/facets_exposed_filters/src/Hook/FacetsExposedFiltersHooks.php
++++ b/modules/facets_exposed_filters/src/Hook/FacetsExposedFiltersHooks.php
+@@ -118,7 +118,7 @@
+     }
+ 
+     $searchApiResults = $query->getSearchApiResults();
+-    $searchApiFacets = $searchApiResults->getExtraData('search_api_facets');
++    $searchApiFacets = $searchApiResults?->getExtraData('search_api_facets');
+     FacetsExposedFiltersHelper::markViewPostExecuted($view->id(), $view->current_display);
+ 
+     if ($searchApiFacets) {

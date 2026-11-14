@@ -1,0 +1,35 @@
+uuid: 0ffcb803-e2ae-47f1-a6b4-b7514d6c00b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.hike
+  module:
+    - language
+    - node
+_core:
+  default_config_hash: GmhOQKgCTToIsfkKV_96MzLIIjmf3XuQxBOKD_2a6zQ
+id: excursiones
+label: Excursiones
+type: 'canonical_entities:node'
+pattern: '/excursiones/[node:title]'
+selection_criteria:
+  7ae3b929-e2da-4430-99fb-adccd4ad381d:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      hike: hike
+  bce1e809-edf7-442d-844c-b4e5ff5651d6:
+    id: language
+    negate: false
+    context_mapping:
+      language: 'node:langcode:language'
+    langcodes:
+      es: es
+selection_logic: and
+weight: -10
+relationships:
+  'node:langcode:language':
+    label: Language

@@ -60,3 +60,9 @@ default:
   unpublish_on:
     -
       value: 1780524938
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false

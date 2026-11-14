@@ -1,0 +1,93 @@
+_meta:
+  version: '1.0'
+  entity_type: taxonomy_term
+  uuid: f7181f72-284a-44c9-8383-c128184e4c58
+  bundle: areas
+  default_langcode: en
+  depends:
+    3c6e3199-564c-4ad4-af8d-e8b569e5f4c8: taxonomy_term
+default:
+  tid:
+    -
+      value: 35
+  revision_created:
+    -
+      value: 1793891706
+  status:
+    -
+      value: true
+  name:
+    -
+      value: 'North Berwick Law'
+  weight:
+    -
+      value: 0
+  parent:
+    -
+      entity: 3c6e3199-564c-4ad4-af8d-e8b569e5f4c8
+  changed:
+    -
+      value: 1793891706
+  revision_translation_affected:
+    -
+      value: true
+  path:
+    -
+      alias: /areas/east-lothian/north-berwick-law
+      langcode: en
+      pathauto: 0
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_created:
+    -
+      value: 1794645083
+translations:
+  es:
+    tid:
+      -
+        value: 35
+    revision_created:
+      -
+        value: 1793891706
+    status:
+      -
+        value: true
+    name:
+      -
+        value: 'North Berwick Law'
+    weight:
+      -
+        value: 0
+    parent:
+      -
+        entity: 3c6e3199-564c-4ad4-af8d-e8b569e5f4c8
+    changed:
+      -
+        value: 1793891706
+    revision_translation_affected:
+      -
+        value: true
+    path:
+      -
+        alias: /zonas/east-lothian/north-berwick-law
+        langcode: es
+        pathauto: 0
+    content_translation_source:
+      -
+        value: en
+    content_translation_outdated:
+      -
+        value: false
+    content_translation_uid:
+      -
+        target_id: 0
+    content_translation_created:
+      -
+        value: 1793984391

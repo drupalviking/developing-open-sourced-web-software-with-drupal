@@ -33,3 +33,7 @@ recipes:
     package: drupal/drupal_cms_ai
     version: 2.2.8
     label: 'AI Assistant'
+  drupal_cms_search:
+    package: drupal/drupal_cms_search
+    version: 2.2.9
+    label: Search

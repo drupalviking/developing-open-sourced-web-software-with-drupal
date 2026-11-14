@@ -1,0 +1,26 @@
+uuid: ef2478ae-8077-4d97-b911-5f42206f4a59
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.albums
+  module:
+    - views
+active_version: 2d88d5c0f703201c
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:albums-block_1'
+        label: 'Albums from this hike'
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: 'Albums from this hike'
+id: block.views_block.albums-block_1
+provider: views
+source: block
+source_local_id: 'views_block:albums-block_1'

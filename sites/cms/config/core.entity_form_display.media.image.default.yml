@@ -3,7 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.image.field_license
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_photographer
+    - field.field.media.image.field_source
     - field.field.media.image.field_tags
     - image.style.media_library
     - media.type.image
@@ -75,6 +78,9 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_license: true
+  field_photographer: true
+  field_source: true
   path: true
   publish_on: true
   publish_state: true

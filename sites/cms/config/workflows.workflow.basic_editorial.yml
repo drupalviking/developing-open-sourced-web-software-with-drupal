@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - node.type.gallery
+    - node.type.hike
     - node.type.page
   module:
     - content_moderation
@@ -53,5 +55,7 @@ type_settings:
       weight: 1
   entity_types:
     node:
+      - gallery
+      - hike
       - page
   default_moderation_state: draft

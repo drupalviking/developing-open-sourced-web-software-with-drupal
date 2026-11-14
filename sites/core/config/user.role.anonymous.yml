@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - filter.format.restricted_html
+    - search_api_autocomplete.search.search
   module:
     - comment
     - filter
     - media
+    - search_api_autocomplete
     - system
 _core:
   default_config_hash: Tus1ZTNXKIOnrennR1hnTbc7wUPBXHTUm5UdCpEhJSk
@@ -18,5 +20,6 @@ is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
+  - 'use search_api_autocomplete for search'
   - 'use text format restricted_html'
   - 'view media'

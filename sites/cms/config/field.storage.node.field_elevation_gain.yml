@@ -1,0 +1,22 @@
+uuid: a4c7d03b-e87d-4e12-9611-434646903d7c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: xo-VjqxnjYmJUElXpmPzvdiEd7HiHOc2ezBUOl4PMBE
+id: node.field_elevation_gain
+field_name: field_elevation_gain
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

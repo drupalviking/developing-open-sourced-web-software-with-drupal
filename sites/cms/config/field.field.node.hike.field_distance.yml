@@ -1,0 +1,25 @@
+uuid: a74e6cab-60ad-49a3-b675-7ee42bbd8370
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_distance
+    - node.type.hike
+_core:
+  default_config_hash: qOFr28_BVlmYrKE_CxJzIYuq3vv-LrrdyOLU7oNytj0
+id: node.hike.field_distance
+field_name: field_distance
+entity_type: node
+bundle: hike
+label: Distance
+description: 'The length of the walk, in kilometers.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0.0
+  max: null
+  prefix: ''
+  suffix: ' km'
+field_type: decimal

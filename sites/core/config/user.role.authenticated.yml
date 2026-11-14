@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - filter.format.basic_html
+    - search_api_autocomplete.search.search
   module:
     - comment
     - file
     - filter
     - media
+    - search_api_autocomplete
     - system
 _core:
   default_config_hash: wkW7P5A53YhGmsgamrmTbfwpZrqdnPYiJdoAZQtdmJg
@@ -21,5 +23,6 @@ permissions:
   - 'access content'
   - 'delete own files'
   - 'post comments'
+  - 'use search_api_autocomplete for search'
   - 'use text format basic_html'
   - 'view media'

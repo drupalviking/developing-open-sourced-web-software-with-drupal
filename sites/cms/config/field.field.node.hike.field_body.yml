@@ -1,0 +1,24 @@
+uuid: dcf9f1eb-0b4f-431b-afd9-f82b2699bd76
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body
+    - node.type.hike
+  module:
+    - text
+_core:
+  default_config_hash: imLDq_8zj4JwsnWDo5vRCpkrtelekv-9o86JB-ciS-U
+id: node.hike.field_body
+field_name: field_body
+entity_type: node
+bundle: hike
+label: Description
+description: 'What the hike is like: the route, the views, and what to bring.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

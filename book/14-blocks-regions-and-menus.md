@@ -373,23 +373,68 @@ Drupal builds the breadcrumb from the page's *address*, not from the menu. On `/
 
 That's why our URL aliases matter: a hike at `/hikes/turnhouse-hill` gets the breadcrumb **Home > Upcoming hikes** for free (look at Figure 14.5 again), and *About the club*, at `/about`, only **Home**. Good addresses give good breadcrumbs. (The breadcrumb leaves out the current page: it's the title right below it.)
 
-Some sites want the breadcrumb to follow the menu instead: *Hike archive* is under *Hikes* in the main menu, so its breadcrumb should say so, whatever its address. Drupal core can't do that, but contributed modules can, such as [Menu Breadcrumb](https://www.drupal.org/project/menu_breadcrumb). Another popular one, [Easy Breadcrumb](https://www.drupal.org/project/easy_breadcrumb), keeps building from the address, but gives you settings for it: the current page as the last link, better titles, paths to leave out (Drupal CMS installs it; see the box below). As we write this, the newest releases of both support Drupal 11 but not yet Drupal 12. Chapter 11 showed how to find a module, and how to check which versions of Drupal it supports.
-
-> **On Drupal CMS:** Drupal CMS uses the same blocks, regions and menus underneath, but you'll rarely visit Block layout. Its theme, Mercury, has only three regions (Header, Content and Footer), and Block layout has no blocks placed in any of them. Instead, Canvas draws the header and footer of every page with a **page template**: open Canvas (`/canvas`), select **Templates** in the bar on the left, then **Mercury theme** under **Page templates**, and **Layers**.
->
-> ![The Mercury theme page template in Canvas, with the Layers panel open: Content with Page content, Header with a Navbar holding Site branding, Main navigation and CTAs, and Footer with Branding & Social, Call to action, Utility links holding the Footer menu, and Copyright text; the preview on the right shows the Mercury logo, a Home link, the page content area and the footer slots](images/14-cms-page-template.png)
-> *Figure 14.23: Drupal CMS's header and footer, as a Canvas page template*
->
-> The header is a **Navbar** component, with the **Site branding** and **Main navigation** blocks in its slots, and the footer has the **Footer** menu block under **Utility links**. They're the same blocks as on Drupal core, placed in components instead of regions; you can add other blocks, such as a view's, from the **Library**. The menus themselves are under **Structure** > **Menus**, exactly as in this chapter.
->
-> One difference: the Starter template doesn't install the **Block Content** module, so there's no **Block types** page and no content blocks. For a box of text in the footer, you'd add a Canvas component to the page template, or install Block Content from **Extend**.
->
-> Breadcrumbs, too, come from a contributed module on Drupal CMS: **Easy Breadcrumb**, under **Configuration** > **User interface** > **Easy Breadcrumb** (`/admin/config/user-interface/easy-breadcrumb`). It still builds the trail from the address, as core does, but adds the current page at the end, can show addresses that aren't pages as plain text, and lets you leave out paths or rename them. It can also add the breadcrumb to the page as *structured data*, a description search engines read (more in Chapter 17).
->
-> ![The Easy Breadcrumb settings page on Drupal CMS: General settings with toggles for Applies to administration pages (off), Include invalid paths alias as plain-text segments (off), Include the current page as a segment in the breadcrumb (on), Remove repeated identical segments (on), Include the front page as a segment in the breadcrumb (on), an Alternative title field name field_breadcrumb_title, the front page title Home, and Use the real page title when available (on)](images/14-cms-easy-breadcrumb.png)
-> *Figure 14.24: Easy Breadcrumb's settings on Drupal CMS*
+Some sites want the breadcrumb to follow the menu instead: *Hike archive* is under *Hikes* in the main menu, so its breadcrumb should say so, whatever its address. Drupal core can't do that, but contributed modules can, such as [Menu Breadcrumb](https://www.drupal.org/project/menu_breadcrumb). Another popular one, [Easy Breadcrumb](https://www.drupal.org/project/easy_breadcrumb), keeps building from the address, but gives you settings for it: the current page as the last link, better titles, paths to leave out (Drupal CMS installs it; see "On Drupal CMS" at the end of this chapter). As we write this, the newest releases of both support Drupal 11 but not yet Drupal 12. Chapter 11 showed how to find a module, and how to check which versions of Drupal it supports.
 
 > **Coming from WordPress?** The closest thing to Drupal's blocks and regions in a classic WordPress theme are *widgets* in *widget areas*: the theme defines the areas (a sidebar, a footer), and you add widgets under **Appearance** > **Widgets** or in the Customizer. When you switch themes, widgets whose area the new theme doesn't have go to **Inactive Widgets**; Drupal puts them in the new theme's default region instead. Two things are different in Drupal: every block has visibility settings of its own (in WordPress, that takes a plugin), and you can place the same block several times. In a block theme, headers and footers are *template parts* that you edit in the Site Editor, which is much closer to Drupal CMS's page template in Canvas. Menus are close too: a classic theme has **Appearance** > **Menus** and *menu locations*, where Drupal has menus and menu blocks; a block theme has the **Navigation** block. Nesting works the same way in both, by dragging a link to the right.
+
+## On Drupal CMS
+
+Drupal CMS uses the same blocks, regions and menus underneath, but you'll rarely visit Block layout. Its theme, Mercury, has only three regions (Header, Content and Footer), and Block layout has no blocks placed in any of them. Instead, Canvas draws the header and footer of every page with a **page template**. We met it in Chapter 13, when we added **Albums from this hike** to it; now let's look at it properly. Open Canvas (`/canvas`), select **Templates** in the bar on the left, then **Mercury theme** under **Page templates**, and **Layers**.
+
+![The Mercury theme page template in Canvas, with the Layers panel open: Content with Page content and Albums from this hike, Header with a Navbar holding Site branding, Main navigation and an empty CTAs slot, and Footer with the empty slots Branding & Social and Call to action, Utility links holding the Footer menu, and an empty Copyright text; the preview on the right shows the Mercury logo, the main menu, the page content area and the footer slots](images/14-cms-page-template.png)
+*Figure 14.23: Drupal CMS's header and footer, as a Canvas page template*
+
+The header is a **Navbar** component, with the **Site branding** and **Main navigation** blocks in its slots, and the footer is a **Footer** component, with the **Footer** menu block under **Utility links**. They're the same blocks as on Drupal core, placed in a component's slots instead of a theme's regions. A slot is to a component what a region is to a theme: a named place where other things go. Mercury's Footer has four: **Branding & Social** and **Call to action** side by side, and **Utility links** and **Copyright text** in a row below them.
+
+What Drupal CMS doesn't have is content blocks. The Starter template leaves out the **Block Content** module, so there's no **Block types** page and no **Content** > **Blocks**. Canvas's components take their place: text you'd put in a content block, you put in a component in the page template. (Don't try to install Block Content from **Extend** on this site: as we write this, installing it with Canvas fails halfway, and leaves the module installed without its database tables.)
+
+### The menus
+
+The menus are under **Structure** > **Menus**, and they work exactly as in "Menus" above. Drupal CMS's main menu has *Home*, *About* and *Join us*, and *Hikes* and *Albums* from their views (Chapter 12). Sort it as on core: **Home**, **Hikes**, **Albums**, **About**, **Join us**. Then add **Hike archive** (`/hikes/archive`) under **Hikes**, as in "Nested links".
+
+![The Edit menu Main navigation page on Drupal CMS, in Gin: Home, Hikes, Hike archive indented under Hikes, Albums, About and Join us, each with a drag handle, an Enabled checkbox and an Edit button](images/14-cms-main-menu.png)
+*Figure 14.24: The main menu on Drupal CMS, with the archive under Hikes*
+
+Now look at a page as a visitor: *Hikes* has no dropdown, and **Show as expanded** doesn't change that. Mercury's menu template shows the first level of the main menu, and nothing below it. The menu still stores *Hike archive* under *Hikes*, and a theme that shows dropdowns would show it: the menu stores the structure, the theme decides how it looks. Changing what Mercury does with it takes a theme of your own, the subject of *Theming Drupal*.
+
+The **Footer** menu isn't empty on Drupal CMS. It has **Privacy policy**, a link to a Utility page that Drupal CMS made when it was installed, and **My privacy settings**, which opens the settings of Klaro, Drupal CMS's cookie consent banner (we meet it in Chapter 19). That one is disabled, and Drupal CMS turns it on by itself when the site starts using something visitors must agree to first, such as embedded videos.
+
+> **Try it:** Open **Content**, find *Privacy policy*, and edit it. Drupal CMS left it unpublished, with a note that your site needs a privacy statement. Replace the note with the club's text from "A footer menu", and publish it. Then add **Upcoming hikes (RSS)** (`/hikes/feed`) to the Footer menu, as on core.
+
+![The Edit menu Footer page on Drupal CMS: My privacy settings (disabled, unchecked), Privacy policy and Upcoming hikes (RSS), both enabled](images/14-cms-footer-menu.png)
+*Figure 14.25: The Footer menu on Drupal CMS*
+
+There's no block to place this time: the Footer menu block is in the page template already, under **Utility links**.
+
+### The club's footer
+
+On core, the footer has the club's details, from the *Club info* block, and the sidebar has an invitation to join. On Drupal CMS, both go in the page template's footer, as components.
+
+1. In Canvas, open the **Mercury theme** page template, and open the **Library** (the **+** in the bar on the left).
+2. Drag **Text** (under **Base**) from the Library onto the empty **Branding & Social** slot in the preview. A slot shows as a box with a dashed border, and its name in it. Write the club's meeting times, as in "Writing the block", then a line with the email address, as a link (`mailto:hello@lens-and-trail.ddev.site`), and `Follow us on Flickr`, with a link to `https://www.flickr.com/groups/lens-and-trail/`.
+3. Drag **Heading** onto the **Call to action** slot. **Heading**: `Join the club`, **Heading level**: **3**.
+4. With the heading selected, right-click **Text** in the Library, and select **Insert**: it goes after the heading. Write `New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students.`
+5. Insert a **Button** after the text, the same way. **Label**: `How to join`, **Link**: `/join`.
+
+![The Mercury theme page template in Canvas, scrolled down to the footer: the club's meeting times, email address and Flickr link on the left, and on the right the heading Join the club, the membership text and a How to join button, selected; the Layers panel shows Text under Branding & Social, and Heading, Text and Button under Call to action; the button's settings on the right, with Label How to join and Link /join](images/14-cms-footer-template.png)
+*Figure 14.26: The club's footer, built in the page template*
+
+6. Select **Review 1 change**, then **Select All** and **Publish**.
+
+![The footer of the About page on Drupal CMS as a visitor sees it: the meeting times, the email address and the Flickr link on the left, Join the club with the membership text and a How to join button on the right, and Privacy policy and Upcoming hikes (RSS) below](images/14-cms-footer.png)
+*Figure 14.27: The club's footer, on every page*
+
+The footer is on every page now, the same as with a block in a region. There are two differences from the core site, and they're worth knowing before you choose how to build a site.
+
+- **Components in a page template have no visibility settings.** On core, *Join the club* is for anonymous visitors only, and hidden on *How to join*. In the page template, everyone sees it, on every page, members and *How to join* included. That's why we put it in the footer instead of at the top of the page.
+- **The text lives in the template.** On core, an editor changes the meeting times in **Content** > **Blocks**, with a form that has a field for each part, and never sees Block layout. On Drupal CMS, they change them in Canvas, in the page template that every page uses, and a slip there shows on every page. For a small club, that's fine; on a bigger site, it's a reason to think about who edits what.
+
+### Breadcrumbs
+
+Breadcrumbs, too, come from a contributed module on Drupal CMS: **Easy Breadcrumb**, under **Configuration** > **User interface** > **Easy Breadcrumb** (`/admin/config/user-interface/easy-breadcrumb`). It still builds the trail from the address, as core does, but adds the current page at the end, can show addresses that aren't pages as plain text, and lets you leave out paths or rename them. It can also add the breadcrumb to the page as *structured data*, a description search engines read (more in Chapter 17).
+
+![The Easy Breadcrumb settings page on Drupal CMS: General settings with toggles for Applies to administration pages (off), Include invalid paths alias as plain-text segments (off), Include the current page as a segment in the breadcrumb (on), Remove repeated identical segments (on), Include the front page as a segment in the breadcrumb (on), an Alternative title field name field_breadcrumb_title, the front page title Home, and Use the real page title when available (on)](images/14-cms-easy-breadcrumb.png)
+*Figure 14.28: Easy Breadcrumb's settings on Drupal CMS*
 
 ## Summary
 
@@ -403,7 +448,7 @@ You can now:
 - create a block type with fields, and a content block of that type, and tell reusable blocks from Layout Builder's inline blocks;
 - sort a menu, nest a link under another, show its children as a dropdown, and add links to the footer menu and place its block;
 - explain how Drupal builds the breadcrumb from the address;
-- find the header and footer of Drupal CMS in Canvas's page template.
+- find the header and footer of Drupal CMS in Canvas's page template, and build the club's footer in it with components.
 
 ## Exercises
 
@@ -413,6 +458,7 @@ You can now:
 4. Move **Powered by Drupal** to **Content Above**, only on the front page. Then put it back where it was. Which do you find quicker: the **Region** list on Block layout, or the block's **Configure** form?
 5. *(challenge)* Add a menu of your own, `For members`, with the links `Hike archive` and `Albums`, and `My account` (`/user`). Place its block in the sidebar, for logged-in members only. Why does the menu need its own block, and why does it make sense for it to have its own visibility?
 6. *(challenge)* On the **Main navigation** block, set **Number of levels to display** to `1`. What happens to the dropdown under *Hikes*? Then set it back, and try **Initial visibility level** `2` on a second Main navigation block in the sidebar: on which pages does it show anything?
+7. On Drupal CMS, add a **Button** to the Navbar's empty **CTAs** slot in the page template, with the label `Join us` and the link `/join`. Who sees it? Compare it with *Join the club* on the core site: what would you need to show it to visitors only?
 
 ## Want to know more?
 

@@ -308,14 +308,22 @@ Each translation has its own moderation state, so the English hike can be publis
 
 ## On Drupal CMS
 
-Drupal CMS doesn't install the multilingual modules, so everything in this chapter so far works the same there: install the four modules, add Spanish, choose what to translate, and translate. The Basic pages, news and events of Drupal CMS are content types, translated as above.
+Drupal CMS doesn't install the multilingual modules, so almost everything in this chapter works the same there: install the four modules, add Spanish, choose what to translate, make the Spanish patterns, translate the content and the configuration, fix the views, and give Lucía her role. The Basic pages, hikes, news and albums are content types, translated as above; their text is in **Content**, not **Body**, and Basic pages have **Description** and the two SEO fields from Chapter 17 to translate too. Lucía's role is the same, with Basic editorial's **Use Publish transition** (Chapter 15).
 
-The Canvas pages are different. Each page is a *Canvas page* (Chapter 8), with its text in the inputs of its components: the heading's text, the text block's text, the card's title. Content Translation translates fields, and all the inputs of a page's components are in one field, **Component input values**. Canvas Translate, a contributed module, comes with Drupal CMS, and translates them one by one, in Canvas. It's a beta, so expect it to change; it's also marked as not covered by drupal.org's security advisory policy (Chapter 11) until its first stable release.
+Four things are different, and they all come from Canvas and Mercury: the Canvas pages, the language switcher, the front page, and the header and footer, which are in the page template (Chapter 14), not in blocks. There's no Block layout to translate on Drupal CMS, and no inline blocks either. Let's go through them in the order you'll meet them.
+
+### Canvas pages, translatable
+
+Each Canvas page (Chapter 8) has its text in the inputs of its components: the heading's text, the text block's text, the card's title. Content Translation translates fields, and all the inputs of a page's components are in one field, **Component input values**, so on its own it could only translate a whole page at once. Canvas Translate, a contributed module that comes with Drupal CMS, translates the inputs one by one, in Canvas, with the English next to each box. It's a beta, so expect it to change; it's also marked as not covered by drupal.org's security advisory policy (Chapter 11) until its first stable release.
 
 Install **Canvas Translate** on **Extend**, with the four modules (it needs Language and Content Translation). Then, on **Content language and translation**, check **Page** under **Custom language settings**, and check its fields: Canvas pages are created with fields that can't be translated, and Canvas Translate needs at least **Title**, **Meta description**, **Component input values**, **URL alias** and **Image**.
 
 ![The Content language and translation page on Drupal CMS: Page translatable, with a note that all Canvas pages must be created in the site's default language, and Published, User ID, Title, Meta description, Component input values, URL alias, Authored on, Changed, Image and Metatags checked](images/18-cms-content-language.png)
 *Figure 18.29: Canvas pages, with their fields translatable*
+
+> **The Multilingual add-on.** Drupal CMS offers a shortcut for all this: **Multilingual**, one of the **Recommended add-ons** in Project Browser (Chapter 11). It's a recipe that installs the four modules and Canvas Translate in one go, with two more modules. **Better Content Language Settings** replaces the **Content language and translation** page with a simpler one: a single table with a checkbox for each kind of content, a button that applies settings recommended for Drupal CMS, and the field-by-field choices tucked away in a dialog for each row. **Language Checklist** adds a checklist, **Finish multilingual setup**, that walks you through the rest: add languages, check detection, choose what to translate, then translate the pages, content, interface and configuration.
+>
+> We install the modules one by one in this chapter, so that you see what each of them does, and so that Drupal CMS works the same as core. The add-on is a good choice for your next multilingual site, once you know what it does for you. If you install it on the club's site instead, the Content language and translation page won't look like Figure 18.29: it's the same settings, on a different page.
 
 > **A bug to work around.** As we write this, Canvas Translate stops with "Something went wrong on our end" on a new Drupal CMS site. The cause is a small mistake in the data of Drupal CMS's Basic page template: the heading's link is stored as empty text, and Canvas can't read it. Until it's fixed, remove the empty link with a short script. Save [remove-empty-heading-links.php](../examples/canvas-translate/remove-empty-heading-links.php) in your project folder, and run it:
 >
@@ -325,29 +333,103 @@ Install **Canvas Translate** on **Extend**, with the four modules (it needs Lang
 >
 > It changes nothing on the page: the heading had no link.
 
-Open Canvas, and select **Translate** in the sidebar, the icon with the two letters (or go to `/canvas/app/canvas_translate`). The dashboard lists every Canvas page, template and page region with words in it, with its state in each language:
+### The language switcher, in the page template
 
-![The Translate dashboard in Canvas: How to join and Home (Page), Utility page content items — Full content view (Template) and Mercury theme (Page template), all Not translated into Spanish, 0%](images/18-cms-translate-dashboard.png)
-*Figure 18.30: Canvas Translate's dashboard*
+On Drupal CMS, the header is Mercury's page template in Canvas, so the switcher goes there. Open Canvas, select **Templates**, and open **Mercury theme**, as in Chapter 14. Open the **Library**, find **Language switcher** under the blocks, and drag it onto the **Navbar**'s empty **CTAs** slot, at the right of the menu. (If you did Chapter 14's last exercise, the Join us button is there already: drop the switcher next to it.) Select **Review 1 change**, check the change, and select **Publish**.
 
-Select **Not translated** in the row of *How to join*. The editor shows the English on the left, read-only, and a box for the Spanish on the right, component by component: the page's title and description, the heading, the text, and the card with its title and text. Rich text gets an editor of its own, with the formatting of the English.
+![The Mercury theme page template in Canvas, scaled to fit: Language switcher selected in Layers under Header, Navbar, CTAs, and in the preview, English and Español as a small list at the right of the menu](images/18-cms-switcher.png)
+*Figure 18.30: The language switcher, in the Navbar's CTAs slot*
 
-![The Canvas Translate editor for How to join, English to Spanish: the Text component with the English on the left and the Spanish on the right, and the Icon card with its heading Cuándo y dónde and its text in Spanish; Draft, Saved, 5/6 fields, 83%](images/18-cms-translate-editor.png)
-*Figure 18.31: English on the left, Spanish on the right*
+It works as on core, but it isn't pretty: Mercury has no style for the switcher, so it's a small list with bullets. Styling it is a job for a theme, and that's the next book's subject.
 
-Fill in the Spanish. The icon's name, `calendar-dots`, isn't for visitors to read; leave it. Canvas Translate saves as you type, as a *draft*: nothing is published yet. The **5/6 fields** at the top counts what's left, and **Next field** takes you to it.
+### The front page in Spanish
 
-Select **Review & publish**. Every page with a draft is listed; select *How to join*, and **Publish selected**.
+Now open `/es`. On a new Drupal CMS site, you get **Page not found**, and the reason is a single setting. Go to **Configuration** > **System** > **Basic site settings** (`/admin/config/system/site-information`), and look at **Default front page**: it says `/home`. That isn't the Welcome page's own address, but its URL alias, and the alias is English. For Spanish visitors, Drupal looks for a Spanish page called `/home`, doesn't find one, and gives up. (Chapter 8 told you to leave that alias alone, and it was right: in one language, it works fine.)
 
-![The Review & publish list: How to join in Spanish, Needs review, selected, and the Publish selected (1) button](images/18-cms-translate-review.png)
-*Figure 18.32: Review, then publish*
+Change it to the Welcome page's own address. Every Canvas page has one, `/page/` followed by its number, and the Welcome page, which came with Drupal CMS, is the first: `/page/1`. Select **Save configuration**.
 
-And here is *How to join* in Spanish, the card too:
+![Basic site settings on Drupal CMS: Default front page set to /page/1](images/18-cms-front-page.png)
+*Figure 18.31: The front page, by its own address, which works in every language*
 
-![How to join on Drupal CMS at /es/join: Cómo unirse, the text in Spanish, and the card Cuándo y dónde with its text in Spanish](images/18-cms-es-join.png)
-*Figure 18.33: The whole Canvas page in Spanish, card included*
+Visitors still see `/` in English and `/es` in Spanish, because Drupal shows the front page at the site's root, whatever this setting says. And when we translate the Welcome page in a moment, Canvas Translate gives it a Spanish alias too.
 
-Compare it to Figure 18.25: the card, which is part of the page's layout, is in Spanish too. Canvas keeps the layout the same in every language and translates the text in it, which is what most sites need. Canvas Translate also translates templates and page regions, such as the text in the header and footer, in the same way, and keeps track of translations that are out of date: when the English changes, the Spanish is marked **Outdated**.
+### Translating a Canvas page with Canvas Translate
+
+Open Canvas, and select **Translate** in the sidebar, the icon with the two letters (or go to `/canvas/app/canvas_translate`). The dashboard lists every Canvas page, template and page template with words in it, with its state in each language:
+
+![The Translate dashboard in Canvas: Welcome to Lens & Trail (Page), Utility page content items — Full content view (Template) and Mercury theme (Page template), all Not translated into Spanish, 0%; the key at the bottom: Up to date, Outdated, Draft, Not translated](images/18-cms-translate-dashboard.png)
+*Figure 18.32: Canvas Translate's dashboard*
+
+Select **Not translated** in the row of *Welcome to Lens & Trail*. The editor shows the English on the left, read-only, and a box for the Spanish on the right, component by component: the page's title and meta description, the hero with its heading, text and button, the text next to the card, the card, and the two blocks. Rich text gets an editor of its own, with the formatting of the English.
+
+| English | Spanish |
+|---|---|
+| Welcome to Lens & Trail (the title, and the hero's heading) | Te damos la bienvenida a Lens & Trail |
+| We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them. | Somos un club de fotografía y senderismo en Edimburgo. Caminamos, tomamos fotos y las compartimos. |
+| How to join | Cómo unirse |
+| `internal:/join` | `internal:/unete` |
+| When and where | Cuándo y dónde |
+| We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in Leith to look at each other's photos. | Nos reunimos dos veces al mes: una para hacer una excursión por las Pentland Hills, por la costa o más lejos, en las Highlands, y otra en un café de Leith para ver las fotos de todos. |
+| Read more about the club, or find out how to join. | Lee más sobre el club, o descubre cómo unirte. |
+| Hikes: every other Saturday, at 9:30. We send the meeting place to everyone who is coming a week before. | Excursiones: un sábado sí y otro no, a las 9:30. Una semana antes enviamos el punto de encuentro a quienes vienen. |
+| Photo evenings: the first Thursday of the month, at 19:00, in the back room of a café in Leith. | Tardes de fotografía: el primer jueves de cada mes a las 19:00, en la sala del fondo de un café de Leith. |
+
+Most of the boxes are words, and you translate them as you'd expect. Three boxes are different, and they're worth slowing down for.
+
+**The button's URL.** It may seem odd that an address has a translation box at all, but think back to *Spanish addresses*, earlier in this chapter: each translation has an address of its own. *How to join* is `/join` in English and `/unete` in Spanish. The English button points to `/join`, and Spanish visitors who followed it would land on "Page not found", because there's no Spanish page called `/join`. So the button needs the Spanish address.
+
+The `internal:` in front of it is Canvas's way of saying "a page on this site", as opposed to a link to another website. Keep it, and change only what comes after it: `internal:/unete`. You don't need to type the `/es`: Drupal adds the language to the address by itself when it shows the Spanish button. If you're not sure what a page's Spanish address is, open it in Spanish with the language switcher, and look at the address bar (without the `/es`).
+
+**The links in the text.** The text next to the card has two links, "about the club" and "how to join". They come over into the Spanish editor with the words, but they still point to the English pages. Select the Spanish words for each link, select the link button in the editor's toolbar, and give it the Spanish address: `/es/sobre-el-club` and `/es/unete`. This time, type the `/es` too. A link in a text is used exactly as you write it, so Drupal doesn't add the language here, the way it does for the button.
+
+> **Tip:** links are the part of a translation people miss most often, because the text around them looks right. When you've published a translation, click each link on the Spanish page once, and check that you stay in Spanish.
+
+**The icon's name**, `calendar-dots`, tells Mercury which picture to show on the card. Visitors never read it, and a translated name would leave the card without its icon, so copy it into the Spanish box exactly as it is.
+
+The **Description** of the two blocks, *Next hikes* and *Newest photos*, is a label that only editors see, and their **Title** is empty, because the blocks take their titles from their views, which we've translated already. Leave them.
+
+![The Canvas Translate editor for Welcome to Lens & Trail, English to Spanish: the Title and the Hero CTA's Heading Te damos la bienvenida a Lens & Trail, the hero's text in Spanish, the button Cómo unirse and its URL internal:/unete; Draft, Saved, 9/11 fields, 82%](images/18-cms-translate-editor.png)
+*Figure 18.33: English on the left, Spanish on the right*
+
+Canvas Translate saves as you type, as a *draft*: nothing is published yet. The **9/11 fields** at the top counts what's done (the meta description is the other one left), and **Next field** takes you to the next one.
+
+Select **Review & publish**. Every page with a draft is listed; select **Publish all** (or check the pages you want, and **Publish selected**).
+
+![The Review & publish list: Welcome to Lens & Trail in Spanish, Needs review, with the Review and Discard buttons, and Publish all and Publish selected at the top](images/18-cms-translate-review.png)
+*Figure 18.34: Review, then publish*
+
+The Welcome page is in Spanish now, but the header and footer around it aren't: they're in the page template.
+
+### The page template
+
+Back on the dashboard, select **Not translated** in the row of **Mercury theme**. The page template holds the texts of Chapter 14: the club's details in the footer, and Join the club with its text and button. Its blocks are listed too, with their **Description**s; as on the Welcome page, those are labels for editors, and the blocks' own texts, such as the menu's links, are translated where they live (the menu links, earlier in this chapter).
+
+| English | Spanish |
+|---|---|
+| **Hikes:** every other Saturday at 9:30. | **Excursiones:** un sábado sí y otro no, a las 9:30. |
+| **Photo evenings:** the first Thursday of the month at 19:00, in a café in Leith. | **Tardes de fotografía:** el primer jueves de cada mes a las 19:00, en un café de Leith. |
+| hello@lens-and-trail.ddev.site · Follow us on Flickr | hello@lens-and-trail.ddev.site · Síguenos en Flickr |
+| Join the club | Únete al club |
+| New members are always welcome, whether you bring a camera, boots, or both. Membership is £20 a year, £10 for students. | Siempre damos la bienvenida a nuevos miembros, traigas cámara, botas o las dos cosas. La cuota es de 20 £ al año, 10 £ para estudiantes. |
+| How to join | Cómo unirse |
+| `internal:/join` | `internal:/unete` |
+
+Keep the email address and Flickr as links in the Spanish editor.
+
+![The Canvas Translate editor for the Mercury theme page template: the Heading Únete al club, the Text in Spanish, the Button Cómo unirse with internal:/unete, and the Footer's description untranslated; Draft, Saved, 5/10 fields, 50%, and a Publish button](images/18-cms-translate-template.png)
+*Figure 18.35: The page template's texts, in Spanish*
+
+A page template has no review step: select **Publish** at the top, and it's live. Now open `/es`:
+
+![The Welcome page in Spanish at /es: the menu Inicio, Excursiones, Álbumes, Nosotros and Únete, the switcher, the hero Te damos la bienvenida a Lens & Trail with the button Cómo unirse, the text and the card Cuándo y dónde, the next hikes with Spanish dates, the photos with Fotografía de, and the footer with Únete al club and the club's details in Spanish](images/18-cms-es-front.png)
+*Figure 18.36: The Welcome page in Spanish, header and footer included*
+
+Everything a visitor reads is Spanish: the menu, the hero, the card, the hikes and their dates from the translated views and date format, the photo credits, and the footer from the page template. Mercury's menu fits on one line in Spanish too, unlike Olivero's. And a hike, at `/es/excursiones/turnhouse-hill`:
+
+![The Turnhouse hike in Spanish on Mercury: the breadcrumb Próximas excursiones, the title Turnhouse Hill y Carnethy Hill, the photo with Fotografía de, Licencia and Fuente, Fecha, Punto de encuentro, Zona, Distancia, Dificultad and Guía with their values, the description, the album Pentlands, 21 de noviembre, and the Spanish footer](images/18-cms-es-hike.png)
+*Figure 18.37: A hike in Spanish, with the page template's Spanish footer*
+
+Compare the Welcome page to Figure 18.25: the card, which is part of the page's layout, is in Spanish too. Canvas keeps the layout the same in every language and translates the text in it, which is what most sites need. Canvas Translate also keeps track of translations that are out of date: when the English changes, the Spanish is marked **Outdated** on the dashboard.
 
 Canvas Translate can also suggest translations with AI, through a submodule, Canvas Translate AI. That's for Chapter 19.
 
@@ -383,7 +465,7 @@ You can now:
 - translate views, field labels, date formats, blocks and the site's slogan, and change an interface translation;
 - explain why Layout Builder's inline blocks aren't translated, and what to do about it;
 - make a role for a translator who can translate but not edit;
-- on Drupal CMS, translate a Canvas page with Canvas Translate.
+- on Drupal CMS, put the language switcher in the page template, make the front page work in every language, and translate a Canvas page and the page template with Canvas Translate.
 
 ## Exercises
 
@@ -392,7 +474,7 @@ You can now:
 3. Add a third language, French, but don't translate anything. Open the front page at `/fr`. What's in French already, and what isn't? Then think: would you rather show an English page at `/fr`, or no French at all until the content is ready? (Look at the **Languages** list's **Edit** for each language, and at Detection and selection.)
 4. Lucía would like Drupal's own screens in English, but to translate into Spanish. Set this up for her, with **Account administration pages** in Detection and selection, and her account form.
 5. *(challenge)* Change *How to join* on Drupal core so that the When and where text is translated too, without a contributed module. (Hint: Chapter 8, field-based layouts.)
-6. *(challenge)* On Drupal CMS, translate the Mercury theme's page template in Canvas Translate. Which texts does it hold, and where do visitors see them?
+6. *(challenge)* On Drupal CMS, change the English text of the Welcome page's hero in Canvas, and publish it. What does Canvas Translate's dashboard say about the Spanish now? Bring the translation up to date, and find out what a Spanish visitor saw in between.
 
 ## Want to know more?
 

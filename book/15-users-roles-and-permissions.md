@@ -354,9 +354,60 @@ When Jordi edits his hike after that (the meeting place has changed, say), his c
 >
 > Views asks the same questions (Chapter 12's **Access** setting is the first layer for the whole page, and its query leaves out content a visitor may not see), and so do menus: a menu link to a page you may not see isn't shown. User 1 gets past every *permission*, but not checks of other kinds: a page that only one role may open (an option in Views) is closed to user 1 too, unless user 1 has that role.
 
-> **On Drupal CMS:** People, roles and permissions work the same way, with the same four roles. Two differences. Drupal CMS's **Content editor** is a role you can use as it is: it may create and edit pages, Canvas pages and media, publish and unpublish through its workflow, schedule publishing, and use the trash, which is close to our secretary, without the accounts. And people can log in with their email address instead of their username, thanks to the Login Email or Username module: one thing less for members to forget. Registration starts as **Administrators only**, as on core, and no spam protection is installed.
-
 > **Coming from WordPress?** WordPress comes with ready-made roles: Administrator, Editor, Author, Contributor and Subscriber, and Super Admin on a multisite network. Each is a fixed set of *capabilities*: an Author may publish their own posts, a Contributor may write them but not publish them. Drupal comes with almost nothing ready-made, and you build roles from permissions, as we did. If you're used to WordPress, our Hike leader is a Contributor for hikes only, and our Secretary an Editor who also looks after accounts. The difference is in the details: in WordPress, adding a role or changing what a role may do takes code (`add_role()`) or a plugin; in Drupal, it's the permissions page, and a role can be as narrow as one content type.
+
+## On Drupal CMS
+
+People, roles and permissions work the same way on Drupal CMS, so build the club's people there too, in the same order. Here's where it differs.
+
+**Roles.** Add **Member**, **Hike leader** and **Secretary**, with the same names, and drag them between **Authenticated user** and **Content editor**.
+
+![The Roles page on Drupal CMS: Anonymous user, Authenticated user, Member, Hike leader, Secretary, Content editor and Administrator](images/15-cms-roles.png)
+*Figure 15.27: The club's roles on Drupal CMS*
+
+Drupal CMS's **Content editor** is more than a starting point: it may create and edit Utility pages, Canvas pages and media, publish and unpublish, schedule publishing, and use the trash. That's close to our secretary, without the accounts, and you could use it as it is on another site. We make our own roles anyway, because the club's jobs are about hikes, albums and members, and because the same roles on both sites keep the rest of the book (and *Theming Drupal*) the same.
+
+**Permissions.** Give the roles the permissions in the tables above, with two differences.
+
+- Drupal CMS's workflow is **Basic editorial**, with three transitions instead of five: **Create new draft**, **Publish** and **Unpublish**. There's no archive. Filter on `basic editorial`: hike leaders get **Create new draft** only, and the secretary all three.
+
+![The permissions of Hike leader on Drupal CMS, filtered on basic editorial: the Basic workflow's transitions Create new draft (checked), Publish and Unpublish, each with the states it moves content between](images/15-cms-permissions-transitions.png)
+*Figure 15.28: Hike leaders may only create drafts, on Drupal CMS too*
+
+- There's no *Club info* block to give the secretary. The meeting times are in the page template (Chapter 14), and the permission to change that is **Administer page template**, which lets someone change the header and footer of every page on the site. That's more than the secretary needs, so on our site, the administrator changes the meeting times when they change, which is about once a year.
+
+Then take **Skip comment approval** away from **Authenticated user**: the comment recipe in Chapter 11 gave it to every logged-in account here too.
+
+**Accounts.** Add Morag, Jordi and Ailsa as on core. On Drupal CMS, they can log in with their email address or their username, thanks to the **Login Email or Username** module: one thing less for members to forget. The login page has a design of its own, from Gin, Drupal CMS's administration theme.
+
+![The Log in page on Drupal CMS: a Drupal drop above the title, Username or email address, Password with a button to show it, a Log in button, a Create new account button, and Forgot your password?; colorful shapes on the right half of the page](images/15-cms-login.png)
+*Figure 15.29: Logging in with an email address*
+
+**Registration and spam.** **Account settings** are the same, and so is Mailpit. Registration starts as **Administrators only**, as on core: set it to **Visitors, but administrator approval is required**. No spam protection is installed, so add CAPTCHA, with Project Browser this time (Chapter 11): on **Extend** > **Browse**, search for `CAPTCHA`, select it, and **Install**. Project Browser installs the module, but not the modules inside it, so go to **Extend**, filter on `captcha`, and install **Image CAPTCHA** there. Then set up the challenge and the two CAPTCHA points as on core.
+
+![The Create new account page on Drupal CMS, in the same design as the login page: Email address, Username, Picture, Camera, About me, and a CAPTCHA with a distorted code and the field What code is in the image?, then the Create new account button](images/15-cms-register.png)
+*Figure 15.30: Applying for an account on Drupal CMS, with a CAPTCHA*
+
+> **Try it:** Apply as Lucía in a private window, approve her account, and let her comment on *Pentlands, 21 November* before you make her a member. Then make her a member with the bulk action on **People**, and approve her comment.
+
+![The People page on Drupal CMS: lucia, ailsa, jordi, morag and admin, all active, with their roles](images/15-cms-people.png)
+*Figure 15.31: The club's people, on Drupal CMS*
+
+**Profiles.** Add **Camera** and **About me** under **Configuration** > **People** > **Account settings** > **Manage fields**, as on core. The registration form in Figure 15.30 shows them already: Exercise 2 is about that.
+
+**The Hike leader field.** Filter it by the **Hike leader** role as on core. Then give every hike a real leader. On Drupal CMS, the Turnhouse hike has **admin**, and the hikes from Chapter 12 may have no leader at all, if you left the field at **- None -**. Give them all **jordi**.
+
+**Jordi and Morag at work.** Log in as Jordi, and add *Arthur's Seat by night*. His form offers **Save as**: **Draft** and nothing else, and his sidebar has only **Create** and **CMS**, Drupal CMS's link to the content overview.
+
+![The Create Hike form on Drupal CMS as Jordi sees it: Arthur's Seat by night, 16 January 2027 at 17:30, Holyrood Park, St Margaret's Loch car park, Distance 5, Difficulty Moderate; on the right, Save as with Draft only; Jordi's sidebar has Create and CMS; a Saving draft notice at the bottom right](images/15-cms-leader-draft.png)
+*Figure 15.32: A hike leader can only save a draft, on Drupal CMS*
+
+Notice the **Saving draft...** notice at the bottom right. Drupal CMS saves the form in the background as you type (with the **Autosave Form** module), so a lost connection or a closed tab doesn't lose a hike half written. That's a copy of the form for Jordi, not a draft of the hike: nobody else sees it until he selects **Save**.
+
+Morag opens the draft, and under **Change to**, chooses **Published**.
+
+![The edit form of Arthur's Seat by night as the secretary sees it on Drupal CMS: Current state Draft, and Change to Published, on the right; Morag's sidebar has Create, CMS and People](images/15-cms-secretary-publish.png)
+*Figure 15.33: The secretary publishes the hike, on Drupal CMS*
 
 ## Summary
 

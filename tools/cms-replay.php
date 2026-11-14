@@ -658,6 +658,278 @@ function replay_ch13_term_view(): void {
   $view->save();
 }
 
+/**
+ * Chapter 14: the main menu in the club's order, Hike archive under Hikes (Mercury shows one level only), the Privacy policy page
+ * written and published, and the feed in the footer menu.
+ */
+function replay_ch14_menus(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  foreach (['About' => 3, 'Join us' => 4] as $title => $weight) {
+    $link = current($storage->loadByProperties(['menu_name' => 'main', 'title' => $title]));
+    $link->set('weight', $weight)->save();
+  }
+  $storage->create([
+    'menu_name' => 'main', 'title' => 'Hike archive', 'link' => ['uri' => 'internal:/hikes/archive'],
+    'parent' => 'views_view:views.hikes.page_1', 'weight' => 0,
+  ])->save();
+
+  $privacy = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'page', 'title' => 'Privacy policy']));
+  $privacy->set('field_content', ['value' => '<p>Lens &amp; Trail keeps only what it needs to run the club: your name and email address if you join, and the photos you choose to share. We never sell or pass on your details.</p>', 'format' => 'content_format']);
+  $privacy->set('moderation_state', 'published');
+  $privacy->save();
+  $storage->create([
+    'menu_name' => 'footer', 'title' => 'Upcoming hikes (RSS)', 'link' => ['uri' => 'internal:/hikes/feed'], 'weight' => 1,
+  ])->save();
+}
+
+/**
+ * Chapter 15: the club's roles, between Authenticated user and Content editor, with core's permissions; Drupal CMS's
+ * workflow is Basic editorial, with three transitions. Authenticated user loses Skip comment approval.
+ */
+function replay_ch15_roles(): void {
+  $roles = [
+    'member' => ['Member', ['skip comment approval', 'create gallery content', 'edit own gallery content', 'delete own gallery content',
+      'create image media', 'edit own image media', 'access user profiles']],
+    'hike_leader' => ['Hike leader', ['create hike content', 'edit own hike content', 'use basic_editorial transition create_new_draft',
+      'view own unpublished content', 'view latest version', 'access content overview', 'access navigation', 'view the administration theme']],
+    'secretary' => ['Secretary', ['create news content', 'edit any news content', 'delete own news content', 'edit any hike content',
+      'edit any page content', 'edit any gallery content', 'use basic_editorial transition create_new_draft',
+      'use basic_editorial transition publish', 'use basic_editorial transition unpublish', 'view any unpublished content',
+      'view latest version', 'access content overview', 'administer comments', 'administer users', 'access navigation',
+      'view the administration theme', 'access administration pages']],
+  ];
+  $weight = 2;
+  foreach ($roles as $id => [$label, $permissions]) {
+    $role = \Drupal\user\Entity\Role::load($id) ?? \Drupal\user\Entity\Role::create(['id' => $id, 'label' => $label]);
+    foreach ($permissions as $permission) {
+      $role->grantPermission($permission);
+    }
+    $role->setWeight($weight++)->save();
+  }
+  foreach (['content_editor', 'administrator'] as $id) {
+    \Drupal\user\Entity\Role::load($id)->setWeight($weight++)->save();
+  }
+  \Drupal\user\Entity\Role::load('authenticated')->revokePermission('skip comment approval')->save();
+}
+
+/**
+ * Chapter 15: Morag, Jordi and Ailsa (password 12345 on the test site), registration with approval, the user fields,
+ * Jordi's profile, the Hike leader field for hike leaders only, and Jordi on the hikes admin led.
+ */
+function replay_ch15_users(): void {
+  $users = \Drupal::entityTypeManager()->getStorage('user');
+  foreach (['morag' => ['member', 'secretary'], 'jordi' => ['member', 'hike_leader'], 'ailsa' => ['member']] as $name => $roles) {
+    if (!$users->loadByProperties(['name' => $name])) {
+      $users->create(['name' => $name, 'mail' => "$name@example.com", 'pass' => '12345', 'status' => 1, 'roles' => $roles])->save();
+    }
+  }
+  \Drupal::configFactory()->getEditable('user.settings')->set('register', 'visitors_admin_approval')->set('verify_mail', TRUE)->save();
+  replay_field('user', 'user', 'field_camera', 'string', 'Camera');
+  replay_field('user', 'user', 'field_about_me', 'string_long', 'About me');
+  $jordi = current($users->loadByProperties(['name' => 'jordi']));
+  $jordi->set('field_camera', 'Fujifilm X-T5, and a phone when it rains')
+    ->set('field_about_me', "I moved to Edinburgh from Barcelona in 2019, and I've been leading hikes in the Pentlands ever since. Ask me about the best spots for sunrise.")
+    ->save();
+  $field = \Drupal\field\Entity\FieldConfig::loadByName('node', 'hike', 'field_hike_leader');
+  $handler = $field->getSetting('handler_settings');
+  $handler['filter'] = ['type' => 'role', 'role' => ['hike_leader' => 'hike_leader']];
+  $field->setSetting('handler_settings', $handler)->save();
+  // The Try it: the hikes with admin (or nobody) as their leader get Jordi.
+  foreach (\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'hike']) as $hike) {
+    if (in_array($hike->get('field_hike_leader')->target_id, [NULL, '1', 1], TRUE)) {
+      $hike->set('field_hike_leader', $jordi->id())->setNewRevision(TRUE);
+      $hike->setRevisionLogMessage('Jordi leads this hike.');
+      $hike->save();
+    }
+  }
+}
+
+/**
+ * Chapter 15: CAPTCHA (downloaded with Composer first), with the image challenge on registration and the password reset.
+ */
+function replay_ch15_captcha(): void {
+  \Drupal::service('module_installer')->install(['captcha', 'image_captcha']);
+  \Drupal::configFactory()->getEditable('captcha.settings')->set('default_challenge', 'image_captcha/Image')->save();
+  foreach (['user_register_form', 'user_pass'] as $form) {
+    \Drupal\captcha\Entity\CaptchaPoint::load($form)->enable()->save();
+  }
+}
+
+/**
+ * Chapter 15: Lucía applied, was approved and made a member; her comment on the Pentlands album, approved.
+ */
+function replay_ch15_lucia(): void {
+  $users = \Drupal::entityTypeManager()->getStorage('user');
+  $lucia = current($users->loadByProperties(['name' => 'lucia']));
+  if (!$lucia) {
+    $lucia = $users->create(['name' => 'lucia', 'mail' => 'lucia@example.com', 'pass' => '12345', 'status' => 1, 'roles' => ['member']]);
+    $lucia->save();
+  }
+  $album = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Pentlands, 21 November']));
+  \Drupal\comment\Entity\Comment::create([
+    'entity_type' => 'node', 'entity_id' => $album->id(), 'field_name' => 'comment', 'comment_type' => 'comment',
+    'uid' => $lucia->id(), 'subject' => 'Lovely light on the Turnhouse photo!', 'status' => 1,
+    'comment_body' => ['value' => '<p>Lovely light on the Turnhouse photo! Which lens was that?</p>', 'format' => filter_default_format($lucia)],
+  ])->save();
+}
+
+/**
+ * Chapter 17: the Trash emptied before the bulk update (Summer barbecue from Chapter 6 and the pages Devel Generate
+ * made in Chapter 11, which keep their aliases while they're in the Trash), and the tags Devel Generate made.
+ */
+function replay_ch17_cleanup(): void {
+  \Drupal::service('trash.manager')->executeInTrashContext('inactive', function () {
+    $nodes = \Drupal::entityTypeManager()->getStorage('node');
+    $trashed = $nodes->getQuery()->accessCheck(FALSE)->exists('deleted')->execute();
+    $nodes->delete($nodes->loadMultiple($trashed));
+  });
+  // The club tags nothing (Chapter 10's Tags Try it is for News), so every tag is one Devel Generate made.
+  if (!\Drupal::database()->query("SELECT COUNT(*) FROM {node__field_tags}")->fetchField()) {
+    // One at a time: deleting a term deletes its children too, and a list loaded before would hold them.
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    // From the table: loadByProperties() leaves out some of the generated terms (some are unpublished).
+    foreach (\Drupal::database()->query("SELECT DISTINCT tid FROM {taxonomy_term_field_data} WHERE vid = 'tags'")->fetchCol() as $tid) {
+      $terms->resetCache([$tid]);
+      $terms->load($tid)?->delete();
+    }
+  }
+}
+
+/**
+ * Chapter 17: core's Pathauto patterns, above Drupal CMS's Menu Path, and the aliases updated.
+ */
+function replay_ch17_patterns(): void {
+  $patterns = [
+    'hikes' => ['Hikes', 'canonical_entities:node', '/hikes/[node:title]', 'node', 'hike'],
+    'albums' => ['Albums', 'canonical_entities:node', '/galleries/[node:title]', 'node', 'gallery'],
+    'news' => ['News', 'canonical_entities:node', '/news/[node:title]', 'node', 'news'],
+    'areas' => ['Areas', 'canonical_entities:taxonomy_term', '/areas/[term:parents:join-path]/[term:name]', 'taxonomy_term', 'areas'],
+    'photo_themes' => ['Photo themes', 'canonical_entities:taxonomy_term', '/photo-themes/[term:name]', 'taxonomy_term', 'photo_themes'],
+  ];
+  $weight = -10;
+  foreach ($patterns as $id => [$label, $type, $pattern, $entity_type, $bundle]) {
+    if (\Drupal\pathauto\Entity\PathautoPattern::load($id)) {
+      continue;
+    }
+    $p = \Drupal\pathauto\Entity\PathautoPattern::create(['id' => $id, 'label' => $label, 'type' => $type, 'pattern' => $pattern, 'weight' => $weight++]);
+    $p->addSelectionCondition([
+      'id' => 'entity_bundle:' . $entity_type,
+      'bundles' => [$bundle => $bundle],
+      'negate' => FALSE,
+      'context_mapping' => [$entity_type => $entity_type],
+    ]);
+    $p->save();
+  }
+  // Bulk generate, "Update the URL alias for paths having an old URL alias": on Drupal CMS, everything has an alias
+  // from Menu Path already. Content whose automatic alias is off (About, How to join, the Turnhouse hike since
+  // Chapters 6 and 7) keeps its own.
+  $generator = \Drupal::service('pathauto.generator');
+  foreach (['node', 'taxonomy_term'] as $entity_type) {
+    foreach (\Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple() as $entity) {
+      $generator->updateEntityAlias($entity, 'bulkupdate');
+    }
+  }
+}
+
+/**
+ * Chapter 17: Glencorse Reservoir loop becomes the winter loop; Pathauto makes the new alias and a redirect from the
+ * old one. Two addresses that don't exist are visited, for Redirect 404's list.
+ */
+function replay_ch17_rename(): void {
+  $node = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Glencorse Reservoir loop']));
+  if ($node) {
+    $node->setTitle('Glencorse Reservoir winter loop');
+    $node->setNewRevision(TRUE);
+    $node->setRevisionLogMessage('Renamed: the winter route.');
+    $node->save();
+  }
+}
+
+/**
+ * Chapter 18: what can be translated, as on core. All four content types (the text fields; Hike also Meeting place),
+ * both vocabularies, Image media (alt and title, not the file) and custom menu links; the fields that aren't words are
+ * shared between the languages, and hidden on the translation form. Canvas pages are done in the form.
+ */
+function replay_ch18_translatable(): void {
+  $translatable = [
+    'node' => [
+      'hike' => ['field_content', 'field_meeting_place'],
+      'gallery' => ['field_content'],
+      'news' => ['field_content'],
+      'page' => ['field_content', 'field_description', 'field_seo_title', 'field_seo_description'],
+    ],
+    'taxonomy_term' => ['areas' => [], 'photo_themes' => []],
+    'media' => ['image' => ['field_media_image']],
+    'menu_link_content' => ['menu_link_content' => []],
+  ];
+  $manager = \Drupal::service('content_translation.manager');
+  foreach ($translatable as $entity_type => $bundles) {
+    foreach ($bundles as $bundle => $fields) {
+      $settings = \Drupal\language\Entity\ContentLanguageSettings::loadByEntityTypeBundle($entity_type, $bundle);
+      $settings->setLanguageAlterable(TRUE)->setDefaultLangcode('site_default')->save();
+      $manager->setEnabled($entity_type, $bundle, TRUE);
+      $manager->setBundleTranslationSettings($entity_type, $bundle, ['untranslatable_fields_hide' => '1']);
+      foreach (\Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $bundle) as $name => $definition) {
+        if ($definition instanceof \Drupal\field\Entity\FieldConfig) {
+          $definition->setTranslatable(in_array($name, $fields, TRUE));
+          if ($name === 'field_media_image') {
+            $definition->setThirdPartySetting('content_translation', 'translation_sync', ['alt' => 'alt', 'title' => 'title', 'file' => '0']);
+          }
+          $definition->save();
+        }
+      }
+    }
+  }
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+  \Drupal::service('router.builder')->rebuild();
+}
+
+/**
+ * Chapter 18: the Spanish Pathauto patterns, above the English ones.
+ */
+function replay_ch18_patterns(): void {
+  $patterns = [
+    ['excursiones', 'Excursiones', 'node', '/excursiones/[node:title]', 'hike'],
+    ['albums_es', 'Álbumes', 'node', '/albumes/[node:title]', 'gallery'],
+    ['news_es', 'Noticias', 'node', '/noticias/[node:title]', 'news'],
+    ['areas_es', 'Zonas', 'taxonomy_term', '/zonas/[term:parents:join-path]/[term:name]', 'areas'],
+    ['photo_themes_es', 'Temas fotográficos', 'taxonomy_term', '/temas-fotograficos/[term:name]', 'photo_themes'],
+  ];
+  foreach ($patterns as [$id, $label, $entity, $pattern, $bundle]) {
+    $p = \Drupal\pathauto\Entity\PathautoPattern::load($id);
+    if (!$p) {
+      $p = \Drupal\pathauto\Entity\PathautoPattern::create(['id' => $id, 'label' => $label, 'type' => 'canonical_entities:' . $entity, 'pattern' => $pattern]);
+      $p->addSelectionCondition(['id' => 'entity_bundle:' . $entity, 'bundles' => [$bundle => $bundle], 'negate' => FALSE, 'context_mapping' => [$entity => $entity]]);
+      $p->addSelectionCondition(['id' => 'language', 'langcodes' => ['es' => 'es'], 'negate' => FALSE, 'context_mapping' => ['language' => $entity . ':langcode:language']]);
+      $p->addRelationship($entity . ':langcode:language', 'Language');
+    }
+    $p->set('weight', -20)->save();
+  }
+  // View pages have no pattern: their Spanish aliases by hand.
+  $aliases = \Drupal::entityTypeManager()->getStorage('path_alias');
+  foreach (['/hikes' => '/excursiones', '/hikes/archive' => '/excursiones/archivo', '/galleries' => '/albumes'] as $path => $alias) {
+    if (!$aliases->loadByProperties(['path' => $path, 'langcode' => 'es'])) {
+      $aliases->create(['path' => $path, 'alias' => $alias, 'langcode' => 'es'])->save();
+    }
+  }
+}
+
+/**
+ * Chapter 18: a Translator role for Lucía.
+ */
+function replay_ch18_translator(): void {
+  $role = \Drupal\user\Entity\Role::load('translator') ?? \Drupal\user\Entity\Role::create(['id' => 'translator', 'label' => 'Translator']);
+  foreach (['create content translations', 'update content translations', 'translate hike node', 'translate page node',
+    'translate news node', 'translate gallery node', 'use basic_editorial transition publish', 'view latest version',
+    'view the administration theme', 'access navigation'] as $permission) {
+    $role->grantPermission($permission);
+  }
+  $role->save();
+  $lucia = current(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => 'lucia']));
+  $lucia->addRole('translator');
+  $lucia->save();
+}
+
 $steps = $extra ?? [];
 if (!$steps) {
   throw new \InvalidArgumentException('Name one or more steps, such as ch07_hike_type.');

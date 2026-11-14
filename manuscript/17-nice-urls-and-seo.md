@@ -221,12 +221,35 @@ Notice that every one of these helps people first. Accessibility and search engi
 
 Drupal CMS was made with SEO in mind, so most of this chapter is done before you start. The installer puts its SEO tools in place, already set up: Pathauto, Redirect, Redirect 404 and Simple XML Sitemap, and three more we haven't met: **Metatag**, **Real-time SEO** and **SEO Checklist**.
 
-Go to **Configuration** > **Search and metadata** > **URL aliases** > **Patterns** on the Drupal CMS site:
+### The club's addresses
 
-![Pathauto's patterns on Drupal CMS: Page content /[node:title] (Content, Content type is page) and Menu Path /[node:menu-link:parents:join-path]/[node:title] (Content, no conditions)](images/17-cms-patterns.png)
-*Figure 17.15: Drupal CMS's two patterns*
+Go to **Configuration** > **Search and metadata** > **URL aliases** > **Patterns** on the Drupal CMS site. Drupal CMS comes with two patterns: **Page content**, `/[node:title]`, for Utility pages (the content type with the machine name `page`, Drupal CMS's Basic page), and **Menu Path**, `/[node:menu-link:parents:join-path]/[node:title]`, for anything else: the path of its menu link, and its title, so a page under *About* in the menu gets `/about/...`.
 
-Two patterns: Utility pages (the content type with the machine name `page`, Drupal CMS's Basic page) get their title as their address, and anything else gets the path of its menu link and its title, so a page under *About* in the menu gets `/about/...`. When you add a content type of your own, add a pattern for it here, as we did on core.
+That's why every hike and album on the Drupal CMS site has an address already, and not a good one: Menu Path gave them their title and nothing else, such as `/arthurs-seat-sunrise`, because they have no menu link. Add the club's five patterns, as in "A pattern for hikes" and "Patterns for everything else": **Hikes**, **Albums**, **News**, **Areas** and **Photo themes**, with the same patterns as on core. A new pattern goes to the end of the list, and Pathauto uses the first pattern that applies, from the top; Menu Path applies to all content, so drag the five above **Page content** and **Menu Path**, and select **Save**.
+
+![Pathauto's patterns on Drupal CMS: Hikes /hikes/[node:title], Albums /galleries/[node:title], News /news/[node:title], Areas /areas/[term:parents:join-path]/[term:name] and Photo themes /photo-themes/[term:name], each with its condition, above Drupal CMS's Page content /[node:title] (Content type is page) and Menu Path /[node:menu-link:parents:join-path]/[node:title] (no conditions)](images/17-cms-patterns.png)
+*Figure 17.15: The club's patterns, above Drupal CMS's two*
+
+Before the bulk update, empty the Trash. On Drupal CMS, deleting content moves it to the Trash (Chapter 6), and it keeps its address there, so it can come back with it if you restore it. The Trash has *Summer barbecue* from Chapter 6, and the pages Devel Generate made in Chapter 11. Open **Trash** in the sidebar, check the box above the list to select everything, and choose **Permanently delete**. (Devel Generate also made a few tags with long Latin names: delete those under **Structure** > **Taxonomy** > **Tags**.)
+
+Now the **Bulk generate** tab. Leaving **Generate a URL alias for un-aliased paths only** selected, as on core, would do nothing here: everything has an address already. Choose **Update the URL alias for paths having an old URL alias** instead, check **Content** and **Taxonomy term**, and select **Update**. Content whose **Generate automatic URL alias** is off keeps its own address: *About the club* at `/about`, *How to join* at `/join`, and the Turnhouse hike at `/hikes/turnhouse-hill`, all from Chapters 6 and 7.
+
+![The URL aliases list on Drupal CMS: /about, then the areas from /areas/east-lothian to /areas/edinburgh/portobello, each with its taxonomy term path and an Edit button](images/17-cms-aliases.png)
+*Figure 17.16: The club's addresses, from the patterns*
+
+Then rename the Glencorse hike, as in "When an address changes: Redirect", and look at **URL redirects**:
+
+![The Redirect list on Drupal CMS, with redirects from /hikes/glencorse-reservoir-loop to /hikes/glencorse-reservoir-winter-loop, /club-has-website to /news/club-has-website, /pentlands-21-november to /galleries/pentlands-21-november, /arthurs-seat-sunrise to /hikes/arthurs-seat-sunrise, /north-berwick-law-and-harbour to /hikes/north-berwick-law-and-harbour, /glencorse-reservoir-loop to /hikes/glencorse-reservoir-winter-loop and /pentland-hills-ridge to /hikes/pentland-hills-ridge, all 301](images/17-cms-redirects.png)
+*Figure 17.17: A redirect for every address that changed*
+
+There are many more redirects than on core: one for every address the bulk update changed, because on Drupal CMS, they all had an address before. That's Redirect doing its job: if anyone had shared `/arthurs-seat-sunrise`, it still works. Notice the two for the Glencorse hike. `/glencorse-reservoir-loop`, its first address, now goes straight to the winter loop, not to `/hikes/glencorse-reservoir-loop` and then on: Redirect updates old redirects when an address changes again, so nobody is sent around in a chain.
+
+**Redirect 404** is there too. Open `/hikes/arthurs-seat` and `/gallery` in a private window, and look at **Fix 404 pages**:
+
+![The Fix 404 pages tab on Drupal CMS: /gallery and /hikes/arthurs-seat, each requested once, each with an Add redirect button](images/17-cms-404.png)
+*Figure 17.18: The addresses people tried, on Drupal CMS*
+
+The sitemap needs nothing from you. Simple XML Sitemap is set up already, at `/sitemap.xml`, and lists every content type, including Hike and Album, which we added: Drupal CMS comes with a small automation that adds every new content type to the sitemap. You can check, or change it, under **Configuration** > **Search and metadata** > **Simple XML Sitemap** > **Inclusion**.
 
 ### Meta tags
 
@@ -235,12 +258,12 @@ A *meta tag* is a line in a page's HTML `<head>`, the part that doesn't show on 
 **Metatag** lets you set them, with tokens, for the whole site and for each kind of page. Go to **Configuration** > **Search and metadata** > **Metatag** (`/admin/config/search/metatag`):
 
 ![The Metatag page with the tabs Metatag defaults and Settings: Global, Front page, Content and Page, each Active, with an Edit button, and an Add default meta tags button](images/17-cms-metatag.png)
-*Figure 17.16: Meta tags for the whole site, the front page, content, and Canvas pages*
+*Figure 17.19: Meta tags for the whole site, the front page, content, and Canvas pages*
 
 The defaults go from general to specific. **Global** applies everywhere; **Front page** and **Content** add to it for the front page and for nodes; **Page** is for Canvas pages. You could add one for a single content type, with **Add default meta tags**. Select **Edit** next to **Content**, and open **Open Graph**:
 
 ![Metatag's Content defaults, the Open Graph section: "The Open Graph meta tags are used to control how Facebook, Pinterest, LinkedIn and other social networking sites interpret the site's content", with Site name [site:name], Content type article, Page URL [current-page:url:absolute], and Title [node:field_seo_title|node:title]](images/17-cms-metatag-node.png)
-*Figure 17.17: Open Graph tags, filled in with tokens*
+*Figure 17.20: Open Graph tags, filled in with tokens*
 
 *Open Graph* is the set of meta tags that most social media sites read when a link is shared. Each field is one tag, filled in with tokens, and the descriptions under each say what it's for. One is new: `[node:field_seo_title|node:title]`, with a bar between two tokens, means "the SEO title, or if there isn't one, the node's title". Drupal CMS adds that with a small module, *Token OR*, so each page can have its own SEO title and description, and falls back on its ordinary title and description when it doesn't.
 
@@ -249,7 +272,7 @@ One default is worth changing before you share anything. Further down the Open G
 Go to **Configuration** > **Media** > **Image styles**, and edit **Social media - Facebook**. Next to **Convert to AVIF**, open the arrow beside **Edit**, select **Delete**, and confirm. Do the same for **Social media - X (Twitter)**.
 
 ![Edit style Social media - Facebook: "The image effect Convert to AVIF has been deleted.", a preview of the 800 by 600 source image and the 1200 by 630 derivative, and one effect left, Focal Point Scale and Crop 1200×630](images/17-cms-social-style.png)
-*Figure 17.18: The image style for sharing, without the conversion*
+*Figure 17.21: The image style for sharing, without the conversion*
 
 Now the photo keeps the format it was uploaded in: JPEG, for photos from a camera or a phone. The image styles for the pages themselves keep their AVIF; only the shared photo changes.
 
@@ -258,7 +281,7 @@ Now the photo keeps the format it was uploaded in: JPEG, for photos from a camer
 Those SEO fields are on the content form. Let's write a page with them: the club's tips for taking photos on a hike, a Utility page, with a photo in **Featured image**. Under the content, open **Search Engine Optimization (SEO) Information**:
 
 ![The SEO section of a Utility page: SEO title (empty), "Use this field to overwrite the default HTML page title for SEO."; SEO description (empty), "Write a description for search engines and social media sites."; SEO image with No media items are selected and Add media; and SEO analysis with the Focus keyword hiking photography](images/17-cms-seo-fields.png)
-*Figure 17.19: A page's own SEO title, description and image*
+*Figure 17.22: A page's own SEO title, description and image*
 
 - **SEO title**: a title for search engines, if you want one that's different from the page's. Most pages don't need one.
 - **SEO description**: the meta description. Write one or two sentences that make someone want to open the page, around 150 characters, because search engines cut longer ones short.
@@ -271,7 +294,7 @@ Write a description, and leave the title and image empty: the page's title and f
 Below the SEO fields is **SEO analysis**, from the **Real-time SEO** module. Type a **Focus keyword**, the words you hope people search for to find this page (`hiking photography`), and select **Seo preview**:
 
 ![SEO analysis: Focus keyword hiking photography, an orange dot and Okay, a snippet preview with the title Taking photos on a hike | Lens & Trail, the address, and the description, and a Content analysis: orange points for the keyword in no subheading, no alt text with the keyword, no outbound links, an SEO title that is too short, and the keyword not in the URL; green points for the keyword in the first paragraph, the meta description containing the keyword, and the meta description's length](images/17-cms-realtime-seo.png)
-*Figure 17.20: Real-time SEO's analysis of the page*
+*Figure 17.23: Real-time SEO's analysis of the page*
 
 The **Snippet preview** shows the page roughly as a search engine would list it. Under it, a checklist: green for what's good, orange for what could be better, red for what's missing. (Real-time SEO is built on the same analysis as Yoast SEO, a WordPress plugin, but isn't made by Yoast.)
 
@@ -280,7 +303,7 @@ Take its advice as a second opinion, not as orders. Some of it is good: a descri
 Save the page, and open it:
 
 ![The page Taking photos on a hike in Mercury: a breadcrumb, the title, the photo of Glencorse Reservoir, an introduction and three sections, Pack light, Shoot the light, and Keep up with the group](images/17-cms-tips.png)
-*Figure 17.21: The page, as visitors see it*
+*Figure 17.24: The page, as visitors see it*
 
 The meta tags don't show on the page. To see them, look at the page's source (right-click, then **View Page Source**), near the top:
 
@@ -293,7 +316,7 @@ The description you wrote is there three times: for search engines, for Open Gra
 Last, go to **Configuration** > **Search and metadata** > **SEO checklist**:
 
 ![The SEO checklist: "SEO checklist found 6 unchecked items that were already completed and checked them for you", a progress bar at 0 of 45, and vertical tabs Clean URLs, Meta tags and Schema.org Vocabularies, Search engines, Optimizing content, On-page optimization, Security and performance, and Mobile; under Clean URLs, Install and Enable Redirect module (checked), Configure the Redirect module, Configure the Redirect 404 module, Install and Enable Pathauto module (checked), Configure the Pathauto module, each with Download, Install, Configure and Configure permissions links](images/17-cms-seo-checklist.png)
-*Figure 17.22: A to-do list for a site's SEO*
+*Figure 17.25: A to-do list for a site's SEO*
 
 It's a to-do list of 45 things, from modules to install to accounts to set up with search engines, each with a short explanation and a link to the right page. It checks what it can see for itself (here, six items) and leaves the rest for you to tick off and save. Not every item fits every site, and some suggest modules that a small club doesn't need. Read it as a list of questions: you'll recognize most of them from this chapter.
 
@@ -319,7 +342,7 @@ You can now:
 1. Members find their way to `/gallery` and `/hike` (without the s). Use **Fix 404 pages** to send them to `/galleries` and `/hikes`. Which status code did you choose, and why?
 2. Change the News pattern to `/news/[node:created:custom:Y]/[node:title]`, so the news items get the year in their address. Use **Bulk generate** to update the existing aliases. What happened to the old address of *The club has a website*? Look at **URL redirects**. Then decide which pattern you'd keep.
 3. Pathauto's **Settings** let you turn on patterns for **User** too. Would you give members' profile pages addresses such as `/members/[user:account-name]`? Think about Chapter 15: who can see profiles, and what a member's user name tells a stranger.
-4. On Drupal CMS, give *How to join* (the Canvas page from Chapter 8) a description in its page data, and check the page's source for the meta description. Which of Metatag's defaults applies to Canvas pages?
+4. On Drupal CMS, give the Welcome page (the Canvas page from Chapter 8) a description in its page data, and check the page's source for the meta description. Which of Metatag's defaults applies to Canvas pages?
 5. *(challenge)* Write a hike as a Schema.org `Event` by hand, as in the "Structured data" box, for *Arthur's Seat by night*. Look up the `Event` type at [schema.org/Event](https://schema.org/Event): which of the hike's other fields (Distance, Difficulty, Hike leader) could go in it, and as which properties? Which have no place?
 6. *(challenge)* In Chapter 11, Exercise 2, you judged Pathauto with the five questions from "Choosing a module". Answer them again for Redirect and Simple XML Sitemap. Has anything changed for Pathauto since?
 

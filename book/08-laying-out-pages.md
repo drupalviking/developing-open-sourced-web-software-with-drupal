@@ -167,7 +167,7 @@ Sometimes, though, you want to arrange a page yourself: two columns, a box on th
 - **Layout Builder**, part of Drupal core. You divide the page into *sections* with columns, and place *blocks* in them: the page's own fields, menus, lists, or boxes of text. It works on a content type's display, and, if you allow it, on a single page.
 - **Drupal Canvas**, the page builder that comes with Drupal CMS. You build the page in a visual editor, from *components* such as headings, texts, cards and grids, and see the result as you work.
 
-Neither is the "right" one. Canvas is newer and more visual, and it's where Drupal CMS is heading. Layout Builder has been in core since Drupal 8.7, and many developers prefer it, or prefer plain field displays, because they keep pages consistent. We build *How to join* both ways, and you can judge for yourself.
+Neither is the "right" one. Canvas is newer and more visual, and it's where Drupal CMS is heading. Layout Builder has been in core since Drupal 8.7, and many developers prefer it, or prefer plain field displays, because they keep pages consistent. We use both: Layout Builder for *How to join* on the core site, and Canvas for the Welcome page on the Drupal CMS site. Then you can judge for yourself.
 
 ## Layout Builder
 
@@ -242,11 +242,11 @@ The *When and where* box is a block that belongs to this page only. Chapter 14 i
 
 ## Drupal Canvas
 
-> **On Drupal CMS:** Canvas is part of Drupal CMS, but it doesn't support Drupal 12 yet: its newest version, 1.12.0, needs Drupal 11.3 or later, but not 12. So we build the Canvas version of *How to join* on the Drupal CMS site from Chapter 4, if you made one.
+> **On Drupal CMS:** Canvas is part of Drupal CMS, but it doesn't support Drupal 12 yet: its newest version, 1.12.0, needs Drupal 11.3 or later, but not 12. So we use Canvas on the Drupal CMS site from Chapter 4, if you made one. There, the front page is already a Canvas page, called **Home** (you saw it at the end of Chapter 5), so let's turn it into the club's Welcome page.
 >
-> In Canvas, a page isn't a node with a body field. It's a kind of content of its own, called **Page**, with its own list under **Pages** in the sidebar (`/admin/content/pages`). Select **Add Page**, and the Canvas editor opens.
+> In Canvas, a page isn't a node with a body field. It's a kind of content of its own, called **Page**, with its own list under **Pages** in the sidebar (`/admin/content/pages`). Find **Home** there, and select **Edit**: the Canvas editor opens.
 >
-> ![The Canvas editor, with the component library on the left, the page in the middle, and the page's settings on the right](images/08-canvas-editor.png)
+> ![The Canvas editor with the Home page, the component library on the left, the page in the middle, and the page's settings on the right](images/08-canvas-editor.png)
 > *Figure 8.25: The Canvas editor*
 >
 > In the middle is the page, as visitors will see it, in the site's theme (Mercury, on the Starter template). Above it, you can switch between desktop, tablet and phone sizes. On the left is a row of buttons:
@@ -257,47 +257,54 @@ The *When and where* box is a block that belongs to this page only. Chapter 14 i
 >
 > On the right, **Page data** has the page's **Title**, **URL alias** and **SEO settings**, and when you select a component, a **Settings** tab with that component's settings.
 >
-> To build *How to join*:
+> To build the Welcome page:
 >
-> 1. In **Page data**, type `How to join` as the **Title** and `/join` as the **URL alias**.
+> 1. In **Page data**, change the **Title** to `Welcome to Lens & Trail`. Leave the **URL alias** as it is, `/home`: the site's front page setting points to it, and, as Chapter 6 warned, changing it would break the front page.
 >
-> ![The Page data tab, with How to join as the title and /join as the URL alias, and an empty page in the middle](images/08-canvas-page-data.png)
-> *Figure 8.26: The page's title and URL alias*
+> ![The Page data tab, with Welcome to Lens & Trail as the title and /home as the URL alias](images/08-canvas-page-data.png)
+> *Figure 8.26: The page's title, with the URL alias left alone*
 >
-> 2. Open the **Library**, and drag a **Heading** onto the page, where it says "Place items here". Its settings open on the right: type `How to join` as the **Heading**, and set **Heading level** to **1**.
+> 2. The page has one component so far, a **Hero CTA**: a big heading with a text and a button under it, the kind of box many sites open with. Select it, in the page or in **Layers**, and its settings open on the right. Type `Welcome to Lens & Trail` as the **Heading**, and `We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them.` as the **Text**.
 >
-> ![The Canvas editor with a How to join heading on the page, and its settings on the right](images/08-canvas-heading.png)
-> *Figure 8.27: The heading, at level 1*
+> ![The Canvas editor with the Hero CTA selected, its heading Welcome to Lens & Trail and the new text, and its settings on the right](images/08-canvas-hero.png)
+> *Figure 8.27: The hero, with the club's own words*
 >
-> 3. Drag a **Grid**, from **Layout**, onto the page below the heading. Set **Columns** to **2 columns 67%-33%**. The grid is empty for now, a thin box below the heading.
+> 3. The hero's button is a component of its own, inside the hero. Select **Button**, type `How to join` as the **Label**, and `/join` as the **Link**.
 >
-> ![The Canvas editor with an empty grid below the heading, and Columns set to 2 columns 67%-33%](images/08-canvas-grid.png)
-> *Figure 8.28: The grid, with two columns*
+> ![The Button selected, with How to join as the label and /join as the link](images/08-canvas-button.png)
+> *Figure 8.28: The button, linked to How to join*
 >
-> 4. Drag a **Text** into the grid, and replace the example text with the three paragraphs of *How to join*.
+> 4. Now a grid below the hero, for two columns. You can drag a component from the **Library** onto the page, but dropping it in the right place is fiddly. There's an easier way: select the component the new one should come after, here the **Hero CTA**, then right-click **Grid** in the Library (under **Layout**) and select **Insert**. Set the grid's **Columns** to **2 columns 67%-33%**. It's empty for now, a thin box below the hero.
 >
-> ![The Canvas editor with the three paragraphs of How to join in the grid, and the rich text editor on the right](images/08-canvas-text.png)
-> *Figure 8.29: The text, in the grid*
+> ![The Canvas editor with an empty grid below the hero, and Columns set to 2 columns 67%-33%](images/08-canvas-grid.png)
+> *Figure 8.29: The grid, with two columns*
 >
-> 5. Drag an **Icon card**, from **Card**, into the grid, after the text. This is the fiddly part: drag and drop puts it in the wrong place more often than not, for example after the grid instead of inside it. Don't worry, you can put it right in **Layers**. Right-click the **Icon card** there, and select **Move** > **Move into** > **Grid (Grid)**. That puts the card first in the grid, so right-click the **Text** and select **Move** > **Move up**, to put the text back on the left.
+> 5. With the **Grid** selected, right-click **Text** in the Library, and select **Insert**. Insert puts the text *after* the grid, not in it. To move it in, right-click **Text** in **Layers**, and select **Move** > **Move into** > **Grid (Grid)**. The same menu has **Move up** and **Move down**, and it puts right any component that landed in the wrong place, however it got there.
 >
-> ![Layers, with the Icon card's right-click menu open at Move, Move into, Grid (Grid)](images/08-canvas-move.png)
-> *Figure 8.30: Moving the card into the grid*
+> ![Layers, with the Text's right-click menu open at Move, Move into, Grid (Grid)](images/08-canvas-move.png)
+> *Figure 8.30: Moving the text into the grid*
 >
-> 6. Select the **Icon card**, and set **Icon name** to `calendar-dots`, **Heading** to `When and where`, **Description** to the meeting times, and **Text alignment** to **Left**.
+> 6. Replace the example text with these two paragraphs, and make "about the club" a link to `/about`, and "how to join" a link to `/join`:
+>
+>    We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, and once in a café in Leith to look at each other's photos.
+>
+>    Read more about the club, or find out how to join.
+>
+> ![The Canvas editor with the two paragraphs in the grid, and the rich text editor on the right](images/08-canvas-text.png)
+> *Figure 8.31: The text, in the grid*
+>
+> 7. With the **Text** selected, right-click **Icon card** in the Library (under **Card**), and select **Insert**. This time it lands where we want it, after the text, inside the grid. Set its **Icon name** to `calendar-dots`, **Heading** to `When and where`, **Description** to the meeting times, and **Text alignment** to **Left**.
 >
 > ![The Canvas editor with the text on the left and the When and where card on the right, and the card's settings](images/08-canvas-card.png)
-> *Figure 8.31: The When and where card*
+> *Figure 8.32: The When and where card*
 >
-> 7. Canvas saves your work as you go, as a draft. When the page looks right, select **Review 1 change** at the top right, check **How to join**, and select **Publish 1 selected**.
+> 8. Canvas saves your work as you go, as a draft. When the page looks right, select **Review 1 change** at the top right, check **Welcome to Lens & Trail**, and select **Publish 1 selected**.
 >
-> ![The Unpublished changes panel, with How to join checked and the Publish 1 selected button](images/08-canvas-publish.png)
-> *Figure 8.32: Publishing the page*
+> ![The Unpublished changes panel, with Welcome to Lens & Trail checked and the Publish 1 selected button](images/08-canvas-publish.png)
+> *Figure 8.33: Publishing the page*
 >
-> The same right-click menu works for every component: **Move up**, **Move down** and **Move into** put a component that landed in the wrong place where you want it.
->
-> ![How to join on the Drupal CMS site, built with Canvas, in two columns with a card](images/08-canvas-how-to-join.png)
-> *Figure 8.33: How to join, built with Canvas*
+> ![The Welcome page on the Drupal CMS site, built with Canvas: the hero with the club's name, text and a How to join button, and below it the text and the When and where card in two columns](images/08-canvas-welcome.png)
+> *Figure 8.34: The Welcome page, built with Canvas*
 
 ## Which one should I use?
 
@@ -311,6 +318,23 @@ The *When and where* box is a block that belongs to this page only. Chapter 14 i
 Many sites use more than one: plain field displays for hikes and news, and Canvas or Layout Builder for the front page and a few special pages.
 
 > **Coming from WordPress?** Canvas will feel familiar: like the WordPress block editor, you build a page from pieces (Canvas calls them components, WordPress calls them blocks) and see the result as you go. Two differences matter. A Drupal *block* is something else, a box placed on the page, closer to a WordPress widget (see the box in Chapter 1). And in Drupal, structured content such as a hike usually isn't laid out by hand at all: it has fields, and the content type's display decides how every hike looks.
+
+## On Drupal CMS
+
+Give the hike the same display on the Drupal CMS site: everything in "How content is displayed" works the same way there, on the same tabs. Put the facts first, with **Inline** labels, and the description last with its label hidden; one decimal for the distance; the hike leader without a link; and the **Day, date and time** format for the date, which you add under **Configuration** > **Region and language** > **Date and time formats**, as above.
+
+![The Manage display tab of Hike on Drupal CMS: Date, Meeting place, Distance, Difficulty and Hike leader with inline labels, then Description with its label hidden](images/08-cms-hike-display.png)
+*Figure 8.35: Hike's Default display on Drupal CMS*
+
+Two things are different.
+
+- **Card is already there.** Drupal CMS comes with a view mode called **Card**, for its Utility pages, so don't add another one: on Hike's **Manage display**, select **Enable** for **Card**, and set it up as above, with Date and Difficulty only, labels hidden. **Teaser** works as above, and so does the Try it for News's teaser, with **Content** in place of Body.
+- **Mercury shows the labels on their own line**, even when they're set to **Inline**. The setting is saved, and a theme that supports it, such as Olivero, shows the label and the value side by side; Mercury doesn't. That's the theme's decision, not the display's, and the companion book, *Theming Drupal*, shows how to change it.
+
+![The Turnhouse Hill hike on the Drupal CMS site: the facts first, the date as Saturday, 21 November 2026 at 09:30, 11.5 km, each label on its own line above the value, and the description last](images/08-cms-hike-after.png)
+*Figure 8.36: The hike on Drupal CMS, facts first*
+
+Layout Builder is installed on Drupal CMS too, but there we leave page layouts to Canvas: *How to join* stays a Utility page, and the Welcome page from the Canvas walkthrough above is the club's front page.
 
 ## Summary
 
@@ -331,7 +355,7 @@ You can now:
 5. *(challenge)* Make the hike page look like the picture below: the description on the left, and the facts in a column on the right, with their labels above. Don't turn on Layout Builder for Hike's **Default** display: Drupal would move every field we set up in this chapter to **Disabled**, and they don't come back when you turn it off again. Instead, **Enable** the **Full content** view mode for Hike (it starts as a copy of Default), and turn on Layout Builder there. The hike page uses Full content as soon as it's enabled. When you're done, select **Disable** for Full content (under the arrow next to **Manage**), and the hike page goes back to the Default display, untouched.
 
 ![The Turnhouse Hill hike in two columns: the description on the left, and Date, Meeting place, Distance, Difficulty and Hike leader on the right, each with its label above](images/08-exercise-hike-layout.png)
-*Figure 8.34: Make it look like this*
+*Figure 8.37: Make it look like this*
 
 ## Want to know more?
 

@@ -243,7 +243,7 @@ Drupal CMS is installed the same way, with a different project. We build the clu
 
 2. Run `ddev launch`. Drupal CMS has its own installer, with three screens.
 
-%% Screenshots and the text below are from Drupal CMS 2.2.8, on Drupal 11.4 (2026-11-04). Check the project type, the screens and the template list before publication. %%
+%% Screenshots and the text below are from Drupal CMS 2.2.9, on Drupal 11.4.12 (2026-11-14; taken by `tools/screenshots.py 04-cms`, from an empty database). Check the project type, the screens and the template list before publication. %%
 
 ![Drupal CMS installer, Give your site a name](images/04-cms-give-your-site-a-name.png)
 *Figure 4.6: Drupal CMS's installer starts with the site's name*
@@ -258,7 +258,7 @@ Drupal CMS is installed the same way, with a different project. We build the clu
 ![Drupal CMS installer, Create your account, with email, password and time zone](images/04-cms-create-your-account.png)
 *Figure 4.8: Creating the administrator account*
 
-**Create your account.** Notice the difference from core's installer: Drupal CMS asks for an **Email** instead of a username, and you log in with your email address. Type `admin@lens-and-trail-cms.ddev.site`, the password `12345` (the same warning applies), and choose **London** as the **Default time zone**. Select **Finish**.
+**Create your account.** Notice the difference from core's installer: Drupal CMS asks for an **Email** instead of a username, and you log in with your email address. Type `admin@lens-and-trail-cms.ddev.site` and the password `12345` (the same warning applies). There's no question about the time zone here: Drupal CMS sets one for you, and you can check it under **Configuration** > **Region and language** > **Regional settings**, as we do for the core site in Chapter 5. Select **Finish**.
 
 ![Drupal CMS installing, with a progress bar](images/04-cms-finishing-setup.png)
 *Figure 4.9: Drupal CMS installs the site template*

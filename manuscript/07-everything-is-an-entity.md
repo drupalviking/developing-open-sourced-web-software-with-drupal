@@ -245,6 +245,42 @@ The club also needs news: trip reports, competition results, announcements. A ne
 
 > **Coming from WordPress?** What Drupal calls a content type is closest to a WordPress *custom post type*, and Drupal's fields are closest to what the *Advanced Custom Fields* (ACF) plugin adds. The difference is where they come from. WordPress core registers custom post types in code, with `register_post_type()`, usually in a plugin, and its own custom fields are free-form pairs of a name and a value, hidden in the block editor until you turn them on, and shown on the site through the theme's code. That's why so many WordPress sites use ACF, which has field groups, more than 30 field types, and lately a screen for post types too. In Drupal, all of this is part of core, in the administration interface: content types, typed fields that Drupal checks, widgets for the form, and, as you'll see in Chapter 8, display settings for every field.
 
+## On Drupal CMS
+
+Build Hike and News on the Drupal CMS site too. Nearly everything is the same as above, on the same tabs, so here's only what's different.
+
+**The content type.** Add Hike as above, with the same name, description, **Display settings** and **Menu settings**. The form has two more tabs, for modules Drupal CMS adds: **Simple XML Sitemap**, which we look at in Chapter 17, and **Scheduler**, from the box in Chapter 6. Leave them as they are.
+
+**The description.** There's no Body field to re-use on Drupal CMS: Utility page calls its body **Content**. Select **Re-use an existing field**, and the window lists all of Utility page's fields.
+
+![The Re-use an existing field window on Drupal CMS, with field_featured_image, field_seo_image, field_tags, field_content, field_description, field_seo_description and field_seo_analysis, each used in Utility page](images/07-cms-reuse-field.png)
+*Figure 7.15: The fields to re-use on Drupal CMS*
+
+Two of them are **Long text**: `field_content` and `field_description`. Which one is the hike's description? Think of the rule of thumb from "Re-using the Body field": re-use a field when it holds the same kind of information. `field_content` is the text of the page, as Body is on core. `field_description` has the same type, but it holds something else: the short summary that search engines show. So re-use `field_content`, and give it the same **Label**, `Description`, and **Help text** as on core.
+
+That makes one machine name different on the two sites: a hike's description is `field_body` on the core site, and `field_content` on the Drupal CMS site. For everything else in this book, both sites use the same machine names, so the hike's own fields are named exactly as above.
+
+**The hike's own fields** are the same five, with the same settings, and **Manage form display** is arranged the same way.
+
+![The Manage fields tab of Hike on Drupal CMS, with Date, Description (field_content), Difficulty, Distance, Hike leader and Meeting place](images/07-cms-hike-fields.png)
+*Figure 7.16: Hike's fields on Drupal CMS*
+
+**Drafts for hikes.** The workflow is called **Basic editorial** here. Go to **Configuration** > **Workflow** > **Workflows**, **Edit** Basic editorial, and add Hike to it, as above.
+
+**The first hike.** Do the Try it in "Writing the first hike". Under **URL alias**, you'll find **Generate automatic URL alias** turned on: Drupal CMS has a Pathauto pattern, called **Menu Path**, that applies to all content, and it would give the hike the address `/turnhouse-hill-carnethy-hill`. Turn it off, and type `/hikes/turnhouse-hill`. In Chapter 17, hikes get a pattern of their own.
+
+![The form for a new hike on Drupal CMS, in Gin: the Turnhouse Hill hike filled in, Difficulty as radio buttons, the description last, and the URL alias /hikes/turnhouse-hill with Generate automatic URL alias turned off](images/07-cms-hike-form.png)
+*Figure 7.17: The first hike, on Drupal CMS*
+
+![The Turnhouse Hill hike on the Drupal CMS site, in Mercury: the description, then each field's label on its own line above the value, and 11.50 km](images/07-cms-hike-page.png)
+*Figure 7.18: The first hike, as Mercury shows it for now*
+
+Mercury shows the hike much as Olivero does in Figure 7.12: the description first, a label above each value, and two decimals in the distance. Chapter 8 fixes that on both sites.
+
+**Permissions.** **Manage permissions** works the same. Drupal CMS has the same four roles as core: Anonymous user, Authenticated user, Content editor and Administrator.
+
+**News.** Do the Try it for News, re-using `field_content` instead of Body. Drupal fills in the settings from Hike, so change the **Label** back to `Content`, and empty the **Help text**. Add News to Basic editorial, and write *The club has a website*, published.
+
 ## Summary
 
 You can now:
@@ -255,7 +291,8 @@ You can now:
 - re-use a field on another content type, and know which of its settings are shared;
 - add text, number, list, date and reference fields, with help texts and checks;
 - arrange the form for editors, and choose a widget for each field;
-- find the permissions that belong to a content type.
+- find the permissions that belong to a content type;
+- build the same content types on Drupal CMS, and choose which of its fields to re-use.
 
 ## Exercises
 

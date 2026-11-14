@@ -162,6 +162,22 @@ Open the site's address in a private browser window, where you're not logged in.
 ![The site seen by a visitor: Lens & Trail with its slogan, a Log in link, and Access denied](images/05-logged-out.png)
 *Figure 5.7: The site, as a visitor sees it*
 
+## On Drupal CMS
+
+From this chapter on, each chapter ends with a section like this one: it does the same work on the Drupal CMS site from Chapter 4, so that by the end of the book you have the club's site twice, once on Drupal core and once on Drupal CMS. The sections show what's different, and send you back to the steps above for what's the same. If you didn't install Drupal CMS, you can skip them all, and come back to them whenever you like.
+
+The two settings pages are the same pages on Drupal CMS, in Gin's colors.
+
+1. Go to **Configuration** > **System** > **Basic site settings**. The **Site name** is the one you typed in the installer, `Lens & Trail`. The **Email address** isn't: the installer didn't ask for one, so Drupal CMS used your account's address. Change it to `hello@lens-and-trail-cms.ddev.site`, type the same **Slogan**, `Photos and hikes around Edinburgh`, and select **Save configuration**.
+2. Go to **Configuration** > **Region and language** > **Regional settings**. Set **Default country** to **United Kingdom** and **First day of week** to **Monday**. **Default time zone** is already **London**. Select **Save configuration**.
+
+Now look at the Drupal CMS site in a private window.
+
+![The Drupal CMS site seen by a visitor: Mercury's own logo, a Home link, and a hero with placeholder text and a Call to action button](images/05-cms-visitor.png)
+*Figure 5.8: The Drupal CMS site, as a visitor sees it*
+
+There's no Access denied here: the front page is a page called **Home**, with placeholder text ("Your hero content goes here") and a button. And there's no Lens & Trail either, nor the slogan. The top of the page shows the logo of Mercury, Drupal CMS's theme, and nothing else: Mercury's header leaves out the site's name and slogan. The settings are saved all the same: the site's name is in the browser's tab, and a theme that shows the slogan, such as Olivero, would show it. We turn Home into the club's Welcome page in Chapter 8, and give the site the club's logo in Chapter 16.
+
 ## Summary
 
 You can now:

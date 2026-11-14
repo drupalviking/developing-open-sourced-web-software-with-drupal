@@ -200,14 +200,16 @@ def layout_builder_steps(page: Page, site: dict, snap) -> None:
 
 
 def canvas_steps(page: Page, site: dict, snap) -> None:
-    """Chapter 8's Canvas steps, on a new Canvas page, deleted afterwards."""
+    """Chapter 8 on Drupal CMS: the hike's displays (as on core), then the Canvas walkthrough, which turns Drupal CMS's
+    Home page into the club's Welcome page. From ch07-cms-done to ch08-cms-done."""
     url = site["url"]
-    page.goto(url + "/admin/content/pages")
-    page.click("a:has-text('Add Page')")
-    page.wait_for_load_state("networkidle")
-    page.wait_for_timeout(6000)
-    editor = page.url
-    page_id = editor.rstrip("/").split("/")[-1]
+    cms_restore(page, site, "ch07-cms-done")
+    cms_shot_page(page, "/admin/structure/types/manage/page/display", "08-cms-utility-page-display", snap)
+    cms_replay(site, "ch08_displays")
+    cms_shot_page(page, "/admin/structure/types/manage/hike/display", "08-cms-hike-display", snap)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "08-cms-hike-after")
+
+    editor = url + "/canvas/editor/canvas_page/1"
 
     def reload() -> None:
         # Scale to fit zooms the preview; a fresh load puts it back at 100%,
@@ -225,28 +227,19 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         page.click("[data-testid='scale-to-fit']")
         page.wait_for_timeout(1500)
 
-    def drag(name: str, x: float, y: float) -> None:
+
+    def insert(name: str) -> None:
+        """Right-click a component in the Library, and Insert: it goes after the selected component."""
         open_panel("Library", "Components")
-        box = page.get_by_text(name, exact=True).first.bounding_box()
-        page.mouse.move(box["x"] + 20, box["y"] + 8)
-        page.mouse.down()
-        for i in range(1, 25):
-            page.mouse.move(box["x"] + 20 + (x - box["x"] - 20) * i / 24, box["y"] + 8 + (y - box["y"] - 8) * i / 24)
-            page.wait_for_timeout(40)
-        page.wait_for_timeout(700)
-        page.mouse.up()
+        item = page.get_by_text(name, exact=True).first
+        item.scroll_into_view_if_needed()
+        item.click(button="right")
+        page.wait_for_timeout(600)
+        page.get_by_role("menuitem", name="Insert").click()
         page.wait_for_timeout(3500)
 
-    def in_preview(selector: str, last: bool = False) -> dict:
-        for frame in page.frames[1:]:
-            boxes = [frame.locator(selector).nth(i).bounding_box() for i in range(frame.locator(selector).count())]
-            boxes = [b for b in boxes if b and b["width"] > 0]
-            if boxes:
-                return boxes[-1] if last else boxes[0]
-        raise RuntimeError(f"{selector} not found in the Canvas preview")
-
     def set_field(suffix: str, value: str) -> None:
-        field = page.locator(f"input[name$='{suffix}']")
+        field = page.locator(f"input[name$='{suffix}'], textarea[name$='{suffix}']").first
         field.fill(value)
         field.press("Tab")
         page.wait_for_timeout(1500)
@@ -257,6 +250,11 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
         page.keyboard.press("End")
         page.wait_for_timeout(2500)
 
+    def layer(row: str) -> None:
+        open_panel("Layers", "Mercury theme")
+        page.get_by_text(row, exact=True).first.click()
+        page.wait_for_timeout(2500)
+
     def layer_menu(row: str, *path: str) -> None:
         open_panel("Layers", "Mercury theme")
         page.get_by_text(row, exact=True).first.click(button="right")
@@ -265,77 +263,103 @@ def canvas_steps(page: Page, site: dict, snap) -> None:
             page.get_by_role("menuitem", name=item).hover()
             page.wait_for_timeout(700)
 
-    try:
-        set_field("title[0][value]", "How to join")
-        alias = page.locator("input[name='path[0][alias]']")
-        alias.fill("/join")
-        snap("08-canvas-page-data")
-        # The real How to join already has /join, so the copy gets another alias.
-        alias.fill("/join-screenshot")
-        alias.press("Tab")
-        page.wait_for_timeout(2000)
-        placeholder = page.get_by_text("Place items here").bounding_box()
-        drag("Heading", placeholder["x"] + 40, placeholder["y"] + 5)
-        set_field("[heading_text][0][value]", "How to join")
-        page.select_option("select[name$='[level]']", "1")
-        page.wait_for_timeout(2500)
-        fit()
-        snap("08-canvas-heading")
-        page.get_by_text("Layout", exact=True).first.click()
-        heading = in_preview("h1")
-        drag("Grid", heading["x"] + 150, heading["y"] + heading["height"] - 4)
-        page.select_option("select[name$='[columns]']", "2 columns 67%-33%")
-        page.wait_for_timeout(2500)
-        fit()
-        snap("08-canvas-grid")
-        reload()
-        heading = in_preview("h1")
-        drag("Text", heading["x"] + 500, heading["y"] + heading["height"] + 20)
-        set_rich_text(HOW_TO_JOIN.replace("lens-and-trail.ddev.site", "lens-and-trail-cms.ddev.site"))
-        fit()
-        snap("08-canvas-text")
-        # Dropped below the text, the card lands after the grid; move it in.
-        reload()
-        text = in_preview("p:has-text('Membership')")
-        # Where a drop near the grid lands varies a little: try a few heights
-        # until the card sits after the grid, so "Move into" offers the grid.
-        for dy in (-4, -12, 4, -24, 12):
-            drag("Icon card", text["x"] + 300, text["y"] + text["height"] + dy)
-            open_panel("Layers", "Mercury theme")
-            if not page.get_by_text("Icon card", exact=True).first.is_visible():
-                continue  # The drop missed: try again.
-            layer_menu("Icon card", "Move", "Move into")
-            if page.get_by_role("menuitem", name="Grid (Grid)").count():
-                break
-            page.keyboard.press("Escape")
-            page.wait_for_timeout(500)
-            layer_menu("Icon card")
-            page.get_by_role("menuitem", name="Delete").click()
-            page.wait_for_timeout(2500)
-        else:
-            raise RuntimeError("Couldn't drop the Icon card after the grid")
-        snap("08-canvas-move")
-        page.get_by_role("menuitem", name="Grid (Grid)").click()
-        page.wait_for_timeout(3000)
-        layer_menu("Text", "Move")
-        page.get_by_role("menuitem", name="Move up").click()
-        page.wait_for_timeout(3000)
-        page.get_by_text("Icon card", exact=True).first.click()
-        page.wait_for_timeout(2500)
-        set_field("[icon][0][value]", "calendar-dots")
-        set_field("[text][0][value]", "When and where")
-        page.select_option("select[name$='[text_align]']", "left")
-        page.wait_for_timeout(1500)
-        set_rich_text(MEETING_TIMES)
-        fit()
-        snap("08-canvas-card")
-        page.click("button:has-text('Review')")
-        page.wait_for_timeout(2500)
-        page.get_by_text("Select All").click()
-        page.wait_for_timeout(800)
-        snap("08-canvas-publish")
-    finally:
-        drush_php(site, f'\\Drupal::service("trash.manager")->executeInTrashContext("inactive", fn() => \\Drupal::entityTypeManager()->getStorage("canvas_page")->load({page_id})->delete());')
+    reload()
+    open_panel("Library", "Components")
+    snap("08-canvas-editor")
+    # Page data: the title. The URL alias stays /home: the front page setting points to it.
+    page.get_by_role("tab", name="Page data").click()
+    page.wait_for_timeout(1000)
+    set_field("title[0][value]", "Welcome to Lens & Trail")
+    snap("08-canvas-page-data")
+    # The hero: its heading and text, then its button.
+    layer("Hero CTA")
+    set_field("[heading_text][0][value]", "Welcome to Lens & Trail")
+    set_field("[text][0][value]", "We're a photography and hiking club in Edinburgh. We walk, we take photos, and we share them.")
+    page.wait_for_timeout(1500)
+    snap("08-canvas-hero")
+    layer("Button")
+    set_field("[label][0][value]", "How to join")
+    link = page.locator("input[name$='[href][0][uri]']").first
+    link.fill("/join")
+    link.press("Tab")
+    page.wait_for_timeout(2500)
+    snap("08-canvas-button")
+    # A grid after the hero, with a text and a card in it. Insert (right-click a component in the Library) puts the
+    # new component after the selected one; Move into puts it inside a grid.
+    layer("Hero CTA")
+    insert("Grid")
+    page.select_option("select[name$='[columns]']", "2 columns 67%-33%")
+    page.wait_for_timeout(2500)
+    fit()
+    snap("08-canvas-grid")
+    layer("Grid")
+    insert("Text")
+    layer_menu("Text", "Move", "Move into")
+    snap("08-canvas-move")
+    page.get_by_role("menuitem", name="Grid (Grid)").click()
+    page.wait_for_timeout(3000)
+    layer("Text")
+    set_rich_text(WELCOME_TEXT)
+    fit()
+    snap("08-canvas-text")
+    layer("Text")
+    insert("Icon card")
+    open_panel("Layers", "Mercury theme")
+    layer("Icon card")
+    set_field("[icon][0][value]", "calendar-dots")
+    set_field("[text][0][value]", "When and where")
+    page.select_option("select[name$='[text_align]']", "left")
+    page.wait_for_timeout(1500)
+    set_rich_text(MEETING_TIMES)
+    fit()
+    snap("08-canvas-card")
+    page.click("button:has-text('Review')")
+    page.wait_for_timeout(2500)
+    page.get_by_text("Select All").click()
+    page.wait_for_timeout(800)
+    snap("08-canvas-publish")
+    page.click("button:has-text('Publish')")
+    page.wait_for_timeout(5000)
+    as_visitor(page, site, "/", "08-canvas-welcome")
+    cms_snapshot(site, "ch08-cms-done")
+
+
+def cms09_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 9 on Drupal CMS: the credit fields, the first photo (with Focal Point), the Photo field on Hike and
+    News, and the Gallery content type with its first album. From ch08-cms-done to ch09-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch08-cms-done")
+    cms_replay(site, "ch09_credits")
+    cms_shot_page(page, "/admin/structure/media/manage/image/fields", "09-cms-image-fields", snap)
+    # The first photo, by hand: Focal Point's crosshair appears as soon as the file is uploaded.
+    page.goto(url + "/media/add/image")
+    page.wait_for_load_state("networkidle")
+    page.set_input_files("input[type='file']", str(ROOT / "examples" / "photos" / "turnhouse-hill-glencorse.jpg"))
+    page.wait_for_selector(".focal-point-indicator")
+    page.wait_for_timeout(2000)
+    page.fill("[name='field_media_image[0][alt]']", "Turnhouse Hill seen across Glencorse Reservoir, with a rowing boat at the landing stage")
+    page.fill("[name='name[0][value]']", "Turnhouse Hill across Glencorse Reservoir")
+    page.fill("[name='field_photographer[0][value]']", "dave souza")
+    page.select_option("[name='field_license']", "cc_by_sa_4_0")
+    page.fill("[name='field_source[0][uri]']", "https://commons.wikimedia.org/wiki/File:Glencorse_Reservoir,_Turnhouse_Hill.jpg")
+    page.fill("[name='field_source[0][title]']", "Wikimedia Commons")
+    page.evaluate("window.scrollTo(0, 0)")
+    page.mouse.move(700, 600)
+    search22_tall(page, "09-cms-focal-point")
+    cms_submit(page)
+    cms_replay(site, "ch09_photo_field")
+    as_visitor(page, site, "/hikes/turnhouse-hill", "09-cms-hike-photo")
+    cms_replay(site, "ch09_gallery")
+    album = drush(site, "php:eval", 'echo current(\\Drupal::entityTypeManager()->getStorage("node")->loadByProperties(["title" => "Pentlands, 21 November"]))->toUrl()->toString();').strip()
+    as_visitor(page, site, album, "09-cms-gallery-page")
+    cms_snapshot(site, "ch09-cms-done")
+
+
+WELCOME_TEXT = (
+    "<p>We meet twice a month: once for a hike in the Pentland Hills, along the coast or further into the Highlands, "
+    "and once in a café in Leith to look at each other's photos.</p>"
+    "<p>Read more <a href=\"/about\">about the club</a>, or find out <a href=\"/join\">how to join</a>.</p>"
+)
 
 
 HOW_TO_JOIN = (
@@ -361,15 +385,8 @@ def visitor(path: str):
     return show
 
 
-def canvas_editor(page: Page, url: str) -> None:
-    page.goto(url + "/canvas/editor/canvas_page/2")
-    page.wait_for_timeout(6000)
-    page.click("button[aria-label='Library']")
-    page.wait_for_timeout(1500)
 
 
-def trash(page: Page, url: str) -> None:
-    page.goto(url + "/admin/content/trash")
 
 
 # Chapter 7
@@ -483,23 +500,10 @@ def hike_permissions(page: Page, url: str) -> None:
     page.goto(url + "/admin/structure/types/manage/hike/permissions")
 
 
-def cms_utility_page_fields(page: Page, url: str) -> None:
-    page.goto(url + "/admin/structure/types/manage/page/fields")
 
 
-def cms_utility_page_display(page: Page, url: str) -> None:
-    page.goto(url + "/admin/structure/types/manage/page/display/default")
-    page.wait_for_load_state("networkidle")
-    scroll_to(page, "table")
 
 
-def cms_focal_point(page: Page, url: str) -> None:
-    """Drupal CMS's Add Image form with a photo uploaded (not saved), to show Focal Point."""
-    page.goto(url + "/media/add/image")
-    page.set_input_files("input[type='file']", str(ROOT / "examples" / "photos" / "turnhouse-hill-glencorse.jpg"))
-    page.wait_for_selector(".focal-point-indicator")
-    page.wait_for_timeout(2000)
-    scroll_to(page, ".focal-point-indicator", 250)
 
 
 TURNHOUSE_HILL = (
@@ -1882,9 +1886,6 @@ SHOTS = {
     "06-moderation-state": ("core", moderation_state, True, False),
     "08-layout-builder": ("core", layout_builder, True, False),
     "08-how-to-join": ("core", visitor("/join"), False, False),
-    "08-canvas-editor": ("cms", canvas_editor, True, False, 1600),
-    "08-canvas-how-to-join": ("cms", visitor("/join"), False, False),
-    "06-trash": ("cms", trash, True, False),
     "07-add-hike": ("core", add_hike, True, False),
     "07-add-date": ("core", add_date, True, False),
     "07-date-settings": ("core", date_settings, True, False),
@@ -1896,9 +1897,6 @@ SHOTS = {
     "07-hike-form": ("core", hike_form, True, False),
     "07-hike-page": ("core", visitor("/hikes/turnhouse-hill"), False, True),
     "07-hike-permissions": ("core", hike_permissions, True, False),
-    "07-cms-utility-page-fields": ("cms", cms_utility_page_fields, True, False),
-    "08-cms-utility-page-display": ("cms", cms_utility_page_display, True, False),
-    "09-cms-focal-point": ("cms", cms_focal_point, True, False),
     "10-cms-tags": ("cms", cms_tags, True, False),
 }
 
@@ -5214,7 +5212,284 @@ def meaning23_steps(page: Page, site: dict, snap) -> None:
     snap("23-chatbot")
 
 
+# Chapter 4 on Drupal CMS: the installer. The Drupal CMS site is replayed from here, chapter by chapter
+# (PROJECT-LOG, Decisions: "The club on Drupal CMS, the grilling round"); each chapter's sequence starts
+# from the snapshot the one before it took.
+def cms_snapshot(site: dict, name: str) -> None:
+    """Takes (or replaces) a DDEV snapshot of the Drupal CMS site, with its Composer files next to it."""
+    d = Path(site["dir"])
+    subprocess.run(["ddev", "snapshot", "--cleanup", "--name", name, "-y"], cwd=d, capture_output=True)
+    subprocess.run(["ddev", "snapshot", "--name", name], cwd=d, check=True, capture_output=True)
+    for f in ("composer.json", "composer.lock"):
+        shutil.copy(d / f, d / ".ddev" / f"{name}.{f}")
+
+
+def cms_restore(page: Page, site: dict, name: str) -> None:
+    """Back to a snapshot taken by cms_snapshot, with the Composer files of that moment, and log in again."""
+    d = Path(site["dir"])
+    for f in ("composer.json", "composer.lock"):
+        saved = d / ".ddev" / f"{name}.{f}"
+        if saved.exists() and saved.read_bytes() != (d / f).read_bytes():
+            shutil.copy(saved, d / f)
+            subprocess.run(["ddev", "composer", "install"], cwd=d, check=True, capture_output=True)
+    subprocess.run(["ddev", "snapshot", "restore", name], cwd=d, check=True, capture_output=True)
+    drush(site, "cache:rebuild")
+    page.context.clear_cookies()
+    log_in(page, site)
+
+
+def cms_submit(page: Page, selector: str = "#edit-submit") -> None:
+    """Submits a form in Gin, Drupal CMS's admin theme, which hides the form's own buttons behind a sticky copy."""
+    with page.expect_navigation():
+        page.locator(selector).first.evaluate("e => e.click()")
+    page.wait_for_load_state("networkidle")
+    if page.locator(".messages--error, [data-drupal-messages] .messages--error").count():
+        raise RuntimeError("The form gave an error: " + page.locator(".messages--error").first.inner_text()[:300])
+
+
+def install04_cms_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 4: Drupal CMS's installer, on an empty database (the site's code from `ddev composer create-project
+    drupal/cms`). Ends with the snapshot ch04-cms-done."""
+    url = site["url"]
+    if drush(site, "sql:query", "SHOW TABLES").strip():
+        print("Skipped the Drupal CMS installer: its database isn't empty (empty it to take these again).")
+        return
+    page.goto(url + "/core/install.php")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-site-name", "Lens & Trail")
+    snap("04-cms-give-your-site-a-name")
+    page.click("#edit-submit")
+    page.wait_for_load_state("networkidle")
+    page.locator("label[for='edit-add-ons-drupal-cms-starter'], #edit-add-ons-drupal-cms-starter").first.click(force=True)
+    page.wait_for_timeout(800)
+    snap("04-cms-choose-a-site-template")
+    page.click("input[type=submit]:has-text('Next'), button:has-text('Next')")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[type=email]", site["user"])
+    for field in page.locator("input[type=password]").all():
+        field.fill(site["password"])
+    zone = page.locator("select[name*='timezone'], select[name*='time_zone']")
+    if zone.count():
+        zone.first.select_option("Europe/London")
+    page.wait_for_timeout(800)
+    snap("04-cms-create-your-account")
+    page.click("input[type=submit]:has-text('Finish'), button:has-text('Finish')")
+    page.wait_for_selector(".progress__bar, .progress", timeout=60000)
+    page.wait_for_timeout(8000)
+    snap("04-cms-finishing-setup")
+    page.wait_for_url(lambda u: "install.php" not in u and "batch" not in u, timeout=600000)
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(700, 450)
+    page.wait_for_timeout(3000)
+    snap("04-drupal-cms-dashboard")
+    cms_snapshot(site, "ch04-cms-done")
+
+
+install04_cms_steps.no_login = True
+
+
+def cms05_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 5 on Drupal CMS: the Dashboard, the club's settings, and the site as visitors see it. From ch04-cms-done
+    to ch05-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch04-cms-done")
+    page.goto(url + "/admin/dashboard")
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(700, 450)
+    page.wait_for_timeout(1500)
+    snap("05-dashboard")
+    page.goto(url + "/admin/config/system/site-information")
+    page.fill("#edit-site-mail", "hello@lens-and-trail-cms.ddev.site")
+    page.fill("#edit-site-slogan", "Photos and hikes around Edinburgh")
+    cms_submit(page)
+    page.goto(url + "/admin/config/regional/settings")
+    page.select_option("#edit-site-default-country", "GB")
+    page.select_option("#edit-date-first-day", "1")
+    cms_submit(page)
+    as_visitor(page, site, "/", "05-cms-visitor")
+    cms_snapshot(site, "ch05-cms-done")
+
+
+def cms_set_text(page: Page, html: str, index: int = 0) -> None:
+    """Puts HTML into a CKEditor 5 field on the page (the index-th editor), as if typed."""
+    page.wait_for_function("() => window.Drupal && Drupal.CKEditor5Instances && Drupal.CKEditor5Instances.size > 0")
+    page.evaluate("([html, i]) => [...Drupal.CKEditor5Instances.values()][i].setData(html)", [html, index])
+    page.wait_for_timeout(300)
+
+
+def cms_open_details(page: Page, summary: str) -> None:
+    """Opens a collapsed section (a <details>) of a form, such as Menu settings, if it isn't open yet."""
+    details = page.locator(f"details:has(> summary:has-text('{summary}'))").first
+    if details.get_attribute("open") is None:
+        details.locator("> summary").click()
+        page.wait_for_timeout(400)
+
+
+def cms_page_form(page: Page, url: str, title: str, html: str, description: str, menu: str | None = None, weight: int = 0,
+                  alias: str | None = None, state: str = "published", log: str = "", shot=None) -> int:
+    """Fills in and saves a new Utility page; returns its node ID. shot() runs just before saving."""
+    page.goto(url + "/node/add/page")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-title-0-value", title)
+    page.fill("[name='field_description[0][value]']", description)
+    cms_set_text(page, html)
+    if menu:
+        cms_open_details(page, "Menu settings")
+        page.check("#edit-menu-enabled")
+        page.fill("#edit-menu-title", menu)
+        page.locator("[name='menu[weight]']").fill(str(weight)) if page.locator("input[name='menu[weight]']").count() \
+            else page.select_option("[name='menu[weight]']", str(weight))
+    if alias:
+        cms_open_details(page, "URL alias")
+        page.uncheck("#edit-path-0-pathauto")
+        page.fill("#edit-path-0-alias", alias)
+    if log:
+        page.fill("[name='revision_log[0][value]']", log)
+    page.select_option("[name='moderation_state[0][state]']", state)
+    if shot:
+        page.evaluate("window.scrollTo(0, 0)")
+        page.mouse.move(700, 600)
+        page.wait_for_timeout(500)
+        shot()
+    cms_submit(page)
+    return int(drush(site_of(page), "sql:query", f"SELECT MAX(nid) FROM node_field_data WHERE title = '{title}'").strip())
+
+
+def site_of(page: Page) -> dict:
+    """The site a page is on, from its address."""
+    return next(s for s in SITES.values() if page.url.startswith(s["url"]))
+
+
+CMS06_ABOUT = ("<p>Lens &amp; Trail is a small club for people in and around Edinburgh who like taking photos and going for "
+               "walks, usually at the same time.</p><p>We meet twice a month: once for a hike in the Pentland Hills, along "
+               "the coast or further into the Highlands, and once in a café in town to look at each other's photos over a "
+               "cup of tea.</p><p>Many of our members came to Scotland from Spain and Latin America, so you'll hear as much "
+               "Spanish as English on the trail. Everyone is welcome, whatever camera you have. A phone is fine!</p>")
+CMS06_NIGHT = " We also go out at night now and then, to photograph the city lights from Calton Hill."
+CMS06_FORTY = "<p>The club has around forty members, and new ones join every month.</p>"
+CMS06_JOIN = ("<p>Come along to one of our hikes or photo evenings first, to see whether the club is for you. You don't need "
+              "to tell us in advance.</p><p>If you'd like to become a member, talk to the secretary on the day, or send an "
+              "email to hello@lens-and-trail-cms.ddev.site.</p><p>Membership is £20 a year (£10 for students). It covers "
+              "the room for the photo evenings and the club's insurance for the hikes.</p>")
+
+
+def cms06_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 6 on Drupal CMS: About the club and How to join as Utility pages, a revision, a draft, and the Trash.
+    From ch05-cms-done to ch06-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch05-cms-done")
+    about = cms_page_form(page, url, "About the club", CMS06_ABOUT, "A photography and hiking club in Edinburgh: who we are, and when we meet.", menu="About", weight=1, alias="/about",
+                          shot=lambda: snap("06-cms-utility-form"))
+    cms_page_form(page, url, "How to join", CMS06_JOIN, "How to become a member of Lens & Trail, and what it costs.", menu="Join us", weight=2, alias="/join")
+    # A revision: the night walks.
+    page.goto(f"{url}/node/{about}/edit")
+    cms_set_text(page, CMS06_ABOUT.replace("cup of tea.</p>", "cup of tea." + CMS06_NIGHT + "</p>"))
+    page.fill("[name='revision_log[0][value]']", "Added the night walks.")
+    cms_submit(page)
+    # A draft of the next version, then published from the Latest version tab.
+    page.goto(f"{url}/node/{about}/edit")
+    cms_set_text(page, CMS06_ABOUT.replace("cup of tea.</p>", "cup of tea." + CMS06_NIGHT + "</p>") + CMS06_FORTY)
+    page.fill("[name='revision_log[0][value]']", "Added the number of members. Check the number with the secretary.")
+    page.select_option("[name='moderation_state[0][state]']", "draft")
+    cms_submit(page)
+    page.goto(f"{url}/node/{about}/latest")
+    page.wait_for_load_state("networkidle")
+    page.select_option("[name='new_state']", "published")
+    page.fill("[name='revision_log']", "The secretary checked the number.")
+    cms_submit(page)
+    as_visitor(page, site, "/about", "06-cms-about")
+    # The Trash.
+    barbecue = cms_page_form(page, url, "Summer barbecue", "<p>The club's barbecue at Portobello beach, in July.</p>", "The club's summer barbecue.")
+    page.goto(f"{url}/node/{barbecue}/delete")
+    page.wait_for_load_state("networkidle")
+    cms_submit(page)
+    page.goto(url + "/admin/content/trash")
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(700, 600)
+    page.wait_for_timeout(800)
+    snap("06-trash")
+    cms_snapshot(site, "ch06-cms-done")
+
+
+def cms_replay(site: dict, *steps: str) -> None:
+    """Runs steps of tools/cms-replay.php on the Drupal CMS site (copied into it: DDEV's container sees only the site)."""
+    target = Path(site["dir"]) / "web" / "cms-replay.php"
+    photos = Path(site["dir"]) / "web" / "cms-replay-photos"
+    shutil.copy(ROOT / "tools" / "cms-replay.php", target)
+    shutil.copytree(ROOT / "examples" / "photos", photos, dirs_exist_ok=True)
+    try:
+        drush(site, "php:script", "cms-replay.php", "--", *steps)
+    finally:
+        target.unlink()
+        shutil.rmtree(photos)
+
+
+def cms_shot_page(page: Page, path: str, name: str, snap=None, tall: bool = False) -> None:
+    """An admin page in Gin, with the mouse out of the way."""
+    page.goto(site_of(page)["url"] + path)
+    page.wait_for_load_state("networkidle")
+    page.mouse.move(700, 600)
+    page.wait_for_timeout(1000)
+    search22_tall(page, name) if tall else snap(name)
+
+
+def cms07_steps(page: Page, site: dict, snap) -> None:
+    """Chapter 7 on Drupal CMS: Hike (re-using Content as Description) and News, and the first hike.
+    From ch06-cms-done to ch07-cms-done."""
+    url = site["url"]
+    cms_restore(page, site, "ch06-cms-done")
+    cms_shot_page(page, "/admin/structure/types/manage/page/fields", "07-cms-utility-page-fields", snap)
+    cms_replay(site, "ch07_hike_type")
+    page.goto(url + "/admin/structure/types/manage/hike/fields")
+    page.wait_for_load_state("networkidle")
+    page.click("text=Re-use an existing field")
+    page.wait_for_selector(".ui-dialog")
+    page.wait_for_timeout(2000)
+    snap("07-cms-reuse-field", ".ui-dialog")
+    page.locator(".ui-dialog tr", has_text="field_content").locator("input, button").first.click()
+    page.wait_for_url("**/node.hike.field_content")
+    page.wait_for_load_state("networkidle")
+    page.fill("input[name='label']", "Description")
+    page.fill("textarea[name='description']", "What the hike is like: the route, the views, and what to bring.")
+    cms_submit(page, "input[value='Save settings']")
+    cms_replay(site, "ch07_hike_fields")
+    cms_shot_page(page, "/admin/structure/types/manage/hike/fields", "07-cms-hike-fields", snap)
+    # The first hike.
+    page.goto(url + "/node/add/hike")
+    page.wait_for_load_state("networkidle")
+    page.fill("#edit-title-0-value", "Turnhouse Hill and Carnethy Hill")
+    page.fill("[name='field_date[0][value][date]']", "2026-11-21")
+    page.fill("[name='field_date[0][value][time]']", "09:30:00")
+    page.fill("[name='field_meeting_place[0][value]']", "Flotterstone car park")
+    page.fill("[name='field_distance[0][value]']", "11.5")
+    page.check("input[name='field_difficulty'][value='moderate']")
+    page.select_option("[name='field_hike_leader']", "1")
+    cms_set_text(page, "<p>Two of the best-known tops in the Pentland Hills, with views over Edinburgh and the Firth of Forth "
+                       "on a clear day. We climb steadily from Flotterstone to Turnhouse Hill, follow the ridge to Carnethy "
+                       "Hill, and come back down through the glen.</p><p>Bring boots, a waterproof jacket, something warm, "
+                       "lunch, and your camera. The path is steep in places and can be muddy.</p>")
+    cms_open_details(page, "URL alias")
+    automatic = page.locator("#edit-path-0-pathauto")
+    if automatic.count() and automatic.is_checked():
+        automatic.uncheck()
+    page.fill("#edit-path-0-alias", "/hikes/turnhouse-hill")
+    page.select_option("[name='moderation_state[0][state]']", "published")
+    page.evaluate("window.scrollTo(0, 0)")
+    page.mouse.move(700, 600)
+    search22_tall(page, "07-cms-hike-form")
+    cms_submit(page)
+    as_visitor(page, site, "/hikes/turnhouse-hill", "07-cms-hike-page")
+    cms_replay(site, "ch07_news")
+    cms_snapshot(site, "ch07-cms-done")
+
+
 SEQUENCES = [
+    ("cms", install04_cms_steps, 1440, ["04-cms-give-your-site-a-name", "04-cms-choose-a-site-template", "04-cms-create-your-account", "04-cms-finishing-setup", "04-drupal-cms-dashboard"]),
+    ("cms", cms05_steps, 1440, ["05-dashboard", "05-cms-visitor"]),
+    ("cms", cms06_steps, 1440, ["06-cms-utility-form", "06-cms-about", "06-trash"]),
+    ("cms", cms07_steps, 1440, ["07-cms-utility-page-fields", "07-cms-reuse-field", "07-cms-hike-fields", "07-cms-hike-form", "07-cms-hike-page"]),
+    ("cms", canvas_steps, 1600, ["08-cms-utility-page-display", "08-cms-hike-display", "08-cms-hike-after", "08-canvas-editor", "08-canvas-page-data", "08-canvas-hero", "08-canvas-button", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-welcome", "08-canvas-publish"]),
+    ("cms", cms09_steps, 1440, ["09-cms-image-fields", "09-cms-focal-point", "09-cms-hike-photo", "09-cms-gallery-page"]),
     ("core", search22_core_steps, 1280, ["22-extend", "22-add-server", "22-add-index", "22-add-fields", "22-fields", "22-processors", "22-index-view", "22-add-view", "22-fulltext-filter", "22-search-results", "22-search-index-display", "22-es-buscar", "22-search-box", "22-autocomplete"]),
     ("cms", search22_cms_steps, 1440, ["22-cms-recommended", "22-cms-facet-settings", "22-cms-facets"]),
     ("cms", meaning23_steps, 1440, ["23-ai-server", "23-ai-index", "23-find-a-hike", "23-agent", "23-agent-tool", "23-assistant", "23-chatbot"]),
@@ -5268,7 +5543,6 @@ SEQUENCES = [
     ("core", taxonomy_themes_steps, 1280, ["10-themes-field-settings", "10-media-themes", "10-photo-themes"]),
     ("core", modules_steps, 1280, ["11-extend-diff", "11-revisions-compare", "11-diff", "11-project-browser", "11-pb-commands", "11-module-filter", "11-pb-recipes", "11-reuse-comment", "11-gallery-comments"]),
     ("cms", cms_modules_steps, 1280, ["11-cms-pb-install", "11-cms-pb-installed", "11-cms-devel-generate", "11-cms-generated"]),
-    ("cms", canvas_steps, 1600, ["08-canvas-page-data", "08-canvas-heading", "08-canvas-grid", "08-canvas-text", "08-canvas-move", "08-canvas-card", "08-canvas-publish"]),
 ]
 
 
@@ -5330,7 +5604,8 @@ def main(wanted: list[str]) -> int:
             site = SITES[site_name]
             context = browser.new_context(viewport={"width": width, "height": 1000}, device_scale_factor=2, ignore_https_errors=True)
             page = context.new_page()
-            log_in(page, site)
+            if not getattr(steps, "no_login", False):
+                log_in(page, site)
             try:
                 steps(page, site, lambda name, element=None: save(page, name, element=element))
             except Exception:

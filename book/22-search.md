@@ -366,6 +366,8 @@ The search box goes in the header, which on Drupal CMS is a Canvas page template
 ![The Mercury theme page template in Canvas: Exposed form: search-search selected in Layers, under CTAs after the Language switcher, and in the preview a search box with a Search button at the right of the menu and the switcher](images/22-cms-search-box.png)
 *Figure 22.18: The search box, in the page template's header*
 
+One more setting, in the view. The recipe's block sends its form to the address `search`, without a slash in front. From the front page that's `/search`, but from a hike page it's `/hikes/search`, which doesn't exist, and the visitor gets *Page not found*. Edit the **Search** view, select the recipe's block display, **Search**, and under **Advanced** > **Other**, set **Link display** to **Page** (for **All displays**), as for the block on core. Now the box sends visitors to the page at `/search` from every page, and to `/es/search` in Spanish.
+
 It works in both languages: `/es/search` gives Spanish results.
 
 ## Bigger search engines

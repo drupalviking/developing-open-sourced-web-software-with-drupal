@@ -1,0 +1,25 @@
+diff --git a/modules/search_api_db/search_api_db.info.yml b/modules/search_api_db/search_api_db.info.yml
+index 488636faae01a3fa7db8c3ec4564ef334f42bfc8..f329548742751311bfa2582fb7844e2ae42b905d 100644
+--- a/modules/search_api_db/search_api_db.info.yml
++++ b/modules/search_api_db/search_api_db.info.yml
+@@ -2,6 +2,6 @@ type: module
+ name: Database Search
+ description: Offers an implementation of the Search API that uses database tables for indexing content.
+ package: Search
+-core_version_requirement: ^10.2 || ^11
++core_version_requirement: ^10.2 || ^11 || ^12
+ dependencies:
+   - search_api:search_api
+diff --git a/modules/search_api_db/search_api_db_defaults/search_api_db_defaults.info.yml b/modules/search_api_db/search_api_db_defaults/search_api_db_defaults.info.yml
+index 22d0a35605f6e3f4a5ee2f26c7b343010328a0c5..e4de5d6530feeb8eb60127bea2f63d2b9a7ec58f 100644
+--- a/modules/search_api_db/search_api_db_defaults/search_api_db_defaults.info.yml
++++ b/modules/search_api_db/search_api_db_defaults/search_api_db_defaults.info.yml
+@@ -2,7 +2,7 @@ type: module
+ name: Database Search Defaults
+ description: Enable this module for a best-practice default setup of Search API with the Database backend. After installation it is recommended to uninstall this module again for performance reasons. The provided configuration will not be removed.
+ package: Search
+-core_version_requirement: ^10.2 || ^11
++core_version_requirement: ^10.2 || ^11 || ^12
+ dependencies:
+   - drupal:comment
+   - drupal:field

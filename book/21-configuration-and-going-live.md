@@ -220,7 +220,40 @@ The simple answer is to uninstall development modules before you export. The usu
 >
 > `composer install --no-dev` installs exactly the versions in `composer.lock`, without the `require-dev` list (Chapter 11). `drush deploy` then runs the database updates, imports the configuration, and clears the caches, in the right order. `drush config:import` (or `cim`) on its own imports the configuration, after showing the same list of changes as the Synchronize page, and asks before it goes ahead. How the code gets to the server, and who runs these commands, depends on the host: many run them for you every time you push to Git.
 
-> **On Drupal CMS:** Configuration works the same way: the same pages, the same commands. Recipes (Chapter 11) don't change that. A recipe is a way to *install* configuration; once it's applied, what it made is ordinary configuration, and it's exported like everything else. Two things to know before a Drupal CMS site goes live. Automatic Updates (Chapter 20) needs a server where the site can write to its own code, which doesn't fit with code that only comes from Git, so pick one way of updating. And if you followed Chapter 19, the folder `.easy_encryption/` has the private key for your AI provider's key: it isn't in the configuration, and it must not be in Git, so it has to be put on the live server separately.
+## On Drupal CMS
+
+Configuration works the same way on Drupal CMS: the same files, the same pages and the same commands. There's one thing to do first, though, because Drupal CMS leaves it out.
+
+### Configuration Manager
+
+The **Configuration synchronization** pages come from a core module, **Configuration Manager**, and Drupal CMS doesn't install it: it's in the code, but switched off. Go to **Extend**, check **Configuration Manager**, and select **Install**.
+
+![The Extend page on Drupal CMS, with Configuration Manager checked: Allows importing and exporting configuration changes](images/21-cms-extend-config.png)
+*Figure 21.10: Configuration Manager, which Drupal CMS doesn't install*
+
+Now **Configuration** > **Development** > **Configuration synchronization** is there, with the same **Export**, **Import** and **Single item** tabs as on core. Set the sync folder outside `web/` in `settings.php`, as in the *Try it* above: Drupal CMS's `settings.php` has the same commented-out line, and DDEV the same fallback.
+
+### Elevation gain on the Drupal CMS site
+
+Add the hike leaders' field to Hike on the Drupal CMS site too, as above: **Number**, **Integer**, label `Elevation gain`, **Minimum** `0`, **Suffix** ` m`. On **Manage form display** and **Manage display**, drag it under **Distance**, so it sits with the other numbers; on the **Teaser** display too, which the Hikes page (Chapter 12) uses.
+
+![Manage fields of Hike on Drupal CMS: Area, Date, Description, Difficulty, Distance, Elevation gain (Integer), Hike leader, Meeting place and Photo](images/21-cms-hike-fields.png)
+*Figure 21.11: Elevation gain, on the Drupal CMS site's Hike*
+
+Then export, as above. On our Drupal CMS site, the full archive has 972 files, more than twice as many as core's. Drupal CMS installs more: Canvas, its components and templates, the SEO tools, the AI Assistant, the automations. They're all configuration, and they all go along.
+
+We don't make a live copy of the Drupal CMS site: everything from *A second copy of the site* to *The language collection* works the same, and you've done it once. If you'd like to try it, copy the project in the same way, with `lens-and-trail-cms` in place of `lens-and-trail`.
+
+### What's configuration on a Drupal CMS site
+
+Two things on the Drupal CMS site are on the other side of the line from where you might put them.
+
+- **The Canvas pages are content.** The Welcome page is a Canvas page, like a hike is a node: it isn't exported, and an import doesn't touch it. Editors change it on the live site, as they change a hike.
+- **The page template is configuration.** The header and footer we built in Canvas's **Mercury theme** page template (Chapter 14), with the club's details, Join the club and the language switcher, are one configuration item, `canvas.page_variant.theme_mercury`. The same goes for the content templates that show a hike or a Basic page (Chapter 8), and for the components you make in Canvas's code editor. On core, the text of the *Join the club* block is content, and the live site's version is safe from an import. On Drupal CMS, the footer's text is configuration: if the secretary changes the membership fee in the footer on the live site, the next import puts back whatever is on your computer. Change the page template on your computer, and move it like any other configuration, or check **removed** and **changed** carefully before every import.
+
+Recipes (Chapter 11) don't change any of this. A recipe is a way to *install* configuration; once it's applied, what it made is ordinary configuration, and it's exported like everything else.
+
+Two more things to know before a Drupal CMS site goes live. Automatic Updates (Chapter 20) needs a server where the site can write to its own code, which doesn't fit with code that only comes from Git, so pick one way of updating. And if you followed Chapter 19, the folder `.easy_encryption/` has the private key for your AI provider's key: it isn't in the configuration, and it must not be in Git, so it has to be put on the live server separately.
 
 ## Going live: a checklist
 
@@ -252,7 +285,7 @@ On the live site, before you tell anyone:
 - **Caching** on: on **Configuration** > **Development** > **Performance** (`/admin/config/development/performance`), the **Browser and proxy cache maximum age** is *no caching* while you build. On the live site, pick a time, such as 15 minutes: visitors' browsers and the host's caches keep pages that long. Leave **Aggregate CSS files** and **Aggregate JavaScript files** on.
 
 ![The Performance page: Clear all caches, Browser and proxy cache maximum age set to no caching, and Aggregate CSS and JavaScript files on](images/21-performance.png)
-*Figure 21.10: Caching for the live site*
+*Figure 21.12: Caching for the live site*
 
 ### Domain, HTTPS, email, and cron
 
@@ -264,7 +297,7 @@ Four things that only exist on a real server. Ask the host about each:
 - **Cron.** Drupal has jobs that run every now and then: checking for updates, cleaning up, indexing. Out of the box, **Automated Cron** runs them every three hours, when someone visits the site. On a live site it's better to have the server start them on a schedule. **Configuration** > **System** > **Cron** (`/admin/config/system/cron`) shows the address that starts cron from outside the site: give it to the host's scheduled tasks, or ask them to run `drush cron`, every hour or so. Keep that address to yourself: anyone who has it can start cron.
 
 ![The Cron page: Run cron, the last run, the address to run cron from outside the site, and Run cron every 3 hours](images/21-cron.png)
-*Figure 21.11: Cron, and the address to run it from outside*
+*Figure 21.13: Cron, and the address to run it from outside*
 
 ### After launch
 

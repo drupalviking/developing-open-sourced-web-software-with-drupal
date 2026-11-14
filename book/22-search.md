@@ -356,12 +356,17 @@ The recipe's Search view has only a block, which a Canvas page shows. Facets don
 
 Search for `pentland` at `/search`:
 
-![The search page on Drupal CMS with pentland in the box: the Area, Content type and Difficulty facets as checkboxes with counts, such as Hike (2) and Moderate (1), and five results with excerpts](images/22-cms-facets.png)
+![The search page on Drupal CMS with pentland in the box: the Area, Content type and Difficulty facets as checkboxes with counts, such as Hike (2) and Moderate (1), and six results with excerpts](images/22-cms-facets.png)
 *Figure 22.17: Facets on Drupal CMS*
 
 Check *Moderate* under Difficulty, and the results, and the counts in the other facets, change to match.
 
-The search box goes in the header, which on Drupal CMS is a Canvas page template (Chapter 14). Open Canvas, **Templates**, **Mercury theme**, and in the **Library**, find the Search view's exposed form block; drag it into the **Navbar**'s **CTAs** slot, next to the main menu. It works in both languages: `/es/search` gives Spanish results.
+The search box goes in the header, which on Drupal CMS is a Canvas page template (Chapter 14). Open Canvas, **Templates**, **Mercury theme**. In the **Library**, find the Search view's exposed form, **Exposed form: search-search**, and drag it into the **Navbar**'s **CTAs** slot, after the language switcher from Chapter 18. Then **Review** and **Publish**, as in Chapter 14.
+
+![The Mercury theme page template in Canvas: Exposed form: search-search selected in Layers, under CTAs after the Language switcher, and in the preview a search box with a Search button at the right of the menu and the switcher](images/22-cms-search-box.png)
+*Figure 22.18: The search box, in the page template's header*
+
+It works in both languages: `/es/search` gives Spanish results.
 
 ## Bigger search engines
 

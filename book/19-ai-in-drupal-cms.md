@@ -76,7 +76,7 @@ The first time, Klaro asks whether it may **Load service chatbot Deepchat**, whi
 
 ### Filling the Tags vocabulary
 
-Drupal CMS comes with a **Tags** vocabulary (Chapter 10), with a Tags field on its Basic page, and on the club's site it's still empty, apart from a few placeholder terms that Devel Generate made in Chapter 11. Twenty-five tags typed in by hand is a dull half hour. Let's ask:
+Drupal CMS comes with a **Tags** vocabulary (Chapter 10), with a Tags field on its Basic page, and on the club's site it's empty: the placeholder terms that Devel Generate made in Chapter 11 went in Chapter 17. Twenty-five tags typed in by hand is a dull half hour. Let's ask:
 
 > **Try it:** Go to **Structure** > **Taxonomy** > **Tags** > **List**, open the assistant, and type:
 >
@@ -87,7 +87,7 @@ Drupal CMS comes with a **Tags** vocabulary (Chapter 10), with a Tags field on i
 ![The assistant's answer beside the Tags vocabulary: it added 25 tags, and lists them in groups](images/19-cms-chatbot-tags.png)
 *Figure 19.5: Twenty-five tags, in about a minute*
 
-Your answer won't be the same as ours: the model writes a new answer every time. We asked several times, and every time the assistant added 25 terms, in groups that make sense for the club: hiking (Hiking, Coastal Walks, Photo Walks), places (Edinburgh, Pentland Hills, Arthur's Seat), kinds of photography (Landscape, Wildlife, Macro, Street Photography), and club life (Events, Workshops, Club News). The details changed from run to run: once it added the four seasons, once Sunrise and Sunset, once Munros. Some runs noticed the placeholder terms from Devel Generate, and offered to delete them.
+Your answer won't be the same as ours: the model writes a new answer every time. We asked several times, and every time the assistant added 25 terms, in groups that make sense for the club: hiking (Hiking, Coastal Walks, Photo Walks), places (Edinburgh, Pentland Hills, Arthur's Seat), kinds of photography (Landscape, Wildlife, Macro, Street Photography), and club life (Events, Workshops, Club News). The details changed from run to run: once it added the four seasons, once Sunrise and Sunset, once Munros.
 
 ![The Tags vocabulary, with the new terms in alphabetical order](images/19-cms-tags.png)
 *Figure 19.6: The new tags, in the vocabulary*
@@ -157,7 +157,7 @@ The settings are at **Configuration** > **AI** > **AI Image Alt Text** (`/admin/
 
 ## A page from one sentence: Canvas AI
 
-Canvas (Chapter 6) has an AI panel. You describe a page, and Canvas AI builds it from the components your theme has, Mercury's on our site: a hero, cards, a list, buttons.
+Canvas (Chapter 8) has an AI panel. You describe a page, and Canvas AI builds it from the components your theme has, Mercury's on our site: a hero, cards, a list, buttons.
 
 The club needs a page for beginners: what to bring, what happens on the day, and how to join. Let's see what Canvas AI makes of that.
 
@@ -192,7 +192,7 @@ A better prompt gets a better page. Make a second page, and this time give Canva
 >
 > *Create a landing page called First hike with Lens & Trail, for people who have never been on a hike with the club. Use only these facts and do not invent any others: hikes are every other Saturday at 9:30; we email the meeting point a week before to the people who are coming; you don't need to book, just come along; bring boots, a waterproof jacket, a warm layer, food, your camera and a head torch; the path can be steep and muddy; to become a member, talk to the club secretary on the day or email hello@lens-and-trail-cms.ddev.site; membership is £20 a year (£10 for students). No testimonials, no prices other than these, and no images.*
 
-![The second page Canvas AI built, from the prompt with the club's facts: a blue hero with What to bring and How to join buttons, and a section called The basics](images/19-cms-canvas-ai-facts.png)
+![The second page Canvas AI built, from the prompt with the club's facts: a blue hero with How to become a member and What to bring buttons, and a section called What to expect](images/19-cms-canvas-ai-facts.png)
 *Figure 19.14: The same page, with the facts in the prompt*
 
 When we tried it, nothing was invented. What was left to review was ordinary editing, such as, in one of our runs:
@@ -298,16 +298,16 @@ To go back, choose amazee.ai again: nothing else on the site changes.
 
 We asked Claude the same three things we asked amazee.ai at the start of this chapter: the tags, the alternative text for the Portobello photo, and the beginners' page from one sentence. Here's what came back.
 
-**Tags.** Twenty-five terms, in groups much like amazee.ai's: Hiking, Landscape, Wildlife, Night Sky; Munros, Arthur's Seat, Pentland Hills, Coastal Walks; Club Events, Workshops, Beginners; Camera Gear, Safety; and the four seasons. Every point from our review still applies: Title Case, "Workshops" next to "Landscape", the places that belong in Areas. Two things were better. It owned up to a mistake: "The first pass created only 24 tags because of a counting slip, so I added Night Sky to make 25." And it pointed at the next job: it hadn't checked whether the club's content has a Tags field, and offered to.
+**Tags.** In groups much like amazee.ai's: Hiking, Landscape, Wildlife, Street Photography; Edinburgh, Arthur's Seat, Pentland Hills, Munros; Club News, Events, Workshops, Beginners; and the four seasons. Every point from our review still applies: Title Case, "Workshops" next to "Landscape", the places that belong in Areas. In our latest run, it also went wrong in a way worth knowing about. Its first request to the site came back as "unable to solve", so it sent a simpler one; but the first had worked, so the vocabulary ended up with 50 tags, two sets of 25. To its credit, it said so, at the top of its answer: "I added the 25 tags, but the Tags vocabulary now has 50 terms, which is more than you asked for. That was partly my mistake." It noticed that one tag, "Tips & Advice", had its ampersand written in code, and offered to fix both. In an earlier run, it owned up to a smaller slip: "The first pass created only 24 tags because of a counting slip, so I added Night Sky to make 25." An AI that tells you what went wrong is worth a lot, but you only find out by reading its whole answer, and by looking at the vocabulary.
 
-![The assistant's answer beside the Tags vocabulary: it added 25 tags after a counting slip, and lists them in groups](images/19-cms-anthropic-chatbot-tags.png)
+![The assistant's answer beside the Tags vocabulary: it added the 25 tags, but the vocabulary now has 50 terms, which it says was partly its mistake, and it lists the first set](images/19-cms-anthropic-chatbot-tags.png)
 *Figure 19.19: The same question, answered by Claude*
 
-**Alternative text.** "Wide sandy beach curving along a seafront lined with buildings, with calm blue sea and a lone figure on the sand." As good as amazee.ai's, and with the same gap: it doesn't know it's Portobello.
+**Alternative text.** "Wide sandy beach curving along a calm sea, with seafront buildings in the distance under a blue sky." As good as amazee.ai's, and with the same gap: it doesn't know it's Portobello.
 
-**The page from one sentence.** This is where the comparison teaches the most. Claude's page looked as finished as amazee.ai's, and invented as much: walks of **6 to 8 km**, a timetable from **8:30** at the car park to **2:30** back at the trailhead, "your first hike is free", **reserve your place** after you create a profile, dogs on a lead on selected routes, a hike leader who reschedules in bad weather and emails registered members, and three testimonials from members who don't exist. Two of them, Daniel Okafor and Priya Nair, had the same names as in one of amazee.ai's pages. And it wrote "Lens &amp; Trail" in the heading, the title, the URL alias and the meta description, the same as before.
+**The page from one sentence.** This is where the comparison teaches the most. Claude's page looked as finished as amazee.ai's, and invented as much: walks of **6 to 8 km**, a timetable from **8:30** at the car park to **2:30** back at the trailhead, "your first hike is free", **reserve your place** after you create a profile, dogs on a lead on selected routes, a hike leader who reschedules in bad weather and emails registered members, and three testimonials from members who don't exist. Two of them, Daniel Okafor and Priya Nair, had the same names as in one of amazee.ai's pages. In our latest run, it was more honest about it: its summary said that "the quotes and names are invented samples", and that "the schedule times and the free first-hike trial are my own wording. Replace them with the club's real details." Better, but the page was still full of them. And it wrote "Lens &amp; Trail" in the heading, the same as before.
 
-![The Canvas editor with Claude's page: a hero headed First hike with Lens &amp; Trail, and in Page data a title, URL alias and meta description with the same mistake](images/19-cms-anthropic-page.png)
+![The Canvas editor with Claude's page: a hero headed First hike with Lens &amp; Trail with a Join your first hike button, and in the AI panel its summary, with the placeholders it used](images/19-cms-anthropic-page.png)
 *Figure 19.20: A different model, the same invented details and the same ampersand*
 
 So the ampersand is Canvas's mistake, not the model's: with two providers, it's the same. And the invented details aren't one model's bad habit. Every model we tried writes what a page like this usually says, unless you give it the facts. Changing provider changes the wording, the speed and the bill. It doesn't change your job.

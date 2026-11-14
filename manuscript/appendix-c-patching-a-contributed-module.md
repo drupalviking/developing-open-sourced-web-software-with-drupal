@@ -1,7 +1,5 @@
 # Appendix C: Patching a Contributed Module
 
-%% Author: this appendix becomes Appendix C, and the answers move to D, when the chapter list is final (Backlog: renumbering). Until then both files start with "Appendix C". %%
-
 Sooner or later, a module you need doesn't quite work. Maybe it has a bug, maybe it doesn't support your version of Drupal yet. Very often someone has already found the problem, and posted a fix in the module's issue queue (*Where Next?* shows how the queue works), but the maintainers haven't made a release with it yet. This appendix shows how to use such a fix on your site, safely, until the release comes. We use the three fixes Chapter 22 needs on Drupal 12 as the example.
 
 The one rule: **never change a module's files by hand.** Composer put them there, and Composer replaces them the next time you update, or when a colleague runs `composer install` on another computer. Your change would be gone, without a word. Instead, you tell Composer about the change, and it makes the change for you, every time.

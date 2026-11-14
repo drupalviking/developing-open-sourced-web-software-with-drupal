@@ -403,7 +403,7 @@ You can now:
 2. Make the text for no results more helpful: add a link to the hike archive (`/hikes/archive`) for visitors who were looking for a hike, and translate the text into Spanish.
 3. On the core site, switch to Spanish, and search for `embalse`, then for `embalses`. Explain both results with what this chapter says about stemming and partial matching. What would a Spanish visitor have to type to find the hike if the server matched whole words only?
 4. *(challenge)* Make a second block for the Search view, **Search hikes only**, for the hikes page: the box searches only hikes, and the results page shows only hikes. Which filter goes where? Does it need a page display of its own?
-5. *(advanced)* Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it? (The answer is in Appendix C.)
+5. *(advanced)* Visitors who search for `arthur` get both Arthur's Seat hikes, past and future, in order of relevance. Make the upcoming ones come first, without hiding the past ones. Why doesn't **Number field-based boosting** on the hike's date do it? (The answer is in Appendix D.)
 
 ## Want to know more?
 

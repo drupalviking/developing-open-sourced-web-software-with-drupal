@@ -431,8 +431,8 @@ You can now:
 3. Change the depth of the term pages to `0`, and look at *Pentland Hills* again. Then try `-1` on *Turnhouse Hill*: what does a negative depth do?
 4. Make the member's **Hikes** tab list *all* the hikes they lead, past and future, newest first. Which settings must you override for that page only?
 5. *(challenge)* Add a column to the **Photographers** table with the date of each photographer's most recent photo. Which field do you add, and which aggregation type does it need?
-6. *(advanced)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design? (The answer is in Appendix C.)
-7. *(advanced)* Show the number of photos in each album on the albums page, below the hike's date: "Photos: 4". You'll need a relationship and aggregation. What happens to the list when you add the count, and how do you get one row per album back? (The answer is in Appendix C.)
+6. *(advanced)* Show the very next hike on its own, before the list on `/hikes`, with an attachment, and skip it in the list below with the pager's **Offset**. Now choose *Easy* in the exposed filter. What goes wrong, and why? Is there a way out, or would you choose a different design? (The answer is in Appendix D.)
+7. *(advanced)* Show the number of photos in each album on the albums page, below the hike's date: "Photos: 4". You'll need a relationship and aggregation. What happens to the list when you add the count, and how do you get one row per album back? (The answer is in Appendix D.)
 
 ## Want to know more?
 

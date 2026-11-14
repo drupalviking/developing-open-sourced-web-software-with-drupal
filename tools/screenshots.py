@@ -2656,7 +2656,7 @@ def views2_displays_steps(page: Page, site: dict, snap) -> None:
 
 
 def views2_answer_steps(page: Page, site: dict, snap) -> None:
-    """Appendix C, the answer to Exercise 13.6: the next hike in an attachment, the rest with an offset (after views2_more_steps; undone at the end)."""
+    """Appendix D, the answer to Exercise 13.6: the next hike in an attachment, the rest with an offset (after views2_more_steps; undone at the end)."""
     url = site["url"]
     page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
     page.wait_for_load_state("networkidle")
@@ -2687,7 +2687,7 @@ def views2_answer_steps(page: Page, site: dict, snap) -> None:
     page.wait_for_timeout(1000)
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(500)
-    snap("appendix-c-next-hike-attachment")
+    snap("appendix-d-next-hike-attachment")
     # The page skips the hike the attachment shows.
     page.goto(url + "/admin/structure/views/view/hikes/edit/page_1")
     page.wait_for_load_state("networkidle")
@@ -2701,10 +2701,10 @@ def views2_answer_steps(page: Page, site: dict, snap) -> None:
         views_dialog(page, "display/hikes/page_1/pager_options")
     page.fill(".ui-dialog input[name='pager_options[offset]']", "1")
     dialog_scroll_to(page, "input[name='pager_options[offset]']")
-    snap("appendix-c-offset", element=".ui-dialog")
+    snap("appendix-d-offset", element=".ui-dialog")
     views_apply(page)
     views_save(page)
-    as_visitor(page, site, "/hikes?field_difficulty_value=easy", "appendix-c-easy")
+    as_visitor(page, site, "/hikes?field_difficulty_value=easy", "appendix-d-easy")
     # Undo, so the hikes view stays as Chapter 13 leaves it.
     drush_php(site, """$v = \\Drupal\\views\\Entity\\View::load('hikes'); $d = $v->get('display');
 foreach ($d as $id => $x) { if ($x['display_plugin'] == 'attachment' && $id != 'attachment_1') unset($d[$id]); }
@@ -2727,7 +2727,7 @@ $v->set('display', $d); $v->save();""")
 
 
 def views2_album_count_steps(page: Page, site: dict, snap) -> None:
-    """Appendix C, the answer to Exercise 13.7: the number of photos in each album (after views2_albums_steps; undone at the end)."""
+    """Appendix D, the answer to Exercise 13.7: the number of photos in each album (after views2_albums_steps; undone at the end)."""
     url = site["url"]
     views2_album_count_undo(site)
     page.goto(url + "/admin/structure/views/view/albums/edit/page_1")
@@ -2750,15 +2750,15 @@ def views2_album_count_steps(page: Page, site: dict, snap) -> None:
     scroll_to(page, ".view-content")
     page.mouse.move(1200, 600)
     page.wait_for_timeout(800)
-    snap("appendix-c-count-duplicates")
+    snap("appendix-d-count-duplicates")
     # Group the first photo's field by the album instead.
     views_dialog(page, "handler-group/albums/page_1/field/field_photos")
     page.select_option(".ui-dialog select[name='options[group_column]']", "entity_id")
     page.wait_for_timeout(500)
-    snap("appendix-c-group-column", element=".ui-dialog")
+    snap("appendix-d-group-column", element=".ui-dialog")
     views_apply(page)
     views_save(page)
-    as_visitor(page, site, "/galleries", "appendix-c-album-count")
+    as_visitor(page, site, "/galleries", "appendix-d-album-count")
     views2_album_count_undo(site)
 
 
@@ -3393,13 +3393,13 @@ foreach (\\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['t
 
 
 def members15_undo(site: dict) -> None:
-    """Appendix C, Exercise 15.7: remove the Members' corner view and block."""
+    """Appendix D, Exercise 15.7: remove the Members' corner view and block."""
     drush_php(site, """\\Drupal\\views\\Entity\\View::load('members_corner')?->delete();
 foreach (\\Drupal::entityTypeManager()->getStorage('block_content')->loadByProperties(['info' => "Members' corner"]) as $b) { $b->delete(); }""")
 
 
 def members15_steps(page: Page, site: dict, snap) -> None:
-    """Appendix C, the answer to Exercise 15.7: a Members' corner at /members (after the Chapter 15 sequences; undone at the end)."""
+    """Appendix D, the answer to Exercise 15.7: a Members' corner at /members (after the Chapter 15 sequences; undone at the end)."""
     url = site["url"]
     members15_undo(site)
     # The text, in a reusable Basic block that isn't placed anywhere.
@@ -3411,7 +3411,7 @@ def members15_steps(page: Page, site: dict, snap) -> None:
                   "<p><strong>On a hike and running late?</strong> Call or text the secretary: 07700 900123.</p>"
                   "<p>The club's shared album for 2027 is open: ask Morag for the link.</p>")
     page.wait_for_timeout(1000)
-    snap("appendix-c-members-block")
+    snap("appendix-d-members-block")
     page.locator("#edit-actions input[value='Save'], #edit-submit").first.click()
     page.wait_for_load_state("networkidle")
     # A view of content blocks, with a page at /members.
@@ -3442,19 +3442,19 @@ def members15_steps(page: Page, site: dict, snap) -> None:
     views_apply(page)
     page.check(".ui-dialog input[name='access_options[role][member]']")
     page.wait_for_timeout(500)
-    snap("appendix-c-members-access", element=".ui-dialog")
+    snap("appendix-d-members-access", element=".ui-dialog")
     views_apply(page)
     page.mouse.move(1200, 600)
     page.wait_for_timeout(800)
-    snap("appendix-c-members-view")
+    snap("appendix-d-members-view")
     views_save(page)
     context, other = as_user(page, site, "ailsa")
     other.goto(url + "/members")
     other.wait_for_load_state("networkidle")
     other.wait_for_timeout(800)
-    save(other, "appendix-c-members-page")
+    save(other, "appendix-d-members-page")
     context.close()
-    as_visitor(page, site, "/members", "appendix-c-members-denied")
+    as_visitor(page, site, "/members", "appendix-d-members-denied")
     members15_undo(site)
 
 
@@ -5235,17 +5235,17 @@ SEQUENCES = [
     ("cms", themes16_cms_steps, 1440, ["16-cms-appearance", "16-cms-mercury-settings", "16-cms-mercury", "16-cms-olivero", "16-cms-tara", "16-cms-byte"]),
     ("core", themes16_steps, 1280, ["16-appearance", "16-stark", "16-appearance-solo", "16-solo", "16-solo-settings", "16-solo-blocks", "16-uninstall-solo", "16-olivero-global", "16-olivero-color", "16-olivero-logo", "16-olivero-club", "16-admin-theme", "16-default-admin-settings"]),
     ("cms", cms_easy_breadcrumb_steps, 1440, ["14-cms-easy-breadcrumb"]),
-    ("core", members15_steps, 1280, ["appendix-c-members-block", "appendix-c-members-access", "appendix-c-members-view", "appendix-c-members-page", "appendix-c-members-denied"]),
+    ("core", members15_steps, 1280, ["appendix-d-members-block", "appendix-d-members-access", "appendix-d-members-view", "appendix-d-members-page", "appendix-d-members-denied"]),
     ("core", users15_more_steps, 1280, ["15-user-fields", "15-profile", "15-timezones", "15-hike-leader-field", "15-leader-draft", "15-secretary-content", "15-secretary-publish"]),
     ("core", users15_captcha_steps, 1280, ["15-extend-captcha", "15-captcha-points", "15-register-captcha"]),
     ("core", users15_registration_steps, 1280, ["15-account-settings", "15-register", "15-register-done", "15-mailpit", "15-people-blocked", "15-activate", "15-unapproved", "15-bulk-role"]),
     ("core", users15_roles_steps, 1280, ["15-people", "15-add-role", "15-roles", "15-permissions-member", "15-permissions-transitions", "15-permissions-all", "15-add-user", "15-people-after"]),
-    ("core", views2_album_count_steps, 1280, ["appendix-c-count-duplicates", "appendix-c-group-column", "appendix-c-album-count"]),
+    ("core", views2_album_count_steps, 1280, ["appendix-d-count-duplicates", "appendix-d-group-column", "appendix-d-album-count"]),
     ("cms", cms_page_template_steps, 1440, ["14-cms-page-template"]),
     ("core", menus14_steps, 1280, ["14-menus", "14-main-menu", "14-add-link", "14-expanded", "14-dropdown", "14-footer-menu", "14-footer-menu-visitor", "14-breadcrumb"]),
     ("core", blocks14_content_steps, 1280, ["14-block-types", "14-club-info-fields", "14-add-club-info", "14-footer-top", "14-content-blocks", "14-visibility-roles", "14-sidebar-visitor", "14-footer"]),
     ("core", blocks14_steps, 1280, ["14-block-layout", "14-regions", "14-place-block", "14-configure-block", "14-visibility-pages", "14-sidebar"]),
-    ("core", views2_answer_steps, 1280, ["appendix-c-next-hike-attachment", "appendix-c-offset", "appendix-c-easy"]),
+    ("core", views2_answer_steps, 1280, ["appendix-d-next-hike-attachment", "appendix-d-offset", "appendix-d-easy"]),
     ("core", views2_displays_steps, 1280, ["13-add-display", "13-display-actions", "13-views-settings"]),
     ("core", views2_more_steps, 1280, ["13-attachment", "13-archive-attachment", "13-feed", "13-feed-icon", "13-caching", "13-sql"]),
     ("core", views2_contextual_steps, 1280, ["13-term-before", "13-term-view", "13-depth", "13-header-target", "13-term-after", "13-default-argument", "13-hike-albums", "13-menu-tab", "13-user-hikes", "13-summary", "13-archive"]),

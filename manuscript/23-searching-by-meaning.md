@@ -1,6 +1,6 @@
 # Search by Meaning
 
-%% Author: a chapter of its own since the author's review of 2026-11-14 (it was the last part of the Search chapter). It comes after Search and before *Where Next?*: Search is 22, this is 23, *Where Next?* 24, at the renumbering (Backlog). For now it calls itself 23, and calls the Search chapter 22. The file is named so it sorts between them. Screenshots are taken by `tools/screenshots.py 23`, from the finished Drupal CMS site; the last one asks the guide a question, so its answer differs a little each time. %%
+%% Author: a chapter of its own since the author's review of 2026-11-14 (it was the last part of the Search chapter). It comes after Search (22) and before *Where Next?* (24). Screenshots are taken by `tools/screenshots.py 23`, from the finished Drupal CMS site; the last one asks the guide a question, so its answer differs a little each time. %%
 
 The club's search box from Chapter 22 does what a search box should: type "reservoir", and you get the Glencorse hike. But visitors don't always know the words. A new member types what she's after, "an easy walk by the water", and the search looks for pages that contain "easy", "walk" and "water". The Glencorse hike doesn't say "water": it says "reservoir". So it isn't found, though it's exactly what she wants.
 

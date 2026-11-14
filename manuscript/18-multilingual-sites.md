@@ -323,6 +323,12 @@ Install **Canvas Translate** on **Extend**, with the four modules (it needs Lang
 ![The Content language and translation page on Drupal CMS: Page translatable, with a note that all Canvas pages must be created in the site's default language, and Published, User ID, Title, Meta description, Component input values, URL alias, Authored on, Changed, Image and Metatags checked](images/18-cms-content-language.png)
 *Figure 18.29: Canvas pages, with their fields translatable*
 
+> **The Multilingual add-on.** Drupal CMS offers a shortcut for all this: **Multilingual**, one of the **Recommended add-ons** in Project Browser (Chapter 11). It's a recipe that installs the four modules and Canvas Translate in one go, with two more modules. **Better Content Language Settings** replaces the **Content language and translation** page with a simpler one: a single table with a checkbox for each kind of content, a button that applies settings recommended for Drupal CMS, and the field-by-field choices tucked away in a dialog for each row. **Language Checklist** adds a checklist, **Finish multilingual setup**, that walks you through the rest: add languages, check detection, choose what to translate, then translate the pages, content, interface and configuration.
+>
+> We install the modules one by one in this chapter, so that you see what each of them does, and so that Drupal CMS works the same as core. The add-on is a good choice for your next multilingual site, once you know what it does for you. If you install it on the club's site instead, the Content language and translation page won't look like Figure 18.29: it's the same settings, on a different page.
+
+%% The Multilingual recipe (`drupal/drupal_cms_multilingual` 2.2.9, checked 2026-11-14 from its recipe.yml and the two modules' READMEs) has not been tried on the test site. Try it once, and add a screenshot of the checklist if the author wants one. %%
+
 > **A bug to work around.** As we write this, Canvas Translate stops with "Something went wrong on our end" on a new Drupal CMS site. The cause is a small mistake in the data of Drupal CMS's Basic page template: the heading's link is stored as empty text, and Canvas can't read it. Until it's fixed, remove the empty link with a short script. Save [remove-empty-heading-links.php](../examples/canvas-translate/remove-empty-heading-links.php) in your project folder, and run it:
 >
 > ```
